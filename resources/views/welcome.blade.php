@@ -8,9 +8,25 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- jQuery CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.2.2/cdn.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Animation Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <style>
+        .error {
+            color: red;
+        }
+
         .tab-content {
             display: none;
             animation: fadeIn 0.5s ease-in-out;
@@ -110,27 +126,6 @@
         .navbar-brand:hover::after {
             width: 100%;
         }
-
-        /* Loading animation */
-        .loading-spinner {
-            border: 3px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top: 3px solid #4F46E5;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
     </style>
 </head>
 
@@ -182,7 +177,7 @@
         </div>
 
         <!-- Tab Content -->
-        <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 animate__animated animate__fadeIn">
+        <div class="bg-gray-50 rounded-lg shadow-md p-4 sm:p-6 animate__animated animate__fadeIn">
             <!-- Sales Tab Content -->
             <div id="sales" class="tab-content active">
                 <div class=" flex justify-between">
@@ -190,7 +185,7 @@
 
                     <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-md">
                         <div class="relative group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3 scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                            <svg onclick="show_add_sales_modal()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3 scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
                                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Sale</span>
@@ -248,9 +243,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4 text-center text-gray-500" id="sales-loading">
-                    <div class="loading-spinner"></div>
-                    <p class="mt-2">Loading data...</p>
+                <div id="sales-loading" class=" mt-4 flex justify-center">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-800"></div>
                 </div>
             </div>
 
@@ -273,32 +267,60 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4 text-center text-gray-500" id="customers-loading">
-                    <div class="loading-spinner"></div>
-                    <p class="mt-2">Loading data...</p>
+                <div id="customers-loading" class=" mt-4 flex justify-center">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-800"></div>
                 </div>
             </div>
 
             <!-- Inventory Tab Content -->
             <div id="inventory" class="tab-content">
-                <div class=" flex justify-between mb-1">
-                    <h2 class="text-xl font-semibold">Inventory Status</h2>
+                <div class="flex justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Inventory</h2>
 
-                    <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-md">
-                        <div class="relative group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-bar-graph scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
-                                <path d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5z" />
-                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
-                            </svg>
-                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Statisticts</span>
+                    <div class="flex items-center gap-3">
+                        <!-- Inventory Stats Cards -->
+                        <div class="grid grid-cols-4 gap-3 mr-4">
+                            <div class="bg-white p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Total</div>
+                                <div id="total_inventory" class="text-lg font-bold">0</div>
+                            </div>
+                            <div class="bg-green-100 p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Available</div>
+                                <div id="Available_count" class="text-lg font-bold text-green-600">0</div>
+                            </div>
+                            <div class="bg-yellow-100 p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Low Stock</div>
+                                <div id="Not_Available_count" class="text-lg font-bold text-yellow-600">0</div>
+                            </div>
+                            <div class="bg-red-100 p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Sold Out</div>
+                                <div id="Sold_Out_count" class="text-lg font-bold text-red-600">0</div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-lg">
+                            <div class="relative group">
+                                <svg onclick="show_add_item_modal()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                    <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z" />
+                                    <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                                </svg>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
+                            </div>
+                            <div class="relative group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-bar-graph scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                    <path d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5z" />
+                                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                                </svg>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Statistics</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="w-full">
                     <!-- Filter Container with responsive grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                         <!-- Search Filter -->
                         <div class="w-full">
                             <div class="relative">
@@ -308,98 +330,527 @@
                                 <input
                                     type="text"
                                     id="searchTable_items"
-                                    placeholder="Search..."
-                                    class="w-full px-3 h-8 border-2 border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    placeholder="Search by name, SKU, or description..."
+                                    class="w-full px-3 h-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
 
                         <!-- Status Filter -->
                         <div class="w-full">
                             <select
-                                id="part_type_filter"
-                                class="w-full px-3 h-8 border-2 border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                id="item_status_filter"
+                                class="w-full px-3 h-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">All Status</option>
                                 <option value="Available">Available</option>
-                                <option value="Available">Not Available</option>
+                                <option value="Not Available">Not Available</option>
                                 <option value="Sold Out">Sold Out</option>
                                 <option value="Damage">Damaged</option>
                                 <option value="Expired">Expired</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Active">Active</option>
                             </select>
                         </div>
 
                         <!-- Quantity Range Filter -->
                         <div class="w-full">
-                            <div class="flex flex-wrap items-center space-x-1">
+                            <div class="flex items-center space-x-1">
                                 <input
                                     type="number"
                                     id="min_quantity"
                                     placeholder="Min Qty"
                                     min="0"
-                                    max="1000"
-                                    class="flex-1 min-w-[80px] px-3 h-8 border-2 border-gray-500 rounded-lg">
+                                    class="flex-1 px-3 h-10 border-2 border-gray-300 rounded-lg">
                                 <span class="text-gray-500">to</span>
                                 <input
                                     type="number"
                                     id="max_quantity"
                                     placeholder="Max Qty"
                                     min="0"
-                                    max="1000"
-                                    class="flex-1 min-w-[80px] px-3 h-8 border-2 border-gray-500 rounded-lg">
+                                    class="flex-1 px-3 h-10 border-2 border-gray-300 rounded-lg">
                             </div>
                         </div>
 
+                        <!-- Sort Option -->
+                        <div class="w-full flex items-center">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" id="sort_items_by_Alphabet" class="form-checkbox h-5 w-5 text-blue-600">
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="responsive-table">
-                        <table class="min-w-full bg-white">
-                            <thead>
-                                <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                    <th class="py-3 px-6 text-left">SKU</th>
-                                    <th class="py-3 px-6 text-left">Product</th>
-                                    <th class="py-3 px-6 text-left">Category</th>
-                                    <th class="py-3 px-6 text-right">Stock</th>
-                                    <th class="py-3 px-6 text-right">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-gray-600 text-sm">
-                                <!-- Table rows will be loaded via AJAX -->
-                            </tbody>
-                        </table>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table id="inventory" class="min-w-full bg-white">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                        <th class="py-3 px-6 text-left">SKU</th>
+                                        <th class="py-3 px-6 text-left">Product</th>
+                                        <th class="py-3 px-6 text-left">Category</th>
+                                        <th class="py-3 px-6 text-right">Stock</th>
+                                        <th class="py-3 px-6 text-right">Price</th>
+                                        <th class="py-3 px-6 text-center">Status</th>
+                                        <th class="py-3 px-6 text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600 text-sm">
+                                    <!-- Table rows will be loaded via AJAX -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="mt-4 text-center text-gray-500" id="inventory-loading">
-                        <div class="loading-spinner"></div>
-                        <p class="mt-2">Loading data...</p>
-                    </div>
-                </div>
-
-                <!-- Reports Tab Content -->
-                <div id="reports" class="tab-content">
-                    <h2 class="text-xl font-semibold mb-4">Monthly Reports</h2>
-                    <div class="responsive-table">
-                        <table class="min-w-full bg-white">
-                            <thead>
-                                <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                    <th class="py-3 px-6 text-left">Month</th>
-                                    <th class="py-3 px-6 text-right">Total Sales</th>
-                                    <th class="py-3 px-6 text-right">Orders</th>
-                                    <th class="py-3 px-6 text-right">New Customers</th>
-                                    <th class="py-3 px-6 text-right">Growth</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-gray-600 text-sm">
-                                <!-- Table rows will be loaded via AJAX -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-4 text-center text-gray-500" id="reports-loading">
-                        <div class="loading-spinner"></div>
-                        <p class="mt-2">Loading data...</p>
+                    <div id="inventory-loading" class="mt-4 flex justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-800"></div>
                     </div>
                 </div>
             </div>
     </main>
 
+    <div id="feedbackModal" class="fixed inset-0 items-center hidden justify-center z-50 p-4 overflow-y-auto">
+        <!-- Modal Content -->
+        <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg transform transition-all sm:my-8 relative">
+            <!-- Close Button -->
+            <div class="absolute top-2 right-2 z-10">
+                <button id="closeModal" class="p-2 rounded-full hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Close modal">
+                    <svg class="fill-current text-gray-700 hover:text-gray-900 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-6 pt-8">
+                <div class="text-center">
+                    <div id="modalIcon" class="text-4xl mb-4 inline-flex justify-center"></div>
+                    <h2 id="modalTitle" class="text-xl font-semibold break-words"></h2>
+                    <p id="modalMessage" class="mt-2 text-gray-600 break-words"></p>
+                </div>
+
+                <!-- Button -->
+                <div class="mt-6 text-center">
+                    <button id="closeModalButton" class="w-full sm:w-auto bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="add_sales_modal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-4">
+        <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
+            <!-- Modal Header with Close Button -->
+            <div class="sticky top-0 bg-white z-10 px-4 py-3 flex justify-between items-center border-b border-gray-200">
+                <h1 class="text-base lg:text-lg font-semibold">New Sales</h1>
+                <button onclick="hide_add_sales_modal()" class="text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content with Scrollable Area -->
+            <div class="overflow-y-auto p-4 max-h-[calc(100vh-8rem)]">
+                <form method="post" class="space-y-4" id="sales_form">
+                    <!-- Description and Submit Button -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div class="w-full sm:w-3/4">
+                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+                                <label for="Description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
+                                <textarea id="Description" name="Description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                        </div>
+                        <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Record Sale</button>
+                    </div>
+
+                    <!-- Customer and Date Section -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Date Input -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+                                <label for="date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
+                                <input type="date" id="sale_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <!-- Customer Search -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+                                <label for="search_Customer" class="text-xs sm:text-sm font-medium text-gray-700">Customer:</label>
+                                <div class="relative w-full">
+                                    <svg class="fill-current text-gray-500 w-4 h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                                    </svg>
+                                    <input placeholder="Customer" name="Customer" id="search_Customer" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
+                                    <div class="Customerlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
+                                    <input type="hidden" class="Customer_ID" id="Customer_ID" name="Customer_id[]" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Show Sales Button -->
+                        <div class="flex items-center">
+                            <div onclick="show_SalesDialog()" class="bg-green-500 hover:bg-green-400 rounded px-3 py-1.5 transition cursor-pointer">
+                                <span class="text-white text-xs sm:text-sm">Show Sales</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table Container -->
+                    <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table id="table1" class="min-w-full text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-green-200">
+                                        <th class="py-2 px-2 text-left font-medium">Stock</th>
+                                        <th class="py-2 px-2 text-left font-medium">Qtn</th>
+                                        <th class="py-2 px-2 text-left font-medium">Item</th>
+                                        <th class="py-2 px-2 text-left font-medium">Description</th>
+                                        <th class="py-2 px-2 text-left hidden md:table-cell font-medium">Expire Date</th>
+                                        <th class="py-2 px-2 text-left font-medium">Unit Price</th>
+                                        <th class="py-2 px-2 text-left font-medium">Discount</th>
+                                        <th class="py-2 px-2 text-left font-medium">Net Price</th>
+                                        <th class="py-2 px-2 text-left font-medium">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="tbl_id" class="border-b border-gray-300">
+                                        <td class="p-1">
+                                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
+                                        </td>
+                                        <td class="p-1 tbl-id">
+                                            <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-14 px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+                                        </td>
+                                        <td class="p-1">
+                                            <div class="relative">
+                                                <input placeholder="Item" id="item_id" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                                <div id="itemslist" class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                                <input type="hidden" class="item_id" name="item_id" />
+                                            </div>
+                                        </td>
+                                        <td class="p-1">
+                                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+                                        </td>
+                                        <td class="hidden md:table-cell p-1">
+                                            <input type="date" id="date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
+                                        </td>
+                                        <td class="p-1">
+                                            <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+                                        </td>
+                                        <td class="p-1">
+                                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                        </td>
+                                        <td id="ntl" class="ntl text-center p-1"><span class="">TSh</span>0.00</td>
+                                        <td class="p-1">
+                                            <div class="flex justify-center gap-2">
+                                                <button type="button" onclick="ob_adRows.addRow(this)" class="text-blue-600 hover:text-blue-800">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                                    </svg>
+                                                </button>
+                                                <button type="button" onclick="ob_adRows.delRow(this)" class="text-red-600 hover:text-red-800">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bg-gray-100 border-t-2 border-gray-400">
+                                        <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
+                                        <td class="p-2">
+                                            <input name="paid" placeholder="0.00 Tzs" id="pay_amount" class="paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                        </td>
+                                        <td colspan="2" class="p-2">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs sm:text-sm font-medium">Dept:</span>
+                                                <div class="text-red-600">
+                                                    <span class="dept text-xs sm:text-sm" id="dept">0.00</span>
+                                                    <span class="text-xs sm:text-sm">Tzs</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td colspan="4" class="p-2 text-right">
+                                            <span class="text-xs sm:text-sm font-medium">Total: </span>
+                                            <span id="tl" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="add_item_modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+        <div class="w-full max-w-md transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
+            <!-- Modal Header with Close Button -->
+            <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+                <h2 class="font-bold text-lg">Add New Item</h2>
+                <button onclick="hide_add_item_modal()" class="text-gray-500 cursor-pointer hover:text-gray-800 focus:outline-none">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="px-4 py-4">
+                <form action="" method="POST" id="add_item_form">
+                    @csrf
+                    <!-- Item Name -->
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-800 mb-1">Item name:</label>
+                        <input type="text" id="name" name="name" placeholder="Item name" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                        <div id="Errorname" class="text-red-600 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label for="description" class="block text-sm font-medium text-gray-800 mb-1">Description:</label>
+                        <textarea name="description" id="description" rows="2" class="w-full px-3 py-2 bg-gray-100 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500" placeholder="Item description!"></textarea>
+                    </div>
+
+                    <!-- Sale Price -->
+                    <div class="mb-4">
+                        <label for="sale_price" class="block text-sm font-medium text-gray-800 mb-1">Sale Price:</label>
+                        <input type="number" step="0.01" id="sale_price" name="sale_price" placeholder="Sale price" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                        <div id="Errorsale_price" class="text-red-600 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-2 mt-6">
+                        <button type="button" onclick="hide_add_item_modal()" class="px-4 py-2 cursor-pointer bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none transition">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-700 focus:outline-none transition">
+                            Record
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div id="edit_item_modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+        <div class="w-full max-w-md transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
+            <!-- Modal Header with Close Button -->
+            <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+                <h2 class="font-bold text-lg">Edit Item</h2>
+                <button onclick="hide_EDIT_itemDialog()" class="p-2 rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors">
+                    <svg class="fill-current text-gray-900 hover:text-white w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="px-4 py-4">
+                <form action="" method="POST" id="edit_item_form">
+                    @csrf
+                    <input type="hidden" id="edit_item_id">
+
+                    <!-- Item Name -->
+                    <div class="mb-4">
+                        <label for="Edit_item_name" class="block text-sm font-medium text-gray-800 mb-1">Item name:</label>
+                        <input type="text" id="Edit_item_name" name="name" placeholder="Item name" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                        <div id="Erroritem_name" class="text-red-600 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- SKU -->
+                    <div class="mb-4">
+                        <input type="text" id="Edit_sku" name="sku" placeholder="SKU" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500 cursor-not-allowed" readonly>
+                        <div id="Errorsku" class="text-red-600 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-1">
+                        <label for="Edit_item_description" class="block text-sm font-medium text-gray-800 mb-1">Description:</label>
+                        <textarea name="description" id="Edit_item_description" rows="2" class="w-full px-3 py-2 bg-gray-100 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500" placeholder="Item description!"></textarea>
+                    </div>
+
+                    <!-- Sale Price -->
+                    <div class="mb-1">
+                        <label for="Edit_sale_price" class="block text-sm font-medium text-gray-800 mb-1">Sale Price:</label>
+                        <input type="number" step="0.01" id="Edit_sale_price" name="sale_price" placeholder="Sale price" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                        <div id="Errorsale_price" class="text-red-600 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-1">
+                        <select id="Edit_status" disabled name="status" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500 cursor-not-allowed">
+                            <option value="Available">Available</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Damage">Damage</option>
+                            <option value="Sold Out">Sold Out</option>
+                        </select>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-2 mt-6">
+                        <button type="button" onclick="hide_EDIT_itemDialog()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700 transition-colors">
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function showFeedbackModal(type, title, message) {
+            const modal = document.getElementById('feedbackModal');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+
+            // Reset previous state
+            modalIcon.innerHTML = '';
+            modalTitle.textContent = '';
+            modalMessage.textContent = '';
+
+            // Update modal based on type
+            if (type === 'success') {
+                modalIcon.innerHTML = '✔️'; // Success Icon
+                modalTitle.textContent = title || 'Success!';
+                modalTitle.classList.add('text-green-500');
+            } else if (type === 'error') {
+                modalIcon.innerHTML = '❌'; // Error Icon
+                modalTitle.textContent = title || 'Error!';
+                modalTitle.classList.add('text-red-500');
+            }
+
+            modalMessage.textContent = message;
+
+            // Show Modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modal.classList.add('z-50');
+
+            // Close Modal on Button or Background Click
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+            document.getElementById('closeModalButton').addEventListener('click', closeModal);
+
+            function closeModal() {
+                modal.classList.add('hidden');
+                modalTitle.classList.remove('text-green-500', 'text-red-500');
+            }
+        }
+
+        // Add this to your main JavaScript file
+        $(document).ready(function() {
+            // Global click handler for all buttons including the ADD_studentBTN
+            $(document).on('click', 'button[type="submit"], button#ADD_studentBTN', function(e) {
+                // Store reference to the clicked button
+                const $button = $(this);
+
+                // Skip if button is already in loading state
+                if ($button.data('loading')) return;
+
+                // Get button dimensions and styling
+                const width = $button.outerWidth();
+                const height = $button.outerHeight();
+                const btnClass = $button.attr('class');
+
+                // Create and store original button content
+                const originalContent = $button.html();
+                $button.data('original-content', originalContent);
+
+                // Mark button as loading
+                $button.data('loading', true);
+
+                // Create loading spinner that matches button dimensions
+                const spinnerSize = Math.min(height * 0.6, 24); // Proportional but capped
+                const spinner = `<div class="LoadingState inline-block w-${spinnerSize/4} h-${spinnerSize/4} border-2 border-dashed rounded-full animate-spin dark:border-violet-600 mx-auto"></div>`;
+
+                // Replace button content with spinner
+                $button.css({
+                    width: width + 'px',
+                    height: height + 'px'
+                }).html(spinner);
+
+                // If this is not inside a form with AJAX handling, we need to reset it manually after a timeout
+                if (!$button.closest('form').data('ajax-bound')) {
+                    setTimeout(function() {
+                        resetButton($button);
+                    }, 10000); // Fallback timeout of 10 seconds
+                }
+            });
+
+            // Extend the jQuery AJAX setup to automatically handle button states
+            const originalAjax = $.ajax;
+            $.ajax = function(options) {
+                const originalBeforeSend = options.beforeSend;
+
+                options.beforeSend = function(xhr, settings) {
+                    // Find the related form and button
+                    const $form = $(options.form || $('form:has(button.loading)'));
+                    const $button = $form.find('button[type="submit"], button#ADD_studentBTN');
+
+                    // Execute original beforeSend if it exists
+                    if (originalBeforeSend) originalBeforeSend(xhr, settings);
+                };
+
+                const originalComplete = options.complete;
+                options.complete = function(xhr, status) {
+                    // Find related buttons and reset them
+                    $('button[data-loading="true"]').each(function() {
+                        resetButton($(this));
+                    });
+
+                    // Execute original complete if it exists
+                    if (originalComplete) originalComplete(xhr, status);
+                };
+
+                return originalAjax.apply(this, arguments);
+            };
+
+            // Modify form validation to mark forms as ajax-bound
+            const originalValidate = $.fn.validate;
+            $.fn.validate = function(options) {
+                $(this).data('ajax-bound', true);
+                return originalValidate.apply(this, options);
+            };
+
+            // Helper function to reset a button to its original state
+            function resetButton($button) {
+                if (!$button.data('loading')) return;
+
+                // Restore original content
+                $button.html($button.data('original-content'));
+                $button.css({
+                    width: '',
+                    height: ''
+                });
+
+                // Mark as not loading
+                $button.data('loading', false);
+            }
+
+            // Override form submissions to prevent double submits
+            $(document).on('submit', 'form', function(e) {
+                const $form = $(this);
+                if ($form.data('submitting')) {
+                    e.preventDefault();
+                    return false;
+                }
+                $form.data('submitting', true);
+
+                // Reset form submitting state after a timeout (safety measure)
+                setTimeout(function() {
+                    $form.data('submitting', false);
+                }, 1000000);
+            });
+        });
+
         // Mobile menu toggle with animation
         $(document).ready(function() {
             $('#mobile-menu-button').click(function() {
@@ -444,251 +895,516 @@
         // Function to simulate AJAX data loading
         function loadTabData(tabId) {
             $('#' + tabId + '-loading').show();
+            if (tabId === 'sales') {} else if (tabId === 'customers') {} else if (tabId === 'inventory') {
+                loadinventory();
+            } else if (tabId === 'reports') {
+                loadreports();
+            } else {
+                setTimeout(function() {
+                    $('#' + tabId + '-loading').hide();
+                }, 1000);
+            }
+        }
 
-            // Simulate AJAX request with setTimeout
-            setTimeout(function() {
-                let data = [];
-
-                // Generate mock data based on tab
-                switch (tabId) {
-                    case 'sales':
-                        data = [{
-                                id: 'S001',
-                                date: '2025-02-25',
-                                customer: 'John Doe',
-                                amount: '$1,234.56',
-                                status: 'Completed'
-                            },
-                            {
-                                id: 'S002',
-                                date: '2025-02-24',
-                                customer: 'Jane Smith',
-                                amount: '$842.19',
-                                status: 'Processing'
-                            },
-                            {
-                                id: 'S003',
-                                date: '2025-02-23',
-                                customer: 'Bob Johnson',
-                                amount: '$547.33',
-                                status: 'Completed'
-                            },
-                            {
-                                id: 'S004',
-                                date: '2025-02-22',
-                                customer: 'Alice Brown',
-                                amount: '$1,842.00',
-                                status: 'Completed'
-                            },
-                            {
-                                id: 'S005',
-                                date: '2025-02-21',
-                                customer: 'Tom Wilson',
-                                amount: '$326.87',
-                                status: 'Pending'
-                            }
-                        ];
-
-                        let salesHtml = '';
-                        data.forEach((item, index) => {
-                            salesHtml += `
-                                <tr class="border-b border-gray-200 hover:bg-gray-50 animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
-                                    <td class="py-3 px-6 text-left">${item.id}</td>
-                                    <td class="py-3 px-6 text-left">${item.date}</td>
-                                    <td class="py-3 px-6 text-left">${item.customer}</td>
-                                    <td class="py-3 px-6 text-right">${item.amount}</td>
-                                    <td class="py-3 px-6 text-center">
-                                        <span class="bg-${getStatusColor(item.status)}-100 text-${getStatusColor(item.status)}-800 py-1 px-3 rounded-full text-xs">
-                                            ${item.status}
-                                        </span>
-                                    </td>
-                                </tr>
-                            `;
-                        });
-                        $('#sales tbody').html(salesHtml);
-                        break;
-
-                    case 'customers':
-                        data = [{
-                                id: 'C001',
-                                name: 'John Doe',
-                                email: 'john@example.com',
-                                phone: '(555) 123-4567',
-                                orders: 8
-                            },
-                            {
-                                id: 'C002',
-                                name: 'Jane Smith',
-                                email: 'jane@example.com',
-                                phone: '(555) 987-6543',
-                                orders: 12
-                            },
-                            {
-                                id: 'C003',
-                                name: 'Bob Johnson',
-                                email: 'bob@example.com',
-                                phone: '(555) 234-5678',
-                                orders: 3
-                            },
-                            {
-                                id: 'C004',
-                                name: 'Alice Brown',
-                                email: 'alice@example.com',
-                                phone: '(555) 876-5432',
-                                orders: 15
-                            },
-                            {
-                                id: 'C005',
-                                name: 'Tom Wilson',
-                                email: 'tom@example.com',
-                                phone: '(555) 345-6789',
-                                orders: 5
-                            }
-                        ];
-
-                        let customersHtml = '';
-                        data.forEach((item, index) => {
-                            customersHtml += `
-                                <tr class="border-b border-gray-200 hover:bg-gray-50 animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
-                                    <td class="py-3 px-6 text-left">${item.id}</td>
-                                    <td class="py-3 px-6 text-left">${item.name}</td>
-                                    <td class="py-3 px-6 text-left">${item.email}</td>
-                                    <td class="py-3 px-6 text-left">${item.phone}</td>
-                                    <td class="py-3 px-6 text-right">${item.orders}</td>
-                                </tr>
-                            `;
-                        });
-                        $('#customers tbody').html(customersHtml);
-                        break;
-
-                    case 'inventory':
-                        data = [{
-                                sku: 'P001',
-                                product: 'Laptop Deluxe',
-                                category: 'Electronics',
-                                stock: 24,
-                                price: '$1,299.99'
-                            },
-                            {
-                                sku: 'P002',
-                                product: 'Smartphone X',
-                                category: 'Electronics',
-                                stock: 42,
-                                price: '$899.99'
-                            },
-                            {
-                                sku: 'P003',
-                                product: 'Office Chair',
-                                category: 'Furniture',
-                                stock: 18,
-                                price: '$299.99'
-                            },
-                            {
-                                sku: 'P004',
-                                product: 'Coffee Maker',
-                                category: 'Appliances',
-                                stock: 36,
-                                price: '$89.99'
-                            },
-                            {
-                                sku: 'P005',
-                                product: 'Wireless Headphones',
-                                category: 'Electronics',
-                                stock: 53,
-                                price: '$149.99'
-                            }
-                        ];
-
-                        let inventoryHtml = '';
-                        data.forEach((item, index) => {
-                            const stockClass = item.stock < 20 ? 'text-red-600' : (item.stock < 40 ? 'text-yellow-600' : 'text-green-600');
-
-                            inventoryHtml += `
-                                <tr class="border-b border-gray-200 hover:bg-gray-50 animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
-                                    <td class="py-3 px-6 text-left">${item.sku}</td>
-                                    <td class="py-3 px-6 text-left">${item.product}</td>
-                                    <td class="py-3 px-6 text-left">${item.category}</td>
-                                    <td class="py-3 px-6 text-right ${stockClass} font-medium">${item.stock}</td>
-                                    <td class="py-3 px-6 text-right">${item.price}</td>
-                                </tr>
-                            `;
-                        });
-                        $('#inventory tbody').html(inventoryHtml);
-                        break;
-
-                    case 'reports':
-                        data = [{
-                                month: 'February 2025',
-                                sales: '$148,256.42',
-                                orders: 532,
-                                newCustomers: 78,
-                                growth: '+5.2%'
-                            },
-                            {
-                                month: 'January 2025',
-                                sales: '$142,364.19',
-                                orders: 508,
-                                newCustomers: 65,
-                                growth: '+3.7%'
-                            },
-                            {
-                                month: 'December 2024',
-                                sales: '$187,452.88',
-                                orders: 684,
-                                newCustomers: 112,
-                                growth: '+12.3%'
-                            },
-                            {
-                                month: 'November 2024',
-                                sales: '$132,759.34',
-                                orders: 487,
-                                newCustomers: 53,
-                                growth: '-1.8%'
-                            },
-                            {
-                                month: 'October 2024',
-                                sales: '$139,874.21',
-                                orders: 521,
-                                newCustomers: 61,
-                                growth: '+2.4%'
-                            }
-                        ];
-
-                        let reportsHtml = '';
-                        data.forEach((item, index) => {
-                            const growthClass = item.growth.includes('-') ? 'text-red-600' : 'text-green-600';
-
-                            reportsHtml += `
-                                <tr class="border-b border-gray-200 hover:bg-gray-50 animate__animated animate__fadeIn" style="animation-delay: ${index * 0.1}s">
-                                    <td class="py-3 px-6 text-left">${item.month}</td>
-                                    <td class="py-3 px-6 text-right">${item.sales}</td>
-                                    <td class="py-3 px-6 text-right">${item.orders}</td>
-                                    <td class="py-3 px-6 text-right">${item.newCustomers}</td>
-                                    <td class="py-3 px-6 text-right ${growthClass} font-medium">${item.growth}</td>
-                                </tr>
-                            `;
-                        });
-                        $('#reports tbody').html(reportsHtml);
-                        break;
-                }
-
-                $('#' + tabId + '-loading').hide();
-            }, 800); // Simulate delay for AJAX request
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
         }
 
         // Helper function to get status color
         function getStatusColor(status) {
             switch (status) {
-                case 'Completed':
+                case 'Available':
                     return 'green';
-                case 'Processing':
+                case 'Sold Out':
                     return 'blue';
-                case 'Pending':
+                case 'Damage':
                     return 'yellow';
+                case 'Not Available':
+                    return 'gray';
+                case 'Inactive':
+                    return 'black';
+                case 'Expired':
+                    return 'red';
                 default:
                     return 'gray';
             }
         }
+
+        $('#add_item_form').validate({
+            errorPlacement: function($error, $element) {
+                $error.appendTo($element.closest("div"));
+            },
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30
+                },
+                sale_price: {
+                    number: true,
+                    min: 0
+                }
+            },
+            messages: {
+                name: {
+                    required: "Name is required",
+                    minlength: "Must be at least 3 characters.",
+                    maxlength: "Must not be greater than 30 characters"
+                },
+                sale_price: {
+                    number: "Please enter a valid price",
+                    min: "Price cannot be negative"
+                }
+            },
+            submitHandler: function(form) {
+                const formData = $(form).serializeArray();
+                $.ajax({
+                    url: "{{ route('store_item') }}",
+                    type: "POST",
+                    data: formData,
+                    beforeSend: function() {
+                        // Optionally show a loading spinner
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            showFeedbackModal('success', 'Item Added!', 'Your item has been added successfully.');
+                            $("#add_item_form")[0].reset();
+                            loadinventory();
+                            hide_add_item_modal();
+
+                        } else {
+                            showFeedbackModal('error', 'Submission Failed!', 'Failed to add item. Please try again.');
+                        }
+                    },
+                    error: function(error) {
+                        const response = error.responseJSON;
+                        if (response && response.status === 'error' && response.conflicts) {
+                            const message = `${response.message} ( : ${response.conflicts.name})`;
+                            showFeedbackModal('error', 'Submission Failed!', message);
+                        } else {
+                            showFeedbackModal('error', 'Submission Failed!', 'There was an error adding the item. Please try again.');
+                        }
+                    }
+                });
+            }
+        });
+
+        const filter_inventory_Inputs = [
+            'searchTable_items',
+            'item_status_filter',
+            'min_quantity',
+            'max_quantity',
+            'sort_items_by_Alphabet',
+        ];
+
+        filter_inventory_Inputs.forEach(inputId => {
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.addEventListener('change', function() {
+                    loadinventory();
+                });
+
+                inputElement.addEventListener('keyup', debounce(function() {
+                    loadinventory();
+                }, 300));
+            }
+        });
+
+        function loadinventory() {
+            const filters = {
+                search: document.getElementById('searchTable_items')?.value || '',
+                status: document.getElementById('item_status_filter')?.value || '',
+                min: document.getElementById('min_quantity')?.value || '',
+                max: document.getElementById('max_quantity')?.value || '',
+                sort_alphabetically: document.getElementById('sort_items_by_Alphabet')?.checked ? 1 : 0,
+            };
+
+            $('#inventory-loading').show();
+            $('#inventory tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('fetch_inventory') }}",
+                data: filters,
+                dataType: "json",
+                success: function(response) {
+                    const data = response.items || [];
+                    const counts = response.counts || {};
+
+                    // Update counts from data
+                    $('#total_inventory').text(counts.total_inventory || '0');
+                    $('#Available_count').text(counts.Available_count || '0');
+                    $('#Not_Available_count').text(counts.Not_Available_count || '0');
+                    $('#Expired_count').text(counts.Expired_count || '0');
+                    $('#Damage_count').text(counts.Damage_count || '0');
+                    $('#Sold_Out_count').text(counts.Sold_Out_count || '0');
+                    $('#Inactive_count').text(counts.Inactive_count || '0');
+                    $('#Active_count').text(counts.Active_count || '0');
+
+                    let inventoryHtml = '';
+
+                    if (data.length === 0) {
+                        inventoryHtml += `<tr>
+                    <td class="py-1 px-6 text-center text-red-600 italic" colspan="6">
+                        No items found! Please register inventory.
+                    </td>
+                </tr>`;
+                    } else {
+                        data.forEach(function(item) {
+                            // Format the price with currency symbol
+                            const formattedPrice = new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'TZS'
+                            }).format(item.sale_price || 0);
+
+                            inventoryHtml += `
+                        <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.sku || 'N/A'}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.name}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.category || 'General'}</td>
+                            <td class="py-2 px-6 text-right whitespace-nowrap">${item.current_stock || 0}</td>
+                            <td class="py-2 px-6 text-right whitespace-nowrap">${formattedPrice}</td>
+                            <td class="py-2 px-6 text-center whitespace-nowrap">
+                                <span class="bg-${getStatusColor(item.status)}-100 text-${getStatusColor(item.status)}-800 py-1 px-3 rounded-full text-xs">
+                                    ${item.status || 'N/A'}
+                                </span>
+                            </td>
+                            <td class="px-6 py-2 text-center whitespace-nowrap">
+                                <div class="flex space-x-1 justify-center">
+                                    <div class="relative group">
+                                        <button value="${item.id}" data-id="${item.id}" onclick="show_EDIT_itemDialog(${item.id})" class="hover:text-green-500 text-green-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Edit
+                                        </span>
+                                    </div>
+                                    <span class="font-bold">|</span>
+                                    <div class="relative group">
+                                        <button value="${item.id}" data-id="${item.id}" onclick="show_delete_item_modal(${item.id})" class="delete_item hover:text-red-500 text-red-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Delete
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                        });
+                    }
+
+                    $('#inventory tbody').html(inventoryHtml);
+                    $('#inventory-loading').hide();
+                },
+                error: function() {
+                    $('#inventory tbody').html('<tr><td colspan="7" class="text-center py-4 text-red-500">Failed to load inventory data</td></tr>');
+                    $('#inventory-loading').hide();
+                }
+            });
+        }
+
+        $('#edit_item_form').validate({
+            errorPlacement: function($error, $element) {
+                $error.appendTo($element.closest("div"));
+            },
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30
+                },
+                sku: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50
+                },
+                sale_price: {
+                    number: true,
+                    min: 0
+                }
+            },
+            messages: {
+                name: {
+                    required: "Name is required",
+                    minlength: "Must be at least 3 characters.",
+                    maxlength: "Must not be greater than 30 characters"
+                },
+                sku: {
+                    required: "SKU is required",
+                    minlength: "Must be at least 3 characters.",
+                    maxlength: "Must not be greater than 50 characters"
+                },
+                sale_price: {
+                    number: "Please enter a valid price",
+                    min: "Price cannot be negative"
+                }
+            },
+            submitHandler: function(form) {
+                const itemId = $('#edit_item_id').val();
+                const formData = $(form).serializeArray();
+
+                $.ajax({
+                    url: `/update_item/${itemId}`,
+                    type: "PUT",
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            showFeedbackModal('success', 'Item Updated!', 'Your item has been updated successfully.');
+                            loadinventory();
+                            hide_EDIT_itemDialog();
+                        } else {
+                            showFeedbackModal('error', 'Update Failed!', 'Failed to update item. Please try again.');
+                        }
+                    },
+                    error: function(error) {
+                        const response = error.responseJSON;
+                        if (response && response.status === 'error') {
+                            showFeedbackModal('error', 'Update Failed!', response.message);
+                        } else {
+                            showFeedbackModal('error', 'Update Failed!', 'There was an error updating the item. Please try again.');
+                        }
+                    }
+                });
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function show_add_sales_modal() {
+            let dialog = document.getElementById('add_sales_modal');
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+        }
+
+        function hide_add_sales_modal() {
+            let dialog = document.getElementById('add_sales_modal');
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
+        }
+
+        function show_add_item_modal() {
+            let dialog = document.getElementById('add_item_modal');
+            document.body.classList.add('overflow-hidden'); // Prevent scrolling when modal is open
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+
+            // Add animation
+            const modalContent = dialog.querySelector('div');
+            modalContent.classList.add('animate-fadeIn');
+
+            // Add event listener to close modal when clicking outside
+            dialog.addEventListener('click', function(event) {
+                if (event.target === dialog) {
+                    hide_add_item_modal();
+                }
+            });
+
+            // Add escape key listener
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    hide_add_item_modal();
+                }
+            });
+        }
+
+        function hide_add_item_modal() {
+            let dialog = document.getElementById('add_item_modal');
+            const modalContent = dialog.querySelector('div');
+
+            // Add fade out animation
+            modalContent.classList.add('animate-fadeOut');
+
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+                dialog.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden');
+                modalContent.classList.remove('animate-fadeOut', 'animate-fadeIn');
+            }, 300);
+        }
+
+        function show_EDIT_itemDialog(itemId) {
+            $.ajax({
+                type: "GET",
+                url: "/edit_item_details/" + itemId,
+                success: function(response) {
+                    var item = response.data;
+                    $('#Edit_item_name').val(item.name);
+                    $('#Edit_sku').val(item.sku);
+                    $('#Edit_status').val(item.status);
+                    $('#Edit_item_description').val(item.description);
+                    $('#Edit_sale_price').val(item.sale_price ? item.sale_price : '0.000');
+
+                    $('#edit_item_id').val(item.id);
+
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+            let dialog = document.getElementById('edit_item_modal');
+            document.body.classList.add('overflow-hidden'); // Prevent scrolling when modal is open
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+
+            // Add animation
+            const modalContent = dialog.querySelector('div');
+            modalContent.classList.add('animate-fadeIn');
+
+            // Add event listener to close modal when clicking outside
+            dialog.addEventListener('click', function(event) {
+                if (event.target === dialog) {
+                    hide_EDIT_itemDialog();
+                }
+            });
+
+            // Add escape key listener
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    hide_EDIT_itemDialog();
+                }
+            });
+        }
+
+        function hide_EDIT_itemDialog() {
+            let dialog = document.getElementById('edit_item_modal');
+            const modalContent = dialog.querySelector('div');
+
+            // Add fade out animation
+            modalContent.classList.add('animate-fadeOut');
+
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+                dialog.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden');
+                modalContent.classList.remove('animate-fadeOut', 'animate-fadeIn');
+            }, 300);
+        }
+
+        // Add these animation classes to your CSS
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(-20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateY(0); }
+                    to { opacity: 0; transform: translateY(-20px); }
+                }
+                .animate-fadeIn {
+                    animation: fadeIn 0.3s ease-out forwards;
+                }
+                .animate-fadeOut {
+                    animation: fadeOut 0.3s ease-out forwards;
+                }
+            </style>
+            `);
     </script>
 </body>
 
