@@ -127,6 +127,202 @@
         .navbar-brand:hover::after {
             width: 100%;
         }
+
+        /* Common dropdown styles */
+        .Customerlist,
+        .supplierlist {
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 50;
+            width: 100%;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            margin-top: 0.25rem;
+        }
+
+        /* Scrollbar styling */
+        .Customerlist::-webkit-scrollbar,
+        .supplierlist::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .Customerlist::-webkit-scrollbar-track,
+        .supplierlist::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .Customerlist::-webkit-scrollbar-thumb,
+        .supplierlist::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 3px;
+        }
+
+        .Customerlist::-webkit-scrollbar-thumb:hover,
+        .supplierlist::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+
+        /* List items */
+        .Customerlist ul,
+        .supplierlist ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .Customer_li,
+        .supplier_li,
+        .items_lists {
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+        }
+
+        .Customer_li:last-child,
+        .supplier_li:last-child,
+        .items_lists:last-child {
+            border-bottom: none;
+        }
+
+        .Customer_li:hover,
+        .supplier_li:hover,
+        .items_lists:hover {
+            background-color: #edf2f7;
+        }
+
+        /* Item specific styles */
+        .items_lists {
+            padding: 0.75rem;
+        }
+
+        .items_lists .item-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .items_lists .item-name {
+            font-weight: 500;
+            color: #1a202c;
+        }
+
+        .items_lists .item-stock {
+            font-size: 0.75rem;
+        }
+
+        .items_lists .item-stock {
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .items_lists .stock-low {
+            color: #ed8936;
+        }
+
+        .items_lists .stock-out {
+            color: #e53e3e;
+        }
+
+        .items_lists .stock-available {
+            color: #38a169;
+        }
+
+        /* Animation for dropdowns */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .Customerlist.show,
+        .supplierlist.show {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        /* Style for empty results */
+        .empty-result {
+            padding: 1rem;
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+        }
+
+        /* Focus styles for input fields */
+        input[type="text"]:focus+.Customerlist,
+        input[type="text"]:focus+.supplierlist,
+        input[type="text"]:focus+.itemslist {
+            border-color: #4299e1;
+        }
+
+        /* Updated dropdown styles specifically for items in tables */
+        .itemslist {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1050;
+            /* Higher z-index to appear above table content */
+            width: auto;
+            min-width: 250px;
+            /* Ensure minimum width */
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-top: 2px;
+        }
+
+
+        /* Item list styling */
+        .item-search-results {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .items_lists {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .items_lists:last-child {
+            border-bottom: none;
+        }
+
+        .items_lists:hover {
+            background-color: #f8fafc;
+        }
+
+        .item-name {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .no-results {
+            padding: 8px 12px;
+            color: #64748b;
+            text-align: center;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -216,30 +412,33 @@
                 <!-- Filters -->
                 <div class="flex flex-wrap gap-3 mb-1">
                     <div class="flex-1 min-w-[200px]">
-                        <input type="text" id="Saleearch" placeholder="Search Customer..."
+                        <input type="text" id="Salesearch" placeholder="Search Customer,Item..."
                             class="w-full px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <fieldset class="border-2 border-gray-500 rounded-lg px-3 py-0.5">
                         <legend class="text-xs font-semibold">Start - End Date </legend>
                         <div class="flex gap-2 text-xs">
-                            <input type="date" id="startDate"
+                            <input type="date" id="sale_startDate"
                                 class="px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <input type="date" id="endDate"
+                            <input type="date" id="sale_endDate"
                                 class="px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </fieldset>
                 </div>
 
-
                 <div class="responsive-table">
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                <th class="py-3 px-6 text-left">ID</th>
+                                <th class="py-3 px-6 text-left">ref.no</th>
                                 <th class="py-3 px-6 text-left">Date</th>
                                 <th class="py-3 px-6 text-left">Customer</th>
-                                <th class="py-3 px-6 text-right">Amount</th>
-                                <th class="py-3 px-6 text-center">Status</th>
+                                <th class="py-3 px-6 text-right">discount</th>
+                                <th class="py-3 px-6 text-center">amount</th>
+                                <th class="py-3 px-6 text-center">paid</th>
+                                <th class="py-3 px-6 text-center">unpaid</th>
+                                <th class="py-3 px-6 text-center">status</th>
+                                <th class="py-3 px-6 text-center">tools</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -286,15 +485,15 @@
                 <!-- Filters -->
                 <div class="flex flex-wrap gap-3 mb-1">
                     <div class="flex-1 min-w-[200px]">
-                        <input type="text" id="Saleearch" placeholder="Search Customer..."
+                        <input type="text" id="Purchasessearch" placeholder="Search Customer..."
                             class="w-full px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <fieldset class="border-2 border-gray-500 rounded-lg px-3 py-0.5">
                         <legend class="text-xs font-semibold">Start - End Date </legend>
                         <div class="flex gap-2 text-xs">
-                            <input type="date" id="startDate"
+                            <input type="date" id="PurchasesstartDate"
                                 class="px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <input type="date" id="endDate"
+                            <input type="date" id="PurchasesendDate"
                                 class="px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </fieldset>
@@ -305,11 +504,15 @@
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                <th class="py-3 px-6 text-left">ID</th>
+                                <th class="py-3 px-6 text-left">ref.no</th>
                                 <th class="py-3 px-6 text-left">Date</th>
                                 <th class="py-3 px-6 text-left">Supplier</th>
-                                <th class="py-3 px-6 text-right">Amount</th>
-                                <th class="py-3 px-6 text-center">Status</th>
+                                <th class="py-3 px-6 text-left">discount</th>
+                                <th class="py-3 px-6 text-left">total</th>
+                                <th class="py-3 px-6 text-left">paid</th>
+                                <th class="py-3 px-6 text-left">unpaid</th>
+                                <th class="py-3 px-6 text-left">status</th>
+                                <th class="py-3 px-6 text-left">tools</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -595,8 +798,8 @@
                                         </td>
                                         <td class="p-1">
                                             <div class="relative">
-                                                <input placeholder="Item" id="item_id" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                                                <div id="itemslist" class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                                <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                                <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
                                                 <input type="hidden" class="item_id" name="item_id" />
                                             </div>
                                         </td>
@@ -615,13 +818,13 @@
                                         <td id="ntl" class="ntl text-center p-1"><span class="">TSh</span>0.00</td>
                                         <td class="p-1">
                                             <div class="flex justify-center gap-2">
-                                                <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800">
+                                                <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                                     </svg>
                                                 </button>
-                                                <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800">
+                                                <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                                                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
@@ -936,7 +1139,6 @@
         </div>
     </div>
 
-    <!-- Redesigned Add Purchase Modal -->
     <div id="add_purchase_modal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-4">
         <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
             <!-- Modal Header with Close Button -->
@@ -951,7 +1153,8 @@
 
             <!-- Modal Content with Scrollable Area -->
             <div class="overflow-y-auto p-4 max-h-[calc(100vh-8rem)]">
-                <form method="post" class="space-y-4" id="purchases_form">
+                <form method="post" class="space-y-4" id="purchases_form" action="">
+                    @csrf
                     <!-- Description and Submit Button -->
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <div class="w-full sm:w-3/4">
@@ -1023,8 +1226,8 @@
                                         </td>
                                         <td class="p-1">
                                             <div class="relative">
-                                                <input placeholder="Item" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                                                <div class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                                <input placeholder="Item" name="item_name" id="purchase_item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                                <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
                                                 <input type="hidden" class="item_id" name="item_id" />
                                             </div>
                                         </td>
@@ -1043,18 +1246,17 @@
                                         <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
                                         <td class="p-1">
                                             <div class="flex justify-center gap-2">
-                                                <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800">
+                                                <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                                     </svg>
-                                                </button>
-                                                <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                                    </svg>
-                                                </button>
+                                                    <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                        </svg>
+                                                    </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -1088,7 +1290,6 @@
         </div>
     </div>
 
-    <!-- Redesigned Edit Purchase Modal -->
     <div id="editPurchaseModal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-4">
         <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
             <!-- Modal Header with Close Button -->
@@ -1389,7 +1590,11 @@
         // Function to simulate AJAX data loading
         function loadTabData(tabId) {
             $('#' + tabId + '-loading').show();
-            if (tabId === 'sales') {} else if (tabId === 'purchases') {} else if (tabId === 'customers') {} else if (tabId === 'inventory') {
+            if (tabId === 'sales') {
+                loadSale();
+            } else if (tabId === 'purchases') {
+                loadPurchases();
+            } else if (tabId === 'customers') {} else if (tabId === 'inventory') {
                 loadinventory();
             } else if (tabId === 'reports') {
                 loadreports();
@@ -1613,6 +1818,274 @@
             });
         }
 
+        const filter_sales_Inputs = [
+            'Salesearch',
+            'sale_startDate',
+            'sale_endDate',
+        ];
+
+        filter_sales_Inputs.forEach(inputId => {
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.addEventListener('change', function() {
+                    loadSale();
+                });
+
+                inputElement.addEventListener('keyup', debounce(function() {
+                    loadSale();
+                }, 300));
+            }
+        });
+
+        function loadSale() {
+            const filters = {
+                search: document.getElementById('Salesearch')?.value || '',
+                sale_startDate: document.getElementById('sale_startDate')?.value || '',
+                sale_endDate: document.getElementById('sale_endDate')?.value || '',
+            };
+
+            $('#sales-loading').show();
+            $('#sales tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('fetch_Sales') }}",
+                data: filters,
+                dataType: "json",
+                success: function(response) {
+                    const data = response.items || [];
+
+                    let salesHtml = '';
+
+                    if (data.length === 0) {
+                        salesHtml += `<tr>
+                            <td class="py-1 px-6 text-center text-red-600 italic" colspan="6">
+                                No sales found! Please record sales.
+                            </td>
+                        </tr>`;
+                    } else {
+                        data.forEach(function(sale) {
+                            const date = new Date(sale.sale_date).toLocaleDateString();
+                            const total = parseFloat(sale.total_amount).toLocaleString('en-TZ', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                            const paid = parseFloat(sale.paid).toLocaleString('en-TZ', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                            const debt = parseFloat(sale.dept).toLocaleString('en-TZ', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+
+                            salesHtml += `
+                                <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${sale.reference_no || ' - '}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${date}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${sale.customer?.name || ' - '}</td>
+                                    <td class="py-1 px-6 text-right whitespace-nowrap">${sale.total_discount || 0}</td>
+                                    <td class="py-1 px-6 text-right whitespace-nowrap">${total}</td>
+                                    <td class="py-1 px-6 text-right whitespace-nowrap">${paid}</td>
+                                    <td class="py-1 px-6 text-right whitespace-nowrap">${debt}</td>
+                                    <td class="py-1 px-6 text-center whitespace-nowrap">
+                                        <span class="bg-${getStatusColor(sale.status)}-100 text-${getStatusColor(sale.status)}-800 py-1 px-3 rounded-full text-xs">
+                                            ${sale.status || ' - '}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                        <div class="flex space-x-2">
+                                            <div class="relative group">
+                                                <button value="${sale.id}" data-id="${sale.id}" onclick="show_SalesPREVIEW(${sale.id})" class="show_SalesPREVIEW hover:text-blue-300 text-blue-900">
+                                                    <svg class="w-5 h-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z"/>
+                                                    </svg>
+                                                </button>
+                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                                    Preview
+                                                </span>
+                                            </div>
+                                            <span class="font-bold">|</span>
+                                            <div class="relative group">
+                                                <button value="${sale.id}" data-id="${sale.id}" onclick="show_edit_SalesMODAL()" class="show_edit_SalesMODAL hover:text-green-500 text-green-800">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                        <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                                    </svg>
+                                                </button>
+                                                <!-- Tooltip -->
+                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                                    Edit
+                                                </span>
+                                            </div>
+
+                                            <span class="font-bold">|</span>
+
+                                            <!-- Delete Button -->
+                                            <div class="relative group" onclick="delete_Sales()">
+                                                <button value="${sale.id}" data-id="${sale.id}" class=" delete_Sales hover:text-red-500 text-red-800">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                                    </svg>
+                                                </button>
+                                                <!-- Tooltip -->
+                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                                    Delete
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+
+                    $('#sales tbody').html(salesHtml);
+                    $('#sales-loading').hide();
+                },
+                error: function() {
+                    $('#sales tbody').html('<tr><td colspan="7" class="text-center py-4 text-red-500">Failed to load sales data</td></tr>');
+                    $('#sales-loading').hide();
+                }
+            });
+        }
+
+        const filter_purchase_Inputs = [
+            'searchTable_items',
+            'item_status_filter',
+            'min_quantity',
+        ];
+
+        filter_purchase_Inputs.forEach(inputId => {
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.addEventListener('change', function() {
+                    loadPurchases();
+                });
+
+                inputElement.addEventListener('keyup', debounce(function() {
+                    loadPurchases();
+                }, 300));
+            }
+        });
+
+        function loadPurchases() {
+            const filters = {
+                search: document.getElementById('Purchasessearch')?.value || '',
+                PurchasesstartDate: document.getElementById('PurchasesstartDate')?.value || '',
+                PurchasesendDate: document.getElementById('PurchasesendDate')?.value || '',
+            };
+
+            $('#purchases-loading').show();
+            $('#purchases tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('fetch_purchases') }}",
+                data: filters,
+                dataType: "json",
+                success: function(response) {
+                    const data = response.items || [];
+
+                    let purchasesHtml = '';
+
+                    if (data.length === 0) {
+                        purchasesHtml += `<tr>
+                            <td class="py-1 px-6 text-center text-red-600 italic" colspan="6">
+                                No purchases found! Please record purchases.
+                            </td>
+                        </tr>`;
+                    } else {
+                        data.forEach(function(purchase) {
+                            const date = new Date(purchase.purchase_date).toLocaleDateString();
+                            const total = parseFloat(purchase.total_amount).toLocaleString('en-TZ', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                            const paid = parseFloat(purchase.paid).toLocaleString('en-TZ', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                            const debt = parseFloat(purchase.dept).toLocaleString('en-TZ', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+
+                            purchasesHtml += `
+                                <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${purchase.reference_no || ' - '}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${date}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${purchase.supplier?.name || ' - '}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${purchase.total_discount || 0}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${total}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${paid}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${debt}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">
+                                        <span class="bg-${getStatusColor(purchase.status)}-100 text-${getStatusColor(purchase.status)}-800 py-1 px-3 rounded-full text-xs">
+                                            ${purchase.status || ' - '}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-1 text-left whitespace-nowrap">
+                                        <div class="flex space-x-2">
+                                            <div class="relative group">
+                                                <button value="${purchase.id}" data-id="${purchase.id}" onclick="show_purchasePREVIEW(${purchase.id})" class="show_purchasePREVIEW hover:text-blue-300 text-blue-900">
+                                                    <svg class="w-5 h-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z"/>
+                                                    </svg>
+                                                </button>
+                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                                    Preview
+                                                </span>
+                                            </div>
+                                            <span class="font-bold">|</span>
+                                            <div class="relative group">
+                                                <button value="${purchase.id}" data-id="${purchase.id}" onclick="show_edit_purchaseMODAL()" class="show_edit_purchaseMODAL hover:text-green-500 text-green-800">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                        <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                                    </svg>
+                                                </button>
+                                                <!-- Tooltip -->
+                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                                    Edit
+                                                </span>
+                                            </div>
+
+                                            <span class="font-bold">|</span>
+
+                                            <!-- Delete Button -->
+                                            <div class="relative group" onclick="delete_Purchase()">
+                                                <button value="${purchase.id}" data-id="${purchase.id}" class=" delete_purchase hover:text-red-500 text-red-800">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                                    </svg>
+                                                </button>
+                                                <!-- Tooltip -->
+                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                                    Delete
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+
+                    $('#purchases tbody').html(purchasesHtml);
+                    $('#purchases-loading').hide();
+                },
+                error: function() {
+                    $('#purchases tbody').html('<tr><td colspan="7" class="text-center py-4 text-red-500">Failed to load purchases data</td></tr>');
+                    $('#purchases-loading').hide();
+                }
+            });
+        }
+
         $('#edit_item_form').validate({
             errorPlacement: function($error, $element) {
                 $error.appendTo($element.closest("div"));
@@ -1704,6 +2177,1278 @@
                 }
             });
         });
+
+
+        // Customer and Supplier Search Handlers
+        $(document).ready(function() {
+            // Customer search functionality
+            $(document).on('keyup', '#search_Customer, #edit_Customer, #search_Customer_dept, #search_EDITCustomer_dept', function() {
+                var inputElement = $(this);
+                var query = $.trim(inputElement.val());
+                var CustomerList = inputElement.siblings('.Customerlist');
+
+                if (query !== '') {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/search_Customer',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            query: query
+                        },
+                        success: function(data) {
+                            if (data.trim() !== '') {
+                                CustomerList.html(data).fadeIn();
+                            } else {
+                                CustomerList.fadeOut();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error searching Customers:', error);
+                            CustomerList.fadeOut();
+                        }
+                    });
+                } else {
+                    CustomerList.fadeOut();
+                }
+            });
+
+            // Supplier search functionality
+            $(document).on('keyup', '#search_supplier, #edit_supplier, #search_supplier_dept, #search_EDITsupplier_dept', function() {
+                var inputElement = $(this);
+                var query = $.trim(inputElement.val());
+                var supplierList = inputElement.siblings('.supplierlist');
+
+                if (query !== '') {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/search_supplier',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            query: query
+                        },
+                        success: function(data) {
+                            if (data.trim() !== '') {
+                                supplierList.html(data).fadeIn();
+                            } else {
+                                supplierList.fadeOut();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error searching suppliers:', error);
+                            supplierList.fadeOut();
+                        }
+                    });
+                } else {
+                    supplierList.fadeOut();
+                }
+            });
+
+            // Item search for both modals
+            $(document).on('keyup', '#sale_item_name, #edit_sale_item_name, #purchase_item_name, #edit_purchase_item_name', function() {
+                var inputElement = $(this);
+                var query = $.trim(inputElement.val());
+                var searchContainer = inputElement.siblings('.itemslist');
+
+                if (query !== '') {
+                    $.post('/fetch_item', {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        query: query
+                    }, function(data) {
+                        if (data.trim() !== '') {
+                            inputElement.siblings('.itemslist').fadeIn().html(data);
+                        } else {
+                            inputElement.siblings('.itemslist').fadeOut();
+                        }
+                    });
+                } else {
+                    inputElement.siblings('.itemslist').fadeOut();
+                }
+            });
+
+            // Item selection handling
+            $(document).on('click', '.items_lists', function() {
+                try {
+                    const $listItem = $(this);
+                    const $row = $listItem.closest('tr');
+                    const $parentInput = $row.find('input[name="item_name"]');
+                    const item_id = $listItem.val();
+
+                    // Get only the item name from the item-name span
+                    const itemName = $listItem.find('.item-name').text();
+
+                    if (!$row.length || !item_id) {
+                        console.warn('Required elements not found');
+                        return;
+                    }
+
+                    $parentInput.val(itemName);
+                    $listItem.closest('.itemslist').fadeOut();
+
+                    // Fetch item details
+                    $.ajax({
+                        type: 'get',
+                        url: '/find_item_details',
+                        data: {
+                            'id': item_id
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (!data) {
+                                console.warn('No data received from server');
+                                return;
+                            }
+
+                            try {
+                                // Format prices
+                                const salePrice = parseFloat(data.sale_price) || 0;
+                                const purchasePrice = parseFloat(data.latest_purchase_price) || 0;
+                                const salesPrice = parseFloat(data.latest_sale_price) || 0;
+
+                                const formattedSalePrice = formatCurrency(salePrice);
+                                const formattedPurchasePrice = formatCurrency(purchasePrice);
+                                const formattedSalesPrice = formatCurrency(salesPrice);
+
+                                // Update row elements
+                                $row.find('.description').val(data.description || '');
+                                $row.find('.av_quantity').val(data.current_stock || '0');
+                                $row.find('.discount').val(data.latest_discount || '0');
+                                $row.find('.item_id').val(data.id);
+                                $row.find('.sku').val(data.sku || '');
+                                $row.find('.status').val(data.status || 'Available');
+
+                                // Determine which prices to update based on the form context
+                                if ($row.closest('#table1').length && $row.closest('#add_purchase_modal').length) {
+                                    // Purchase form
+                                    $row.find('.unit_price').val(purchasePrice);
+                                } else if ($row.closest('#table1').length && $row.closest('#add_sales_modal').length) {
+                                    // Sales form
+                                    $row.find('.unit_price').val(salePrice);
+                                    $row.find('.discount').val(data.latest_sale_discount || '0');
+                                }
+
+                                // Call netPriceFn to update calculations
+                                netPriceFn($row.find('.unit_price')[0]);
+                            } catch (innerError) {
+                                console.error('Error processing item data:', innerError);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error fetching item details:", error);
+                            showFeedbackModal('error', 'Error', 'Failed to fetch item details');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error in item click handler:', error);
+                }
+            });
+
+            // Item selection in edit modals
+            $(document).on('click', '#editSalesModal .itemslist li, #editPurchaseModal .itemslist li', function() {
+                var itemId = $(this).val();
+                var itemName = $(this).text();
+                var row = $(this).closest('tr');
+                var itemInput = row.find('.edit_item_name');
+                var isEditPurchase = $(this).closest('#editPurchaseModal').length > 0;
+
+                // Set item name
+                itemInput.val(itemName);
+                // Hide search results
+                $(this).closest('.itemslist').fadeOut();
+
+                // Fetch item details
+                $.ajax({
+                    type: 'GET',
+                    url: '/find_item_details',
+                    data: {
+                        id: itemId
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        row.find('textarea').val(data.description || '');
+                        row.find('.av_quantity').val(data.current_stock || '0');
+                        row.find('input[name="item_ids[]"]').val(data.id);
+
+                        if (isEditPurchase) {
+                            row.find('.edit_unit_price').val(data.latest_purchase_price || data.sale_price || '0');
+                        } else {
+                            row.find('.edit_unit_price').val(data.sale_price || '0');
+                            row.find('.edit_discount').val(data.latest_sale_discount || '0');
+                        }
+
+                        row.find('.edit_sku').val(data.sku || '');
+                        row.find('.edit_status').val(data.status || 'Available');
+
+                        // Update totals
+                        if (isEditPurchase) {
+                            purchaseTableManager.updateEditTotals();
+                        } else {
+                            tableManager.updateEditTotals();
+                        }
+                    },
+                    error: function() {
+                        console.error("Failed to fetch item details");
+                    }
+                });
+            });
+
+            // Customer selection handler
+            $(document).on('click', '.Customer_li', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                try {
+                    const selectedItem = $(this);
+                    const CustomerName = selectedItem.text();
+                    const CustomerId = selectedItem.data('id');
+
+                    // Find the closest parent container
+                    const container = selectedItem.closest('.relative');
+
+                    // Determine which form we're in
+                    if (container.find('#search_Customer').length) {
+                        // Regular form
+                        $('#search_Customer').val(CustomerName);
+                        $('.Customer_ID').val(CustomerId);
+                    } else if (container.find('#edit_Customer').length) {
+                        // Edit form
+                        $('#edit_Customer').val(CustomerName);
+                        $('#edit_Customer_id').val(CustomerId);
+                    } else if (container.find('#search_Customer_dept').length) {
+                        // payment form
+                        $('#search_Customer_dept').val(CustomerName);
+                        $('#Customer_ID_dept').val(CustomerId);
+
+                        // Fetch Customer balance
+                        $.ajax({
+                            type: 'GET',
+                            url: '/find_Customer_balance',
+                            data: {
+                                'id': CustomerId
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                var formattedBalance = new Intl.NumberFormat('en-TZ', {
+                                    style: 'currency',
+                                    currency: 'TZS',
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }).format(data.dept);
+                                $('.Customer_balance').val(formattedBalance);
+                            },
+                            error: function() {
+                                console.log('Error fetching Customer balance');
+                            },
+                        });
+
+                        // Fetch Customers Sales
+                        $.ajax({
+                            type: 'GET',
+                            url: '/fetch_Customer_Sale',
+                            data: {
+                                'id': CustomerId
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                var SaleHTML = '';
+                                data.forEach(function(Sale) {
+                                    // Format amounts
+                                    var formattedTotalAmount = new Intl.NumberFormat('en-TZ', {
+                                        style: 'currency',
+                                        currency: 'TZS'
+                                    }).format(Sale.total_amount);
+
+                                    var formattedBalance = new Intl.NumberFormat('en-TZ', {
+                                        style: 'currency',
+                                        currency: 'TZS'
+                                    }).format(Sale.dept);
+
+                                    var formattedPayedAmount = new Intl.NumberFormat('en-TZ', {
+                                        style: 'currency',
+                                        currency: 'TZS'
+                                    }).format(Sale.paid);
+
+                                    let formatted_SalesDate = '';
+                                    if (Sale?.sale_date) {
+                                        const date = new Date(Sale.sale_date);
+                                        formatted_SalesDate = date.toISOString().split('T')[0];
+                                    }
+                                    SaleHTML += `
+                            <tr class="bg-white border-b border-blue-500">
+                                <td><input type="checkbox" value="${Sale.id}" class='chkbox ml-1' /></td>
+                                <td class="py-1 px-2 text-left whitespace-nowrap">${formatted_SalesDate}</td>
+                                <td class="py-1 px-2 text-left whitespace-nowrap">${formattedTotalAmount}</td>
+                                <td class="py-1 px-2 text-left whitespace-nowrap">${formattedPayedAmount}</td>
+                                <td id="balanceID" class="balance py-1 px-2 text-left whitespace-nowrap">${formattedBalance}</td>
+                            </tr>`;
+                                });
+                                $('#Sale_TableBody').html(SaleHTML);
+                            },
+                            error: function() {
+                                console.log('Error fetching Customers Sale');
+                            },
+                        });
+                    } else if (container.find('#search_EDITCustomer_dept').length) {
+                        // payment form
+                        $('#search_EDITCustomer_dept').val(CustomerName);
+                        $('#Customer_ID_deptEDIT').val(CustomerId);
+
+                        // Fetch Customer balance
+                        $.ajax({
+                            type: 'GET',
+                            url: '/find_Customer_balance',
+                            data: {
+                                'id': CustomerId
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                var formattedBalance = new Intl.NumberFormat('en-TZ', {
+                                    style: 'currency',
+                                    currency: 'TZS',
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }).format(data.dept);
+                                $('.Customer_balance').val(formattedBalance);
+                            },
+                            error: function() {
+                                console.log('Error fetching Customer balance');
+                            },
+                        });
+                    }
+
+                    // Hide the Customer list
+                    selectedItem.closest('.Customerlist').fadeOut();
+                } catch (error) {
+                    console.error('Error in Customer selection:', error);
+                }
+            });
+
+            // Supplier selection handler
+            $(document).on('click', '.supplier_li', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                try {
+                    const selectedItem = $(this);
+                    const supplierName = selectedItem.text();
+                    const supplierId = selectedItem.data('id');
+
+                    // Find the closest parent container
+                    const container = selectedItem.closest('.relative');
+
+                    // Determine which form we're in
+                    if (container.find('#search_supplier').length) {
+                        // Regular form
+                        $('#search_supplier').val(supplierName);
+                        $('.Supplier_ID').val(supplierId);
+                    } else if (container.find('#edit_supplier').length) {
+                        // Edit form
+                        $('#edit_supplier').val(supplierName);
+                        $('#edit_supplier_id').val(supplierId);
+                    } else if (container.find('#search_supplier_dept').length) {
+                        // payment form
+                        $('#search_supplier_dept').val(supplierName);
+                        $('#Supplier_ID_dept').val(supplierId);
+
+                        // Fetch supplier balance
+                        $.ajax({
+                            type: 'GET',
+                            url: '/find_supplier_balance',
+                            data: {
+                                'id': supplierId
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                var formattedBalance = new Intl.NumberFormat('en-TZ', {
+                                    style: 'currency',
+                                    currency: 'TZS',
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }).format(data.dept);
+                                $('.supplier_balance').val(formattedBalance);
+                            },
+                            error: function() {
+                                console.log('Error fetching supplier balance');
+                            },
+                        });
+
+                        // Fetch suppliers purchase
+                        $.ajax({
+                            type: 'GET',
+                            url: '/fetch_supplier_purchases',
+                            data: {
+                                'id': supplierId
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                var purchasesHTML = '';
+                                data.forEach(function(purchases) {
+                                    // Format amounts
+                                    var formattedTotalAmount = new Intl.NumberFormat('en-TZ', {
+                                        style: 'currency',
+                                        currency: 'TZS'
+                                    }).format(purchases.total_amount);
+
+                                    var formattedBalance = new Intl.NumberFormat('en-TZ', {
+                                        style: 'currency',
+                                        currency: 'TZS'
+                                    }).format(purchases.dept);
+
+                                    var formattedPayedAmount = new Intl.NumberFormat('en-TZ', {
+                                        style: 'currency',
+                                        currency: 'TZS'
+                                    }).format(purchases.paid);
+
+                                    let formatted_purchaseDate = '';
+                                    if (purchases?.purchase_date) {
+                                        const date = new Date(purchases.purchase_date);
+                                        formatted_purchaseDate = date.toISOString().split('T')[0];
+                                    }
+                                    purchasesHTML += `
+                            <tr class="bg-white border-b border-blue-500">
+                                <td><input type="checkbox" value="${purchases.id}" class='chkbox ml-1' /></td>
+                                <td class="py-1 px-2 text-left whitespace-nowrap">${formatted_purchaseDate}</td>
+                                <td class="py-1 px-2 text-left whitespace-nowrap">${formattedTotalAmount}</td>
+                                <td class="py-1 px-2 text-left whitespace-nowrap">${formattedPayedAmount}</td>
+                                <td id="balanceID" class="balance py-1 px-2 text-left whitespace-nowrap">${formattedBalance}</td>
+                            </tr>`;
+                                });
+                                $('#purchases_TableBody').html(purchasesHTML);
+                            },
+                            error: function() {
+                                console.log('Error fetching suppliers purchases');
+                            },
+                        });
+                    } else if (container.find('#search_EDITsupplier_dept').length) {
+                        // payment form
+                        $('#search_EDITsupplier_dept').val(supplierName);
+                        $('#Supplier_ID_deptEDIT').val(supplierId);
+
+                        // Fetch supplier balance
+                        $.ajax({
+                            type: 'GET',
+                            url: '/find_supplier_balance',
+                            data: {
+                                'id': supplierId
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                var formattedBalance = new Intl.NumberFormat('en-TZ', {
+                                    style: 'currency',
+                                    currency: 'TZS',
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }).format(data.dept);
+                                $('.supplier_balance').val(formattedBalance);
+                            },
+                            error: function() {
+                                console.log('Error fetching supplier balance');
+                            },
+                        });
+                    }
+
+                    // Hide the supplier list
+                    selectedItem.closest('.supplierlist').fadeOut();
+                } catch (error) {
+                    console.error('Error in supplier selection:', error);
+                }
+            });
+
+            // Hide dropdown lists when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.relative').length) {
+                    $('.Customerlist, .supplierlist, .itemslist').fadeOut();
+                }
+            });
+
+            // Prevent input blur when clicking on dropdown lists
+            $('.Customerlist, .supplierlist, .itemslist').on('mousedown', function(e) {
+                e.preventDefault();
+            });
+        });
+
+        // Form Submission Handlers
+        $(document).ready(function() {
+            // Ensure forms have the correct action URLs
+            $("#sales_form").attr("action", "/record_Sale");
+            $("#purchases_form").attr("action", "/record_purchases");
+
+            // Make sure forms have the proper method
+            $("#sales_form, #purchases_form").attr("method", "POST");
+
+            // Add proper action handling to prevent default form submission
+            $("#sales_form").submit(function(e) {
+                e.preventDefault(); // Prevent the form from submitting normally
+
+                // Your existing validation code can remain here
+
+                var SaleData = {
+                    items: [],
+                    description: $('#Description').val(),
+                    part_id: $('#Customer_ID').val() || null, // Handle nullable part_id
+                    Sales_date: $('#sale_date').val(),
+                    total_amount: parseFloat($('#tl').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    paid: parseFloat($('.paid').val().replace(/[^0-9.-]+/g, "")) || 0,
+                    dept: parseFloat($('#dept').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    efd_number: 'EFD' + Math.floor(Math.random() * 10000000).toString().padStart(7, '0'),
+                    z_number: 'Z' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
+                    receipt_number: 'RC' + Math.floor(Math.random() * 100000).toString().padStart(5, '0'),
+                    barcode_text: 'SL-' + Date.now() + Math.floor(Math.random() * 900 + 100)
+                };
+
+                // Collect items data
+                $('#table1 tbody tr').each(function() {
+                    var row = $(this);
+                    var rawPrice = parseFloat(row.find('.unit_price').val().replace(/[^0-9.-]+/g, ""));
+
+                    var item = {
+                        item_id: row.find('input[name="item_id"]').val(),
+                        quantity: parseFloat(row.find('input[name="quantity"]').val()),
+                        expire_date: row.find('input[type="date"]').val(),
+                        Sales_price: rawPrice,
+                        discounts: parseFloat(row.find('input[name="discount"]').val()) || 0,
+                    };
+
+                    if (item.item_id && item.quantity && item.Sales_price) {
+                        SaleData.items.push(item);
+                    }
+                });
+
+                // Validate Sale Data
+                const validationResult = validate_SaleData(SaleData);
+                if (!validationResult.valid) {
+                    showFeedbackModal('error', validationResult.title, validationResult.message);
+                    return false;
+                }
+
+                // Use the proper endpoint URL
+                $.ajax({
+                    url: '/record_Sale', // Make sure this matches your route
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        SaleData: SaleData
+                    },
+                    success: function(response) {
+
+                        showFeedbackModal('success', 'Sales Recorded!', 'Sales has been recorded successfully.');
+                        resetSalesForm();
+                        hide_add_sales_modal(); // Hide the modal after successful submission
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'There was an error while recording the Sales.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        showFeedbackModal('error', 'Sales Failed!', errorMessage);
+                    }
+                });
+            });
+
+            $("#purchases_form").submit(function(e) {
+                e.preventDefault();
+
+                // Your existing validation code can remain here
+
+                var purchasesData = {
+                    items: [],
+                    description: $('#Description').val(),
+                    part_id: $('#Supplier_ID').val() || null,
+                    purchase_date: $('#date').val(),
+                    total_amount: parseFloat($('#tl').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    paid: parseFloat($('.paid').val().replace(/[^0-9.-]+/g, "")) || 0,
+                    dept: parseFloat($('#dept').text().replace(/[^0-9.-]+/g, "")) || 0
+                };
+
+                // Collect items data
+                $('#table1 tbody tr').each(function() {
+                    var row = $(this);
+                    var rawPrice = parseFloat(row.find('.unit_price').val().replace(/[^0-9.-]+/g, ""));
+
+                    var item = {
+                        item_id: row.find('input[name="item_id"]').val(),
+                        quantity: parseFloat(row.find('input[name="quantity"]').val()),
+                        expire_date: row.find('input[type="date"]').val(),
+                        purchase_price: rawPrice,
+                        discounts: parseFloat(row.find('input[name="discount"]').val()) || 0,
+                    };
+
+                    if (item.item_id && item.quantity && item.purchase_price) {
+                        purchasesData.items.push(item);
+                    }
+                });
+
+                const validationResult = validate_PurchaseData(purchasesData);
+                if (!validationResult.valid) {
+                    showFeedbackModal('error', validationResult.title, validationResult.message);
+                    return false;
+                }
+
+                $.ajax({
+                    url: '/record_purchases',
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        purchasesData: purchasesData
+                    },
+                    success: function(response) {
+
+                        showFeedbackModal('success', 'Purchase Recorded!', 'Purchase has been recorded successfully.');
+                        resetPurchaseForm();
+                        hide_add_purchase_modal();
+                        loadPurchases();
+                        loadinventory();
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'There was an error while recording the purchase.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        showFeedbackModal('error', 'Purchase Failed!', errorMessage);
+                    }
+                });
+            });
+
+            // Edit Sales Form Submission
+            $("#edit_Sale_form").submit(function(e) {
+                e.preventDefault(); // Prevent the form from submitting normally
+
+                const salesId = $('#edit_Sales_id').val();
+
+                var SaleData = {
+                    items: [],
+                    description: $('#edit_description').val(),
+                    part_id: $('#edit_Customer_id').val() || null, // Handle nullable part_id
+                    sale_date: $('#edit_date').val(),
+                    total_amount: parseFloat($('#edit_total').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    paid: parseFloat($('#edit_paid').val().replace(/[^0-9.-]+/g, "")) || 0,
+                    dept: parseFloat($('#edit_debt').text().replace(/[^0-9.-]+/g, "")) || 0
+                };
+
+                // Collect items data
+                $('#edit_items_container tr').each(function() {
+                    var row = $(this);
+                    var rawPrice = parseFloat(row.find('.edit_unit_price').val().replace(/[^0-9.-]+/g, "")) || 0;
+
+                    var item = {
+                        item_id: row.find('input[name="item_ids[]"]').val(),
+                        quantity: parseFloat(row.find('input[name="quantities[]"]').val()) || 0,
+                        sale_price: rawPrice,
+                        discounts: parseFloat(row.find('input[name="discounts[]"]').val()) || 0,
+                    };
+
+                    if (item.item_id && item.quantity && item.sale_price) {
+                        SaleData.items.push(item);
+                    }
+                });
+
+                const validationResult = validateSaleData(SaleData);
+                if (!validationResult.valid) {
+                    showFeedbackModal('error', validationResult.title, validationResult.message);
+                    return false;
+                }
+
+                // Submit data via AJAX
+                $.ajax({
+                    url: "/update_Sales/" + salesId,
+                    type: 'PUT',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        SaleData: SaleData
+                    },
+                    success: function(response) {
+                        hide_edit_SalesMODAL();
+                        showFeedbackModal('success', 'Sales Updated!', 'Sales has been updated successfully.');
+                        resetEditSalesForm();
+
+                        // Reload data if these functions exist
+                        if (typeof loadTransactions === 'function') loadTransactions();
+                        if (typeof loadSales === 'function') loadSales();
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'There was an error while updating the sales.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        console.error("Error response:", xhr);
+                        showFeedbackModal('error', 'Sales Update Failed!', errorMessage);
+                    }
+                });
+
+                return false;
+            });
+
+            // Edit Purchase Form Submission
+            $("#edit_purchases_form").submit(function(e) {
+                e.preventDefault();
+
+                const purchaseId = $('#edit_purchase_id').val();
+
+                var purchasesData = {
+                    items: [],
+                    description: $('#edit_description').val(),
+                    part_id: $('#edit_supplier_id').val() || null, // Handle nullable part_id
+                    purchase_date: $('#edit_date').val(),
+                    total_amount: parseFloat($('#edit_total').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    paid: parseFloat($('#edit_paid').val().replace(/[^0-9.-]+/g, "")) || 0,
+                    dept: parseFloat($('#edit_debt').text().replace(/[^0-9.-]+/g, "")) || 0
+                };
+
+                // Collect items data
+                $('#edit_items_container tr').each(function() {
+                    var row = $(this);
+                    var rawPrice = parseFloat(row.find('.edit_unit_price').val().replace(/[^0-9.-]+/g, "")) || 0;
+
+                    var item = {
+                        item_id: row.find('input[name="item_ids[]"]').val(),
+                        quantity: parseFloat(row.find('input[name="quantities[]"]').val()) || 0,
+                        purchase_price: rawPrice,
+                        expire_date: row.find('input[name="expire_dates[]"]').val(),
+                        discounts: parseFloat(row.find('input[name="discounts[]"]').val()) || 0,
+                    };
+
+                    if (item.item_id && item.quantity && item.purchase_price) {
+                        purchasesData.items.push(item);
+                    }
+                });
+
+                const validationResult = validatePurchaseData(purchasesData);
+                if (!validationResult.valid) {
+                    showFeedbackModal('error', validationResult.title, validationResult.message);
+                    return false;
+                }
+
+                // Submit data via AJAX
+                $.ajax({
+                    url: "/update_purchase/" + purchaseId,
+                    type: 'PUT',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        purchasesData: purchasesData
+                    },
+                    success: function(response) {
+                        hide_edit_purchaseMODAL();
+                        showFeedbackModal('success', 'Purchase Updated!', 'Purchase has been updated successfully.');
+                        resetEditPurchaseForm();
+
+                        // Reload data if these functions exist
+                        if (typeof loadTransactions === 'function') loadTransactions();
+                        if (typeof loadPurchases === 'function') loadPurchases();
+                        if (typeof loadinventory === 'function') loadinventory();
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'There was an error while updating the purchase.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        console.error("Error response:", xhr);
+                        showFeedbackModal('error', 'Purchase Update Failed!', errorMessage);
+                    }
+                });
+
+                return false;
+            });
+
+        });
+
+        // Validation Functions
+        function validate_SaleData(SaleData) {
+            if (SaleData.items.length === 0) {
+                return {
+                    valid: false,
+                    title: 'Validation Error!',
+                    message: 'Please add at least one item to the Sales.'
+                };
+            }
+
+            if (SaleData.paid > SaleData.total_amount) {
+                return {
+                    valid: false,
+                    title: 'Sale record failed!',
+                    message: 'Paid amount exceeds Total amount.'
+                };
+            }
+
+            // Modified to handle nullable part_id correctly
+            if (SaleData.paid < SaleData.total_amount) {
+                if (!SaleData.part_id) {
+                    return {
+                        valid: false,
+                        title: 'Sale record failed!',
+                        message: "You can't record sale debt if there is no Customer."
+                    };
+                }
+            }
+
+            return {
+                valid: true
+            };
+        }
+
+        function validateSaleData(SaleData) {
+            if (SaleData.items.length === 0) {
+                return {
+                    valid: false,
+                    title: 'Validation Error!',
+                    message: 'Please add at least one item to the Sales.'
+                };
+            }
+
+            if (SaleData.paid > SaleData.total_amount) {
+                return {
+                    valid: false,
+                    title: 'Sale update failed!',
+                    message: 'Paid amount exceeds Total amount.'
+                };
+            }
+
+            // Modified to handle nullable part_id correctly
+            if (SaleData.paid < SaleData.total_amount) {
+                if (!SaleData.part_id) {
+                    return {
+                        valid: false,
+                        title: 'Sale update failed!',
+                        message: "You can't update sale debt if there is no Customer."
+                    };
+                }
+            }
+
+            return {
+                valid: true
+            };
+        }
+
+        function validate_PurchaseData(purchasesData) {
+            if (purchasesData.items.length === 0) {
+                return {
+                    valid: false,
+                    title: 'Validation Error!',
+                    message: 'Please add at least one item to the purchase.'
+                };
+            }
+
+            if (purchasesData.paid > purchasesData.total_amount) {
+                return {
+                    valid: false,
+                    title: 'Purchase record failed!',
+                    message: 'Paid amount exceeds Total amount.'
+                };
+            }
+
+            // Modified to handle nullable part_id correctly
+            if (purchasesData.paid < purchasesData.total_amount) {
+                if (!purchasesData.part_id) {
+                    return {
+                        valid: false,
+                        title: 'Purchase record failed!',
+                        message: "You can't record purchase debt if there is no Supplier."
+                    };
+                }
+            }
+
+            return {
+                valid: true
+            };
+        }
+
+        function validatePurchaseData(purchasesData) {
+            if (purchasesData.items.length === 0) {
+                return {
+                    valid: false,
+                    title: 'Validation Error!',
+                    message: 'Please add at least one item to the purchase.'
+                };
+            }
+
+            if (purchasesData.paid > purchasesData.total_amount) {
+                return {
+                    valid: false,
+                    title: 'Purchase update failed!',
+                    message: 'Paid amount exceeds Total amount.'
+                };
+            }
+
+            // Modified to handle nullable part_id correctly
+            if (purchasesData.paid < purchasesData.total_amount) {
+                if (!purchasesData.part_id) {
+                    return {
+                        valid: false,
+                        title: 'Purchase update failed!',
+                        message: "You can't update purchase debt if there is no Supplier."
+                    };
+                }
+            }
+
+            return {
+                valid: true
+            };
+        }
+
+        // Form Reset Functions
+        function resetSalesForm() {
+            // Clear input fields
+            const fieldsToClear = ["search_Customer", "Description", "pay_amount"];
+            fieldsToClear.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.value = "";
+                }
+            });
+
+            // Reset hidden fields
+            $('#Customer_ID').val('');
+
+            // Reset calculated values
+            $('#tl').html('0.00 <span>Tzs</span>');
+            $('.dept').text('0.00');
+            $('.ntl').html('<span>TSh</span>0.00');
+
+            // Remove all rows except the first one
+            var tbody = $('#table1 tbody');
+            var firstRow = tbody.find('tr:first').clone(true);
+            tbody.empty().append(firstRow);
+
+            // Clear the first row values
+            firstRow.find('input').val('');
+            firstRow.find('textarea').val('');
+            firstRow.find('.av_quantity').val('0');
+            firstRow.find('.ntl').html('<span>TSh</span>0.00');
+
+            // Remove any validation classes
+            $('.border-red-500').removeClass('border-2 border-red-500');
+
+            // Hide modal
+            hide_add_sales_modal();
+        }
+
+        function resetEditSalesForm() {
+            // Clear input fields
+            $('#edit_description').val('');
+            $('#edit_Customer').val('');
+            $('#edit_Customer_id').val('');
+            $('#edit_paid').val('');
+
+            // Reset calculated values
+            $('#edit_total').text('0.00 Tzs');
+            $('#edit_debt').text('0.00 Tzs');
+
+            // Clear the items table
+            $('#edit_items_container').empty();
+
+            // Add a single empty row
+            tableManager.addRow_edit();
+
+            // Remove any validation classes
+            $('.border-red-500').removeClass('border-2 border-red-500');
+        }
+
+        function resetPurchaseForm() {
+            // Clear input fields
+            const fieldsToClear = ["search_supplier", "Description", "pay_amount"];
+            fieldsToClear.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.value = "";
+                }
+            });
+
+            // Reset hidden fields
+            $('#Supplier_ID').val('');
+
+            // Reset calculated values
+            $('#tl').html('0.00 <span>Tzs</span>');
+            $('.dept').text('0.00');
+            $('.ntl').html('<span>TSh</span>0.00');
+
+            // Remove all rows except the first one
+            var tbody = $('#table1 tbody');
+            var firstRow = tbody.find('tr:first').clone(true);
+            tbody.empty().append(firstRow);
+
+            // Clear the first row values
+            firstRow.find('input').val('');
+            firstRow.find('textarea').val('');
+            firstRow.find('.av_quantity').val('0');
+            firstRow.find('.ntl').html('<span>TSh</span>0.00');
+
+            // Remove any validation classes
+            $('.border-red-500').removeClass('border-2 border-red-500');
+
+            // Hide modal
+            hide_add_purchase_modal();
+        }
+
+        function resetEditPurchaseForm() {
+            // Clear input fields
+            $('#edit_description').val('');
+            $('#edit_supplier').val('');
+            $('#edit_supplier_id').val('');
+            $('#edit_paid').val('');
+
+            // Reset calculated values
+            $('#edit_total').text('0.00 Tzs');
+            $('#edit_debt').text('0.00 Tzs');
+
+            // Clear the items table
+            $('#edit_items_container').empty();
+
+            // Add a single empty row
+            purchaseTableManager.addRow_edit();
+
+            // Remove any validation classes
+            $('.border-red-500').removeClass('border-2 border-red-500');
+        }
+
+        // Mathematics and Calculation Functions
+        function formatCurrency(amount) {
+            try {
+                if (typeof amount !== 'number') {
+                    amount = parseFloat(amount) || 0;
+                }
+                return "TSh " + amount.toLocaleString('en-TZ', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            } catch (error) {
+                console.error('Error formatting currency:', error);
+                return "TSh 0.00";
+            }
+        }
+
+        function totalFn() {
+            try {
+                // Find the active modal (either sales or purchase)
+                const activeModal = $('#add_sales_modal:visible, #add_purchase_modal:visible');
+                if (!activeModal.length) {
+                    console.warn('No active modal found for total calculation');
+                    return;
+                }
+
+                var tl = activeModal.find("#tl");
+                var ntlElements = activeModal.find(".ntl");
+
+                if (!tl.length) {
+                    console.warn('Total element not found in active modal');
+                    return;
+                }
+
+                var total = 0;
+
+                ntlElements.each(function() {
+                    total += parseFloat($(this).text().replace(/[^0-9.-]+/g, "")) || 0;
+                });
+
+                tl.html(`${total.toFixed(2)} <span>Tzs</span>`);
+                calculateDebt(total);
+            } catch (error) {
+                console.error('Error in totalFn:', error);
+            }
+        }
+
+        function calculateDebt(total) {
+            try {
+                // Find the active modal (either sales or purchase)
+                const activeModal = $('#add_sales_modal:visible, #add_purchase_modal:visible');
+                if (!activeModal.length) {
+                    console.warn('No active modal found for debt calculation');
+                    return;
+                }
+
+                var paidInput = activeModal.find(".paid");
+                var deptSpan = activeModal.find(".dept");
+
+                if (!paidInput.length || !deptSpan.length) {
+                    console.warn('Paid input or dept span not found in active modal');
+                    return;
+                }
+
+                var paidAmount = parseFloat(paidInput.val().replace(/[^0-9.-]+/g, "")) || 0;
+                var deptAmount = total - paidAmount;
+
+                deptSpan.text(formatCurrency(deptAmount).replace('TSh ', ''));
+            } catch (error) {
+                console.error('Error in calculateDebt:', error);
+            }
+        }
+
+        $(document).ready(function() {
+            // Add specific handler for pay_amount changes
+            $(document).on('input', '#pay_amount', function() {
+                // Get the current total value from the active modal
+                const activeModal = $(this).closest('#add_sales_modal, #add_purchase_modal');
+                const totalElement = activeModal.find('#tl');
+
+                if (totalElement.length) {
+                    const totalValue = parseFloat(totalElement.text().replace(/[^0-9.-]+/g, "")) || 0;
+                    calculateDebt(totalValue);
+                }
+            });
+        });
+
+
+        function netPriceFn(element) {
+            try {
+                // Validate input element
+                if (!element || !(element instanceof Element)) {
+                    console.warn('Invalid element passed to netPriceFn:', element);
+                    return;
+                }
+
+                // If the element is the pay_amount, just call calculateDebt and return
+                if (element.id === 'pay_amount') {
+                    const activeModal = $(element).closest('#add_sales_modal, #add_purchase_modal');
+                    const totalElement = activeModal.find('#tl');
+
+                    if (totalElement.length) {
+                        const totalValue = parseFloat(totalElement.text().replace(/[^0-9.-]+/g, "")) || 0;
+                        calculateDebt(totalValue);
+                    }
+                    return;
+                }
+
+                // Get the row using jQuery for better compatibility
+                const $row = $(element).closest('tr');
+                if (!$row.length) {
+                    console.warn('Could not find parent row for element:', element);
+                    return;
+                }
+
+                // Safely get values with proper type conversion
+                const $quantity = $row.find('.quantity');
+                const $unitPrice = $row.find('.unit_price');
+                const $discount = $row.find('.discount');
+
+                if (!$quantity.length || !$unitPrice.length || !$discount.length) {
+                    console.warn('Required elements not found in row');
+                    return;
+                }
+
+                // Parse values safely
+                const valQtn = parseFloat($quantity.val()) || 0;
+                const valPrice = parseFloat($unitPrice.val().replace(/[^0-9.-]+/g, "")) || 0;
+                const valDisc = parseFloat($discount.val().replace(/[^0-9.-]+/g, "")) || 0;
+
+                // Calculate net price
+                const netPrice = (valQtn * valPrice) - valDisc;
+
+                // Update net price cell
+                const $netPriceCell = $row.find('.ntl');
+                if ($netPriceCell.length) {
+                    $netPriceCell.html(`<span>TSh</span>${netPrice.toFixed(2)}`);
+                    totalFn();
+                } else {
+                    console.warn('Net price cell not found');
+                }
+            } catch (error) {
+                console.error('Error in netPriceFn:', error);
+            }
+        }
+
+        // Event listeners for real-time calculation updates
+        $(document).ready(function() {
+            // For regular forms
+            $(document).on('input', '.quantity, .unit_price, .discount, .paid', function() {
+                try {
+                    netPriceFn(this);
+                } catch (error) {
+                    console.error('Error in input event handler:', error);
+                }
+            });
+
+            // For edit forms
+            $(document).on('input', '.edit_quantity, .edit_unit_price, .edit_discount, #edit_paid', function() {
+                // Determine which manager to use based on the form
+                if ($(this).closest('#editPurchaseModal').length) {
+                    purchaseTableManager.updateEditTotals();
+                } else {
+                    tableManager.updateEditTotals();
+                }
+            });
+
+            // Set today's date as default for all date inputs
+            const today = new Date().toISOString().split('T')[0];
+            $('input[type="date"]').val(today);
+        });
+
+        // Initialize on page load
+        $(document).ready(function() {
+            // Initialize TableRowManager if not already done
+            if (typeof tableManager === 'undefined') {
+                window.tableManager = new TableRowManager('sales');
+            }
+
+            if (typeof purchaseTableManager === 'undefined') {
+                window.purchaseTableManager = new TableRowManager('purchase');
+            }
+
+            // Set today's date as default for all date inputs
+            const today = new Date().toISOString().split('T')[0];
+            $('input[type="date"]').val(today);
+
+            // Make sure both modals have their events bound correctly
+            $('#add_sales_modal, #add_purchase_modal').each(function() {
+                const $modal = $(this);
+
+                // Ensure all quantity, unit_price, discount inputs have proper event handlers
+                $modal.find('.quantity, .unit_price, .discount').on('input', function() {
+                    netPriceFn(this);
+                });
+
+                // Ensure paid input has proper event handler
+                $modal.find('.paid').on('input', function() {
+                    const totalValue = parseFloat($modal.find('#tl').text().replace(/[^0-9.-]+/g, "")) || 0;
+                    calculateDebt(totalValue);
+                });
+            });
+        });
+
+        // Show and fetch data for edit modals
+        $(document).on('click', '.show_edit_SalesMODAL', function(e) {
+            e.preventDefault();
+            var Sales_id = $(this).val();
+
+            $.ajax({
+                type: "GET",
+                url: "/getSales/" + Sales_id,
+                success: function(response) {
+                    if (response.status === 'success') {
+                        tableManager.populateEditForm(response.data);
+                        show_edit_SalesMODAL();
+                    } else {
+                        showFeedbackModal('error', 'Error', 'Failed to load Sales data');
+                    }
+                },
+                error: function() {
+                    showFeedbackModal('error', 'Error', 'Failed to load Sales data');
+                }
+            });
+        });
+
+        $(document).on('click', '.show_edit_purchaseMODAL', function(e) {
+            e.preventDefault();
+            var purchase_id = $(this).val();
+
+            $.ajax({
+                type: "GET",
+                url: "/getPurchase/" + purchase_id,
+                success: function(response) {
+                    if (response.status === 'success') {
+                        purchaseTableManager.populateEditForm(response.data);
+                        show_edit_purchaseMODAL();
+                    } else {
+                        showFeedbackModal('error', 'Error', 'Failed to load purchase data');
+                    }
+                },
+                error: function() {
+                    showFeedbackModal('error', 'Error', 'Failed to load purchase data');
+                }
+            });
+        });
+
+
+
+
+
+
 
 
 
@@ -2044,33 +3789,37 @@
         function show_edit_SalesMODAL() {
             let dialog = document.getElementById('editSalesModal');
             dialog.classList.remove('hidden');
-            dialog.classList.add('z-30');
-            loadSale();
+            dialog.classList.add('flex');
         }
 
         function hide_edit_SalesMODAL() {
             let dialog = document.getElementById('editSalesModal');
             dialog.classList.add('hidden');
-            dialog.classList.remove('z-50');
-            loadSale();
         }
 
 
         function show_edit_purchaseMODAL() {
             let dialog = document.getElementById('editPurchaseModal');
             dialog.classList.remove('hidden');
-            dialog.classList.add('z-30');
-            loadSale();
+            dialog.classList.add('flex');
         }
 
         function hide_edit_purchaseMODAL() {
             let dialog = document.getElementById('editPurchaseModal');
             dialog.classList.add('hidden');
-            dialog.classList.remove('z-50');
-            loadSale();
         }
 
+        function formatDate(dateString) {
+            if (!dateString) return '';
 
+            try {
+                const date = new Date(dateString);
+                return date.toISOString().split('T')[0]; // Returns only YYYY-MM-DD part
+            } catch (error) {
+                console.error('Error formatting date:', error);
+                return '';
+            }
+        }
 
         // Unified TableRowManager class for all modals
         class TableRowManager {
@@ -2094,6 +3843,14 @@
                     $('#table1 tbody').append(newRow);
                 }
 
+                // After adding the new row, ensure the item search functionality is correctly bound
+                const $newRow = $(button).closest('tr').next();
+                const $itemInput = $newRow.find('.item_name');
+
+                // Make sure the parent has relative positioning
+                $itemInput.parent().addClass('relative');
+
+
                 // Update totals
                 totalFn();
             }
@@ -2115,9 +3872,20 @@
 
             // Add row for edit modals
             addRow_edit(button) {
-                // Determine template based on modal type
-                const newRow = this.getEditRowTemplate();
+                // Determine which modal is active
+                const isPurchaseModal = button ?
+                    $(button).closest('#editPurchaseModal').length > 0 :
+                    $('#editPurchaseModal:visible').length > 0;
 
+                // Create the appropriate template based on modal context
+                let newRow;
+                if (isPurchaseModal) {
+                    newRow = this.getEditRowTemplate('purchase');
+                } else {
+                    newRow = this.getEditRowTemplate('sales');
+                }
+
+                // Add the row to the proper container
                 if (button) {
                     $(button).closest('tr').after(newRow);
                 } else {
@@ -2131,10 +3899,11 @@
             // Delete row for edit modals
             delRow_edit(button) {
                 const rowCount = $('#edit_items_container tr').length;
+                const isPurchaseModal = $(button).closest('#editPurchaseModal').length > 0;
 
                 if (rowCount > 1) {
                     $(button).closest('tr').remove();
-                    this.updateEditTotals();
+                    this.updateEditTotals(isPurchaseModal);
                 } else {
                     showFeedbackModal('error', 'Error', 'Cannot delete the last row');
                 }
@@ -2144,199 +3913,202 @@
             getRowTemplate() {
                 if (this.modalType === 'sales') {
                     return `
-            <tr class="border-b border-gray-300">
-                <td class="p-1">
-                    <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
-                </td>
-                <td class="p-1 tbl-id">
-                    <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
-                </td>
-                <td class="p-1">
-                    <div class="relative">
-                        <input placeholder="Item" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                        <div class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                        <input type="hidden" class="item_id" name="item_id" />
-                    </div>
-                </td>
-                <td class="p-1">
-                    <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                </td>
-                <td class="hidden md:table-cell p-1">
-                    <input type="date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
-                </td>
-                <td class="p-1">
-                    <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
-                </td>
-                <td class="p-1">
-                    <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-                </td>
-                <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
-                <td class="p-1">
-                    <div class="flex justify-center gap-2">
-                        <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                            </svg>
-                        </button>
-                        <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            `;
+                    <tr class="border-b border-gray-300">
+                        <td class="p-1">
+                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
+                        </td>
+                        <td class="p-1 tbl-id">
+                            <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+                        </td>
+                        <td class="p-1">
+                            <div class="relative">
+                                <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                <input type="hidden" class="item_id" name="item_id" />
+                            </div>
+                        </td>
+                        <td class="p-1">
+                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+                        </td>
+                        <td class="hidden md:table-cell p-1">
+                            <input type="date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
+                        </td>
+                        <td class="p-1">
+                            <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+                        </td>
+                        <td class="p-1">
+                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                        </td>
+                        <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
+                        <td class="p-1">
+                            <div class="flex justify-center gap-2">
+                                <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                </button>
+                                <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
                 } else { // purchase
                     return `
-            <tr class="border-b border-gray-300">
-                <td class="p-1">
-                    <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
-                </td>
-                <td class="p-1 tbl-id">
-                    <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
-                </td>
-                <td class="p-1">
-                    <div class="relative">
-                        <input placeholder="Item" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                        <div class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                        <input type="hidden" class="item_id" name="item_id" />
-                    </div>
-                </td>
-                <td class="p-1">
-                    <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                </td>
-                <td class="p-1">
-                    <input type="date" name="expire_date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
-                </td>
-                <td class="p-1">
-                    <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
-                </td>
-                <td class="p-1">
-                    <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-                </td>
-                <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
-                <td class="p-1">
-                    <div class="flex justify-center gap-2">
-                        <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                            </svg>
-                        </button>
-                        <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            `;
+                    <tr class="border-b border-gray-300">
+                        <td class="p-1">
+                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
+                        </td>
+                        <td class="p-1 tbl-id">
+                            <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+                        </td>
+                        <td class="p-1">
+                            <div class="relative">
+                                <input placeholder="Item" id="purchase_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                <input type="hidden" class="item_id" name="item_id" />
+                            </div>
+                        </td>
+                        <td class="p-1">
+                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+                        </td>
+                        <td class="p-1">
+                            <input type="date" name="expire_date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
+                        </td>
+                        <td class="p-1">
+                            <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+                        </td>
+                        <td class="p-1">
+                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                        </td>
+                        <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
+                        <td class="p-1">
+                            <div class="flex justify-center gap-2">
+                                <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                </button>
+                                <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
                 }
             }
 
-            // Template for edit modal row
+            // Fixed getEditRowTemplate method for TableRowManager class
             getEditRowTemplate() {
                 if (this.modalType === 'sales') {
                     return `
-            <tr class="border-b border-gray-300">
-                <td class="p-1">
-                    <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-                </td>
-                <td class="p-1">
-                    <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-                </td>
-                <td class="p-1">
-                    <div class="relative">
-                        <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                        <div class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                        <input type="hidden" name="item_ids[]" value="">
-                    </div>
-                </td>
-                <td class="p-1">
-                    <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                </td>
-                <td class="p-1">
-                    <input value="" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-                </td>
-                <td class="p-1">
-                    <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-                </td>
-                <td class="edit_net_price text-center p-1">TSh 0.00</td>
-                <td class="p-1">
-                    <div class="flex justify-center gap-2">
-                        <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                            </svg>
-                        </button>
-                        <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            `;
+<tr class="border-b border-gray-300">
+    <td class="p-1">
+        <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+    </td>
+    <td class="p-1">
+        <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+    </td>
+    <td class="p-1">
+        <div class="relative">
+            <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+            <input type="hidden" name="item_ids[]" value="">
+        </div>
+    </td>
+    <td class="p-1">
+        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+    </td>
+    <td class="p-1">
+        <input value="" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+    </td>
+    <td class="p-1">
+        <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+    </td>
+    <td class="edit_net_price text-center p-1">TSh 0.00</td>
+    <td class="p-1">
+        <div class="flex justify-center gap-2">
+            <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+            <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                 } else { // purchase
                     return `
-            <tr class="border-b border-gray-300">
-                <td class="p-1">
-                    <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-                </td>
-                <td class="p-1">
-                    <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-                </td>
-                <td class="p-1">
-                    <div class="relative">
-                        <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                        <div class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                        <input type="hidden" name="item_ids[]" value="">
-                    </div>
-                </td>
-                <td class="p-1">
-                    <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                </td>
-                <td class="p-1">
-                    <input type="date" value="" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
-                </td>
-                <td class="p-1">
-                    <input value="" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-                </td>
-                <td class="p-1">
-                    <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-                </td>
-                <td class="edit_net_price text-center p-1">TSh 0.00</td>
-                <td class="p-1">
-                    <div class="flex justify-center gap-2">
-                        <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                            </svg>
-                        </button>
-                        <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            `;
+<tr class="border-b border-gray-300">
+    <td class="p-1">
+        <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+    </td>
+    <td class="p-1">
+        <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+    </td>
+    <td class="p-1">
+        <div class="relative">
+            <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+            <input type="hidden" name="item_ids[]" value="">
+        </div>
+    </td>
+    <td class="p-1">
+        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+    </td>
+    <td class="p-1">
+        <input type="date" value="" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
+    </td>
+    <td class="p-1">
+        <input value="" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+    </td>
+    <td class="p-1">
+        <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+    </td>
+    <td class="edit_net_price text-center p-1">TSh 0.00</td>
+    <td class="p-1">
+        <div class="flex justify-center gap-2">
+            <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+            <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                 }
             }
 
             // Update totals for edit modal
             updateEditTotals() {
+                // Determine which modal is active
+                const isPurchaseModal = $('#editPurchaseModal:visible').length > 0;
+
                 let total = 0;
                 $('#edit_items_container tr').each(function() {
                     const quantity = parseFloat($(this).find('.edit_quantity').val()) || 0;
@@ -2353,104 +4125,110 @@
 
                 $('#edit_total').text(`${total.toFixed(2)} Tzs`);
                 $('#edit_debt').text(`${debt.toFixed(2)} Tzs`);
+
+                // Log which modal is active for debugging
+                console.log('Update totals for:', isPurchaseModal ? 'Purchase Modal' : 'Sales Modal');
             }
 
-            // Populate edit form with item data
+            // Populate edit item row with item data
             populateEditItemRow(item) {
                 // Calculate current stock if item exists
                 const currentStock = item?.item?.current_stock ?? 0;
 
-                if (this.modalType === 'sales') {
+                // Check which modal is currently active
+                const isPurchaseModal = $('#editPurchaseModal:visible').length > 0;
+
+                if (isPurchaseModal || this.modalType === 'purchase') {
                     return `
-                <tr class="border-b border-gray-300">
-                    <td class="p-1">
-                        <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-                    </td>
-                    <td class="p-1">
-                        <div class="relative">
-                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                            <div class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                            <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
-                        </div>
-                    </td>
-                    <td class="p-1">
-                        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.sale_price || ''}" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-                    </td>
-                    <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.sale_price || 0, item?.discount || 0)}</td>
-                    <td class="p-1">
-                        <div class="flex justify-center gap-2">
-                            <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                </svg>
-                            </button>
-                            <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                               <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-                } else { // purchase
+        <tr class="border-b border-gray-300">
+            <td class="p-1">
+                <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+            </td>
+            <td class="p-1">
+                <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+            </td>
+            <td class="p-1">
+                <div class="relative">
+                    <input value="${item?.item?.name || ''}" id="edit_purchase_item_name" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                    <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
+                </div>
+            </td>
+            <td class="p-1">
+                <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
+            </td>
+            <td class="p-1">
+                <input type="date" value="${item?.expire_date || ''}" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
+            </td>
+            <td class="p-1">
+                <input value="${item?.purchase_price || ''}" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+            </td>
+            <td class="p-1">
+                <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+            </td>
+            <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.purchase_price || 0, item?.discount || 0)}</td>
+            <td class="p-1">
+                <div class="flex justify-center gap-2">
+                    <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                        </svg>
+                    </button>
+                    <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                        </svg>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        `;
+                } else { // sales
                     return `
-                <tr class="border-b border-gray-300">
-                    <td class="p-1">
-                        <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-                    </td>
-                    <td class="p-1">
-                        <div class="relative">
-                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                            <div class="itemslist absolute z-10 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                            <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
-                        </div>
-                    </td>
-                    <td class="p-1">
-                        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
-                    </td>
-                    <td class="p-1">
-                        <input type="date" value="${item?.expire_date || ''}" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.purchase_price || ''}" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-                    </td>
-                    <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.purchase_price || 0, item?.discount || 0)}</td>
-                    <td class="p-1">
-                        <div class="flex justify-center gap-2">
-                            <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                </svg>
-                            </button>
-                            <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
+        <tr class="border-b border-gray-300">
+            <td class="p-1">
+                <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+            </td>
+            <td class="p-1">
+                <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+            </td>
+            <td class="p-1">
+                <div class="relative">
+                    <input value="${item?.item?.name || ''}" id="edit_sale_item_name" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                    <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
+                </div>
+            </td>
+            <td class="p-1">
+                <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
+            </td>
+            <td class="p-1">
+                <input value="${item?.sale_price || ''}" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+            </td>
+            <td class="p-1">
+                <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+            </td>
+            <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.sale_price || 0, item?.discount || 0)}</td>
+            <td class="p-1">
+                <div class="flex justify-center gap-2">
+                    <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                        </svg>
+                    </button>
+                    <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                        </svg>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        `;
                 }
             }
 
@@ -2472,8 +4250,8 @@
                 if (this.modalType === 'sales') {
                     let formatted_date = '';
                     if (data?.sale_date) {
-                        const date = new Date(data.sale_date);
-                        formatted_date = date.toISOString().split('T')[0];
+                        // Format the date properly for the date input
+                        formatted_date = formatDate(data.sale_date);
                     }
 
                     $('#edit_Sales_id').val(data.id);
@@ -2498,10 +4276,9 @@
                 } else { // purchase
                     let formatted_date = '';
                     if (data?.purchase_date) {
-                        const date = new Date(data.purchase_date);
-                        formatted_date = date.toISOString().split('T')[0];
+                        // Format the date properly for the date input
+                        formatted_date = formatDate(data.purchase_date);
                     }
-
                     $('#edit_purchase_id').val(data.id);
                     $('#edit_date').val(formatted_date);
                     $('#edit_supplier').val(data.supplier && data.supplier.name ? data.supplier.name : '');
@@ -2512,9 +4289,13 @@
                     // Clear existing items
                     $('#edit_items_container').empty();
 
-                    // Add purchase items
                     if (data.purchase_items && data.purchase_items.length > 0) {
                         data.purchase_items.forEach(item => {
+                            // Format expire_date for each item before passing to row creation
+                            if (item.expire_date) {
+                                const formattedExpireDate = formatDate(item.expire_date);
+                                item.expire_date = formattedExpireDate;
+                            }
                             $('#edit_items_container').append(this.populateEditItemRow(item));
                         });
                     } else {

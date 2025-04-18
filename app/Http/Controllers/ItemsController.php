@@ -720,4 +720,46 @@ class ItemsController extends Controller
             ]
         ]);
     }
+
+    public function fetch_item(Request $request)
+    {
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $items = Item::where('name', 'LIKE', "%{$query}%")
+                ->orWhere('sku', 'LIKE', "%{$query}%")
+                ->get();
+
+            $output = '<ul class="item-search-results">';
+
+            if ($items->count() > 0) {
+                foreach ($items as $item) {
+                    $totalPurchased = $item->purchaseItems()->sum('quantity') ?? 0;
+                    $totalSold = $item->saleItems()->sum('quantity') ?? 0;
+                    $currentStock = $totalPurchased - $totalSold;
+
+                    // Determine stock status color
+                    $stockColorClass = 'text-green-500';
+                    if ($currentStock <= 0) {
+                        $stockColorClass = 'text-red-500';
+                    } elseif ($currentStock < 5) {
+                        $stockColorClass = 'text-yellow-500';
+                    }
+
+                    // Simpler item display with just name as main content
+                    $output .= '
+                    <li value="' . $item->id . '" class="items_lists" data-id="' . $item->id . '" data-stock="' . $currentStock . '">
+                        <span class="item-name">' . $item->name . '</span>
+                        <span class="' . $stockColorClass . ' text-sm font-semibold item-stock">
+                                Stock: ' . $currentStock . '
+                        </span>
+                    </li>';
+                }
+            } else {
+                $output .= '<li class="no-results">No items found</li>';
+            }
+
+            $output .= '</ul>';
+            echo $output;
+        }
+    }
 }
