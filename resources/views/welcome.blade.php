@@ -323,6 +323,25 @@
             text-align: center;
             font-style: italic;
         }
+
+        #print_Invoice,
+        #print_Transactio,
+        #print_Purchase_Invoice {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 auto;
+            /* center horizontally if using a set width */
+            max-width: 100%;
+            /* prevents overflow beyond viewport */
+            width: 100%;
+            /* makes it full width of parent container */
+            max-height: 480px;
+
+            /* Optional for responsiveness */
+            box-sizing: border-box;
+            padding: 1rem;
+            /* add some spacing inside */
+        }
     </style>
 </head>
 
@@ -364,6 +383,9 @@
             </button>
             <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="purchases">
                 Purchases
+            </button>
+            <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="transaction">
+                Transactions
             </button>
             <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="customers">
                 Parties
@@ -525,6 +547,72 @@
                 </div>
             </div>
 
+            <div id="transaction" class="tab-content">
+                <div class=" flex justify-between">
+                    <h2 class="text-xl font-semibold mb-1">Transaction Management</h2>
+
+                    <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-md">
+                        <div class="relative group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-slash-minus scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                <path d="m1.854 14.854 13-13a.5.5 0 0 0-.708-.708l-13 13a.5.5 0 0 0 .708.708M4 1a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 4 1m5 11a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 9 12" />
+                            </svg>
+                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Record</span>
+                        </div>
+
+                        <div class="relative group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
+                            </svg>
+                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-3 mb-1">
+                    <div class="flex-1 min-w-[200px]">
+                        <input type="text" id="transactionsearch" placeholder="Search Customer..."
+                            class="w-full px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <fieldset class="border-2 border-gray-500 rounded-lg px-3 py-0.5">
+                        <legend class="text-xs font-semibold">Start - End Date </legend>
+                        <div class="flex gap-2 text-xs">
+                            <input type="date" id="transactionstartDate"
+                                class="px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="date" id="transactionendDate"
+                                class="px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </fieldset>
+                </div>
+
+
+                <div class="responsive-table">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 text-left">ref.no</th>
+                                <th class="py-3 px-6 text-left">Date</th>
+                                <th class="py-3 px-6 text-left">Supplier</th>
+                                <th class="py-3 px-6 text-left">discount</th>
+                                <th class="py-3 px-6 text-left">total</th>
+                                <th class="py-3 px-6 text-left">paid</th>
+                                <th class="py-3 px-6 text-left">unpaid</th>
+                                <th class="py-3 px-6 text-left">status</th>
+                                <th class="py-3 px-6 text-left">tools</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600 text-sm">
+                            <!-- Table rows will be loaded via AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="transaction-loading" class=" mt-4 flex justify-center">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-800"></div>
+                </div>
+            </div>
+
             <!-- Customers Tab Content -->
             <div id="customers" class="tab-content">
                 <h2 class="text-xl font-semibold mb-4">Parties Database</h2>
@@ -680,6 +768,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </main>
 
     <div id="feedbackModal" class="fixed inset-0 items-center hidden justify-center z-50 p-4 overflow-y-auto">
@@ -877,15 +966,15 @@
 
             <!-- Modal Content with Scrollable Area -->
             <div class="overflow-y-auto p-4 max-h-[calc(100vh-8rem)]">
-                <form method="post" class="space-y-4" id="edit_Sale_form">
-                    <input type="hidden" id="edit_Sales_id" name="Sales_id">
+                <form method="post" class="space-y-4" id="sales_edit_Sale_form">
+                    <input type="hidden" id="sales_edit_Sales_id" name="Sales_id">
 
                     <!-- Description and Submit Button -->
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <div class="w-full sm:w-3/4">
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="edit_description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="edit_description" name="description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                <label for="sales_edit_description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
+                                <textarea id="sales_edit_description" name="description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                         </div>
                         <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Update Sale</button>
@@ -896,22 +985,22 @@
                         <!-- Date Input -->
                         <div>
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="edit_date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
-                                <input type="date" id="edit_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <label for="sales_edit_date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
+                                <input type="date" id="sales_edit_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
 
                         <!-- Customer Search -->
                         <div>
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="edit_Customer" class="text-xs sm:text-sm font-medium text-gray-700">Customer:</label>
+                                <label for="sales_edit_Customer" class="text-xs sm:text-sm font-medium text-gray-700">Customer:</label>
                                 <div class="relative w-full">
                                     <svg class="fill-current text-gray-500 w-4 h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
                                     </svg>
-                                    <input placeholder="Customer" name="Customer" id="edit_Customer" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
+                                    <input placeholder="Customer" name="Customer" id="sales_edit_Customer" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
                                     <div class="Customerlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
-                                    <input type="hidden" id="edit_Customer_id" name="Customer_id" />
+                                    <input type="hidden" id="sales_edit_Customer_id" name="Customer_id" />
                                 </div>
                             </div>
                         </div>
@@ -927,7 +1016,7 @@
                     <!-- Table Container -->
                     <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table id="edit_table" class="min-w-full text-xs sm:text-sm">
+                            <table id="sales_edit_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
                                         <th class="py-2 px-2 text-left font-medium">Stock</th>
@@ -940,27 +1029,27 @@
                                         <th class="py-2 px-2 text-left font-medium">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="edit_items_container">
+                                <tbody id="sales_edit_items_container">
                                     <!-- Items will be dynamically added here -->
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-gray-100 border-t-2 border-gray-400">
                                         <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
                                         <td class="p-2">
-                                            <input name="paid" placeholder="0.00 Tzs" id="edit_paid" class="edit_paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                            <input name="paid" placeholder="0.00 Tzs" id="sales_edit_paid" class="edit_paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                                         </td>
                                         <td colspan="2" class="p-2">
                                             <div class="flex items-center gap-2">
                                                 <span class="text-xs sm:text-sm font-medium">Debt:</span>
                                                 <div class="text-red-600">
-                                                    <span class="edit_debt text-xs sm:text-sm" id="edit_debt">0.00</span>
+                                                    <span class="edit_debt text-xs sm:text-sm" id="sales_edit_debt">0.00</span>
                                                     <span class="text-xs sm:text-sm">Tzs</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td colspan="3" class="p-2 text-right">
                                             <span class="text-xs sm:text-sm font-medium">Total: </span>
-                                            <span id="edit_total" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
+                                            <span id="sales_edit_total" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -1304,15 +1393,15 @@
 
             <!-- Modal Content with Scrollable Area -->
             <div class="overflow-y-auto p-4 max-h-[calc(100vh-8rem)]">
-                <form method="post" class="space-y-4" id="edit_purchases_form">
-                    <input type="hidden" id="edit_purchase_id" name="purchase_id">
+                <form method="post" class="space-y-4" id="purchase_edit_purchases_form">
+                    <input type="hidden" id="purchase_edit_purchase_id" name="purchase_id">
 
                     <!-- Description and Submit Button -->
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <div class="w-full sm:w-3/4">
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="edit_description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="edit_description" name="description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                <label for="purchase_edit_description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
+                                <textarea id="purchase_edit_description" name="description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                         </div>
                         <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Update Purchase</button>
@@ -1323,22 +1412,22 @@
                         <!-- Date Input -->
                         <div>
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="edit_date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
-                                <input type="date" id="edit_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <label for="purchase_edit_date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
+                                <input type="date" id="purchase_edit_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
 
                         <!-- Supplier Search -->
                         <div>
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="edit_supplier" class="text-xs sm:text-sm font-medium text-gray-700">Supplier:</label>
+                                <label for="purchase_edit_supplier" class="text-xs sm:text-sm font-medium text-gray-700">Supplier:</label>
                                 <div class="relative w-full">
                                     <svg class="fill-current text-gray-500 w-4 h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
                                     </svg>
-                                    <input placeholder="Supplier" name="supplier" id="edit_supplier" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
+                                    <input placeholder="Supplier" name="supplier" id="purchase_edit_supplier" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
                                     <div class="supplierlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
-                                    <input type="hidden" id="edit_supplier_id" name="supplier_id" />
+                                    <input type="hidden" id="purchase_edit_supplier_id" name="supplier_id" />
                                 </div>
                             </div>
                         </div>
@@ -1354,7 +1443,7 @@
                     <!-- Table Container -->
                     <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table id="edit_table" class="min-w-full text-xs sm:text-sm">
+                            <table id="purchase_edit_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
                                         <th class="py-2 px-2 text-left font-medium">Stock</th>
@@ -1368,27 +1457,27 @@
                                         <th class="py-2 px-2 text-left font-medium">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="edit_items_container">
+                                <tbody id="purchase_edit_items_container">
                                     <!-- Items will be dynamically added here -->
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-gray-100 border-t-2 border-gray-400">
                                         <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
                                         <td class="p-2">
-                                            <input name="paid" id="edit_paid" class="edit_paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                            <input name="paid" placeholder="0.00 Tzs" id="purchase_edit_paid" class="edit_paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                                         </td>
                                         <td colspan="2" class="p-2">
                                             <div class="flex items-center gap-2">
                                                 <span class="text-xs sm:text-sm font-medium">Debt:</span>
                                                 <div class="text-red-600">
-                                                    <span class="edit_debt text-xs sm:text-sm" id="edit_debt">0.00</span>
+                                                    <span class="edit_debt text-xs sm:text-sm" id="purchase_edit_debt">0.00</span>
                                                     <span class="text-xs sm:text-sm">Tzs</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td colspan="4" class="p-2 text-right">
                                             <span class="text-xs sm:text-sm font-medium">Total: </span>
-                                            <span id="edit_total" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
+                                            <span id="purchase_edit_total" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -1397,6 +1486,68 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <div id="Sales_Modal" class="fixed inset-0 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-4/5 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-xl font-semibold">Sales Invoice</h3>
+
+                <div class=" flex gap-3">
+                    <div class="flex gap-16 bg-gray-300 p-2 rounded-md shadow-md">
+
+                        <div class="relative group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                onclick="printInvoice()" class="bi bi-printer scale-125 hover:text-blue-600 hover:scale-150 duration-500 cursor-pointer" viewBox="0 0 16 16">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
+                            </svg>
+                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
+                        </div>
+
+                    </div>
+                    <button onclick="close_Sales_Modal()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="print_Invoice" class=" p-3 border-gray-500 border-2"></div>
+
+        </div>
+    </div>
+
+    <div id="purchase_Modal" class="fixed inset-0 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-4/5 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-xl font-semibold">Purchase Invoice</h3>
+
+                <div class=" flex gap-3">
+                    <div class="flex gap-16 bg-gray-300 p-2 rounded-md shadow-md">
+
+                        <div class="relative group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                onclick="print_PurchaseInvoice()" class="bi bi-printer scale-125 hover:text-blue-600 hover:scale-150 duration-500 cursor-pointer" viewBox="0 0 16 16">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
+                            </svg>
+                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
+                        </div>
+
+                    </div>
+                    <button onclick="close_purchase_Modal()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="print_Purchase_Invoice" class=" p-3 border-gray-500 border-2"></div>
+
         </div>
     </div>
 
@@ -1622,15 +1773,21 @@
             switch (status) {
                 case 'Available':
                     return 'green';
+                case 'Paid':
+                    return 'green';
                 case 'Sold Out':
                     return 'blue';
                 case 'Damage':
+                    return 'yellow';
+                case 'Partial paid':
                     return 'yellow';
                 case 'Not Available':
                     return 'gray';
                 case 'Inactive':
                     return 'black';
                 case 'Expired':
+                    return 'red';
+                case 'Unpaid':
                     return 'red';
                 default:
                     return 'gray';
@@ -2720,19 +2877,19 @@
                     return false;
                 }
 
-                // Use the proper endpoint URL
                 $.ajax({
-                    url: '/record_Sale', // Make sure this matches your route
+                    url: '/record_Sale',
                     type: 'POST',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
                         SaleData: SaleData
                     },
                     success: function(response) {
-
+                        generateEFDReceipt(response.data.id)
                         showFeedbackModal('success', 'Sales Recorded!', 'Sales has been recorded successfully.');
                         resetSalesForm();
-                        hide_add_sales_modal(); // Hide the modal after successful submission
+                        hide_add_sales_modal();
+                        loadSale();
                     },
                     error: function(xhr) {
                         let errorMessage = 'There was an error while recording the Sales.';
@@ -2808,26 +2965,26 @@
                 });
             });
 
-            // Edit Sales Form Submission
-            $("#edit_Sale_form").submit(function(e) {
-                e.preventDefault(); // Prevent the form from submitting normally
+            // Edit Sales Form Submit Handler
+            $("#sales_edit_Sale_form").submit(function(e) {
+                e.preventDefault();
 
-                const salesId = $('#edit_Sales_id').val();
+                const salesId = $('#sales_edit_Sales_id').val();
 
                 var SaleData = {
                     items: [],
-                    description: $('#edit_description').val(),
-                    part_id: $('#edit_Customer_id').val() || null, // Handle nullable part_id
-                    sale_date: $('#edit_date').val(),
-                    total_amount: parseFloat($('#edit_total').text().replace(/[^0-9.-]+/g, "")) || 0,
-                    paid: parseFloat($('#edit_paid').val().replace(/[^0-9.-]+/g, "")) || 0,
-                    dept: parseFloat($('#edit_debt').text().replace(/[^0-9.-]+/g, "")) || 0
+                    description: $('#sales_edit_description').val(),
+                    part_id: $('#sales_edit_Customer_id').val() || null,
+                    sale_date: $('#sales_edit_date').val(),
+                    total_amount: parseFloat($('#sales_edit_total').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    paid: parseFloat($('#sales_edit_paid').val()) || 0,
+                    dept: parseFloat($('#sales_edit_debt').text().replace(/[^0-9.-]+/g, "")) || 0
                 };
 
                 // Collect items data
-                $('#edit_items_container tr').each(function() {
+                $('#sales_edit_items_container tr').each(function() {
                     var row = $(this);
-                    var rawPrice = parseFloat(row.find('.edit_unit_price').val().replace(/[^0-9.-]+/g, "")) || 0;
+                    var rawPrice = parseFloat(row.find('.edit_unit_price').val()) || 0;
 
                     var item = {
                         item_id: row.find('input[name="item_ids[]"]').val(),
@@ -2841,6 +2998,7 @@
                     }
                 });
 
+                // Validate sale data
                 const validationResult = validateSaleData(SaleData);
                 if (!validationResult.valid) {
                     showFeedbackModal('error', validationResult.title, validationResult.message);
@@ -2877,26 +3035,26 @@
                 return false;
             });
 
-            // Edit Purchase Form Submission
-            $("#edit_purchases_form").submit(function(e) {
+            // Edit Purchase Form Submit Handler
+            $("#purchase_edit_purchases_form").submit(function(e) {
                 e.preventDefault();
 
-                const purchaseId = $('#edit_purchase_id').val();
+                const purchaseId = $('#purchase_edit_purchase_id').val();
 
                 var purchasesData = {
                     items: [],
-                    description: $('#edit_description').val(),
-                    part_id: $('#edit_supplier_id').val() || null, // Handle nullable part_id
-                    purchase_date: $('#edit_date').val(),
-                    total_amount: parseFloat($('#edit_total').text().replace(/[^0-9.-]+/g, "")) || 0,
-                    paid: parseFloat($('#edit_paid').val().replace(/[^0-9.-]+/g, "")) || 0,
-                    dept: parseFloat($('#edit_debt').text().replace(/[^0-9.-]+/g, "")) || 0
+                    description: $('#purchase_edit_description').val(),
+                    part_id: $('#purchase_edit_supplier_id').val() || null,
+                    purchase_date: $('#purchase_edit_date').val(),
+                    total_amount: parseFloat($('#purchase_edit_total').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    paid: parseFloat($('#purchase_edit_paid').val()) || 0,
+                    dept: parseFloat($('#purchase_edit_debt').text().replace(/[^0-9.-]+/g, "")) || 0
                 };
 
                 // Collect items data
-                $('#edit_items_container tr').each(function() {
+                $('#purchase_edit_items_container tr').each(function() {
                     var row = $(this);
-                    var rawPrice = parseFloat(row.find('.edit_unit_price').val().replace(/[^0-9.-]+/g, "")) || 0;
+                    var rawPrice = parseFloat(row.find('.edit_unit_price').val()) || 0;
 
                     var item = {
                         item_id: row.find('input[name="item_ids[]"]').val(),
@@ -2911,6 +3069,7 @@
                     }
                 });
 
+                // Validate purchase data
                 const validationResult = validatePurchaseData(purchasesData);
                 if (!validationResult.valid) {
                     showFeedbackModal('error', validationResult.title, validationResult.message);
@@ -3284,7 +3443,6 @@
             });
         });
 
-
         function netPriceFn(element) {
             try {
                 // Validate input element
@@ -3444,6 +3602,667 @@
             });
         });
 
+        // Initialize on page load
+        $(document).ready(function() {
+            // Initialize TableRowManager if not already done
+            if (typeof tableManager === 'undefined') {
+                window.tableManager = new TableRowManager('sales');
+            }
+
+            if (typeof purchaseTableManager === 'undefined') {
+                window.purchaseTableManager = new TableRowManager('purchase');
+            }
+
+            // Set today's date as default for all date inputs
+            const today = new Date().toISOString().split('T')[0];
+            $('input[type="date"]').val(today);
+
+            // Bind events for both modals
+            $('#editSalesModal, #editPurchaseModal').each(function() {
+                const $modal = $(this);
+                const modalType = $modal.attr('id').includes('Sales') ? 'sales' : 'purchase';
+
+                // Update totals when inputs change
+                $modal.find('.edit_quantity, .edit_unit_price, .edit_discount').on('input', function() {
+                    if (modalType === 'sales') {
+                        tableManager.updateEditTotals();
+                    } else {
+                        purchaseTableManager.updateEditTotals();
+                    }
+                });
+
+                // Update debt when paid amount changes
+                $modal.find('#sales_edit_paid, #purchase_edit_paid').on('input', function() {
+                    if (modalType === 'sales') {
+                        tableManager.updateEditTotals();
+                    } else {
+                        purchaseTableManager.updateEditTotals();
+                    }
+                });
+            });
+        });
+
+        function show_SalesPREVIEW() {
+            const SalesId = event.target.closest('button').dataset.id;
+
+            // Show the modal
+            document.getElementById('Sales_Modal').classList.remove('hidden');
+            document.getElementById('print_Invoice').innerHTML = '<div class="flex justify-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div></div>';
+
+            fetch(`/getSales/${SalesId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const Sales = data.data;
+
+                        // Create optimized invoice HTML
+                        const invoiceHTML = `
+                        <div class="text-center mb-2">
+                            <h1 class="text-lg font-bold">SALES INVOICE</h1>
+                            <p class="text-sm">Your Company Name, 123 Business St, City</p>
+                            <p class="text-xs">Phone: +123-456-7890 | Email: info@yourcompany.com</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 text-xs mb-2 border-b pb-2">
+                            <div>
+                                <p class="font-semibold">Bill To:</p>
+                                <p class="font-bold">${Sales.customer?.name || 'General Customer'}</p>
+                                <p>${Sales.customer?.company_name || ''}</p>
+                                <p>${Sales.customer?.address || ''}</p>
+                                <p>${Sales.customer?.contact_person ? `Attn: ${Sales.customer?.contact_person}` : ''}</p>
+                                <p>Phone: ${Sales.customer?.phone_number || ''}</p>
+                                <p>Email: ${Sales.customer?.email || ''}</p>
+                            </div>
+                            <div class="text-right">
+                                <p><span class="font-semibold">Invoice No:</span> ${Sales.reference_no}</p>
+                                <p><span class="font-semibold">Date:</span> ${new Date(Sales.sale_date).toLocaleDateString()}</p>
+                                <p><span class="font-semibold">Status:</span> 
+                                    <span class="px-1 py-0.5 rounded text-xs ${
+                                        Sales.dept > 0 
+                                            ? 'bg-yellow-100 text-yellow-800' 
+                                            : (Sales.paid > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')
+                                    }">
+                                        ${Sales.dept > 0 ? 'Partial Payment' : (Sales.paid > 0 ? 'Paid' : 'Unpaid')}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <table class="w-full text-xs border-collapse border border-gray-300">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border p-1 text-left">Item</th>
+                                    <th class="border p-1 text-right">Qty</th>
+                                    <th class="border p-1 text-right">Unit Price</th>
+                                    <th class="border p-1 text-right">Discount</th>
+                                    <th class="border p-1 text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Sales.sale_items.map(item => `
+                                    <tr class="border">
+                                        <td class="p-1">${item.item.name}</td>
+                                        <td class="p-1 text-right">${item.quantity}</td>
+                                        <td class="p-1 text-right">Tsh ${parseFloat(item.sale_price).toFixed(2)}</td>
+                                        <td class="p-1 text-right">Tsh ${parseFloat(item.discount).toFixed(2)}</td>
+                                        <td class="p-1 text-right">Tsh ${((item.quantity * item.sale_price) - item.discount).toFixed(2)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                            <tfoot class="bg-gray-50">
+                                <tr>
+                                    <td colspan="4" class="p-1 text-right font-semibold">Total Discount:</td>
+                                    <td class="p-1 text-right">Tsh ${parseFloat(Sales.total_discount).toFixed(2)}</td>
+                                </tr>
+                                <tr class="font-bold">
+                                    <td colspan="4" class="p-1 text-right">Total Amount:</td>
+                                    <td class="p-1 text-right">Tsh ${parseFloat(Sales.total_amount).toFixed(2)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="grid grid-cols-2 text-xs mt-2">
+                            <div class="border p-2">
+                                <h3 class="font-semibold mb-1">Payment Info</h3>
+                                <p>Status: ${Sales.dept > 0 ? 'Partial Payment' : (Sales.paid > 0 ? 'Paid' : 'Unpaid')}</p>
+                                <p>Paid: Tsh ${parseFloat(Sales.paid).toFixed(2)}</p>
+                                <p>Due: Tsh ${parseFloat(Sales.dept).toFixed(2)}</p>
+                            </div>
+                            <div class="border p-2">
+                                <h3 class="font-semibold mb-1">Terms & Conditions</h3>
+                                <p>1. Payment due within 30 days.</p>
+                                <p>2. Goods remain property of seller until paid.</p>
+                                <p>3. Include invoice number with payment.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-2 text-center text-xs text-gray-500">
+                            <p>Thank you for your business!</p>
+                        </div>
+
+                        <div class="mt-2 flex justify-center hidegenerateEFDReceipt">
+                            <button onclick="generateEFDReceipt('${Sales.id}')" class="px-3 py-1 bg-blue-600 text-white rounded text-xs">
+                                Generate EFD Receipt
+                            </button>
+                        </div>
+                    `;
+
+                        // Update the print_Invoice div with the invoice content
+                        document.getElementById('print_Invoice').innerHTML = invoiceHTML;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('print_Invoice').innerHTML = '<div class="text-red-500 text-xs">Error loading invoice data</div>';
+                });
+        }
+
+        function printInvoice() {
+            const printContent = document.getElementById('print_Invoice').innerHTML;
+
+            const printDocument = `
+            <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Sales Invoice</title>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>
+                        body { font-family: Arial, sans-serif; font-size: 12px; }
+                        table { width: 100%; border-collapse: collapse; }
+                        th, td { border: 1px solid #ddd; padding: 4px; }
+                        th { background: #f8f8f8; }
+                        .text-right { text-align: right; }
+                        .text-center { text-align: center; }
+                        @media print {
+                        .hidegenerateEFDReceipt {
+                            display: none !important;
+                        }
+                    }
+                    </style>
+                </head>
+                <body>
+                    ${printContent.replace(/<button[^>]*>.*?<\/button>/g, '')}
+                </body>
+            </html>`;
+
+            const printFrame = document.createElement('iframe');
+            printFrame.style.position = 'absolute';
+            printFrame.style.width = '0px';
+            printFrame.style.height = '0px';
+            document.body.appendChild(printFrame);
+
+            const doc = printFrame.contentWindow.document;
+            doc.open();
+            doc.write(printDocument);
+            doc.close();
+
+            printFrame.contentWindow.print();
+            document.body.removeChild(printFrame);
+        }
+
+        function generateEFDReceipt(saleID) {
+            console.log(saleID);
+            let efdModal = document.getElementById('efd_receipt');
+            if (!efdModal) {
+                efdModal = document.createElement('div');
+                efdModal.id = 'efd_receipt';
+                efdModal.className = 'fixed inset-0 flex items-center justify-center hidden';
+                efdModal.innerHTML = `
+            <div class="bg-white p-3 w-80 rounded shadow border-black border">
+                <div class="flex justify-between border-b-2 border-gray-400 pb-2">
+                    <h3 class="text-lg font-semibold">EFD Receipt</h3>
+                    <button onclick="closeEFDReceipt()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="efd_content" class="p-2 text-sm text-center">
+                    <div class="animate-spin h-10 w-10 border-b-2 border-blue-800 mx-auto"></div>
+                </div>
+                <button onclick="printEFDReceipt()" class="w-full mt-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Print
+                </button>
+            </div>
+        `;
+                document.body.appendChild(efdModal);
+            }
+            efdModal.classList.remove('hidden');
+
+            fetch(`/getSales/${saleID}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status !== 'success') {
+                        return document.getElementById('efd_content').innerHTML = '<div class="text-red-500">Error loading sales data</div>';
+                    }
+                    const sale = data.data;
+                    const discountDetails = calculateDiscountPercentage(sale);
+                    const efdContent = `
+                <div class="font-mono text-xs">
+                    <div class="text-center font-bold">YOUR COMPANY NAME</div>
+                    <div class="text-center">123 Business St, City</div>
+                    <div class="text-center">TIN: 123-456-789 | VRN: V12345678</div>
+                    <div class="text-center border-t-2 border-gray-400 border-dashed mt-2 pt-1">
+                        <div>Receipt No: ${sale.receipt_number}</div>
+                        <div>${new Date().toLocaleString()}</div>
+                        <div>EFD: ${sale.efd_number} | Z No: ${sale.z_number}</div>
+                    </div>
+                    <table class="w-full mt-2">
+                        <thead class="border-b-2 border-black border-dashed">
+                            <tr><th class="text-left">Item</th><th class="text-right">Qty</th><th class="text-right">Amt</th></tr>
+                        </thead>
+                        <tbody>
+                            ${sale.sale_items.map(item => `
+                                <tr>
+                                    <td>${item.item.name.substring(0, 14)}</td>
+                                    <td class="text-right">${item.quantity}</td>
+                                    <td class="text-right">${((item.quantity * item.sale_price) - item.discount).toFixed(2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="border-t-2 border-gray-400 border-dashed mt-2 pt-1 text-right">
+                        <div>Sub: TSH ${(parseFloat(sale.total_amount) + parseFloat(sale.total_discount)).toFixed(2)}</div>
+                        <div>Disc(${discountDetails.discountPercentage.toFixed(2)}%): TSH ${parseFloat(sale.total_discount).toFixed(2)}</div>
+                        <div class="font-bold">Total: TSH ${parseFloat(sale.total_amount).toFixed(2)}</div>
+                    </div>
+                    <div class="border-t-2 border-gray-400 border-dashed mt-2 pt-1 text-right">
+                        <div>Cash: TSH ${parseFloat(sale.paid).toFixed(2)}</div>
+                        ${sale.dept > 0 ? `<div>Debt: TSH ${parseFloat(sale.dept).toFixed(2)}</div>` : ''}
+                    </div>
+                    <div class="text-center mt-2">
+                        <div>Customer: ${sale.customer?.name || 'General Customer'}</div>
+                        <div>Ref: ${sale.reference_no}</div>
+                        <div class="font-bold mt-1">THANK YOU!</div>
+                        <div class="text-xs">*Item Quote Receipt*</div>
+                    </div>
+                    <div class="mt-2 flex justify-center"><svg id="barcode"></svg></div>
+                </div>
+            `;
+                    document.getElementById('efd_content').innerHTML = efdContent;
+                    generateBarcode(sale.barcode_text || sale.reference_no);
+                })
+                .catch(() => {
+                    document.getElementById('efd_content').innerHTML = '<div class="text-red-500">Error generating EFD receipt</div>';
+                });
+        }
+
+        // Function to generate barcode
+        function generateBarcode(text) {
+            const script = document.createElement('script');
+            script.src = "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js";
+            script.onload = function() {
+                JsBarcode("#barcode", text, {
+                    format: "CODE128",
+                    width: 1.5,
+                    height: 30,
+                    displayValue: false
+                });
+            };
+            document.head.appendChild(script);
+        }
+
+        function calculateDiscountPercentage(sale) {
+            const totalBeforeDiscount = parseFloat(sale.total_amount) + parseFloat(sale.total_discount);
+            const discountPercentage = (sale.total_discount / totalBeforeDiscount) * 100;
+
+            return {
+                totalBeforeDiscount,
+                discountPercentage: isNaN(discountPercentage) ? 0 : discountPercentage
+            };
+        }
+
+        // Function to print the EFD receipt
+        function printEFDReceipt() {
+            const printContent = document.getElementById('efd_content').innerHTML;
+
+            // Create a hidden iframe
+            const printIframe = document.createElement('iframe');
+            printIframe.style.position = 'absolute';
+            printIframe.style.width = '0';
+            printIframe.style.height = '0';
+            printIframe.style.left = '-9999px';
+            document.body.appendChild(printIframe);
+
+            // Write the content to the iframe
+            const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>EFD Receipt</title>
+            <style>
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .receipt-container {
+                    width: 80mm;
+                    font-family: monospace;
+                    padding: 10px;
+                    border: 1px dashed #ccc;
+                    background-color: white;
+                }
+                @media print {
+                    @page {
+                        size: 80mm auto;
+                        margin: 0;
+                    }
+                    html, body {
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .receipt-container {
+                        border: none;
+                        width: 100%;
+                        max-width: 80mm;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="receipt-container">
+                ${printContent}
+            </div>
+        </body>
+        </html>
+    `);
+            iframeDoc.close();
+
+            // Wait for iframe to fully load before printing
+            printIframe.onload = function() {
+                try {
+                    // Focus the iframe for better printing experience
+                    printIframe.contentWindow.focus();
+
+                    // Print the iframe
+                    printIframe.contentWindow.print();
+
+                    // Remove the iframe after printing (use setTimeout to ensure print dialog has time to appear)
+                    setTimeout(function() {
+                        document.body.removeChild(printIframe);
+                    }, 1000);
+                } catch (e) {
+                    console.error('Printing failed:', e);
+                    document.body.removeChild(printIframe);
+                }
+            };
+        }
+
+        // Function to reattach event handlers after printing
+        function attachEventHandlers() {
+            // Re-initialize form validation
+            $("#sales_form").validate({
+                // ... ( validation code)
+            });
+
+            // Add other event handlers here
+            document.querySelector('#efd_receipt button').onclick = closeEFDReceipt;
+            document.querySelector('.flex.justify-center.mt-4 button').onclick = printEFDReceipt;
+        }
+
+        function show_purchasePREVIEW() {
+            const purchaseId = event.target.closest('button').dataset.id;
+
+            // Show the modal
+            document.getElementById('purchase_Modal').classList.remove('hidden');
+            document.getElementById('print_Purchase_Invoice').innerHTML = '<div class="flex justify-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div></div>';
+
+            // Fetch purchase details
+            fetch(`/getPurchase/${purchaseId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const purchase = data.data;
+
+                        // Check if supplier exists, use empty object if null to avoid errors
+                        const supplier = purchase.supplier || {};
+
+                        // Format date
+                        const purchaseDate = new Date(purchase.purchase_date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+
+                        // Calculate subtotal (before discount)
+                        const subtotal = parseFloat(purchase.total_amount) + parseFloat(purchase.total_discount);
+
+                        // Create invoice HTML with improved layout
+                        const invoiceHTML = `
+                <div class="p-4 bg-white">
+                    <!-- Header Section -->
+                    <div class="border-b border-gray-300 pb-3 mb-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h1 class="text-lg font-bold text-gray-800">PURCHASE INVOICE</h1>
+                                <p class="text-xs text-gray-600 mt-1">Reference: ${purchase.reference_no}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-base font-semibold text-gray-800">YOUR COMPANY NAME</div>
+                                <p class="text-xs text-gray-600">123 Business Street, City</p>
+                                <p class="text-xs text-gray-600">Phone: +255 123 456 789</p>
+                                <p class="text-xs text-gray-600">Email: info@yourcompany.com</p>
+                                <p class="text-xs text-gray-600">TIN: xxx-xxx-xxx</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Section -->
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <!-- Supplier Information -->
+                        <div class="bg-gray-50 p-2 rounded">
+                            <h2 class="font-semibold text-xs text-gray-700 border-b border-gray-300 pb-1 mb-1">SUPPLIER INFORMATION</h2>
+                            <div class="text-xs text-gray-700">
+                                ${supplier.name ? `<p class="font-medium">${supplier.name}</p>` : '<p class="italic text-gray-500">No supplier specified</p>'}
+                                ${supplier.company_name ? `<p>${supplier.company_name}</p>` : ''}
+                                ${supplier.address ? `<p>${supplier.address}</p>` : ''}
+                                ${supplier.contact_person ? `<p>Contact: ${supplier.contact_person}</p>` : ''}
+                                ${supplier.phone_number ? `<p>Phone: ${supplier.phone_number}</p>` : ''}
+                                ${supplier.email ? `<p>Email: ${supplier.email}</p>` : ''}
+                                ${supplier.vat_number ? `<p>VAT: ${supplier.vat_number}</p>` : ''}
+                                ${supplier.tin_number ? `<p>TIN: ${supplier.tin_number}</p>` : ''}
+                            </div>
+                        </div>
+                        
+                        <!-- Purchase Details -->
+                        <div class="bg-gray-50 p-2 rounded">
+                            <h2 class="font-semibold text-xs text-gray-700 border-b border-gray-300 pb-1 mb-1">PURCHASE DETAILS</h2>
+                            <div class="grid grid-cols-2 gap-1 text-xs text-gray-700">
+                                <div class="font-medium">Date:</div>
+                                <div>${purchaseDate}</div>
+                                
+                                <div class="font-medium">Status:</div>
+                                <div><span class="px-1 py-0.5 rounded text-xs ${
+                                    purchase.status === 'Confirmed' ? 'bg-green-100 text-green-800' : 
+                                    purchase.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
+                                    'bg-gray-100 text-gray-800'
+                                }">${purchase.status}</span></div>
+                                
+                                <div class="font-medium">Payment Status:</div>
+                                <div><span class="px-1 py-0.5 rounded text-xs ${
+                                    purchase.dept > 0 ? 'bg-yellow-100 text-yellow-800' : 
+                                    (purchase.paid > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')
+                                }">${purchase.dept > 0 ? 'Partial' : (purchase.paid > 0 ? 'Paid' : 'Unpaid')}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Items Table -->
+                    <div class="mb-3">
+                        <h2 class="font-semibold text-xs text-gray-700 mb-1">PURCHASED ITEMS</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-200">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="py-1 px-1 border-b text-left text-xs font-medium text-gray-600 uppercase tracking-wider">#</th>
+                                        <th class="py-1 px-1 border-b text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Item Description</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Qty</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Unit</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Disc</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Exp Date</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${purchase.purchase_items.map((item, index) => `
+                                        <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs">${index + 1}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs">
+                                                <div class="font-medium">${item.item ? item.item.name : 'Unknown Item'}</div>
+                                                <div class="text-xs text-gray-500">SKU: ${item.item ? item.item.sku : 'N/A'}</div>
+                                                ${item.item && item.item.description ? `<div class="text-xs text-gray-500">${item.item.description}</div>` : ''}
+                                            </td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">${item.quantity}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.purchase_price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.discount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">${item.expire_date ? new Date(item.expire_date).toLocaleDateString() : '-'}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right font-medium">Tsh ${((item.quantity * item.purchase_price) - item.discount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary Section -->
+                    <div class="flex justify-end mb-3">
+                        <div class="w-1/2 bg-gray-50 rounded p-2">
+                            <div class="flex justify-between border-b border-gray-200 py-1">
+                                <div class="text-xs text-gray-600">Subtotal:</div>
+                                <div class="text-xs font-medium">Tsh ${subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-200 py-1">
+                                <div class="text-xs text-gray-600">Discount:</div>
+                                <div class="text-xs font-medium">Tsh ${parseFloat(purchase.total_discount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-200 py-1">
+                                <div class="text-xs text-gray-600">Total Amount:</div>
+                                <div class="text-xs font-medium">Tsh ${parseFloat(purchase.total_amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-200 py-1">
+                                <div class="text-xs text-gray-600">Paid Amount:</div>
+                                <div class="text-xs font-medium">Tsh ${parseFloat(purchase.paid).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <div class="text-xs font-semibold">Outstanding Balance:</div>
+                                <div class="text-xs font-bold ${parseFloat(purchase.dept) > 0 ? 'text-red-600' : 'text-green-600'}">
+                                    Tsh ${parseFloat(purchase.dept).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer Section -->
+                    <div class="border-t border-gray-300 pt-2 mt-2 text-center text-gray-600 text-xs">
+                        <p>This is a computer generated invoice and does not require a signature.</p>
+                        <p>For any queries regarding this invoice, please contact our accounts department.</p>
+                        <p class="mt-1 text-xs">Purchase ID: ${purchase.id} | Generated on: ${new Date().toLocaleString()}</p>
+                    </div>
+                    
+                    <!-- Print Button -->
+                    <div class="mt-3 flex justify-end no_print">
+                        <button onclick="print_PurchaseInvoice()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-xs">
+                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                            </svg>
+                            Print Invoice
+                        </button>
+                    </div>
+                </div>
+                `;
+
+                        // Update the print_Purchase_Invoice div with the invoice content
+                        document.getElementById('print_Purchase_Invoice').innerHTML = invoiceHTML;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('print_Purchase_Invoice').innerHTML = '<div class="text-red-500">Error loading invoice data</div>';
+                });
+        }
+
+
+        // Function to print the purchase invoice - preserves exact preview style
+        function print_PurchaseInvoice() {
+            const printContent = document.getElementById('print_Purchase_Invoice').innerHTML;
+
+            // Create a hidden iframe for printing
+            const printIframe = document.createElement('iframe');
+            printIframe.style.position = 'absolute';
+            printIframe.style.width = '0';
+            printIframe.style.height = '0';
+            printIframe.style.left = '-9999px';
+            document.body.appendChild(printIframe);
+
+            // Write the content to the iframe with styles matching preview exactly
+            const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Purchase Invoice</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Include Tailwind CSS - same as in the main document -->
+            <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+            <style>
+                @page {
+                    margin: 10mm;
+                }
+                
+                /* Remove shadows for printing */
+                @media print {
+                    .shadow, .shadow-md, .shadow-lg, .shadow-xl {
+                        box-shadow: none !important;
+                    }
+
+                    .no_print {
+                        display: none !important;
+                    }
+                    
+                    body {
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                    }
+                }
+            </style>
+        </head>
+        <body class="bg-white">
+            ${printContent}
+        </body>
+        </html>
+    `);
+            iframeDoc.close();
+
+            // Wait for iframe to fully load before printing
+            printIframe.onload = function() {
+                try {
+                    // Focus the iframe for better printing experience
+                    printIframe.contentWindow.focus();
+
+                    // Print the iframe
+                    printIframe.contentWindow.print();
+
+                    // Remove the iframe after printing (use setTimeout to ensure print dialog has time to appear)
+                    setTimeout(function() {
+                        document.body.removeChild(printIframe);
+                    }, 1000);
+                } catch (e) {
+                    console.error('Printing failed:', e);
+                    document.body.removeChild(printIframe);
+                }
+            };
+        }
 
 
 
@@ -3592,8 +4411,22 @@
 
 
 
+        function close_purchase_Modal() {
+            document.getElementById('purchase_Modal').classList.add('hidden');
+            document.getElementById('print_Invoice').innerHTML = '';
+        }
 
 
+        function close_Sales_Modal() {
+            document.getElementById('Sales_Modal').classList.add('hidden');
+            document.getElementById('print_Invoice').innerHTML = '';
+            document.getElementById('efd_receipt').classList.add('hidden');
+        }
+
+        // Function to close EFD receipt modal
+        function closeEFDReceipt() {
+            document.getElementById('efd_receipt').classList.add('hidden');
+        }
 
         function show_add_sales_modal() {
             let dialog = document.getElementById('add_sales_modal');
@@ -3812,13 +4645,17 @@
         function formatDate(dateString) {
             if (!dateString) return '';
 
-            try {
-                const date = new Date(dateString);
-                return date.toISOString().split('T')[0]; // Returns only YYYY-MM-DD part
-            } catch (error) {
-                console.error('Error formatting date:', error);
+            // Try to parse the date string
+            const date = new Date(dateString);
+
+            // Check if the date is valid
+            if (isNaN(date.getTime())) {
+                console.warn('Invalid date:', dateString);
                 return '';
             }
+
+            // Format as YYYY-MM-DD for input[type="date"]
+            return date.toISOString().split('T')[0];
         }
 
         // Unified TableRowManager class for all modals
@@ -3872,24 +4709,22 @@
 
             // Add row for edit modals
             addRow_edit(button) {
-                // Determine which modal is active
-                const isPurchaseModal = button ?
-                    $(button).closest('#editPurchaseModal').length > 0 :
-                    $('#editPurchaseModal:visible').length > 0;
-
-                // Create the appropriate template based on modal context
-                let newRow;
-                if (isPurchaseModal) {
-                    newRow = this.getEditRowTemplate('purchase');
+                // Determine which edit modal container to target based on the instance type
+                let containerSelector;
+                if (this.modalType === 'sales') {
+                    containerSelector = '#sales_edit_items_container';
                 } else {
-                    newRow = this.getEditRowTemplate('sales');
+                    containerSelector = '#purchase_edit_items_container';
                 }
+
+                // Create the appropriate template
+                const newRow = this.getEditRowTemplate();
 
                 // Add the row to the proper container
                 if (button) {
                     $(button).closest('tr').after(newRow);
                 } else {
-                    $('#edit_items_container').append(newRow);
+                    $(containerSelector).append(newRow);
                 }
 
                 // Update totals
@@ -3898,12 +4733,18 @@
 
             // Delete row for edit modals
             delRow_edit(button) {
-                const rowCount = $('#edit_items_container tr').length;
-                const isPurchaseModal = $(button).closest('#editPurchaseModal').length > 0;
+                let containerSelector;
+                if (this.modalType === 'sales') {
+                    containerSelector = '#sales_edit_items_container';
+                } else {
+                    containerSelector = '#purchase_edit_items_container';
+                }
+
+                const rowCount = $(containerSelector + ' tr').length;
 
                 if (rowCount > 1) {
                     $(button).closest('tr').remove();
-                    this.updateEditTotals(isPurchaseModal);
+                    this.updateEditTotals();
                 } else {
                     showFeedbackModal('error', 'Error', 'Cannot delete the last row');
                 }
@@ -3918,12 +4759,12 @@
                             <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
                         </td>
                         <td class="p-1 tbl-id">
-                            <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+                            <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-14 px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
                         </td>
                         <td class="p-1">
                             <div class="relative">
                                 <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                                <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
                                 <input type="hidden" class="item_id" name="item_id" />
                             </div>
                         </td>
@@ -3931,7 +4772,7 @@
                             <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
                         </td>
                         <td class="hidden md:table-cell p-1">
-                            <input type="date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
+                            <input type="date" id="date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
                         </td>
                         <td class="p-1">
                             <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
@@ -3939,7 +4780,7 @@
                         <td class="p-1">
                             <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                         </td>
-                        <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
+                        <td id="ntl" class="ntl text-center p-1"><span class="">TSh</span>0.00</td>
                         <td class="p-1">
                             <div class="flex justify-center gap-2">
                                 <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
@@ -3957,7 +4798,7 @@
                             </div>
                         </td>
                     </tr>
-                    `;
+                `;
                 } else { // purchase
                     return `
                     <tr class="border-b border-gray-300">
@@ -4004,113 +4845,125 @@
                             </div>
                         </td>
                     </tr>
-                    `;
+                `;
                 }
             }
 
-            // Fixed getEditRowTemplate method for TableRowManager class
+            // Template for edit rows
             getEditRowTemplate() {
                 if (this.modalType === 'sales') {
                     return `
-<tr class="border-b border-gray-300">
-    <td class="p-1">
-        <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-    </td>
-    <td class="p-1">
-        <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-    </td>
-    <td class="p-1">
-        <div class="relative">
-            <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-            <input type="hidden" name="item_ids[]" value="">
-        </div>
-    </td>
-    <td class="p-1">
-        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-    </td>
-    <td class="p-1">
-        <input value="" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-    </td>
-    <td class="p-1">
-        <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-    </td>
-    <td class="edit_net_price text-center p-1">TSh 0.00</td>
-    <td class="p-1">
-        <div class="flex justify-center gap-2">
-            <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-            </button>
-            <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-            </button>
-        </div>
-    </td>
-</tr>
-`;
+                        <tr class="border-b border-gray-300">
+                            <td class="p-1">
+                                <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+                            </td>
+                            <td class="p-1">
+                                <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+                            </td>
+                            <td class="p-1">
+                                <div class="relative">
+                                    <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                    <input type="hidden" name="item_ids[]" value="">
+                                </div>
+                            </td>
+                            <td class="p-1">
+                                <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+                            </td>
+                            <td class="p-1">
+                                <input value="" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+                            </td>
+                            <td class="p-1">
+                                <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+                            </td>
+                            <td class="edit_net_price text-center p-1">TSh 0.00</td>
+                            <td class="p-1">
+                                <div class="flex justify-center gap-2">
+                                    <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
                 } else { // purchase
                     return `
-<tr class="border-b border-gray-300">
-    <td class="p-1">
-        <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-    </td>
-    <td class="p-1">
-        <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-    </td>
-    <td class="p-1">
-        <div class="relative">
-            <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-            <input type="hidden" name="item_ids[]" value="">
-        </div>
-    </td>
-    <td class="p-1">
-        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-    </td>
-    <td class="p-1">
-        <input type="date" value="" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
-    </td>
-    <td class="p-1">
-        <input value="" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-    </td>
-    <td class="p-1">
-        <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-    </td>
-    <td class="edit_net_price text-center p-1">TSh 0.00</td>
-    <td class="p-1">
-        <div class="flex justify-center gap-2">
-            <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-            </button>
-            <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-            </button>
-        </div>
-    </td>
-</tr>
-`;
+                        <tr class="border-b border-gray-300">
+                            <td class="p-1">
+                                <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+                            </td>
+                            <td class="p-1">
+                                <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+                            </td>
+                            <td class="p-1">
+                                <div class="relative">
+                                    <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                    <input type="hidden" name="item_ids[]" value="">
+                                </div>
+                            </td>
+                            <td class="p-1">
+                                <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+                            </td>
+                            <td class="p-1">
+                                <input type="date" value="" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
+                            </td>
+                            <td class="p-1">
+                                <input value="" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+                            </td>
+                            <td class="p-1">
+                                <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+                            </td>
+                            <td class="edit_net_price text-center p-1">TSh 0.00</td>
+                            <td class="p-1">
+                                <div class="flex justify-center gap-2">
+                                    <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
                 }
             }
 
             // Update totals for edit modal
             updateEditTotals() {
-                // Determine which modal is active
-                const isPurchaseModal = $('#editPurchaseModal:visible').length > 0;
+                // Determine which modal and elements to use based on instance type
+                let totalSelector, debtSelector, paidSelector, itemsContainerSelector;
+
+                if (this.modalType === 'sales') {
+                    totalSelector = '#sales_edit_total';
+                    debtSelector = '#sales_edit_debt';
+                    paidSelector = '#sales_edit_paid';
+                    itemsContainerSelector = '#sales_edit_items_container';
+                } else {
+                    totalSelector = '#purchase_edit_total';
+                    debtSelector = '#purchase_edit_debt';
+                    paidSelector = '#purchase_edit_paid';
+                    itemsContainerSelector = '#purchase_edit_items_container';
+                }
 
                 let total = 0;
-                $('#edit_items_container tr').each(function() {
+                $(itemsContainerSelector + ' tr').each(function() {
                     const quantity = parseFloat($(this).find('.edit_quantity').val()) || 0;
                     const price = parseFloat($(this).find('.edit_unit_price').val()) || 0;
                     const discount = parseFloat($(this).find('.edit_discount').val()) || 0;
@@ -4120,14 +4973,11 @@
                     total += netPrice;
                 });
 
-                const paid = parseFloat($('#edit_paid').val()) || 0;
+                const paid = parseFloat($(paidSelector).val()) || 0;
                 const debt = total - paid;
 
-                $('#edit_total').text(`${total.toFixed(2)} Tzs`);
-                $('#edit_debt').text(`${debt.toFixed(2)} Tzs`);
-
-                // Log which modal is active for debugging
-                console.log('Update totals for:', isPurchaseModal ? 'Purchase Modal' : 'Sales Modal');
+                $(totalSelector).text(`${total.toFixed(2)} Tzs`);
+                $(debtSelector).text(`${debt.toFixed(2)} Tzs`);
             }
 
             // Populate edit item row with item data
@@ -4135,102 +4985,100 @@
                 // Calculate current stock if item exists
                 const currentStock = item?.item?.current_stock ?? 0;
 
-                // Check which modal is currently active
-                const isPurchaseModal = $('#editPurchaseModal:visible').length > 0;
-
-                if (isPurchaseModal || this.modalType === 'purchase') {
+                if (this.modalType === 'purchase') {
                     return `
-        <tr class="border-b border-gray-300">
-            <td class="p-1">
-                <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-            </td>
-            <td class="p-1">
-                <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-            </td>
-            <td class="p-1">
-                <div class="relative">
-                    <input value="${item?.item?.name || ''}" id="edit_purchase_item_name" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                    <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
-                </div>
-            </td>
-            <td class="p-1">
-                <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
-            </td>
-            <td class="p-1">
-                <input type="date" value="${item?.expire_date || ''}" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
-            </td>
-            <td class="p-1">
-                <input value="${item?.purchase_price || ''}" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-            </td>
-            <td class="p-1">
-                <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-            </td>
-            <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.purchase_price || 0, item?.discount || 0)}</td>
-            <td class="p-1">
-                <div class="flex justify-center gap-2">
-                    <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                        </svg>
-                    </button>
-                    <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                        </svg>
-                    </button>
-                </div>
-            </td>
-        </tr>
-        `;
+                <tr class="border-b border-gray-300">
+                    <td class="p-1">
+                        <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+                    </td>
+                    <td class="p-1">
+                        <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+                    </td>
+                    <td class="p-1">
+                        <div class="relative">
+                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                            <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
+                        </div>
+                    </td>
+                    <td class="p-1">
+                        <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
+                    </td>
+                    <td class="p-1">
+                        <input type="date" value="${item?.expire_date || ''}" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
+                    </td>
+                    <td class="p-1">
+                        <input value="${item?.purchase_price || ''}" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+                    </td>
+                    <td class="p-1">
+                        <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+                    </td>
+                    <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.purchase_price || 0, item?.discount || 0)}</td>
+                    <td class="p-1">
+                        <div class="flex justify-center gap-2">
+                            <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                </svg>
+                            </button>
+                            <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
                 } else { // sales
                     return `
-        <tr class="border-b border-gray-300">
-            <td class="p-1">
-                <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-            </td>
-            <td class="p-1">
-                <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-            </td>
-            <td class="p-1">
-                <div class="relative">
-                    <input value="${item?.item?.name || ''}" id="edit_sale_item_name" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                    <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
-                </div>
-            </td>
-            <td class="p-1">
-                <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
-            </td>
-            <td class="p-1">
-                <input value="${item?.sale_price || ''}" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-            </td>
-            <td class="p-1">
-                <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-            </td>
-            <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.sale_price || 0, item?.discount || 0)}</td>
-            <td class="p-1">
-                <div class="flex justify-center gap-2">
-                    <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                        </svg>
-                    </button>
-                    <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                        </svg>
-                    </button>
-                </div>
-            </td>
-        </tr>
-        `;
+                <tr class="border-b border-gray-300">
+                    <td class="p-1">
+                        <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+                    </td>
+                    <td class="p-1">
+                        <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+                    </td>
+                    <td class="p-1">
+                        <div class="relative">
+                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                            <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
+                        </div>
+                    </td>
+                    <td class="p-1">
+                        <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
+                    </td>
+                    <td class="p-1">
+                        <input value="${item?.sale_price || ''}" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+                    </td>
+                    <td class="p-1">
+                        <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+                    </td>
+                    <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.sale_price || 0, item?.discount || 0)}</td>
+                    <td class="p-1">
+                        <div class="flex justify-center gap-2">
+                            <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                </svg>
+                            </button>
+                            <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
                 }
             }
+
 
             // Helper function to calculate net price for a row
             calculateNetPrice(quantity, price, discount) {
@@ -4245,7 +5093,6 @@
                 }
             }
 
-            // Function to populate edit form with data
             populateEditForm(data) {
                 if (this.modalType === 'sales') {
                     let formatted_date = '';
@@ -4254,20 +5101,21 @@
                         formatted_date = formatDate(data.sale_date);
                     }
 
-                    $('#edit_Sales_id').val(data.id);
-                    $('#edit_date').val(formatted_date);
-                    $('#edit_Customer').val(data.customer && data.customer.name ? data.customer.name : '');
-                    $('#edit_Customer_id').val(data.customer && data.customer.id ? data.customer.id : '');
-                    $('#edit_description').val(data.description);
-                    $('#edit_paid').val(data.paid);
+                    // Update form fields
+                    $('#sales_edit_Sales_id').val(data.id);
+                    $('#sales_edit_date').val(formatted_date);
+                    $('#sales_edit_Customer').val(data.customer && data.customer.name ? data.customer.name : '');
+                    $('#sales_edit_Customer_id').val(data.customer && data.customer.id ? data.customer.id : '');
+                    $('#sales_edit_description').val(data.description);
+                    $('#sales_edit_paid').val(data.paid);
 
                     // Clear existing items
-                    $('#edit_items_container').empty();
+                    $('#sales_edit_items_container').empty();
 
                     // Add sales items
                     if (data.sale_items && data.sale_items.length > 0) {
                         data.sale_items.forEach(item => {
-                            $('#edit_items_container').append(this.populateEditItemRow(item));
+                            $('#sales_edit_items_container').append(this.populateEditItemRow(item));
                         });
                     } else {
                         // Add an empty row if no items found
@@ -4279,15 +5127,17 @@
                         // Format the date properly for the date input
                         formatted_date = formatDate(data.purchase_date);
                     }
-                    $('#edit_purchase_id').val(data.id);
-                    $('#edit_date').val(formatted_date);
-                    $('#edit_supplier').val(data.supplier && data.supplier.name ? data.supplier.name : '');
-                    $('#edit_supplier_id').val(data.supplier && data.supplier.id ? data.supplier.id : '');
-                    $('#edit_description').val(data.description);
-                    $('#edit_paid').val(data.paid);
+
+                    // Update form fields
+                    $('#purchase_edit_purchase_id').val(data.id);
+                    $('#purchase_edit_date').val(formatted_date);
+                    $('#purchase_edit_supplier').val(data.supplier && data.supplier.name ? data.supplier.name : '');
+                    $('#purchase_edit_supplier_id').val(data.supplier && data.supplier.id ? data.supplier.id : '');
+                    $('#purchase_edit_description').val(data.description);
+                    $('#purchase_edit_paid').val(data.paid);
 
                     // Clear existing items
-                    $('#edit_items_container').empty();
+                    $('#purchase_edit_items_container').empty();
 
                     if (data.purchase_items && data.purchase_items.length > 0) {
                         data.purchase_items.forEach(item => {
@@ -4296,10 +5146,10 @@
                                 const formattedExpireDate = formatDate(item.expire_date);
                                 item.expire_date = formattedExpireDate;
                             }
-                            $('#edit_items_container').append(this.populateEditItemRow(item));
+                            $('#purchase_edit_items_container').append(this.populateEditItemRow(item));
                         });
                     } else {
-                        // Add an empty row if no items found
+                        // Add empty row if no items
                         this.addRow_edit();
                     }
                 }
@@ -4310,9 +5160,17 @@
 
             // Bind events
             bindEvents() {
+                // Use proper context binding for 'this'
+                const self = this;
+
                 // Event listeners for real-time updates in edit modal
-                $(document).on('input', '.edit_quantity, .edit_unit_price, .edit_discount, #edit_paid', () => {
-                    this.updateEditTotals();
+                $(document).on('input', '.edit_quantity, .edit_unit_price, .edit_discount', function() {
+                    self.updateEditTotals();
+                });
+
+                // Special handler for paid field changes
+                $(document).on('input', '#sales_edit_paid, #purchase_edit_paid', function() {
+                    self.updateEditTotals();
                 });
 
                 // Event listeners for real-time updates in regular modal
@@ -4324,11 +5182,12 @@
                     }
                 });
             }
+
         }
 
-        // Create instances for sales and purchase modals
-        const tableManager = new TableRowManager('sales');
-        const purchaseTableManager = new TableRowManager('purchase');
+        // Initialize document ready function to reinitialize managers
+        window.tableManager = new TableRowManager('sales');
+        window.purchaseTableManager = new TableRowManager('purchase');
     </script>
 </body>
 

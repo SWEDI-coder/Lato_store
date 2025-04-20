@@ -11,6 +11,21 @@ use Illuminate\Support\Facades\Validator;
 
 class SalesController extends Controller
 {
+    private function determineInvoiceStatus($totalAmount, $paid, $currentStatus = null)
+    {
+        // Calculate the unpaid amount
+        $unpaidAmount = $totalAmount - $paid;
+
+        // Determine status based on payment
+        if ($unpaidAmount <= 0) {
+            return 'Paid';
+        } elseif ($paid > 0) {
+            return 'Partial paid';
+        } else {
+            return 'Unpaid';
+        }
+    }
+
     public function record_Sale(Request $request)
     {
         try {
@@ -66,7 +81,7 @@ class SalesController extends Controller
                 'total_discount' => 0, // Will be updated later
                 'paid' => $SaleData['paid'],
                 'dept' => $SaleData['dept'],
-                'status' => 'Draft',
+                'status' => 'Unpaid', // Default status, will be updated later
                 'efd_number' => $efd_number,
                 'z_number' => $z_number,
                 'receipt_number' => $receipt_number,
@@ -96,14 +111,16 @@ class SalesController extends Controller
                 $totalDiscount += $itemDiscount;
             }
 
+            $finalAmount = $totalAmount - $totalDiscount;
+
             $sale->update([
-                'total_amount' => $totalAmount - $totalDiscount,
+                'total_amount' => $finalAmount,
                 'total_discount' => $totalDiscount,
-                'dept' => $totalAmount - $totalDiscount - $SaleData['paid']
+                'dept' => $finalAmount - $SaleData['paid']
             ]);
 
-            // Update status based on debt
-            $sale->status = ($sale->dept == 0) ? 'Confirmed' : 'Draft';
+            // Update status based on payment
+            $sale->status = $this->determineInvoiceStatus($finalAmount, $SaleData['paid']);
             $sale->save();
 
             if ($SaleData['paid'] > 0) {
@@ -210,11 +227,15 @@ class SalesController extends Controller
                 $totalDiscount += ($itemData['discounts'] ?? 0);
             }
 
+            $finalAmount = $totalAmount - $totalDiscount;
+
             // Update sale totals
-            $sale->total_amount = $totalAmount;
+            $sale->total_amount = $finalAmount;
             $sale->total_discount = $totalDiscount;
-            $sale->dept = $totalAmount - $totalDiscount - $SaleData['paid'];
-            $sale->status = $sale->dept == 0 ? 'Confirmed' : 'Draft';
+            $sale->dept = $finalAmount - $SaleData['paid'];
+
+            // Update status based on payment
+            $sale->status = $this->determineInvoiceStatus($finalAmount, $SaleData['paid']);
             $sale->save();
 
             // Update or create transaction for the payment

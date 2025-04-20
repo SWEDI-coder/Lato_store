@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('total_discount', 8, 2)->nullable();
             $table->decimal('dept', 8, 2)->nullable();
             $table->decimal('paid', 8, 2)->nullable();
-            $table->enum('status', ['Draft', 'Confirmed', 'Cancelled'])->default('Draft');
+            $table->enum('status', ['Paid', 'Partial paid', 'Unpaid', 'Draft', 'Cancelled', 'Pending'])->default('Unpaid');
 
             $table->string('efd_number')->nullable();
             $table->string('z_number')->nullable();

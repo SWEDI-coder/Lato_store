@@ -12,6 +12,21 @@ use Illuminate\Support\Facades\Validator;
 
 class PurchasesController extends Controller
 {
+    private function determineInvoiceStatus($totalAmount, $paid, $currentStatus = null)
+    {
+        // Calculate the unpaid amount
+        $unpaidAmount = $totalAmount - $paid;
+
+        // Determine status based on payment
+        if ($unpaidAmount <= 0) {
+            return 'Paid';
+        } elseif ($paid > 0) {
+            return 'Partial paid';
+        } else {
+            return 'Unpaid';
+        }
+    }
+
     public function record_Purchases(Request $request)
     {
         try {
@@ -59,7 +74,7 @@ class PurchasesController extends Controller
                 'total_discount' => 0, // Will be updated later
                 'paid' => $purchasesData['paid'],
                 'dept' => $deptAmount,
-                'status' => 'Draft'
+                'status' => 'Unpaid' // Default status, will be updated later
             ]);
 
             $purchase->save();
@@ -86,14 +101,16 @@ class PurchasesController extends Controller
                 $totalDiscount += $itemDiscount;
             }
 
+            $finalAmount = $totalAmount - $totalDiscount;
+
             $purchase->update([
-                'total_amount' => $totalAmount - $totalDiscount,
+                'total_amount' => $finalAmount,
                 'total_discount' => $totalDiscount,
-                'dept' => $totalAmount - $totalDiscount - $purchasesData['paid']
+                'dept' => $finalAmount - $purchasesData['paid']
             ]);
 
-            // Update status based on debt
-            $purchase->status = ($purchase->dept == 0) ? 'Confirmed' : 'Draft';
+            // Update status based on payment
+            $purchase->status = $this->determineInvoiceStatus($finalAmount, $purchasesData['paid']);
             $purchase->save();
 
             if ($purchasesData['paid'] > 0) {
@@ -202,11 +219,15 @@ class PurchasesController extends Controller
                 $totalDiscount += ($itemData['discounts'] ?? 0);
             }
 
+            $finalAmount = $totalAmount - $totalDiscount;
+
             // Update purchase totals
-            $purchase->total_amount = $totalAmount;
+            $purchase->total_amount = $finalAmount;
             $purchase->total_discount = $totalDiscount;
-            $purchase->dept = $totalAmount - $totalDiscount - $purchasesData['paid'];
-            $purchase->status = $purchase->dept == 0 ? 'Confirmed' : 'Draft';
+            $purchase->dept = $finalAmount - $purchasesData['paid'];
+
+            // Update status based on payment
+            $purchase->status = $this->determineInvoiceStatus($finalAmount, $purchasesData['paid']);
             $purchase->save();
 
             // Update or create transaction for the payment
