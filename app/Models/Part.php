@@ -13,6 +13,7 @@ class Part extends Model
         'company_name',
         'contact_person',
         'type',
+        'gender',
         'address',
         'vat_number',
         'tin_number',

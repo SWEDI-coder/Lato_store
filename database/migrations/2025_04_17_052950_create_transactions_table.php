@@ -23,6 +23,8 @@ return new class extends Migration
             $table->decimal('payment_amount', 10, 2)->nullable();
             $table->string('journal_memo')->nullable();
             $table->date('transaction_date')->nullable();
+            $table->decimal('dept_paid', 10, 2)->nullable();
+            $table->decimal('dept_remain', 10, 2)->nullable();
             $table->timestamps();
         });
     }

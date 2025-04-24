@@ -7,6 +7,7 @@ use App\Models\SaleItem;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class SalesController extends Controller
@@ -112,29 +113,37 @@ class SalesController extends Controller
             }
 
             $finalAmount = $totalAmount - $totalDiscount;
+            $deptAmount = $finalAmount - $SaleData['paid'];
 
             $sale->update([
                 'total_amount' => $finalAmount,
                 'total_discount' => $totalDiscount,
-                'dept' => $finalAmount - $SaleData['paid']
+                'dept' => $deptAmount
             ]);
 
             // Update status based on payment
             $sale->status = $this->determineInvoiceStatus($finalAmount, $SaleData['paid']);
             $sale->save();
 
-            if ($SaleData['paid'] > 0) {
+            // Create transaction record with all required fields
+            if ($SaleData['paid'] >= 0) {
+                $description = isset($SaleData['description']) && !empty($SaleData['description'])
+                    ? $SaleData['description']
+                    : 'Initial sale payment';
+
                 $transaction = new Transaction([
                     'reference_no' => $reference_no,
                     'sale_id' => $sale->id,
-                    'part_id' => $SaleData['part_id'], // Can be null
+                    'part_id' => $SaleData['part_id'],
                     'type' => 'Receipt',
                     'method' => 'Cash',
                     'payment_amount' => $SaleData['paid'],
+                    'dept_paid' => $SaleData['paid'],
+                    'dept_remain' => $deptAmount,
                     'transaction_date' => $SaleData['Sales_date'],
-                    'journal_memo' => $SaleData['description'] ?? 'Initial sale Payment'
+                    'journal_memo' => $description,
+                    'person_name' => null // Get customer name if needed
                 ]);
-
                 $transaction->save();
             }
 
@@ -142,11 +151,14 @@ class SalesController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'sale recorded successfully',
-                'data' => $sale->load('saleItems.item')
+                'message' => 'Sale recorded successfully',
+                'data' => $sale->load('saleItems.item', 'transactions')
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
+            // Debug line - to be removed in production
+            Log::error('Sale transaction error: ' . $e->getMessage());
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to record sale: ' . $e->getMessage()

@@ -18,16 +18,12 @@ class Transaction extends Model
         'type',
         'method',
         'payment_amount',
+        'dept_paid',
+        'dept_remain',
         'journal_memo',
         'transaction_date'
     ];
 
-    protected $casts = [
-        'transaction_date' => 'date',
-        'payment_amount' => 'decimal:2',
-        'dept_paid' => 'decimal:2',
-        'dept_remain' => 'decimal:2'
-    ];
 
     public function part()
     {

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use App\Models\Transaction;
 use App\Models\PurchaseItem;
-use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class PurchasesController extends Controller
@@ -64,7 +64,6 @@ class PurchasesController extends Controller
             DB::beginTransaction();
 
             $reference_no = 'PUR-' . time() . rand(100, 999);
-            $deptAmount = $purchasesData['part_id'] ? ($purchasesData['total_amount'] - $purchasesData['paid']) : 0;
 
             $purchase = new Purchase([
                 'reference_no' => $reference_no,
@@ -73,7 +72,7 @@ class PurchasesController extends Controller
                 'total_amount' => 0, // Will be updated later
                 'total_discount' => 0, // Will be updated later
                 'paid' => $purchasesData['paid'],
-                'dept' => $deptAmount,
+                'dept' => $purchasesData['dept'],
                 'status' => 'Unpaid' // Default status, will be updated later
             ]);
 
@@ -102,30 +101,51 @@ class PurchasesController extends Controller
             }
 
             $finalAmount = $totalAmount - $totalDiscount;
+            $deptAmount = $finalAmount - (float)$purchasesData['paid'];
 
             $purchase->update([
                 'total_amount' => $finalAmount,
                 'total_discount' => $totalDiscount,
-                'dept' => $finalAmount - $purchasesData['paid']
+                'dept' => $deptAmount
             ]);
 
             // Update status based on payment
             $purchase->status = $this->determineInvoiceStatus($finalAmount, $purchasesData['paid']);
             $purchase->save();
 
-            if ($purchasesData['paid'] > 0) {
-                $transaction = new Transaction([
-                    'reference_no' => $reference_no,
-                    'purchase_id' => $purchase->id,
-                    'part_id' => $purchasesData['part_id'], // Can be null
-                    'type' => 'Payment',
-                    'method' => 'Cash',
-                    'payment_amount' => $purchasesData['paid'],
-                    'transaction_date' => $purchasesData['purchase_date'],
-                    'journal_memo' => $purchasesData['description'] ?? 'Initial Purchase Payment'
-                ]);
+            // Explicitly check for paid amount to create transaction
+            if (isset($purchasesData['paid']) && is_numeric($purchasesData['paid']) && (float)$purchasesData['paid'] >= 0) {
+                $description = isset($purchasesData['description']) && !empty($purchasesData['description'])
+                    ? $purchasesData['description']
+                    : 'Initial purchase payment';
 
-                $transaction->save();
+                try {
+
+                    $transaction = new Transaction([
+                        'reference_no' => $reference_no,
+                        'purchase_id' => $purchase->id,
+                        'part_id' => $purchasesData['part_id'],
+                        'type' => 'Payment',
+                        'method' => 'Cash',
+                        'payment_amount' => (float)$purchasesData['paid'],
+                        'dept_paid' => (float)$purchasesData['paid'],
+                        'dept_remain' => $deptAmount,
+                        'transaction_date' => $purchasesData['purchase_date'],
+                        'journal_memo' => $description
+                    ]);
+                    $transaction->save();
+                } catch (\Exception $e) {
+                    Log::error('Error creating transaction', [
+                        'message' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    // Continue execution - don't throw the exception
+                }
+            } else {
+                Log::info('No transaction created - zero payment', [
+                    'paid' => $purchasesData['paid'],
+                    'paid_type' => gettype($purchasesData['paid'])
+                ]);
             }
 
             DB::commit();
@@ -137,13 +157,17 @@ class PurchasesController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Failed to record purchase', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to record purchase: ' . $e->getMessage()
             ], 500);
         }
     }
-
     public function update_purchase(Request $request, $purchase_id)
     {
         try {

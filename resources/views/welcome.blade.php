@@ -28,6 +28,52 @@
             color: red;
         }
 
+        /* Add this to your CSS file */
+        .LoadingState {
+            display: inline-block;
+            vertical-align: middle;
+            border-width: 2px;
+            border-style: dashed;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Different sizes for different button sizes */
+        button.sm .LoadingState {
+            width: 12px;
+            height: 12px;
+        }
+
+        button.md .LoadingState,
+        button:not(.sm):not(.lg) .LoadingState {
+            width: 16px;
+            height: 16px;
+        }
+
+        button.lg .LoadingState {
+            width: 20px;
+            height: 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Ensure buttons maintain their size during loading state */
+        button[data-loading="true"] {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            pointer-events: none !important;
+            opacity: 0.8;
+        }
+
         .tab-content {
             display: none;
             animation: fadeIn 0.5s ease-in-out;
@@ -324,6 +370,23 @@
             font-style: italic;
         }
 
+        #transaction_table_container {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 auto;
+            /* center horizontally if using a set width */
+            max-width: 100%;
+            /* prevents overflow beyond viewport */
+            width: 100%;
+            /* makes it full width of parent container */
+            max-height: 350px;
+
+            /* Optional for responsiveness */
+            box-sizing: border-box;
+            padding: 1rem;
+            /* add some spacing inside */
+        }
+
         #print_Invoice,
         #print_Transactio,
         #print_Purchase_Invoice {
@@ -350,7 +413,7 @@
     <nav class="fixed top-0 left-0 right-0 bg-indigo-700 text-white shadow-lg z-10">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
-                <div class="text-xl font-bold navbar-brand animate__animated animate__fadeIn">TabView Dashboard</div>
+                <div class="text-xl font-bold navbar-brand animate__animated animate__fadeIn">[shop name]</div>
                 <div class="hidden md:flex space-x-4 animate__animated animate__fadeIn">
                     <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">Home</a>
                     <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">About</a>
@@ -374,7 +437,7 @@
 
     <!-- Main Content with Tabs -->
     <main class="container mx-auto px-4 pt-24 pb-8">
-        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Dashboard Overview</h1>
+        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Work Sheet</h1>
 
         <!-- Tab Navigation -->
         <div class="flex flex-wrap border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-2 animate__animated animate__fadeIn">
@@ -553,7 +616,7 @@
 
                     <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-md">
                         <div class="relative group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-slash-minus scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                            <svg onclick="show_addTransactionModal()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-slash-minus scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
                                 <path d="m1.854 14.854 13-13a.5.5 0 0 0-.708-.708l-13 13a.5.5 0 0 0 .708.708M4 1a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 4 1m5 11a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 9 12" />
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Record</span>
@@ -573,7 +636,7 @@
                 <!-- Filters -->
                 <div class="flex flex-wrap gap-3 mb-1">
                     <div class="flex-1 min-w-[200px]">
-                        <input type="text" id="transactionsearch" placeholder="Search Customer..."
+                        <input type="text" id="transactionsearch" placeholder="Search transaction details..."
                             class="w-full px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <fieldset class="border-2 border-gray-500 rounded-lg px-3 py-0.5">
@@ -588,19 +651,22 @@
                 </div>
 
 
-                <div class="responsive-table">
+                <div class="responsive-table" id="transaction_table_container">
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                <th class="py-3 px-6 text-left">ref.no</th>
-                                <th class="py-3 px-6 text-left">Date</th>
-                                <th class="py-3 px-6 text-left">Supplier</th>
-                                <th class="py-3 px-6 text-left">discount</th>
-                                <th class="py-3 px-6 text-left">total</th>
-                                <th class="py-3 px-6 text-left">paid</th>
-                                <th class="py-3 px-6 text-left">unpaid</th>
-                                <th class="py-3 px-6 text-left">status</th>
-                                <th class="py-3 px-6 text-left">tools</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">ref.no</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">Date</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">name</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">amount</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">type</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">sale paid</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">sale unpaid</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">purchase paid</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">purchase unpaid</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">purchase status</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">sale status</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">tools</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -613,18 +679,70 @@
                 </div>
             </div>
 
-            <!-- Customers Tab Content -->
             <div id="customers" class="tab-content">
-                <h2 class="text-xl font-semibold mb-4">Parties Database</h2>
+                <div class=" flex justify-between">
+                    <h2 class="text-xl font-semibold mb-1">Parties Database</h2>
+                    <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-md">
+                        <div class="relative group">
+                            <svg xmlns="http://www.w3.org/2000/svg" onclick="show_addPartyModal()" width="16" height="16" fill="currentColor" class="bi bi-person-add scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                                <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z" />
+                            </svg>
+                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
+                        </div>
+                        <div class="relative group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
+                            </svg>
+                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="p-1 border-b-2 border-gray-400 mb-2">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <!-- Search Input -->
+                        <div>
+                            <input type="text" id="partDetails_filterTable" placeholder="Search Name/Details"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs">
+                        </div>
+                        <div>
+                            <select id="filterby_status_inTable" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs">
+                                <option value="">Status (All)</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Partial Paid">Partial Paid</option>
+                                <option value="Unpaid">Unpaid</option>
+                                <option value="Draft">Draft</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="filter_type_inTable" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs">
+                                <option value="">Type (All)</option>
+                                <option value="Supplier">Supplier</option>
+                                <option value="Customer">Customer</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="responsive-table">
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                <th class="py-3 px-6 text-left">ID</th>
-                                <th class="py-3 px-6 text-left">Name</th>
-                                <th class="py-3 px-6 text-left">Email</th>
-                                <th class="py-3 px-6 text-left">Phone</th>
-                                <th class="py-3 px-6 text-right">Total Orders</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">KEY</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">TIN</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">NAME</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">EMAIL</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">PHONE NUMBER</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">TYPE</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">AMOUNT</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">PAID</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">DEPT</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">STATUS</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">TOOLS</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -637,7 +755,6 @@
                 </div>
             </div>
 
-            <!-- Inventory Tab Content -->
             <div id="inventory" class="tab-content">
                 <div class="flex justify-between mb-4">
                     <h2 class="text-xl font-semibold">Inventory</h2>
@@ -821,7 +938,7 @@
                         <div class="w-full sm:w-3/4">
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
                                 <label for="Description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="Description" name="Description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                <textarea id="add_sale_description" name="Description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                         </div>
                         <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Record Sale</button>
@@ -833,7 +950,7 @@
                         <div>
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
                                 <label for="date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
-                                <input type="date" id="sale_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <input type="date" id="add_sale_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
 
@@ -863,7 +980,7 @@
                     <!-- Table Container -->
                     <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table id="table1" class="min-w-full text-xs sm:text-sm">
+                            <table id="record_sales_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
                                         <th class="py-2 px-2 text-left font-medium">Stock</th>
@@ -927,20 +1044,20 @@
                                     <tr class="bg-gray-100 border-t-2 border-gray-400">
                                         <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
                                         <td class="p-2">
-                                            <input name="paid" placeholder="0.00 Tzs" id="pay_amount" class="paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                            <input name="paid" placeholder="0.00 Tzs" id="add_sale_paid" class="paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                                         </td>
                                         <td colspan="2" class="p-2">
                                             <div class="flex items-center gap-2">
                                                 <span class="text-xs sm:text-sm font-medium">Dept:</span>
                                                 <div class="text-red-600">
-                                                    <span class="dept text-xs sm:text-sm" id="dept">0.00</span>
+                                                    <span class="dept text-xs sm:text-sm" id="add_sale_debt">0.00</span>
                                                     <span class="text-xs sm:text-sm">Tzs</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td colspan="4" class="p-2 text-right">
                                             <span class="text-xs sm:text-sm font-medium">Total: </span>
-                                            <span id="tl" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
+                                            <span id="add_sale_total" class="font-bold text-green-700 text-xs sm:text-sm total_amount">0.00 <span>Tzs</span></span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -1159,7 +1276,6 @@
         </div>
     </div>
 
-    <!-- Edit Item Modal -->
     <div id="edit_item_modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
         <div class="w-full max-w-md transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
             <!-- Modal Header with Close Button -->
@@ -1249,7 +1365,7 @@
                         <div class="w-full sm:w-3/4">
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
                                 <label for="Description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="Description" name="Description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                <textarea id="add_purchase_description" name="Description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                         </div>
                         <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Record Purchase</button>
@@ -1261,7 +1377,7 @@
                         <div>
                             <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
                                 <label for="date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
-                                <input type="date" id="date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <input type="date" id="add_purchase_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
 
@@ -1291,7 +1407,7 @@
                     <!-- Table Container -->
                     <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table id="table1" class="min-w-full text-xs sm:text-sm">
+                            <table id="purchase_record_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
                                         <th class="py-2 px-2 text-left font-medium">Stock</th>
@@ -1340,12 +1456,13 @@
                                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                                     </svg>
-                                                    <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                                        </svg>
-                                                    </button>
+                                                </button>
+                                                <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                    </svg>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -1354,20 +1471,20 @@
                                     <tr class="bg-gray-100 border-t-2 border-gray-400">
                                         <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
                                         <td class="p-2">
-                                            <input name="paid" placeholder="0.00 Tzs" id="pay_amount" class="paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                            <input name="paid" placeholder="0.00 Tzs" id="add_purchase_paid" class="paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                                         </td>
                                         <td colspan="2" class="p-2">
                                             <div class="flex items-center gap-2">
                                                 <span class="text-xs sm:text-sm font-medium">Dept:</span>
                                                 <div class="text-red-600">
-                                                    <span class="dept text-xs sm:text-sm" id="dept">0.00</span>
+                                                    <span class="dept text-xs sm:text-sm" id="add_purchase_debt">0.00</span>
                                                     <span class="text-xs sm:text-sm">Tzs</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td colspan="4" class="p-2 text-right">
                                             <span class="text-xs sm:text-sm font-medium">Total: </span>
-                                            <span id="tl" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
+                                            <span id="add_purchase_total" class="font-bold text-green-700 text-xs sm:text-sm total_amount">0.00 <span>Tzs</span></span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -1548,6 +1665,685 @@
 
             <div id="print_Purchase_Invoice" class=" p-3 border-gray-500 border-2"></div>
 
+        </div>
+    </div>
+
+    <!-- Add Party Modal -->
+    <div id="addPartyModal" class="fixed inset-0 z-20 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="fixed inset-0 transition-opacity close-modal"></div>
+
+            <div class="bg-white border-2 border-blue-700 rounded-lg max-w-md w-full mx-auto z-10 relative">
+                <div class="flex justify-between items-center border-b px-4 py-3">
+                    <h3 class="text-lg font-medium text-gray-900">Add New Party</h3>
+                    <button type="button" class="close-modal text-gray-400 hover:text-gray-500">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="addPartyForm" class="px-4 py-5 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label for="name" class="block text-sm font-medium text-gray-700">Name*</label>
+                            <input type="text" name="name" id="part_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <span class="text-sm text-red-600 hidden name-error"></span>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="type" class="block text-sm font-medium text-gray-700">Type*</label>
+                            <select name="type" id="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Select Type</option>
+                                <option value="Supplier">Supplier</option>
+                                <option value="Customer">Customer</option>
+                            </select>
+                            <span class="text-sm text-red-600 hidden type-error"></span>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                            <select name="gender" id="part_gender" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <input type="text" name="phone_number" id="phone_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" name="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <span class="text-sm text-red-600 hidden email-error"></span>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                            <textarea name="address" id="address" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="vat_number" class="block text-sm font-medium text-gray-700">VAT Number</label>
+                            <input type="text" name="vat_number" id="vat_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="tin_number" class="block text-sm font-medium text-gray-700">TIN Number</label>
+                            <input type="text" name="tin_number" id="tin_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="company_name" class="block text-sm font-medium text-gray-700">Company Name</label>
+                            <input type="text" name="company_name" id="company_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="contact_person" class="block text-sm font-medium text-gray-700">Contact Person</label>
+                            <input type="text" name="contact_person" id="contact_person" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-3 border-t">
+                        <button type="button" class="close-modal px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                            Add Party
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Party Modal -->
+    <div id="editPartyModal" class="fixed inset-0 z-20 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="fixed inset-0 close-modal"></div>
+
+            <div class="bg-white border-green-700 border-2 rounded-lg max-w-md w-full mx-auto z-10 relative">
+                <div class="flex justify-between items-center border-b px-4 py-3">
+                    <h3 class="text-lg font-medium text-gray-900">Edit Party</h3>
+                    <button type="button" class="close-modal text-gray-400 hover:text-gray-500">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="editPartyForm" class="px-4 py-5 space-y-4">
+                    <input type="hidden" id="edit_party_id">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label for="edit_name" class="block text-sm font-medium text-gray-700">Name*</label>
+                            <input type="text" name="name" id="edit_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <span class="text-sm text-red-600 hidden edit-name-error"></span>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="edit_type" class="block text-sm font-medium text-gray-700">Type*</label>
+                            <select name="type" id="edit_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Select Type</option>
+                                <option value="Supplier">Supplier</option>
+                                <option value="Customer">Customer</option>
+                            </select>
+                            <span class="text-sm text-red-600 hidden edit-type-error"></span>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                            <select name="gender" id="edit_part_gender" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="edit_phone_number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <input type="text" name="phone_number" id="edit_phone_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="edit_email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" name="email" id="edit_email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <span class="text-sm text-red-600 hidden edit-email-error"></span>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="edit_address" class="block text-sm font-medium text-gray-700">Address</label>
+                            <textarea name="address" id="edit_address" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="edit_vat_number" class="block text-sm font-medium text-gray-700">VAT Number</label>
+                            <input type="text" name="vat_number" id="edit_vat_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="edit_tin_number" class="block text-sm font-medium text-gray-700">TIN Number</label>
+                            <input type="text" name="tin_number" id="edit_tin_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="edit_company_name" class="block text-sm font-medium text-gray-700">Company Name</label>
+                            <input type="text" name="company_name" id="edit_company_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label for="edit_contact_person" class="block text-sm font-medium text-gray-700">Contact Person</label>
+                            <input type="text" name="contact_person" id="edit_contact_person" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-3 border-t">
+                        <button type="button" class="close-modal px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                            Update Party
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Party Modal -->
+    <div id="deletePartyModal" class="fixed inset-0 z-20 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="fixed inset-0 close-modal"></div>
+
+            <div class="bg-white border-2 border-red-700 rounded-lg max-w-md w-full mx-auto z-10 relative">
+                <div class="flex justify-between items-center border-b px-4 py-3">
+                    <h3 class="text-lg font-medium text-gray-900">Delete Party</h3>
+                    <button type="button" class="close-modal text-gray-400 hover:text-gray-500">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="px-4 py-5">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+
+                    <div class="mt-3 text-center">
+                        <h3 class="text-lg font-medium text-gray-900">Delete Confirmation</h3>
+                        <div class="mt-2 px-7 py-3">
+                            <p class="text-sm text-gray-500">
+                                Are you sure you want to delete this party? This action will also delete all related sales, purchases, and transactions. This action cannot be undone.
+                            </p>
+                        </div>
+                        <div class="mt-4 flex justify-center gap-3">
+                            <form method="" action="#">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" id="delete_party_id">
+                                <button type="button" class="close-modal inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none">
+                                    Cancel
+                                </button>
+                                <button type="button" id="confirmDeleteParty" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addTransactionModal" class="fixed inset-0 hidden z-20 overflow-y-auto">
+        <div class="min-h-screen px-4 flex items-center justify-center">
+            <!-- Backdrop overlay -->
+            <div class="fixed inset-0" onclick="hide_addTransactionModal()"></div>
+
+            <!-- Modal container with compact size -->
+            <div class="relative bg-white border-2 border-amber-800 rounded-lg shadow-xl max-w-md w-full mx-auto transform transition-all">
+                <!-- Modal header with close button -->
+                <div class="flex items-center justify-between border-b border-gray-200 px-3 py-2">
+                    <h3 class="text-sm font-bold text-gray-800">Payments Out</h3>
+                    <button type="button" class="text-gray-400 hover:text-gray-500" onclick="hide_addTransactionModal()">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="p-3">
+                    <form method="post" id="payment_out_form">
+                        @csrf
+                        <!-- Transaction Date -->
+                        <div class="mb-3">
+                            <div class="sm:flex sm:items-center sm:justify-between">
+                                <label for="transaction_date" class="block text-xs font-medium text-gray-700 sm:mb-0 mb-1">Transaction date:</label>
+                                <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                    <input type="date" id="transaction_date" name="transaction_date"
+                                        class="transaction_date border border-gray-500 w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other Payment Section -->
+                        <fieldset class="border border-gray-500 rounded-lg px-2 py-2 mb-3">
+                            <legend class="text-xs font-semibold px-1 flex items-center gap-1">
+                                Other Payment
+                                <input type="checkbox" class="other_payment h-3 w-3 text-blue-600" />
+                            </legend>
+
+                            <!-- Payment Type Selection -->
+                            <div class="flex space-x-2 mb-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="Payment" value="Payment" class="payment_type_radio h-3 w-3 text-blue-600" />
+                                    <span class="ml-1 text-xs">Payment</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="Receipt" value="Receipt" class="payment_type_radio h-3 w-3 text-blue-600" />
+                                    <span class="ml-1 text-xs">Receipt</span>
+                                </label>
+                                <input type="hidden" name="type" id="payment_type">
+                            </div>
+
+                            <div class="space-y-2">
+                                <!-- Pay To -->
+                                <div class="sm:flex sm:items-center sm:justify-between">
+                                    <label for="parson_name" class="block text-xs font-medium text-gray-700 sm:mb-0 mb-1">Pay To:</label>
+                                    <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                        <input type="text" id="parson_name" name="person_name" placeholder="Name"
+                                            class="parson_name border border-gray-500 w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
+                                    </div>
+                                </div>
+
+                                <!-- Amount -->
+                                <div class="sm:flex sm:items-center sm:justify-between">
+                                    <label for="payment_amount" class="block text-xs font-medium text-gray-700 sm:mb-0 mb-1">Amount:</label>
+                                    <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                        <input type="text" id="payment_amount" name="payment_amount" placeholder="0.00 Tzs"
+                                            class="payment_amount border border-gray-500 w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="relative mb-3">
+                            <button type="button" onclick="show_transaction_MODAL()" id="view_transaction"
+                                class="mb-3 bg-blue-500 text-white text-xs px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                View Transactions
+                            </button>
+
+                            <!-- Journal Memo -->
+                            <div class="sm:flex sm:items-start sm:justify-between mb-2">
+                                <label for="journal_memo" class="block text-xs font-medium text-gray-700 sm:mt-1 mb-1 sm:mb-0">Journal memo:</label>
+                                <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                    <textarea id="journal_memo" name="journal_memo" rows="2" placeholder="Payment for..."
+                                        class="journal_memo w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 border border-gray-500 rounded"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Method -->
+                            <div class="sm:flex sm:items-center sm:justify-between mb-2">
+                                <label for="method" class="block text-xs font-medium text-gray-700 sm:mb-0 mb-1">Method:</label>
+                                <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                    <select id="method" name="method"
+                                        class="method border border-gray-500 w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
+                                        <option value="" selected>Choose Method Here!</option>
+                                        <option>Cash</option>
+                                        <option>Check</option>
+                                        <option>Credit card</option>
+                                        <option>Online</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <input type="number" id="dept_paid" name="dept_paid" placeholder="0.00 Tzs"
+                                    class="px-2 py-1 w-24 border-2 border-blue-400 text-xs text-gray-800 bg-blue-100 rounded">
+                            </div>
+                        </div>
+
+                        <!-- Add Transaction Modal - Part Payment Fieldset -->
+                        <fieldset class="border border-gray-500 rounded-lg px-2 py-2 mb-3">
+                            <legend class="text-xs font-semibold px-1 flex items-center gap-1">
+                                Part Payment
+                                <input type="checkbox" class="part_payment h-3 w-3 text-blue-600" />
+                            </legend>
+
+                            <!-- Part Type Selection -->
+                            <div class="flex space-x-2 mb-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="part_type_radio" value="Supplier" class="part_type_radio h-3 w-3 text-blue-600" checked />
+                                    <span class="ml-1 text-xs">Supplier</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="part_type_radio" value="Customer" class="part_type_radio h-3 w-3 text-blue-600" />
+                                    <span class="ml-1 text-xs">Customer</span>
+                                </label>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                                <!-- Part Search -->
+                                <div class="relative">
+                                    <div class="relative">
+                                        <svg class="fill-current text-gray-500 w-3 h-3 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                                        </svg>
+                                        <input placeholder="Search part" name="part" id="search_partFOR_payment"
+                                            class="search_part rounded pl-7 pr-2 py-1 bg-gray-200 text-xs w-full sm:w-24"
+                                            type="text" data-type="Supplier" />
+                                        <div id="partlist" class="partlist absolute z-10 w-full"></div>
+                                        <input type="hidden" class="Part_ID" id="Part_ID_payment" name="part_id" />
+                                        <input type="hidden" class="Part_Type" id="Part_Type_payment" name="part_type" value="Supplier" />
+                                    </div>
+                                    {{ csrf_field() }}
+                                </div>
+
+                                <!-- Balance -->
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-exclamation-diamond text-red-600" viewBox="0 0 16 16">
+                                            <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z" />
+                                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                                        </svg>
+                                    </div>
+                                    <input disabled type="number" id="part_balance" name="part_balance" placeholder="0.00 Tzs"
+                                        class="part_balance pl-7 pr-2 py-1 w-full sm:w-24 shadow-sm text-xs text-gray-900 bg-gray-300 rounded cursor-not-allowed">
+                                </div>
+
+                                <!-- Applied Amount -->
+                                <input type="number" id="applied_amount" name="applied_amount" placeholder="0.00 Tzs"
+                                    class="px-2 py-1 w-full sm:w-24 border-2 border-green-400 text-xs text-gray-800 bg-green-100 rounded">
+                            </div>
+
+                            <!-- Transactions Container -->
+                            <div class="transactions-container">
+                                <!-- Supplier Transactions Table -->
+                                <div id="supplier_transactions_container" class="transactions_table_container overflow-x-auto max-h-32">
+                                    <table class="w-full border border-blue-500 text-xs">
+                                        <thead>
+                                            <tr class="bg-blue-500 text-white">
+                                                <th class="py-1 px-2 text-left"><span></span></th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Date</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Total</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Paid</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Unpaid</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="purchases_TableBody">
+                                            <tr class="bg-white border-b border-blue-500">
+                                                <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="6">
+                                                    No purchases found! Please search Supplier first.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Customer Transactions Table -->
+                                <div id="customer_transactions_container" class="transactions_table_container overflow-x-auto max-h-32 hidden">
+                                    <table class="w-full border border-green-500 text-xs">
+                                        <thead>
+                                            <tr class="bg-green-500 text-white">
+                                                <th class="py-1 px-2 text-left"><span></span></th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Date</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Total</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Paid</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Unpaid</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="Sale_TableBody">
+                                            <tr class="bg-white border-b border-green-500">
+                                                <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="6">
+                                                    No sales found! Please search Customer first.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <!-- Form Submit Button -->
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded focus:outline-none focus:ring-1 focus:ring-green-500">
+                                Record Payment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editTransactionModal" class="fixed inset-0 z-20 hidden overflow-y-auto">
+        <div class="min-h-screen px-4 flex items-center justify-center">
+            <!-- Backdrop overlay -->
+            <div class="fixed inset-0" onclick="hide_editTransactionModal()"></div>
+
+            <!-- Modal container with compact size -->
+            <div class="relative bg-white border-2 border-teal-700 rounded-lg shadow-xl max-w-md w-full mx-auto transform transition-all">
+                <!-- Modal header with close button -->
+                <div class="flex items-center justify-between border-b border-gray-200 px-3 py-2">
+                    <h3 class="text-sm font-bold text-gray-800">Edit Transaction</h3>
+                    <button type="button" class="text-gray-400 hover:text-gray-500" onclick="hide_editTransactionModal()">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="p-3">
+                    <form id="edit_transaction_form" method="post">
+                        @csrf
+                        <input type="hidden" id="edit_transaction_id" name="transaction_id">
+
+                        <!-- Transaction Date -->
+                        <div class="mb-3">
+                            <div class="sm:flex sm:items-center sm:justify-between">
+                                <label for="edit_transaction_date" class="block text-xs font-medium text-gray-700 sm:mb-0 mb-1">Transaction date:</label>
+                                <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                    <input type="date" id="edit_transaction_date" name="transaction_date"
+                                        class="border border-gray-500 w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other Payment Section -->
+                        <fieldset class="border border-gray-500 rounded-lg px-2 py-2 mb-3">
+                            <legend class="text-xs font-semibold px-1 flex items-center gap-1">
+                                Other Payment
+                                <input type="checkbox" id="edit_other_paymentCHECKBOXID" class="edit_other_paymentCHECKBOX h-3 w-3 text-blue-600" />
+                            </legend>
+
+                            <!-- Part Type Selection -->
+                            <div class="flex space-x-2 mb-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="Payment" value="Payment" class="payment_type_radioEDIT h-3 w-3 text-blue-600" />
+                                    <span class="ml-1 text-xs">Payment</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="Receipt" value="Receipt" class="payment_type_radioEDIT h-3 w-3 text-blue-600" />
+                                    <span class="ml-1 text-xs">Receipt</span>
+                                </label>
+                                <input type="hidden" name="type" id="payment_type_edit">
+                            </div>
+
+                            <div class="space-y-2">
+                                <!-- Pay To -->
+                                <div class="sm:flex sm:items-center sm:justify-between">
+                                    <label for="edit_parson_name" class="block text-xs font-medium text-gray-700 sm:mb-0 mb-1">Pay To:</label>
+                                    <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                        <input type="text" id="edit_parson_name" name="person_name" placeholder="Name"
+                                            class="border border-gray-500 w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
+                                    </div>
+                                </div>
+
+                                <!-- Amount -->
+                                <div class="sm:flex sm:items-center sm:justify-between">
+                                    <label for="edit_payment_amount" class="block text-xs font-medium text-gray-700 sm:mb-0 mb-1">Amount:</label>
+                                    <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                        <input type="text" id="edit_payment_amount" name="payment_amount" placeholder="0.00 Tzs"
+                                            class="border border-gray-500 w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Journal Memo -->
+                        <div class="mb-3">
+                            <div class="sm:flex sm:items-start sm:justify-between">
+                                <label for="edit_journal_memo" class="block text-xs font-medium text-gray-700 sm:mt-1 mb-1 sm:mb-0">Journal memo:</label>
+                                <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                    <textarea id="edit_journal_memo" name="journal_memo" rows="2" placeholder="Payment for..."
+                                        class="w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 border border-gray-500 rounded"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Method -->
+                        <div class="mb-3">
+                            <div class="sm:flex sm:items-center sm:justify-between">
+                                <label for="edit_method" class="block text-xs font-medium text-gray-700 sm:mb-0 mb-1">Method:</label>
+                                <div class="mt-1 sm:mt-0 sm:ml-2 sm:w-2/3">
+                                    <select id="edit_method" name="method"
+                                        class="border border-gray-500 w-full px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded">
+                                        <option value="" selected>Choose Method Here!</option>
+                                        <option>Cash</option>
+                                        <option>Check</option>
+                                        <option>Credit card</option>
+                                        <option>Online</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edit Transaction Modal - Part Payment Fieldset -->
+                        <fieldset class="border border-gray-500 rounded-lg px-2 py-2 mb-3">
+                            <legend class="text-xs font-semibold px-1">
+                                Part Payment
+                            </legend>
+
+                            <!-- Part Type Selection -->
+                            <div class="flex space-x-2 mb-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="part_type_radioEDIT" value="Supplier" class="part_type_radioEDIT h-3 w-3 text-blue-600" checked />
+                                    <span class="ml-1 text-xs">Supplier</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="part_type_radioEDIT" value="Customer" class="part_type_radioEDIT h-3 w-3 text-blue-600" />
+                                    <span class="ml-1 text-xs">Customer</span>
+                                </label>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                                <!-- Part Search -->
+                                <div class="relative">
+                                    <div class="relative">
+                                        <svg class="fill-current text-gray-500 w-3 h-3 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                                        </svg>
+                                        <input placeholder="Search part" name="part" id="search_partFOR_paymentEDIT"
+                                            class="search_part rounded pl-7 pr-2 py-1 bg-gray-200 text-xs w-full sm:w-24"
+                                            type="text" data-type="Supplier" />
+                                        <div id="partlistEDIT" class="partlist absolute z-10 w-full"></div>
+                                        <input type="hidden" class="Part_ID" id="Part_ID_paymentEDIT" name="part_id" />
+                                        <input type="hidden" class="Part_Type" id="Part_Type_paymentEDIT" name="part_type" value="Supplier" />
+                                    </div>
+                                    {{ csrf_field() }}
+                                </div>
+
+                                <!-- Balance -->
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-exclamation-diamond text-red-600" viewBox="0 0 16 16">
+                                            <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z" />
+                                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                                        </svg>
+                                    </div>
+                                    <input disabled type="number" id="part_balanceEDIT" name="part_balance" placeholder="0.00 Tzs"
+                                        class="part_balance pl-7 pr-2 py-1 w-full sm:w-24 shadow-sm text-xs text-gray-900 bg-gray-300 rounded cursor-not-allowed">
+                                </div>
+
+                                <!-- Payment Amount -->
+                                <input type="number" id="paidEDIT" name="dept_paid" placeholder="0.00 Tzs"
+                                    class="px-2 py-1 w-full sm:w-24 border-2 border-blue-400 text-xs text-gray-800 bg-blue-100 rounded">
+                            </div>
+
+                            <!-- Transactions Container -->
+                            <div class="transactions-container">
+                                <!-- Supplier Transactions Table -->
+                                <div id="supplier_transactions_containerEDIT" class="transactions_table_container overflow-x-auto max-h-32">
+                                    <table class="w-full border border-blue-500 text-xs">
+                                        <thead>
+                                            <tr class="bg-teal-800 text-white">
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Date</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Total</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Paid</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Unpaid</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="purchases_TableBodyEDIT">
+                                            <tr class="bg-white border-b border-blue-500">
+                                                <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="6">
+                                                    No purchases found! Please search Supplier first.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Customer Transactions Table -->
+                                <div id="customer_transactions_containerEDIT" class="transactions_table_container overflow-x-auto max-h-32 hidden">
+                                    <table class="w-full border border-green-500 text-xs">
+                                        <thead>
+                                            <tr class="bg-teal-800 text-white">
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Date</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Total</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Paid</th>
+                                                <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Unpaid</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="Sale_TableBodyEDIT">
+                                            <tr class="bg-white border-b border-green-500">
+                                                <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="6">
+                                                    No sales found! Please search Customer first.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Form Buttons -->
+                        <div class="flex justify-end gap-2 mt-3">
+                            <button type="button" onclick="hide_editTransactionModal()"
+                                class="px-3 py-1 bg-gray-200 text-gray-800 text-xs rounded hover:bg-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                class="px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                Update Transaction
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1745,7 +2541,11 @@
                 loadSale();
             } else if (tabId === 'purchases') {
                 loadPurchases();
-            } else if (tabId === 'customers') {} else if (tabId === 'inventory') {
+            } else if (tabId === 'transaction') {
+                loadTransactions();
+            } else if (tabId === 'customers') {
+                loadParties();
+            } else if (tabId === 'inventory') {
                 loadinventory();
             } else if (tabId === 'reports') {
                 loadreports();
@@ -1754,6 +2554,309 @@
                     $('#' + tabId + '-loading').hide();
                 }, 1000);
             }
+        }
+
+        const filter_transaction_Inputs = [
+            'transactionsearch',
+            'transactionstartDate',
+            'transactionendDate',
+        ];
+
+        filter_transaction_Inputs.forEach(inputId => {
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.addEventListener('change', function() {
+                    loadTransactions();
+                });
+
+                inputElement.addEventListener('keyup', debounce(function() {
+                    loadTransactions();
+                }, 300));
+            }
+        });
+
+        function loadTransactions() {
+            const filters = {
+                search: document.getElementById('transactionsearch')?.value || '',
+                transactionstartDate: document.getElementById('transactionstartDate')?.value || '',
+                transactionendDate: document.getElementById('transactionendDate')?.value || '',
+            };
+
+            $('#transaction-loading').show();
+            $('#transaction tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('fetch_transactions') }}",
+                data: filters,
+                dataType: "json",
+                success: function(response) {
+                    const data = response.items || [];
+
+                    let transactionHtml = '';
+
+                    if (data.length === 0) {
+                        transactionHtml += `<tr>
+                    <td class="py-1 px-6 text-center text-red-600 italic" colspan="10">
+                        No transaction found! Please record transaction.
+                    </td>
+                </tr>`;
+                    } else {
+                        data.forEach(function(transaction) {
+                            const date = new Date(transaction.transaction_date).toLocaleDateString();
+                            const payment_amount = parseFloat(transaction.payment_amount || 0).toLocaleString('en-TZ', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+
+                            // Handle purchase details safely
+                            let purchase_paid = " - ";
+                            let purchase_debt = " - ";
+                            let purchase_status = "-";
+
+                            if (transaction.purchase) {
+                                if (transaction.purchase.paid && parseFloat(transaction.purchase.paid) > 0) {
+                                    purchase_paid = parseFloat(transaction.purchase.paid || 0).toLocaleString('en-TZ', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                }
+
+                                if (transaction.purchase.dept && parseFloat(transaction.purchase.dept) > 0) {
+                                    purchase_debt = parseFloat(transaction.purchase.dept || 0).toLocaleString('en-TZ', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                }
+
+                                purchase_status = transaction.purchase.status || '-';
+                            }
+
+                            // Handle sale details safely
+                            let sale_paid = " - ";
+                            let sale_debt = " - ";
+                            let sale_status = "-";
+
+                            if (transaction.sale) {
+                                if (transaction.sale.paid && parseFloat(transaction.sale.paid) > 0) {
+                                    sale_paid = parseFloat(transaction.sale.paid || 0).toLocaleString('en-TZ', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                }
+
+                                if (transaction.sale.dept && parseFloat(transaction.sale.dept) > 0) {
+                                    sale_debt = parseFloat(transaction.sale.dept || 0).toLocaleString('en-TZ', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                }
+
+                                sale_status = transaction.sale.status || '-';
+                            }
+
+                            transactionHtml += `
+                        <tr class="bg-white border-b border-blue-400 hover:bg-gray-50">
+                            <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.reference_no || ' - '}</td>
+                            <td class="py-1 px-6 text-left whitespace-nowrap">${date}</td>
+                            <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.part?.name || ' - '}</td>
+                            <td class="py-1 px-6 text-right whitespace-nowrap">${payment_amount}</td>
+                            <td class="py-1 px-6 text-right whitespace-nowrap">${transaction.type || ' - '}</td>
+                            <td class="py-1 px-6 text-right whitespace-nowrap">${sale_paid}</td>
+                            <td class="py-1 px-6 text-right whitespace-nowrap ${sale_debt !== " - " ? "text-red-600 font-semibold" : ""}">${sale_debt}</td>
+                            <td class="py-1 px-6 text-right whitespace-nowrap">${purchase_paid}</td>
+                            <td class="py-1 px-6 text-right whitespace-nowrap ${purchase_debt !== " - " ? "text-red-600 font-semibold" : ""}">${purchase_debt}</td>
+                            <td class="py-1 px-6 text-center whitespace-nowrap">
+                                ${purchase_status !== "-" ? 
+                                `<span class="bg-${getStatusColor(purchase_status)}-100 text-${getStatusColor(purchase_status)}-800 py-1 px-3 rounded-full text-xs">
+                                    ${purchase_status}
+                                </span>` : " - "}
+                            </td>
+                            <td class="py-1 px-6 text-center whitespace-nowrap">
+                                ${sale_status !== "-" ? 
+                                `<span class="bg-${getStatusColor(sale_status)}-100 text-${getStatusColor(sale_status)}-800 py-1 px-3 rounded-full text-xs">
+                                    ${sale_status}
+                                </span>` : " - "}
+                            </td>
+                            <td class="px-6 py-1 text-center whitespace-nowrap">
+                                <div class="flex space-x-2">
+                                    <div class="relative group">
+                                        <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_transactionPREVIEW(${transaction.id})" class="show_transactionPREVIEW hover:text-blue-300 text-blue-900">
+                                            <svg class="w-5 h-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Preview
+                                        </span>
+                                    </div>
+                                    <span class="font-bold">|</span>
+                                    <div class="relative group">
+                                        <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_editTransactionModal(${transaction.id})" class="show_edit_transactionMODAL hover:text-green-500 text-green-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                        </button>
+                                        <!-- Tooltip -->
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Edit
+                                        </span>
+                                    </div>
+
+                                    <span class="font-bold">|</span>
+
+                                    <!-- Delete Button -->
+                                    <div class="relative group">
+                                        <button value="${transaction.id}" data-id="${transaction.id}" onclick="delete_transaction(${transaction.id})" class="delete_transaction hover:text-red-500 text-red-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                            </svg>
+                                        </button>
+                                        <!-- Tooltip -->
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Delete
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                        });
+                    }
+
+                    $('#transaction tbody').html(transactionHtml);
+                    $('#transaction-loading').hide();
+                },
+                error: function() {
+                    $('#transaction tbody').html('<tr><td colspan="10" class="text-center py-4 text-red-500">Failed to load transaction data</td></tr>');
+                    $('#transaction-loading').hide();
+                }
+            });
+        }
+
+        const filter_part_Inputs = [
+            'partDetails_filterTable',
+            'filterby_status_inTable',
+            'filter_type_inTable',
+        ];
+
+        filter_part_Inputs.forEach(inputId => {
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.addEventListener('change', function() {
+                    loadParties();
+                });
+
+                inputElement.addEventListener('keyup', debounce(function() {
+                    loadParties();
+                }, 300));
+            }
+        });
+
+        function loadParties() {
+            const filters = {
+                search: document.getElementById('partDetails_filterTable')?.value || '',
+                status: document.getElementById('filterby_status_inTable')?.value || '',
+                type: document.getElementById('filter_type_inTable')?.value || '',
+            };
+
+            $('#customers-loading').show();
+            $('#customers tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('fetch_parties') }}",
+                data: filters,
+                dataType: "json",
+                success: function(response) {
+                    const data = response.parties || [];
+
+                    let customersHtml = '';
+
+                    if (data.length === 0) {
+                        customersHtml += `<tr>
+                    <td class="py-1 px-6 text-center text-red-600 italic" colspan="10">
+                        No parties found! Please register customers/suppliers.
+                    </td>
+                </tr>`;
+                    } else {
+                        data.forEach(function(item, key) {
+                            // Determine which transaction type to show based on party type
+                            const transactionData = item.type === 'Supplier' ? item.purchases : item.sales;
+
+                            // Format currency values with proper decimal places
+                            const formatCurrency = (value) => {
+                                return parseFloat(value || 0).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            };
+
+                            // Calculate amounts to display
+                            const totalAmount = formatCurrency(transactionData.total_amount);
+                            const totalPaid = formatCurrency(transactionData.total_paid);
+                            const totalDebt = formatCurrency(transactionData.total_dept);
+                            const totalDiscount = formatCurrency(transactionData.total_discount);
+
+                            customersHtml += `
+                        <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${key + 1}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.tin_number || ' - '}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.name}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.email || ' - '}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.phone_number || ' - '}</td>
+                            <td class="py-2 px-6 text-right whitespace-nowrap">${item.type || ' - '}</td>
+                            <td class="py-2 px-6 text-right whitespace-nowrap">${totalAmount}</td>
+                            <td class="py-2 px-6 text-right whitespace-nowrap">${totalPaid}</td>
+                            <td class="py-2 px-6 text-right whitespace-nowrap">${totalDebt}</td>
+                            <td class="py-2 px-6 text-center whitespace-nowrap">
+                                <span class="bg-${getStatusColor(transactionData.status)}-100 text-${getStatusColor(transactionData.status)}-800 py-1 px-3 rounded-full text-xs">
+                                    ${transactionData.status || 'N/A'}
+                                </span>
+                            </td>
+                            <td class="px-6 py-2 text-center whitespace-nowrap">
+                                <div class="flex space-x-1 justify-center">
+                                    <div class="relative group">
+                                        <button value="${item.id}" data-id="${item.id}" onclick="show_editPartyModal(${item.id})" class="hover:text-green-500 text-green-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Edit
+                                        </span>
+                                    </div>
+                                    <span class="font-bold">|</span>
+                                    <div class="relative group">
+                                        <button value="${item.id}" data-id="${item.id}" onclick="show_deletePartyModal(${item.id})" class="hover:text-red-500 text-red-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Delete
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                        });
+                    }
+
+                    $('#customers tbody').html(customersHtml);
+                    $('#customers-loading').hide();
+                },
+                error: function() {
+                    $('#customers tbody').html('<tr><td colspan="10" class="text-center py-4 text-red-500">Failed to load customers data</td></tr>');
+                    $('#customers-loading').hide();
+                }
+            });
         }
 
         function debounce(func, wait) {
@@ -2336,72 +3439,10 @@
         });
 
 
-        // Customer and Supplier Search Handlers
         $(document).ready(function() {
-            // Customer search functionality
-            $(document).on('keyup', '#search_Customer, #edit_Customer, #search_Customer_dept, #search_EDITCustomer_dept', function() {
-                var inputElement = $(this);
-                var query = $.trim(inputElement.val());
-                var CustomerList = inputElement.siblings('.Customerlist');
 
-                if (query !== '') {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/search_Customer',
-                        data: {
-                            _token: $('meta[name="csrf-token"]').attr('content'),
-                            query: query
-                        },
-                        success: function(data) {
-                            if (data.trim() !== '') {
-                                CustomerList.html(data).fadeIn();
-                            } else {
-                                CustomerList.fadeOut();
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error searching Customers:', error);
-                            CustomerList.fadeOut();
-                        }
-                    });
-                } else {
-                    CustomerList.fadeOut();
-                }
-            });
-
-            // Supplier search functionality
-            $(document).on('keyup', '#search_supplier, #edit_supplier, #search_supplier_dept, #search_EDITsupplier_dept', function() {
-                var inputElement = $(this);
-                var query = $.trim(inputElement.val());
-                var supplierList = inputElement.siblings('.supplierlist');
-
-                if (query !== '') {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/search_supplier',
-                        data: {
-                            _token: $('meta[name="csrf-token"]').attr('content'),
-                            query: query
-                        },
-                        success: function(data) {
-                            if (data.trim() !== '') {
-                                supplierList.html(data).fadeIn();
-                            } else {
-                                supplierList.fadeOut();
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error searching suppliers:', error);
-                            supplierList.fadeOut();
-                        }
-                    });
-                } else {
-                    supplierList.fadeOut();
-                }
-            });
-
-            // Item search for both modals
-            $(document).on('keyup', '#sale_item_name, #edit_sale_item_name, #purchase_item_name, #edit_purchase_item_name', function() {
+            // Item search for all modals
+            $(document).on('keyup', '#sale_item_name, .edit_item_name, #purchase_item_name', function() {
                 var inputElement = $(this);
                 var query = $.trim(inputElement.val());
                 var searchContainer = inputElement.siblings('.itemslist');
@@ -2422,31 +3463,51 @@
                 }
             });
 
-            // Item selection handling
-            $(document).on('click', '.items_lists', function() {
+            // Unified item selection handling for both regular and edit modals
+            $(document).on('click', '.items_lists', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
                 try {
                     const $listItem = $(this);
                     const $row = $listItem.closest('tr');
-                    const $parentInput = $row.find('input[name="item_name"]');
-                    const item_id = $listItem.val();
 
                     // Get only the item name from the item-name span
-                    const itemName = $listItem.find('.item-name').text();
+                    const itemName = $listItem.find('.item-name').text().trim();
+                    const itemId = $listItem.val() || $listItem.data('id');
 
-                    if (!$row.length || !item_id) {
-                        console.warn('Required elements not found');
+                    if (!$row.length || !itemId) {
+                        console.warn('Required elements not found for item selection');
                         return;
                     }
 
-                    $parentInput.val(itemName);
+                    // Determine which modal we're in
+                    const inEditPurchaseModal = $row.closest('#editPurchaseModal').length > 0;
+                    const inEditSalesModal = $row.closest('#editSalesModal').length > 0;
+                    const inRegularModal = !inEditPurchaseModal && !inEditSalesModal;
+
+                    // Set the item name in the appropriate input field
+                    if (inRegularModal) {
+                        $row.find('input[name="item_name"]').val(itemName);
+                    } else {
+                        $row.find('.edit_item_name').val(itemName);
+                    }
+
+                    // Hide the dropdown
                     $listItem.closest('.itemslist').fadeOut();
 
-                    // Fetch item details
+                    // Reset paid amounts
+                    if ($row.closest('#add_sales_modal').length) $('#add_sale_paid').val('0');
+                    if ($row.closest('#add_purchase_modal').length) $('#add_purchase_paid').val('0');
+                    if (inEditSalesModal) $('#sales_edit_paid').val('0');
+                    if (inEditPurchaseModal) $('#purchase_edit_paid').val('0');
+
+                    // Fetch item details safely without directly calling netPriceFn
                     $.ajax({
                         type: 'get',
                         url: '/find_item_details',
                         data: {
-                            'id': item_id
+                            'id': itemId
                         },
                         dataType: 'json',
                         success: function(data) {
@@ -2459,93 +3520,64 @@
                                 // Format prices
                                 const salePrice = parseFloat(data.sale_price) || 0;
                                 const purchasePrice = parseFloat(data.latest_purchase_price) || 0;
-                                const salesPrice = parseFloat(data.latest_sale_price) || 0;
 
-                                const formattedSalePrice = formatCurrency(salePrice);
-                                const formattedPurchasePrice = formatCurrency(purchasePrice);
-                                const formattedSalesPrice = formatCurrency(salesPrice);
-
-                                // Update row elements
-                                $row.find('.description').val(data.description || '');
+                                // Common updates for all modals
+                                $row.find('textarea.description, textarea').val(data.description || '');
                                 $row.find('.av_quantity').val(data.current_stock || '0');
-                                $row.find('.discount').val(data.latest_discount || '0');
-                                $row.find('.item_id').val(data.id);
-                                $row.find('.sku').val(data.sku || '');
-                                $row.find('.status').val(data.status || 'Available');
 
-                                // Determine which prices to update based on the form context
-                                if ($row.closest('#table1').length && $row.closest('#add_purchase_modal').length) {
-                                    // Purchase form
-                                    $row.find('.unit_price').val(purchasePrice);
-                                } else if ($row.closest('#table1').length && $row.closest('#add_sales_modal').length) {
-                                    // Sales form
-                                    $row.find('.unit_price').val(salePrice);
-                                    $row.find('.discount').val(data.latest_sale_discount || '0');
+                                // Set item ID in the hidden field
+                                if (inRegularModal) {
+                                    $row.find('.item_id').val(data.id);
+                                    $row.find('.discount').val(data.latest_discount || '0');
+                                } else {
+                                    $row.find('input[name="item_ids[]"]').val(data.id);
                                 }
 
-                                // Call netPriceFn to update calculations
-                                netPriceFn($row.find('.unit_price')[0]);
+                                // Modal-specific updates
+                                if ($row.closest('#purchase_record_table').length) {
+                                    // Regular purchase form
+                                    $row.find('.unit_price').val(purchasePrice);
+                                } else if ($row.closest('#record_sales_table').length) {
+                                    // Regular sales form
+                                    $row.find('.unit_price').val(salePrice);
+                                    $row.find('.discount').val(data.latest_sale_discount || '0');
+                                } else if (inEditPurchaseModal) {
+                                    // Edit purchase modal
+                                    $row.find('.edit_unit_price').val(purchasePrice);
+                                    purchaseTableManager.updateEditTotals();
+                                } else if (inEditSalesModal) {
+                                    // Edit sales modal
+                                    $row.find('.edit_unit_price').val(salePrice);
+                                    $row.find('.edit_discount').val(data.latest_sale_discount || '0');
+                                    tableManager.updateEditTotals();
+                                }
+
+                                // For regular modals, safely update net price if needed
+                                if (inRegularModal) {
+                                    // Use a DOM element from the row to call netPriceFn safely
+                                    const quantityInput = $row.find('.quantity')[0];
+                                    if (quantityInput instanceof Element) {
+                                        setTimeout(function() {
+                                            netPriceFn(quantityInput);
+                                        }, 10);
+                                    } else {
+                                        // Fallback: just call totalFn directly
+                                        setTimeout(totalFn, 10);
+                                    }
+                                }
                             } catch (innerError) {
                                 console.error('Error processing item data:', innerError);
+                                // Fallback: just call totalFn to ensure calculation happens
+                                if (inRegularModal) setTimeout(totalFn, 10);
                             }
                         },
                         error: function(xhr, status, error) {
                             console.error("Error fetching item details:", error);
-                            showFeedbackModal('error', 'Error', 'Failed to fetch item details');
                         }
                     });
                 } catch (error) {
                     console.error('Error in item click handler:', error);
                 }
-            });
-
-            // Item selection in edit modals
-            $(document).on('click', '#editSalesModal .itemslist li, #editPurchaseModal .itemslist li', function() {
-                var itemId = $(this).val();
-                var itemName = $(this).text();
-                var row = $(this).closest('tr');
-                var itemInput = row.find('.edit_item_name');
-                var isEditPurchase = $(this).closest('#editPurchaseModal').length > 0;
-
-                // Set item name
-                itemInput.val(itemName);
-                // Hide search results
-                $(this).closest('.itemslist').fadeOut();
-
-                // Fetch item details
-                $.ajax({
-                    type: 'GET',
-                    url: '/find_item_details',
-                    data: {
-                        id: itemId
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        row.find('textarea').val(data.description || '');
-                        row.find('.av_quantity').val(data.current_stock || '0');
-                        row.find('input[name="item_ids[]"]').val(data.id);
-
-                        if (isEditPurchase) {
-                            row.find('.edit_unit_price').val(data.latest_purchase_price || data.sale_price || '0');
-                        } else {
-                            row.find('.edit_unit_price').val(data.sale_price || '0');
-                            row.find('.edit_discount').val(data.latest_sale_discount || '0');
-                        }
-
-                        row.find('.edit_sku').val(data.sku || '');
-                        row.find('.edit_status').val(data.status || 'Available');
-
-                        // Update totals
-                        if (isEditPurchase) {
-                            purchaseTableManager.updateEditTotals();
-                        } else {
-                            tableManager.updateEditTotals();
-                        }
-                    },
-                    error: function() {
-                        console.error("Failed to fetch item details");
-                    }
-                });
             });
 
             // Customer selection handler
@@ -2555,7 +3587,8 @@
 
                 try {
                     const selectedItem = $(this);
-                    const CustomerName = selectedItem.text();
+                    // Get the trimmed text from the span only
+                    const CustomerName = selectedItem.find('span').text().trim();
                     const CustomerId = selectedItem.data('id');
 
                     // Find the closest parent container
@@ -2566,10 +3599,10 @@
                         // Regular form
                         $('#search_Customer').val(CustomerName);
                         $('.Customer_ID').val(CustomerId);
-                    } else if (container.find('#edit_Customer').length) {
+                    } else if (container.find('#sales_edit_Customer').length) {
                         // Edit form
-                        $('#edit_Customer').val(CustomerName);
-                        $('#edit_Customer_id').val(CustomerId);
+                        $('#sales_edit_Customer').val(CustomerName);
+                        $('#sales_edit_Customer_id').val(CustomerId);
                     } else if (container.find('#search_Customer_dept').length) {
                         // payment form
                         $('#search_Customer_dept').val(CustomerName);
@@ -2630,13 +3663,14 @@
                                         formatted_SalesDate = date.toISOString().split('T')[0];
                                     }
                                     SaleHTML += `
-                            <tr class="bg-white border-b border-blue-500">
-                                <td><input type="checkbox" value="${Sale.id}" class='chkbox ml-1' /></td>
-                                <td class="py-1 px-2 text-left whitespace-nowrap">${formatted_SalesDate}</td>
-                                <td class="py-1 px-2 text-left whitespace-nowrap">${formattedTotalAmount}</td>
-                                <td class="py-1 px-2 text-left whitespace-nowrap">${formattedPayedAmount}</td>
-                                <td id="balanceID" class="balance py-1 px-2 text-left whitespace-nowrap">${formattedBalance}</td>
-                            </tr>`;
+                                        <tr class="bg-white border-b border-blue-500">
+                                            <td><input type="checkbox" value="${Sale.id}" class='chkbox ml-1' /></td>
+                                            <td class="py-1 px-2 text-left whitespace-nowrap">${formatted_SalesDate}</td>
+                                            <td class="py-1 px-2 text-left whitespace-nowrap">${formattedTotalAmount}</td>
+                                            <td class="py-1 px-2 text-left whitespace-nowrap">${formattedPayedAmount}</td>
+                                            <td id="balanceID" class="balance py-1 px-2 text-left whitespace-nowrap">${formattedBalance}</td>
+                                        </tr>
+                                    `;
                                 });
                                 $('#Sale_TableBody').html(SaleHTML);
                             },
@@ -2679,6 +3713,68 @@
                 }
             });
 
+            // Customer search functionality
+            $(document).on('keyup', '#search_Customer, #sales_edit_Customer', function() {
+                var inputElement = $(this);
+                var query = $.trim(inputElement.val());
+                var CustomerList = inputElement.siblings('.Customerlist');
+
+                if (query !== '') {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/search_Customer',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            query: query
+                        },
+                        success: function(data) {
+                            if (data.trim() !== '') {
+                                CustomerList.html(data).fadeIn();
+                            } else {
+                                CustomerList.fadeOut();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error searching Customers:', error);
+                            CustomerList.fadeOut();
+                        }
+                    });
+                } else {
+                    CustomerList.fadeOut();
+                }
+            });
+
+            // Supplier search functionality
+            $(document).on('keyup', '#search_supplier, #purchase_edit_supplier', function() {
+                var inputElement = $(this);
+                var query = $.trim(inputElement.val());
+                var supplierList = inputElement.siblings('.supplierlist');
+
+                if (query !== '') {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/search_supplier',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            query: query
+                        },
+                        success: function(data) {
+                            if (data.trim() !== '') {
+                                supplierList.html(data).fadeIn();
+                            } else {
+                                supplierList.fadeOut();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error searching suppliers:', error);
+                            supplierList.fadeOut();
+                        }
+                    });
+                } else {
+                    supplierList.fadeOut();
+                }
+            });
+
             // Supplier selection handler
             $(document).on('click', '.supplier_li', function(e) {
                 e.preventDefault();
@@ -2686,7 +3782,8 @@
 
                 try {
                     const selectedItem = $(this);
-                    const supplierName = selectedItem.text();
+                    // Get the trimmed text from the span only
+                    const supplierName = selectedItem.find('span').text().trim();
                     const supplierId = selectedItem.data('id');
 
                     // Find the closest parent container
@@ -2696,11 +3793,11 @@
                     if (container.find('#search_supplier').length) {
                         // Regular form
                         $('#search_supplier').val(supplierName);
-                        $('.Supplier_ID').val(supplierId);
-                    } else if (container.find('#edit_supplier').length) {
+                        $('#Supplier_ID').val(supplierId);
+                    } else if (container.find('#purchase_edit_supplier').length) {
                         // Edit form
-                        $('#edit_supplier').val(supplierName);
-                        $('#edit_supplier_id').val(supplierId);
+                        $('#purchase_edit_supplier').val(supplierName);
+                        $('#purchase_edit_supplier_id').val(supplierId);
                     } else if (container.find('#search_supplier_dept').length) {
                         // payment form
                         $('#search_supplier_dept').val(supplierName);
@@ -2761,13 +3858,14 @@
                                         formatted_purchaseDate = date.toISOString().split('T')[0];
                                     }
                                     purchasesHTML += `
-                            <tr class="bg-white border-b border-blue-500">
-                                <td><input type="checkbox" value="${purchases.id}" class='chkbox ml-1' /></td>
-                                <td class="py-1 px-2 text-left whitespace-nowrap">${formatted_purchaseDate}</td>
-                                <td class="py-1 px-2 text-left whitespace-nowrap">${formattedTotalAmount}</td>
-                                <td class="py-1 px-2 text-left whitespace-nowrap">${formattedPayedAmount}</td>
-                                <td id="balanceID" class="balance py-1 px-2 text-left whitespace-nowrap">${formattedBalance}</td>
-                            </tr>`;
+                                        <tr class="bg-white border-b border-blue-500">
+                                            <td><input type="checkbox" value="${purchases.id}" class='chkbox ml-1' /></td>
+                                            <td class="py-1 px-2 text-left whitespace-nowrap">${formatted_purchaseDate}</td>
+                                            <td class="py-1 px-2 text-left whitespace-nowrap">${formattedTotalAmount}</td>
+                                            <td class="py-1 px-2 text-left whitespace-nowrap">${formattedPayedAmount}</td>
+                                            <td id="balanceID" class="balance py-1 px-2 text-left whitespace-nowrap">${formattedBalance}</td>
+                                        </tr>
+                                    `;
                                 });
                                 $('#purchases_TableBody').html(purchasesHTML);
                             },
@@ -2840,12 +3938,12 @@
 
                 var SaleData = {
                     items: [],
-                    description: $('#Description').val(),
-                    part_id: $('#Customer_ID').val() || null, // Handle nullable part_id
-                    Sales_date: $('#sale_date').val(),
-                    total_amount: parseFloat($('#tl').text().replace(/[^0-9.-]+/g, "")) || 0,
-                    paid: parseFloat($('.paid').val().replace(/[^0-9.-]+/g, "")) || 0,
-                    dept: parseFloat($('#dept').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    description: $('#add_sale_description').val(),
+                    part_id: $('#Customer_ID').val() || null,
+                    Sales_date: $('#add_sale_date').val(),
+                    total_amount: parseFloat($('#add_sale_total').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    paid: parseFloat($('#add_sale_paid').val()) || 0,
+                    dept: parseFloat($('#add_sale_debt').text().replace(/[^0-9.-]+/g, "")) || 0,
                     efd_number: 'EFD' + Math.floor(Math.random() * 10000000).toString().padStart(7, '0'),
                     z_number: 'Z' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
                     receipt_number: 'RC' + Math.floor(Math.random() * 100000).toString().padStart(5, '0'),
@@ -2853,7 +3951,7 @@
                 };
 
                 // Collect items data
-                $('#table1 tbody tr').each(function() {
+                $('#record_sales_table tbody tr').each(function() {
                     var row = $(this);
                     var rawPrice = parseFloat(row.find('.unit_price').val().replace(/[^0-9.-]+/g, ""));
 
@@ -2890,6 +3988,9 @@
                         resetSalesForm();
                         hide_add_sales_modal();
                         loadSale();
+                        loadTransactions();
+                        loadParties();
+                        loadinventory();
                     },
                     error: function(xhr) {
                         let errorMessage = 'There was an error while recording the Sales.';
@@ -2908,16 +4009,16 @@
 
                 var purchasesData = {
                     items: [],
-                    description: $('#Description').val(),
+                    description: $('#add_purchase_description').val(),
                     part_id: $('#Supplier_ID').val() || null,
-                    purchase_date: $('#date').val(),
-                    total_amount: parseFloat($('#tl').text().replace(/[^0-9.-]+/g, "")) || 0,
-                    paid: parseFloat($('.paid').val().replace(/[^0-9.-]+/g, "")) || 0,
-                    dept: parseFloat($('#dept').text().replace(/[^0-9.-]+/g, "")) || 0
+                    purchase_date: $('#add_purchase_date').val(),
+                    total_amount: parseFloat($('#add_purchase_total').text().replace(/[^0-9.-]+/g, "")) || 0,
+                    paid: parseFloat($('#add_purchase_paid').val()) || 0,
+                    dept: parseFloat($('#add_purchase_debt').text().replace(/[^0-9.-]+/g, "")) || 0,
                 };
 
                 // Collect items data
-                $('#table1 tbody tr').each(function() {
+                $('#purchase_record_table tbody tr').each(function() {
                     var row = $(this);
                     var rawPrice = parseFloat(row.find('.unit_price').val().replace(/[^0-9.-]+/g, ""));
 
@@ -3017,10 +4118,10 @@
                         hide_edit_SalesMODAL();
                         showFeedbackModal('success', 'Sales Updated!', 'Sales has been updated successfully.');
                         resetEditSalesForm();
-
-                        // Reload data if these functions exist
-                        if (typeof loadTransactions === 'function') loadTransactions();
-                        if (typeof loadSales === 'function') loadSales();
+                        loadPurchases();
+                        loadTransactions();
+                        loadinventory();
+                        loadParties();
                     },
                     error: function(xhr) {
                         let errorMessage = 'There was an error while updating the sales.';
@@ -3245,7 +4346,7 @@
         // Form Reset Functions
         function resetSalesForm() {
             // Clear input fields
-            const fieldsToClear = ["search_Customer", "Description", "pay_amount"];
+            const fieldsToClear = ["search_Customer", "add_sale_description", "add_sale_paid"];
             fieldsToClear.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
@@ -3257,12 +4358,12 @@
             $('#Customer_ID').val('');
 
             // Reset calculated values
-            $('#tl').html('0.00 <span>Tzs</span>');
-            $('.dept').text('0.00');
+            $('#add_sale_total').html('0.00 <span>Tzs</span>');
+            $('#add_sale_debt').text('0.00');
             $('.ntl').html('<span>TSh</span>0.00');
 
             // Remove all rows except the first one
-            var tbody = $('#table1 tbody');
+            var tbody = $('#record_sales_table tbody');
             var firstRow = tbody.find('tr:first').clone(true);
             tbody.empty().append(firstRow);
 
@@ -3302,7 +4403,7 @@
 
         function resetPurchaseForm() {
             // Clear input fields
-            const fieldsToClear = ["search_supplier", "Description", "pay_amount"];
+            const fieldsToClear = ["search_supplier", "add_purchase_description", "add_purchase_paid"];
             fieldsToClear.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
@@ -3314,12 +4415,12 @@
             $('#Supplier_ID').val('');
 
             // Reset calculated values
-            $('#tl').html('0.00 <span>Tzs</span>');
-            $('.dept').text('0.00');
+            $('#add_purchase_total').html('0.00 <span>Tzs</span>');
+            $('#add_purchase_debt').text('0.00');
             $('.ntl').html('<span>TSh</span>0.00');
 
             // Remove all rows except the first one
-            var tbody = $('#table1 tbody');
+            var tbody = $('#purchase_record_table tbody');
             var firstRow = tbody.find('tr:first').clone(true);
             tbody.empty().append(firstRow);
 
@@ -3382,7 +4483,15 @@
                     return;
                 }
 
-                var tl = activeModal.find("#tl");
+                // Use the correct total element based on which modal is active
+                let totalSelector;
+                if (activeModal.attr('id') === 'add_sales_modal') {
+                    totalSelector = '#add_sale_total';
+                } else {
+                    totalSelector = '#add_purchase_total';
+                }
+
+                var tl = $(totalSelector);
                 var ntlElements = activeModal.find(".ntl");
 
                 if (!tl.length) {
@@ -3393,10 +4502,14 @@
                 var total = 0;
 
                 ntlElements.each(function() {
-                    total += parseFloat($(this).text().replace(/[^0-9.-]+/g, "")) || 0;
+                    const text = $(this).text().replace(/[^0-9.-]+/g, "");
+                    const value = parseFloat(text) || 0;
+                    total += value;
                 });
 
                 tl.html(`${total.toFixed(2)} <span>Tzs</span>`);
+
+                // Call calculateDebt with the updated total
                 calculateDebt(total);
             } catch (error) {
                 console.error('Error in totalFn:', error);
@@ -3405,40 +4518,76 @@
 
         function calculateDebt(total) {
             try {
-                // Find the active modal (either sales or purchase)
+                // Find the active modal
                 const activeModal = $('#add_sales_modal:visible, #add_purchase_modal:visible');
                 if (!activeModal.length) {
                     console.warn('No active modal found for debt calculation');
                     return;
                 }
 
-                var paidInput = activeModal.find(".paid");
-                var deptSpan = activeModal.find(".dept");
+                // Use the correct debt and paid elements based on which modal is active
+                let paidSelector, debtSelector;
+                if (activeModal.attr('id') === 'add_sales_modal') {
+                    paidSelector = '#add_sale_paid';
+                    debtSelector = '#add_sale_debt';
+                } else {
+                    paidSelector = '#add_purchase_paid';
+                    debtSelector = '#add_purchase_debt';
+                }
+
+                var paidInput = $(paidSelector);
+                var deptSpan = $(debtSelector);
 
                 if (!paidInput.length || !deptSpan.length) {
                     console.warn('Paid input or dept span not found in active modal');
                     return;
                 }
 
-                var paidAmount = parseFloat(paidInput.val().replace(/[^0-9.-]+/g, "")) || 0;
+                var paidAmount = parseFloat(paidInput.val()) || 0;
                 var deptAmount = total - paidAmount;
 
-                deptSpan.text(formatCurrency(deptAmount).replace('TSh ', ''));
+                // Ensure debt is never negative
+                deptAmount = Math.max(0, deptAmount);
+
+                // Update the debt display
+                deptSpan.text(deptAmount.toFixed(2));
             } catch (error) {
                 console.error('Error in calculateDebt:', error);
             }
         }
 
-        $(document).ready(function() {
-            // Add specific handler for pay_amount changes
-            $(document).on('input', '#pay_amount', function() {
-                // Get the current total value from the active modal
-                const activeModal = $(this).closest('#add_sales_modal, #add_purchase_modal');
-                const totalElement = activeModal.find('#tl');
 
-                if (totalElement.length) {
-                    const totalValue = parseFloat(totalElement.text().replace(/[^0-9.-]+/g, "")) || 0;
-                    calculateDebt(totalValue);
+        $(document).ready(function() {
+            // For new sales/purchases
+            $('#add_sale_paid, #add_purchase_paid').on('input', function() {
+                const activeModal = $(this).closest('#add_sales_modal, #add_purchase_modal');
+                let totalSelector;
+
+                if (activeModal.attr('id') === 'add_sales_modal') {
+                    totalSelector = '#add_sale_total';
+                } else {
+                    totalSelector = '#add_purchase_total';
+                }
+
+                const totalText = $(totalSelector).text();
+                const totalAmount = parseFloat(totalText.replace(/[^0-9.-]+/g, "")) || 0;
+                calculateDebt(totalAmount);
+            });
+
+            // For edit modals
+            $('#sales_edit_paid, #purchase_edit_paid').on('input', function() {
+                if ($(this).closest('#editSalesModal').length) {
+                    const totalText = $('#sales_edit_total').text();
+                    const totalAmount = parseFloat(totalText.replace(/[^0-9.-]+/g, "")) || 0;
+                    const paidAmount = parseFloat($(this).val()) || 0;
+                    const debtAmount = Math.max(0, totalAmount - paidAmount);
+                    $('#sales_edit_debt').text(debtAmount.toFixed(2) + ' Tzs');
+                } else {
+                    const totalText = $('#purchase_edit_total').text();
+                    const totalAmount = parseFloat(totalText.replace(/[^0-9.-]+/g, "")) || 0;
+                    const paidAmount = parseFloat($(this).val()) || 0;
+                    const debtAmount = Math.max(0, totalAmount - paidAmount);
+                    $('#purchase_edit_debt').text(debtAmount.toFixed(2) + ' Tzs');
                 }
             });
         });
@@ -3451,10 +4600,12 @@
                     return;
                 }
 
-                // If the element is the pay_amount, just call calculateDebt and return
-                if (element.id === 'pay_amount') {
+                // If the element is a payment input, just call calculateDebt and return
+                if (element.id === 'add_sale_paid' || element.id === 'add_purchase_paid') {
                     const activeModal = $(element).closest('#add_sales_modal, #add_purchase_modal');
-                    const totalElement = activeModal.find('#tl');
+                    const totalElement = activeModal.attr('id') === 'add_sales_modal' ?
+                        $('#add_sale_total') :
+                        $('#add_purchase_total');
 
                     if (totalElement.length) {
                         const totalValue = parseFloat(totalElement.text().replace(/[^0-9.-]+/g, "")) || 0;
@@ -3475,15 +4626,16 @@
                 const $unitPrice = $row.find('.unit_price');
                 const $discount = $row.find('.discount');
 
-                if (!$quantity.length || !$unitPrice.length || !$discount.length) {
-                    console.warn('Required elements not found in row');
+                // Check if all required elements exist
+                if (!$quantity.length || !$unitPrice.length) {
+                    console.warn('Required quantity or unit price elements not found in row');
                     return;
                 }
 
                 // Parse values safely
                 const valQtn = parseFloat($quantity.val()) || 0;
                 const valPrice = parseFloat($unitPrice.val().replace(/[^0-9.-]+/g, "")) || 0;
-                const valDisc = parseFloat($discount.val().replace(/[^0-9.-]+/g, "")) || 0;
+                const valDisc = $discount.length ? (parseFloat($discount.val().replace(/[^0-9.-]+/g, "")) || 0) : 0;
 
                 // Calculate net price
                 const netPrice = (valQtn * valPrice) - valDisc;
@@ -3492,7 +4644,11 @@
                 const $netPriceCell = $row.find('.ntl');
                 if ($netPriceCell.length) {
                     $netPriceCell.html(`<span>TSh</span>${netPrice.toFixed(2)}`);
-                    totalFn();
+
+                    // Call totalFn to update the overall total
+                    setTimeout(function() {
+                        totalFn();
+                    }, 0);
                 } else {
                     console.warn('Net price cell not found');
                 }
@@ -3524,7 +4680,10 @@
 
             // Set today's date as default for all date inputs
             const today = new Date().toISOString().split('T')[0];
-            $('input[type="date"]').val(today);
+            document.getElementById('add_sale_date').value = today;
+            document.getElementById('sales_edit_date').value = today;
+            document.getElementById('add_purchase_date').value = today;
+            document.getElementById('purchase_edit_date').value = today;
         });
 
         // Initialize on page load
@@ -3537,10 +4696,6 @@
             if (typeof purchaseTableManager === 'undefined') {
                 window.purchaseTableManager = new TableRowManager('purchase');
             }
-
-            // Set today's date as default for all date inputs
-            const today = new Date().toISOString().split('T')[0];
-            $('input[type="date"]').val(today);
 
             // Make sure both modals have their events bound correctly
             $('#add_sales_modal, #add_purchase_modal').each(function() {
@@ -3612,10 +4767,6 @@
             if (typeof purchaseTableManager === 'undefined') {
                 window.purchaseTableManager = new TableRowManager('purchase');
             }
-
-            // Set today's date as default for all date inputs
-            const today = new Date().toISOString().split('T')[0];
-            $('input[type="date"]').val(today);
 
             // Bind events for both modals
             $('#editSalesModal, #editPurchaseModal').each(function() {
@@ -3807,7 +4958,7 @@
             if (!efdModal) {
                 efdModal = document.createElement('div');
                 efdModal.id = 'efd_receipt';
-                efdModal.className = 'fixed inset-0 flex items-center justify-center hidden';
+                efdModal.className = 'fixed inset-0 z-20 flex items-center justify-center hidden';
                 efdModal.innerHTML = `
             <div class="bg-white p-3 w-80 rounded shadow border-black border">
                 <div class="flex justify-between border-b-2 border-gray-400 pb-2">
@@ -4265,6 +5416,1314 @@
         }
 
 
+        $(document).ready(function() {
+            // CSRF Token setup for AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#addPartyForm').submit(function(e) {
+                e.preventDefault();
+
+                $('.text-red-600').addClass('hidden');
+
+                const formData = {
+                    name: $('#part_name').val(),
+                    type: $('#type').val(),
+                    gender: $('#part_gender').val(),
+                    address: $('#address').val(),
+                    vat_number: $('#vat_number').val(),
+                    tin_number: $('#tin_number').val(),
+                    phone_number: $('#phone_number').val(),
+                    email: $('#email').val(),
+                    company_name: $('#company_name').val(),
+                    contact_person: $('#contact_person').val()
+                };
+
+                $.ajax({
+                    url: '/store_party',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#addPartyModal').addClass('hidden');
+                            showFeedbackModal('success', 'Success!', response.message);
+                            loadParties();
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+
+                            for (const field in errors) {
+                                $(`.${field}-error`).removeClass('hidden').text(errors[field][0]);
+                            }
+                        } else {
+                            showFeedbackModal('error', 'Error!', xhr.responseJSON.message || 'Failed to add party');
+                        }
+                    }
+                });
+            });
+
+            // Edit Party Form Submit
+            $('#editPartyForm').submit(function(e) {
+                e.preventDefault();
+
+                // Reset error messages
+                $('.text-red-600').addClass('hidden');
+
+                const partyId = $('#edit_party_id').val();
+
+                // Get form data
+                const formData = {
+                    name: $('#edit_name').val(),
+                    type: $('#edit_type').val(),
+                    address: $('#edit_address').val(),
+                    vat_number: $('#edit_vat_number').val(),
+                    tin_number: $('#edit_tin_number').val(),
+                    phone_number: $('#edit_phone_number').val(),
+                    email: $('#edit_email').val(),
+                    company_name: $('#edit_company_name').val(),
+                    contact_person: $('#edit_contact_person').val()
+                };
+
+                // Send AJAX request
+                $.ajax({
+                    url: `/update_part/${partyId}`,
+                    type: 'PUT',
+                    data: formData,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            // Close modal
+                            $('#editPartyModal').addClass('hidden');
+
+                            // Show success message
+                            showFeedbackModal('success', 'Success!', response.message);
+                            loadParties();
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+
+                            // Display validation errors
+                            for (const field in errors) {
+                                $(`.edit-${field}-error`).removeClass('hidden').text(errors[field][0]);
+                            }
+                        } else {
+                            // Show error message
+                            showFeedbackModal('error', 'Error!', xhr.responseJSON.message || 'Failed to update party');
+                        }
+                    }
+                });
+            });
+
+            $('#confirmDeleteParty').click(function() {
+
+                const partyId = $('#delete_party_id').val();
+
+                $.ajax({
+                    url: `/delete_part/${partyId}`,
+                    type: 'DELETE',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            // Close modal
+                            $('#deletePartyModal').addClass('hidden');
+                            loadParties();
+                            // Show success message
+                            showFeedbackModal('success', 'Success!', response.message);
+
+                        }
+                    },
+                    error: function(xhr) {
+                        // Close modal
+                        $('#deletePartyModal').addClass('hidden');
+
+                        // Show error message
+                        showFeedbackModal('error', 'Error!', xhr.responseJSON.message || 'Failed to delete party');
+                    }
+                });
+            });
+
+        });
+
+        // Unified part selection handler
+        $(document).on('click', '.part_li', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            try {
+                const selectedItem = $(this);
+                // Get the trimmed text from the span only
+                const partName = selectedItem.find('span:first').text().trim();
+                const partId = selectedItem.data('id');
+                const partType = selectedItem.data('type');
+
+                // Find the closest parent container
+                const container = selectedItem.closest('.relative');
+                const searchInput = container.find('.search_part');
+
+                // Determine which form we're in based on input ID
+                const inputId = searchInput.attr('id');
+                let partIdField, partTypeField, partBalanceField;
+
+                if (inputId === 'search_partFOR_payment') {
+                    // Add transaction modal
+                    partIdField = $('#Part_ID_payment');
+                    partTypeField = $('#Part_Type_payment');
+                    partBalanceField = $('#part_balance');
+
+                    // Update radio buttons to match part type
+                    $(`.part_type_radio[value="${partType}"]`).prop('checked', true);
+
+                    // Toggle visibility of transaction tables
+                    if (partType === 'Supplier') {
+                        $('#supplier_transactions_container').removeClass('hidden');
+                        $('#customer_transactions_container').addClass('hidden');
+
+                        // Fetch supplier transactions
+                        fetchPartPurchases(partId, 'purchases_TableBody');
+                    } else if (partType === 'Customer') {
+                        $('#supplier_transactions_container').addClass('hidden');
+                        $('#customer_transactions_container').removeClass('hidden');
+
+                        // Fetch customer transactions
+                        fetchPartSales(partId, 'Sale_TableBody');
+                    }
+                } else if (inputId === 'search_partFOR_paymentEDIT') {
+                    // Edit transaction modal
+                    partIdField = $('#Part_ID_paymentEDIT');
+                    partTypeField = $('#Part_Type_paymentEDIT');
+                    partBalanceField = $('#part_balanceEDIT');
+
+                    // Update radio buttons to match part type
+                    $(`.part_type_radioEDIT[value="${partType}"]`).prop('checked', true);
+
+                    // Toggle visibility of transaction tables
+                    if (partType === 'Supplier') {
+                        $('#supplier_transactions_containerEDIT').removeClass('hidden');
+                        $('#customer_transactions_containerEDIT').addClass('hidden');
+
+                        // Fetch supplier transactions
+                        fetchPartPurchases(partId, 'purchases_TableBodyEDIT');
+                    } else if (partType === 'Customer') {
+                        $('#supplier_transactions_containerEDIT').addClass('hidden');
+                        $('#customer_transactions_containerEDIT').removeClass('hidden');
+
+                        // Fetch customer transactions
+                        fetchPartSales(partId, 'Sale_TableBodyEDIT');
+                    }
+                }
+
+                // Update input fields
+                searchInput.val(partName);
+                partIdField.val(partId);
+                partTypeField.val(partType);
+
+                // Fetch part balance
+                fetchPartBalance(partId);
+
+                // Hide the part list
+                selectedItem.closest('.partlist').fadeOut();
+            } catch (error) {
+                console.error('Error in part selection:', error);
+            }
+        }); // Unified part search functionality
+
+        $(document).on('keyup', '.search_part', function() {
+            var inputElement = $(this);
+            var query = $.trim(inputElement.val());
+            var partList = inputElement.siblings('.partlist');
+            var partType = inputElement.data('type'); // 'Supplier', 'Customer', or empty for both
+
+            if (query !== '') {
+                $.ajax({
+                    type: 'POST',
+                    url: '/search_part', // New unified endpoint
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        query: query,
+                        type: partType
+                    },
+                    success: function(data) {
+                        if (data.trim() !== '') {
+                            partList.html(data).fadeIn();
+                        } else {
+                            partList.fadeOut();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error searching parts:', error);
+                        partList.fadeOut();
+                    }
+                });
+            } else {
+                partList.fadeOut();
+            }
+        });
+
+        // Unified part selection handler
+        $(document).on('click', '.part_li', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            try {
+                const selectedItem = $(this);
+                // Get the trimmed text from the span only
+                const partName = selectedItem.find('span:first').text().trim();
+                const partId = selectedItem.data('id');
+                const partType = selectedItem.data('type');
+
+                // Find the closest parent container
+                const container = selectedItem.closest('.relative');
+                const searchInput = container.find('.search_part');
+
+                // Determine which form we're in based on input ID
+                const inputId = searchInput.attr('id');
+                let partIdField, partTypeField, partBalanceField;
+
+                if (inputId === 'search_partFOR_payment') {
+                    // Add transaction modal
+                    partIdField = $('#Part_ID_payment');
+                    partTypeField = $('#Part_Type_payment');
+                    partBalanceField = $('#part_balance');
+
+                    // Set appropriate table ID based on part type
+                    const tableId = partType === 'Supplier' ? 'purchases_TableBody' : 'Sale_TableBody';
+
+                    // Fetch transactions based on part type
+                    if (partType === 'Supplier') {
+                        fetchPartPurchases(partId, tableId);
+                    } else if (partType === 'Customer') {
+                        fetchPartSales(partId, tableId);
+                    }
+                } else if (inputId === 'search_partFOR_paymentEDIT') {
+                    // Edit transaction modal
+                    partIdField = $('#Part_ID_paymentEDIT');
+                    partTypeField = $('#Part_Type_paymentEDIT');
+                    partBalanceField = $('#part_balanceEDIT');
+
+                    // Set appropriate table ID based on part type
+                    const tableId = partType === 'Supplier' ? 'purchases_TableBodyEDIT' : 'Sale_TableBodyEDIT';
+
+                    // Fetch transactions based on part type
+                    if (partType === 'Supplier') {
+                        fetchPartPurchases(partId, tableId);
+                    } else if (partType === 'Customer') {
+                        fetchPartSales(partId, tableId);
+                    }
+                }
+
+                // Update input fields
+                searchInput.val(partName);
+                partIdField.val(partId);
+                partTypeField.val(partType);
+
+                // Fetch part balance
+                fetchPartBalance(partId);
+
+                // Hide the part list
+                selectedItem.closest('.partlist').fadeOut();
+            } catch (error) {
+                console.error('Error in part selection:', error);
+            }
+        });
+
+        // Fetch part balance with unified approach
+        function fetchPartBalance(partId) {
+            $.ajax({
+                type: 'GET',
+                url: '/find_part_balance',
+                data: {
+                    'id': partId
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('.part_balance').val(parseFloat(data.dept).toFixed(2));
+                },
+                error: function() {
+                    console.log('Error fetching part balance');
+                }
+            });
+        }
+
+        // Fetch part purchases (for suppliers)
+        function fetchPartPurchases(partId, tableId) {
+            $.ajax({
+                type: 'GET',
+                url: '/fetch_part_transactions',
+                data: {
+                    'id': partId,
+                    'type': 'Supplier'
+                },
+                dataType: 'json',
+                success: function(data) {
+                    var purchasesHTML = '';
+                    data.forEach(function(purchase) {
+                        // Format amounts
+                        var formattedTotalAmount = new Intl.NumberFormat('en-TZ', {
+                            style: 'currency',
+                            currency: 'TZS'
+                        }).format(purchase.total_amount);
+
+                        var formattedBalance = new Intl.NumberFormat('en-TZ', {
+                            style: 'currency',
+                            currency: 'TZS'
+                        }).format(purchase.dept);
+
+                        var formattedPayedAmount = new Intl.NumberFormat('en-TZ', {
+                            style: 'currency',
+                            currency: 'TZS'
+                        }).format(purchase.paid);
+
+                        let formatted_purchaseDate = '';
+                        if (purchase?.purchase_date) {
+                            const date = new Date(purchase.purchase_date);
+                            formatted_purchaseDate = date.toISOString().split('T')[0];
+                        }
+                        purchasesHTML += `
+                    <tr class="bg-white border-b border-blue-500 ${tableId.includes('EDIT') ? 'edit_purchaseID' : ''}" ${tableId.includes('EDIT') ? 'data-id="' + purchase.id + '"' : ''}>
+                        <td>${tableId.includes('EDIT') ? '' : '<input type="checkbox" value="' + purchase.id + '" class="chkbox ml-1" />'}</td>
+                        <td class="py-1 px-2 text-left whitespace-nowrap">${formatted_purchaseDate}</td>
+                        <td class="py-1 px-2 text-left whitespace-nowrap">${formattedTotalAmount}</td>
+                        <td class="py-1 px-2 text-left whitespace-nowrap">${formattedPayedAmount}</td>
+                        <td id="balanceID" class="${tableId.includes('EDIT') ? 'balanceEDIT' : 'balance'} py-1 px-2 text-left whitespace-nowrap">${formattedBalance}</td>
+                    </tr>
+                `;
+                    });
+                    $('#' + tableId).html(purchasesHTML);
+                },
+                error: function() {
+                    console.log('Error fetching part transactions');
+                }
+            });
+        }
+
+        // Fetch part sales (for customers)
+        function fetchPartSales(partId, tableId) {
+            $.ajax({
+                type: 'GET',
+                url: '/fetch_part_transactions',
+                data: {
+                    'id': partId,
+                    'type': 'Customer'
+                },
+                dataType: 'json',
+                success: function(data) {
+                    var salesHTML = '';
+                    data.forEach(function(sale) {
+                        // Format amounts
+                        var formattedTotalAmount = new Intl.NumberFormat('en-TZ', {
+                            style: 'currency',
+                            currency: 'TZS'
+                        }).format(sale.total_amount);
+
+                        var formattedBalance = new Intl.NumberFormat('en-TZ', {
+                            style: 'currency',
+                            currency: 'TZS'
+                        }).format(sale.dept);
+
+                        var formattedPayedAmount = new Intl.NumberFormat('en-TZ', {
+                            style: 'currency',
+                            currency: 'TZS'
+                        }).format(sale.paid);
+
+                        let formatted_SaleDate = '';
+                        if (sale?.sale_date) {
+                            const date = new Date(sale.sale_date);
+                            formatted_SaleDate = date.toISOString().split('T')[0];
+                        }
+                        salesHTML += `
+                    <tr class="bg-white border-b border-blue-500 ${tableId.includes('EDIT') ? 'edit_saleID' : ''}" ${tableId.includes('EDIT') ? 'data-id="' + sale.id + '"' : ''}>
+                        <td>${tableId.includes('EDIT') ? '' : '<input type="checkbox" value="' + sale.id + '" class="chkbox ml-1" />'}</td>
+                        <td class="py-1 px-2 text-left whitespace-nowrap">${formatted_SaleDate}</td>
+                        <td class="py-1 px-2 text-left whitespace-nowrap">${formattedTotalAmount}</td>
+                        <td class="py-1 px-2 text-left whitespace-nowrap">${formattedPayedAmount}</td>
+                        <td id="balanceID" class="${tableId.includes('EDIT') ? 'balanceEDIT' : 'balance'} py-1 px-2 text-left whitespace-nowrap">${formattedBalance}</td>
+                    </tr>
+                `;
+                    });
+                    $('#' + tableId).html(salesHTML);
+                },
+                error: function() {
+                    console.log('Error fetching part transactions');
+                }
+            });
+        }
+
+        // Updated function to handle supplier and customer payment sections
+        function handlePartPaymentSection(isChecked) {
+            const $partSearchInput = $('#search_partFOR_payment');
+            const $appliedAmount = $('#applied_amount');
+            const $deptPaid = $('#dept_paid');
+            const $partIdInput = $('#Part_ID_payment');
+            const $partTypeInput = $('#Part_Type_payment');
+            const $otherPayment = $('.other_payment');
+
+            if (isChecked) {
+                // Enable part inputs
+                $partSearchInput.prop('disabled', false);
+                $appliedAmount.prop('disabled', false);
+                $deptPaid.prop('disabled', false);
+
+                // Disable and clear other payment inputs
+                $('#parson_name').prop('disabled', true);
+                $('#payment_amount').prop('disabled', true);
+                $('#parson_name').val('');
+                $('#payment_amount').val('');
+
+                // Uncheck other payment checkbox
+                $otherPayment.prop('checked', false);
+            } else {
+                // Reset form state if neither payment type is checked
+                if (!$otherPayment.is(':checked')) {
+                    $partSearchInput.prop('disabled', true);
+                    $appliedAmount.prop('disabled', true);
+                    $deptPaid.prop('disabled', true);
+
+                    // Important: Clear the part IDs
+                    $partIdInput.val('');
+                    $partTypeInput.val('');
+
+                    // Clear tables
+                    $('#purchases_TableBody, #Sale_TableBody').html(`
+                <tr class="bg-white border-b border-blue-500">
+                    <td class="py-1 px-2 text-center text-red-600 italic" colspan="6">
+                        No transactions found! Please search for a part first.
+                    </td>
+                </tr>
+            `);
+                }
+            }
+        }
+
+        // Handle payment type radio button changes
+        $(document).on('change', '.payment_type_radio', function() {
+            const paymentType = $(this).val();
+            // Store the payment type in a hidden input field or as data attribute
+            $('#payment_type').val(paymentType);
+        });
+
+        // Handle payment type radio button changes in edit modal
+        $(document).on('change', '.payment_type_radioEDIT', function() {
+            const paymentType = $(this).val();
+            // Store the payment type in a hidden input field or as data attribute
+            $('#payment_type_edit').val(paymentType);
+        });
+
+        // Update form submission to include payment type
+        $("#payment_out_form").validate({
+            rules: {
+                transaction_date: {
+                    required: true
+                },
+                method: {
+                    required: true
+                },
+                journal_memo: {
+                    required: true
+                },
+                person_name: {
+                    required: function() {
+                        return $('.other_payment').is(':checked');
+                    }
+                },
+                payment_amount: {
+                    required: function() {
+                        return $('.other_payment').is(':checked');
+                    },
+                    number: true
+                },
+                dept_paid: {
+                    required: function() {
+                        return $('.part_payment').is(':checked');
+                    },
+                    number: true
+                }
+            },
+            errorPlacement: function(error, element) {
+                return true;
+            },
+            highlight: function(element) {
+                $(element).addClass("border-2 border-red-500");
+            },
+            unhighlight: function(element) {
+                $(element).removeClass("border-2 border-red-500");
+            },
+            submitHandler: async function(form) {
+                event.preventDefault();
+                try {
+                    const formData = new FormData(form);
+
+                    // Determine which payment type we're dealing with
+                    const isOtherPayment = $('.other_payment').is(':checked');
+                    const isPartPayment = $('.part_payment').is(':checked');
+
+                    if (!isOtherPayment && !isPartPayment) {
+                        showFeedbackModal('error', 'Payment Failed!', 'Please select either Other Payment or Part Payment.');
+                        return;
+                    }
+
+                    // Get the payment type (Payment or Receipt)
+                    const paymentType = $('input[name="Payment"]:checked, input[name="Receipt"]:checked').val() || 'Payment';
+
+                    // Start with common data
+                    let transactionData = {
+                        transaction_date: formData.get('transaction_date'),
+                        journal_memo: formData.get('journal_memo'),
+                        method: formData.get('method'),
+                        type: paymentType, // Add the payment type
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    };
+
+                    // Add payment type specific data
+                    if (isOtherPayment) {
+                        // Handle other payment (use person_name)
+                        transactionData = {
+                            ...transactionData,
+                            person_name: $('#parson_name').val(),
+                            payment_amount: $('#payment_amount').val()
+                        };
+
+                        // Use record_payment_out for Payment type and record_payment_in for Receipt type
+                        const endpoint = paymentType === 'Payment' ? '/record_payment_out' : '/record_payment_in';
+
+                        const response = await $.ajax({
+                            url: endpoint,
+                            type: 'POST',
+                            data: transactionData
+                        });
+
+                        // Check if the response indicates success
+                        if (response && response.success === true) {
+                            showFeedbackModal('success', 'Payment Recorded!', 'Payment has been recorded successfully.');
+
+                            // Reset form
+                            resetPaymentForm();
+
+                            // Reload data if needed
+                            loadTransactions();
+                        } else {
+                            // Handle unexpected successful response format
+                            showFeedbackModal('error', 'Unexpected Response', 'Received successful response but in unexpected format.');
+                            console.log('Unexpected response format:', response);
+                        }
+                    } else if (isPartPayment) {
+                        // Handle part payment
+                        const partId = $('#Part_ID_payment').val();
+                        const partType = $('#Part_Type_payment').val();
+
+                        if (!partId) {
+                            showFeedbackModal('error', 'Payment Failed!', 'Please select a supplier or customer for part payment.');
+                            return;
+                        }
+
+                        // Determine which table to use based on part type
+                        const tableSelector = partType === 'Supplier' ? '#purchases_TableBody' : '#Sale_TableBody';
+
+                        // Get checked transactions
+                        const checkedTransactions = $(`${tableSelector} .chkbox:checked`);
+
+                        if (checkedTransactions.length === 0) {
+                            showFeedbackModal('error', 'Payment Failed!', 'Please select at least one transaction to pay.');
+                            return;
+                        }
+
+                        const transactionsData = [];
+                        checkedTransactions.each(function() {
+                            const $row = $(this).closest('tr');
+                            const $balanceCell = $row.find('.balance');
+
+                            // Get original and new balance
+                            const originalBalance = $balanceCell.data('original-balance') ||
+                                parseFloat($balanceCell.text().replace(/[^\d.-]/g, ''));
+                            const newBalance = parseFloat($balanceCell.text().replace(/[^\d.-]/g, ''));
+
+                            transactionsData.push({
+                                id: $(this).val(),
+                                newBalance: newBalance
+                            });
+                        });
+
+                        transactionData = {
+                            ...transactionData,
+                            part_id: partId,
+                            part_type: partType,
+                            transactions_data: JSON.stringify(transactionsData),
+                            dept_paid: $('#dept_paid').val()
+                        };
+
+                        // Determine endpoint based on part type and payment type
+                        // For Supplier + Payment = payment_out, Customer + Receipt = payment_in
+                        let endpoint;
+                        if (partType === 'Supplier' && paymentType === 'Payment') {
+                            endpoint = '/record_payment_out';
+                        } else if (partType === 'Customer' && paymentType === 'Receipt') {
+                            endpoint = '/record_payment_in';
+                        } else {
+                            showFeedbackModal('error', 'Invalid Combination', 'The combination of part type and payment type is invalid.');
+                            return;
+                        }
+
+                        const response = await $.ajax({
+                            url: endpoint,
+                            type: 'POST',
+                            data: transactionData
+                        });
+
+                        // Check if the response indicates success
+                        if (response && response.success === true) {
+                            showFeedbackModal('success', 'Payment Recorded!', 'Payment has been recorded successfully.');
+
+                            // Reset form
+                            resetPaymentForm();
+
+                            // Reload data if needed
+                            loadTransactions();
+                        } else {
+                            // Handle unexpected successful response format
+                            showFeedbackModal('error', 'Unexpected Response', 'Received successful response but in unexpected format.');
+                            console.log('Unexpected response format:', response);
+                        }
+                    }
+
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    const errorMessage = error.responseJSON?.message || 'There was an error while recording the payment.';
+                    const detailedErrors = error.responseJSON?.errors ? Object.values(error.responseJSON.errors).flat().join('<br>') : '';
+
+                    showFeedbackModal('error', 'Payment Failed!', errorMessage + (detailedErrors ? '<br><br>' + detailedErrors : ''));
+                }
+            }
+        });
+
+        // Update the payment type handlers for the radio buttons
+        function handlePaymentTypeSelection() {
+            // Default payment type based on part type
+            if ($('.part_payment').is(':checked')) {
+                const partType = $('#Part_Type_payment').val();
+
+                if (partType === 'Supplier') {
+                    // For supplier, default to Payment type
+                    $('input[name="Payment"][value="Payment"]').prop('checked', true);
+                } else if (partType === 'Customer') {
+                    // For customer, default to Receipt type
+                    $('input[name="Receipt"][value="Receipt"]').prop('checked', true);
+                }
+            }
+        }
+
+
+        // Helper function to handle successful response
+        function handleSuccessResponse(response) {
+            showFeedbackModal('success', 'Payment Recorded!', 'Payment has been recorded successfully.');
+
+            // Reset form
+            resetPaymentForm();
+
+        }
+
+        // Function to reset the payment form
+        function resetPaymentForm() {
+            // Clear input fields
+            $('#parson_name').val('');
+            $('#payment_amount').val('');
+            $('#journal_memo').val('');
+            $('#method').val('');
+            $('#applied_amount').val('');
+            $('#dept_paid').val('');
+            $('#search_partFOR_payment').val('');
+            $('#part_balance').val('');
+            $('#Part_ID_payment').val('');
+
+            // Uncheck checkboxes
+            $('.other_payment').prop('checked', false);
+            $('.part_payment').prop('checked', false);
+
+            // Reinitialize form state
+            initializeFormState();
+
+            // Clear tables
+            $('#purchases_TableBody').html(`
+        <tr class="bg-white border-b border-blue-500">
+            <td class="py-1 px-2 text-center text-red-600 italic" colspan="6">
+                No purchases found! Please search Supplier first.
+            </td>
+        </tr>
+    `);
+
+            $('#Sale_TableBody').html(`
+        <tr class="bg-white border-b border-green-500">
+            <td class="py-1 px-2 text-center text-red-600 italic" colspan="6">
+                No sales found! Please search Customer first.
+            </td>
+        </tr>
+    `);
+        }
+
+        // Handle other payment checkbox
+        $('.other_payment').on('change', function() {
+            if ($(this).is(':checked')) {
+                // Enable other payment inputs
+                $('#parson_name').prop('disabled', false);
+                $('#payment_amount').prop('disabled', false);
+                $('.payment_type_radio').prop('disabled', false);
+
+
+                // Disable part payment inputs
+                disablePartPaymentInputs();
+
+                // Uncheck part payment checkbox
+                $('.part_payment').prop('checked', false);
+            } else {
+                // Disable other payment inputs if part payment is not checked
+                if (!$('.part_payment').is(':checked')) {
+                    $('#parson_name').prop('disabled', true);
+                    $('#payment_amount').prop('disabled', true);
+                    $('.payment_type_radio').prop('disabled', true);
+
+                }
+            }
+        });
+
+        // Handle part payment checkbox
+        $('.part_payment').on('change', function() {
+            if ($(this).is(':checked')) {
+                // Enable part payment inputs
+                enablePartPaymentInputs();
+
+                // Disable other payment inputs
+                $('#parson_name').prop('disabled', true);
+                $('#payment_amount').prop('disabled', true);
+                $('#parson_name').val('');
+                $('#payment_amount').val('');
+                $('.payment_type_radio').prop('disabled', true);
+
+
+                // Uncheck other payment checkbox
+                $('.other_payment').prop('checked', false);
+            } else {
+                // Disable part payment inputs if other payment is not checked
+                if (!$('.other_payment').is(':checked')) {
+                    disablePartPaymentInputs();
+                }
+            }
+        });
+
+        // Function to enable part payment inputs
+        function enablePartPaymentInputs() {
+            $('#search_partFOR_payment').prop('disabled', false);
+            $('#applied_amount').prop('disabled', false);
+            $('#dept_paid').prop('disabled', false);
+            $('.part_type_radio').prop('disabled', false);
+        }
+
+        // Function to disable part payment inputs
+        function disablePartPaymentInputs() {
+            $('#search_partFOR_payment').prop('disabled', true);
+            $('#applied_amount').prop('disabled', true);
+            $('#dept_paid').prop('disabled', true);
+            $('.part_type_radio').prop('disabled', true);
+
+            // Clear part payment fields
+            $('#search_partFOR_payment').val('');
+            $('#applied_amount').val('');
+            $('#part_balance').val('');
+            $('#dept_paid').val('');
+            $('#Part_ID_payment').val('');
+
+            // Clear part tables
+            $('#purchases_TableBody').html(`
+        <tr class="bg-white border-b border-blue-500">
+            <td class="py-1 px-2 text-center text-red-600 italic" colspan="6">
+                Part payment disabled. Enable part payment to search for parts.
+            </td>
+        </tr>
+    `);
+
+            $('#Sale_TableBody').html(`
+        <tr class="bg-white border-b border-green-500">
+            <td class="py-1 px-2 text-center text-red-600 italic" colspan="6">
+                Part payment disabled. Enable part payment to search for parts.
+            </td>
+        </tr>
+    `);
+        }
+
+        // Initialize form state
+        function initializeFormState() {
+            // By default, disable all inputs
+            $('#parson_name').prop('disabled', true);
+            $('#payment_amount').prop('disabled', true);
+            disablePartPaymentInputs();
+            $('.payment_type_radio').prop('disabled', true);
+
+
+            // If other payment is checked, enable those inputs
+            if ($('.other_payment').is(':checked')) {
+                $('#parson_name').prop('disabled', false);
+                $('#payment_amount').prop('disabled', false);
+                $('.payment_type_radio').prop('disabled', false);
+
+            }
+
+            // If part payment is checked, enable those inputs
+            if ($('.part_payment').is(':checked')) {
+                enablePartPaymentInputs();
+            }
+        }
+
+        // Call this function when the page loads
+        $(document).ready(function() {
+            initializeFormState();
+        });
+
+        // Update part type selection to also set the appropriate payment type
+        $(document).on('change', '.part_type_radio', function() {
+            const partType = $(this).val();
+
+            // Update the search input's data-type attribute
+            $('#search_partFOR_payment').data('type', partType);
+            $('#search_partFOR_payment').attr('data-type', partType);
+
+            // Update the hidden part type field
+            $('#Part_Type_payment').val(partType);
+
+            // Set appropriate payment type based on part type
+            if (partType === 'Supplier') {
+                $('input[name="Payment"][value="Payment"]').prop('checked', true);
+            } else if (partType === 'Customer') {
+                $('input[name="Receipt"][value="Receipt"]').prop('checked', true);
+            }
+
+            // Clear search and results
+            $('#search_partFOR_payment').val('');
+            $('#Part_ID_payment').val('');
+            $('#part_balance').val('');
+
+            // Toggle visibility of transaction tables
+            if (partType === 'Supplier') {
+                $('#supplier_transactions_container').removeClass('hidden');
+                $('#customer_transactions_container').addClass('hidden');
+            } else {
+                $('#supplier_transactions_container').addClass('hidden');
+                $('#customer_transactions_container').removeClass('hidden');
+            }
+
+            // Clear transaction tables
+            $('#purchases_TableBody').html(`
+        <tr class="bg-white border-b border-blue-500">
+            <td class="py-1 px-2 text-center text-red-600 italic" colspan="6">
+                No purchases found! Please search ${partType} first.
+            </td>
+        </tr>
+    `);
+
+            $('#Sale_TableBody').html(`
+        <tr class="bg-white border-b border-green-500">
+            <td class="py-1 px-2 text-center text-red-600 italic" colspan="6">
+                No sales found! Please search ${partType} first.
+            </td>
+        </tr>
+    `);
+        });
+
+        // Update the part search functionality
+        $(document).on('keyup', '.search_part', function() {
+            var inputElement = $(this);
+            var query = $.trim(inputElement.val());
+            var partList = inputElement.siblings('.partlist');
+
+            // Get the part type from the data attribute
+            var partType = inputElement.data('type') || '';
+
+            if (query !== '') {
+                $.ajax({
+                    type: 'POST',
+                    url: '/search_part',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        query: query,
+                        type: partType
+                    },
+                    success: function(data) {
+                        if (data.trim() !== '') {
+                            partList.html(data).fadeIn();
+                        } else {
+                            partList.fadeOut();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error searching parts:', error);
+                        partList.fadeOut();
+                    }
+                });
+            } else {
+                partList.fadeOut();
+            }
+        });
+
+        // Initialize the search type when the page loads
+        $(document).ready(function() {
+            // Set the data-type attribute based on the selected radio button
+            const selectedPartType = $('input[name="part_type_radio"]:checked').val() || 'Supplier';
+            $('#search_partFOR_payment').data('type', selectedPartType);
+            $('#search_partFOR_payment').attr('data-type', selectedPartType);
+            $('#Part_Type_payment').val(selectedPartType);
+
+            // Ensure the correct transaction container is shown
+            if (selectedPartType === 'Supplier') {
+                $('#supplier_transactions_container').removeClass('hidden');
+                $('#customer_transactions_container').addClass('hidden');
+            } else {
+                $('#supplier_transactions_container').addClass('hidden');
+                $('#customer_transactions_container').removeClass('hidden');
+            }
+        });
+
+        // Hide dropdown lists when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.relative').length) {
+                $('.partlist').fadeOut();
+            }
+        });
+
+        // Prevent input blur when clicking on dropdown lists
+        $('.partlist').on('mousedown', function(e) {
+            e.preventDefault();
+        });
+
+        // Setup event listeners for supplier/customer payment checkbox
+        $('.supplier_payment').on('change', function() {
+            handlePartPaymentSection($(this).is(':checked'));
+
+            // Set the type based on which checkbox is checked
+            const $search_part = $('#search_partFOR_payment');
+            $search_part.data('type', 'Supplier');
+        });
+
+        $('.customer_payment').on('change', function() {
+            handlePartPaymentSection($(this).is(':checked'));
+
+            // Set the type based on which checkbox is checked
+            const $search_part = $('#search_partFOR_payment');
+            $search_part.data('type', 'Customer');
+        });
+
+        let originalBalances = {};
+
+        // Function to restore balances to their original state
+        function restoreBalances() {
+            $('.balance').each(function() {
+                let $balanceCell = $(this);
+                let originalBalance = $balanceCell.data('original-balance');
+                if (originalBalance !== undefined) {
+                    $balanceCell.text(
+                        originalBalance.toLocaleString('en-TZ', {
+                            style: 'currency',
+                            currency: 'TZS'
+                        })
+                    );
+                }
+            });
+        }
+
+        // Function to format number as TZS currency
+        function formatAsTZS(number) {
+            return number.toLocaleString('en-TZ', {
+                style: 'currency',
+                currency: 'TZS'
+            });
+        }
+
+        // Handle applied amount changes
+        $('#applied_amount').on('input', function() {
+            // Restore all balances to original state first
+            restoreBalances();
+
+            let appliedAmount = parseFloat($(this).val()) || 0;
+            let remainingAmount = appliedAmount;
+            let totalDeducted = 0;
+
+            // Get all checked rows and their original balances
+            let checkedRows = $('.chkbox:checked').map(function() {
+                let $row = $(this).closest('tr');
+                let $balanceCell = $row.find('.balance');
+
+                // Store original balance if not already stored
+                if (!$balanceCell.data('original-balance')) {
+                    let originalBalance = parseFloat($balanceCell.text().replace(/[^\d.-]/g, ''));
+                    $balanceCell.data('original-balance', originalBalance);
+                }
+
+                return {
+                    $balanceCell: $balanceCell,
+                    originalBalance: $balanceCell.data('original-balance')
+                };
+            }).get();
+
+            // Process each checked row
+            checkedRows.forEach(function(row) {
+                if (remainingAmount > 0) {
+                    let amountToSubtract = Math.min(remainingAmount, row.originalBalance);
+                    let newBalance = row.originalBalance - amountToSubtract;
+
+                    row.$balanceCell.text(formatAsTZS(newBalance));
+
+                    remainingAmount -= amountToSubtract;
+                    totalDeducted += amountToSubtract;
+                }
+            });
+
+            // Update the dept_paid input with the total deducted amount
+            $('#dept_paid').val(totalDeducted.toFixed(2));
+        });
+
+        // Handle checkbox clicks
+        $(document).on('change', '.chkbox', function() {
+            $('#applied_amount').trigger('input');
+        });
+
+        // Optional: Add validation to prevent negative values
+        $('#applied_amount').on('change', function() {
+            let value = parseFloat($(this).val()) || 0;
+            if (value < 0) {
+                $(this).val(0);
+            }
+        });
+
+        // Similar updates for the edit form
+        $("#edit_transaction_form").validate({
+            rules: {
+                transaction_date: {
+                    required: true
+                },
+                method: {
+                    required: true
+                },
+                person_name: {
+                    required: function() {
+                        return $("#edit_other_paymentCHECKBOXID").is(":checked");
+                    }
+                },
+                payment_amount: {
+                    required: function() {
+                        return $("#edit_other_paymentCHECKBOXID").is(":checked");
+                    }
+                },
+                dept_paid: {
+                    required: function() {
+                        return $("#supplier_paymentEDITcheckboxID").is(":checked") ||
+                            $("#customer_paymentEDITcheckboxID").is(":checked");
+                    }
+                }
+            },
+            errorPlacement: function(error, element) {
+                return true;
+            },
+            highlight: function(element) {
+                $(element).addClass("border-2 border-red-500");
+            },
+            unhighlight: function(element) {
+                $(element).removeClass("border-2 border-red-500");
+            },
+            submitHandler: async function(form) {
+                event.preventDefault();
+                const transaction_id = $('#edit_transaction_id').val();
+
+                try {
+                    // Get the payment type (Payment or Receipt)
+                    const paymentType = $('input[name="Payment"]:checked, input[name="Receipt"]:checked').val() || 'Payment';
+
+                    let formData = {
+                        transaction_date: $('#edit_transaction_date').val(),
+                        method: $('#edit_method').val(),
+                        journal_memo: $('#edit_journal_memo').val(),
+                        type: paymentType, // Add the payment type
+                        _token: $('input[name="_token"]').val()
+                    };
+
+                    // Check which payment type is being handled
+                    const isPartPayment = $("#supplier_paymentEDITcheckboxID").is(":checked") ||
+                        $("#customer_paymentEDITcheckboxID").is(":checked");
+
+                    // Handle part payment (supplier or customer)
+                    if (isPartPayment) {
+                        const partType = $('#Part_Type_paymentEDIT').val();
+                        const tableSelector = partType === 'Supplier' ? '#purchases_TableBodyEDIT' : '#Sale_TableBodyEDIT';
+                        const rowClass = partType === 'Supplier' ? '.edit_purchaseID' : '.edit_saleID';
+
+                        const transactionsData = [];
+                        $(`${tableSelector} ${rowClass}`).each(function() {
+                            const transactionId = $(this).data('id');
+                            if (transactionId) {
+                                transactionsData.push({
+                                    id: transactionId,
+                                    unPAIDdept: parseFloat($(this).find('.balanceEDIT').text().replace(/[^0-9.-]+/g, ''))
+                                });
+                            }
+                        });
+
+                        formData = {
+                            ...formData,
+                            part_id: $('#Part_ID_paymentEDIT').val(),
+                            part_type: partType,
+                            dept_paid: $('#paidEDIT').val(),
+                            transactions_data: JSON.stringify(transactionsData),
+                        };
+                    }
+
+                    // Handle other payment
+                    if ($("#edit_other_paymentCHECKBOXID").is(":checked")) {
+                        formData = {
+                            ...formData,
+                            person_name: $('#edit_parson_name').val(),
+                            payment_amount: $('#edit_payment_amount').val()
+                        };
+                    }
+
+                    const response = await $.ajax({
+                        url: `/transaction_update/${transaction_id}`,
+                        type: 'PUT',
+                        data: formData
+                    });
+
+                    if (response.success) {
+                        showFeedbackModal('success', 'Success', 'Transaction updated successfully');
+                        hide_editTransactionModal();
+                        loadTransactions();
+                    } else {
+                        throw new Error(response.message);
+                    }
+                } catch (error) {
+                    const errorMessage = error.responseJSON?.message || 'Failed to update transaction';
+                    showFeedbackModal('error', 'Error', errorMessage);
+                }
+            }
+        });
+
+
+        // Function to populate edit transaction modal - update to handle payment type
+        function populateEditTransactionModal(transactionId) {
+            $.ajax({
+                type: 'GET',
+                url: `/populate_transaction/${transactionId}`,
+                dataType: 'json',
+                success: function(transaction) {
+                    // Reset form first
+                    resetEditTransactionForm();
+
+                    // Set transaction ID for form submission
+                    $('#edit_transaction_id').val(transaction.id);
+
+                    // Set common fields
+                    $('#edit_transaction_date').val(transaction.transaction_date);
+                    $('#edit_method').val(transaction.method);
+                    $('#edit_journal_memo').val(transaction.journal_memo);
+
+                    // Set payment type (Payment or Receipt)
+                    if (transaction.type === 'Payment') {
+                        $('input[name="Payment"][value="Payment"]').prop('checked', true);
+                    } else if (transaction.type === 'Receipt') {
+                        $('input[name="Receipt"][value="Receipt"]').prop('checked', true);
+                    }
+
+                    // Check transaction type and set appropriate fields
+                    if (transaction.part_id) {
+                        // This is a part payment (supplier or customer)
+                        const partType = transaction.part?.type;
+
+                        if (partType === 'Supplier') {
+                            // Supplier payment
+                            $('#supplier_paymentEDITcheckboxID').prop('checked', true);
+                            $('.part_type_radioEDIT[value="Supplier"]').prop('checked', true);
+
+                            // Show supplier container, hide customer container
+                            $('#supplier_transactions_containerEDIT').removeClass('hidden');
+                            $('#customer_transactions_containerEDIT').addClass('hidden');
+
+                            // Set supplier name
+                            $('#search_partFOR_paymentEDIT').val(transaction.part?.name || '');
+                            $('#Part_ID_paymentEDIT').val(transaction.part_id);
+                            $('#Part_Type_paymentEDIT').val('Supplier');
+
+                            // Set payment amount
+                            $('#paidEDIT').val(transaction.payment_amount);
+
+                            // Fetch supplier balance and transactions
+                            fetchPartBalance(transaction.part_id);
+                            if (transaction.purchase_id) {
+                                // Fetch specific purchase
+                                fetchSinglePurchase(transaction.purchase_id, 'purchases_TableBodyEDIT');
+                            } else {
+                                // Fetch all supplier purchases
+                                fetchPartPurchases(transaction.part_id, 'purchases_TableBodyEDIT');
+                            }
+                        } else if (partType === 'Customer') {
+                            // Customer payment
+                            $('#customer_paymentEDITcheckboxID').prop('checked', true);
+                            $('.part_type_radioEDIT[value="Customer"]').prop('checked', true);
+
+                            // Show customer container, hide supplier container
+                            $('#supplier_transactions_containerEDIT').addClass('hidden');
+                            $('#customer_transactions_containerEDIT').removeClass('hidden');
+
+                            // Set customer name
+                            $('#search_partFOR_paymentEDIT').val(transaction.part?.name || '');
+                            $('#Part_ID_paymentEDIT').val(transaction.part_id);
+                            $('#Part_Type_paymentEDIT').val('Customer');
+
+                            // Set payment amount
+                            $('#paidEDIT').val(transaction.payment_amount);
+
+                            // Fetch customer balance and transactions
+                            fetchPartBalance(transaction.part_id);
+                            if (transaction.sale_id) {
+                                // Fetch specific sale
+                                fetchSingleSale(transaction.sale_id, 'Sale_TableBodyEDIT');
+                            } else {
+                                // Fetch all customer sales
+                                fetchPartSales(transaction.part_id, 'Sale_TableBodyEDIT');
+                            }
+                        }
+                    } else {
+                        // This is an other payment
+                        $('#edit_other_paymentCHECKBOXID').prop('checked', true);
+                        $('#edit_parson_name').val(transaction.person_name || '');
+                        $('#edit_payment_amount').val(transaction.payment_amount || '');
+                    }
+
+                    // Show the modal
+                    showEditTransactionModal();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching transaction:', error);
+                    showFeedbackModal('error', 'Error', 'Failed to load transaction data');
+                }
+            });
+        }
+
+
+        // Add hidden inputs to both modals for payment type
+        function addHiddenInputs() {
+            if ($('#payment_type').length === 0) {
+                $('form#payment_out_form').append('<input type="hidden" id="payment_type" name="type" value="Payment">');
+            }
+
+            if ($('#payment_type_edit').length === 0) {
+                $('form#edit_transaction_form').append('<input type="hidden" id="payment_type_edit" name="type" value="Payment">');
+            }
+        }
+
+        // Call this when document is ready
+        $(document).ready(function() {
+            addHiddenInputs();
+
+            // Set default payment type
+            $('input[name="Payment"][value="Payment"]').prop('checked', true);
+        });
 
 
 
@@ -4410,6 +6869,157 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function show_addTransactionModal() {
+            let dialog = document.getElementById('addTransactionModal');
+            dialog.classList.remove('hidden');
+        }
+
+        function hide_addTransactionModal() {
+            let dialog = document.getElementById('addTransactionModal');
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
+        }
+
+        function show_editTransactionModal() {
+            let dialog = document.getElementById('editTransactionModal');
+            dialog.classList.remove('hidden');
+        }
+
+        function hide_editTransactionModal() {
+            let dialog = document.getElementById('editTransactionModal');
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
+        }
+
+        function show_addPartyModal() {
+            let dialog = document.getElementById('addPartyModal');
+            dialog.classList.remove('hidden');
+            // Reset form
+            $('#addPartyForm')[0].reset();
+            $('.text-red-600').addClass('hidden');
+        }
+
+        function show_editPartyModal(partyId) {
+            let dialog = document.getElementById('editPartyModal');
+            dialog.classList.remove('hidden');
+            $.ajax({
+                url: `/edit_part/${partyId}`,
+                type: 'GET',
+                success: function(response) {
+
+                    const party = response.part;
+
+                    // Fill the form
+                    $('#edit_party_id').val(party.id);
+                    $('#edit_name').val(party.name);
+                    $('#edit_type').val(party.type);
+                    $('#edit_address').val(party.address);
+                    $('#edit_vat_number').val(party.vat_number);
+                    $('#edit_tin_number').val(party.tin_number);
+                    $('#edit_phone_number').val(party.phone_number);
+                    $('#edit_email').val(party.email);
+                    $('#edit_company_name').val(party.company_name);
+                    $('#edit_contact_person').val(party.contact_person);
+
+                    // Show modal
+                    $('#editPartyModal').removeClass('hidden');
+                },
+                error: function(xhr) {
+                    showFeedbackModal('error', 'Error!', xhr.responseJSON.message || 'Failed to get party details');
+                }
+            });
+        }
+
+        function show_deletePartyModal(partyId) {
+            let dialog = document.getElementById('deletePartyModal');
+            dialog.classList.remove('hidden');
+            $('#delete_party_id').val(partyId);
+        }
+
+        // Close Modals
+        $('.close-modal').click(function() {
+            $('#addPartyModal, #editPartyModal, #deletePartyModal').addClass('hidden');
+        });
 
         function close_purchase_Modal() {
             document.getElementById('purchase_Modal').classList.add('hidden');
@@ -4677,7 +7287,8 @@
                     tr.after(newRow);
                 } else {
                     // If no button provided, append to the end of the table
-                    $('#table1 tbody').append(newRow);
+                    $('#record_sales_table tbody').append(newRow);
+                    $('#purchase_record_table tbody').append(newRow);
                 }
 
                 // After adding the new row, ensure the item search functionality is correctly bound
@@ -4694,11 +7305,22 @@
 
             // Delete row for the main modals (regular sales or purchases)
             delRow(button) {
-                const tbody = $('#table1 tbody');
-                const rowCount = tbody.children('tr').length;
+                const tbody_record_sales_table = $('#record_sales_table tbody');
+                const tbody_purchase_record_table = $('#purchase_record_table tbody');
+                const rowCount_record_sales_table = tbody_record_sales_table.children('tr').length;
+                const rowCount_purchase_record_table = tbody_purchase_record_table.children('tr').length;
 
                 // Prevent deleting the last row
-                if (rowCount > 1) {
+                if (rowCount_record_sales_table > 1) {
+                    $(button).closest('tr').remove();
+                    totalFn();
+                } else {
+                    // Show error message
+                    showFeedbackModal('error', 'Error', 'Cannot delete the last row');
+                }
+
+                // Prevent deleting the last row
+                if (rowCount_purchase_record_table > 1) {
                     $(button).closest('tr').remove();
                     totalFn();
                 } else {
@@ -4996,7 +7618,7 @@
                     </td>
                     <td class="p-1">
                         <div class="relative">
-                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" id="edit_purchase_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
                             <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
                             <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
                         </div>
@@ -5043,7 +7665,7 @@
                     </td>
                     <td class="p-1">
                         <div class="relative">
-                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" id="edit_sale_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
                             <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
                             <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
                         </div>
