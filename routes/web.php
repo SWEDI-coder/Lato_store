@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BusinessStatisticsController;
 use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\PurchasesController;
@@ -16,7 +17,6 @@ Route::get('/edit_item_details/{id}', [ItemsController::class, 'edit_item_detail
 Route::get('/fetch_Items_Counts', [ItemsController::class, 'fetch_Items_Counts'])->name('fetch_Items_Counts');
 Route::post('/fetch_item', [ItemsController::class, 'fetch_item'])->name('fetch_item');
 Route::get('find_item_details', [ItemsController::class, 'find_item_details'])->name('find_item_details');
-Route::get('getItemsStatistics', [ItemsController::class, 'getItemsStatistics'])->name('getItemsStatistics');
 
 Route::post('/store_item', [ItemsController::class, 'store_item'])->name('store_item');
 Route::get('/fetch_inventory', [ItemsController::class, 'fetch_inventory'])->name('fetch_inventory');
@@ -70,3 +70,5 @@ Route::get('/populate_transaction/{id}', [TransactionController::class, 'populat
 Route::put('/transaction_update/{id}', [TransactionController::class, 'transaction_update'])
     ->name('transaction_update');
 Route::delete('/delete_transaction/{id}', [TransactionController::class, 'delete_transaction'])->name('delete_transaction');
+// Add this route to your routes/web.php or routes/api.php file
+Route::get('getBusinessStatistics', [BusinessStatisticsController::class, 'getBusinessStatistics'])->name('getBusinessStatistics');

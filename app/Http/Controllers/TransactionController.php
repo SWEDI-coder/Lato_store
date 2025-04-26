@@ -438,134 +438,131 @@ class TransactionController extends Controller
         DB::beginTransaction();
 
         try {
-            // Find the transaction
+            // Find the transaction to delete
             $transaction = Transaction::findOrFail($id);
+
+            // Track if we need to delete the parent record (purchase/sale)
+            $shouldDeleteParent = false;
 
             // Handle purchase-related transactions
             if ($transaction->purchase_id) {
                 $purchase = Purchase::findOrFail($transaction->purchase_id);
-                $purchaseItems = PurchaseItem::where('purchase_id', $purchase->id)->get();
 
-                // Adjust the purchase record's paid amount and debt
-                $purchase->paid -= $transaction->payment_amount;
-                $purchase->dept += $transaction->payment_amount;
+                // Delete the transaction first
+                $transaction->delete();
 
-                // Check if this is the initial transaction (matches the reference_no)
-                $isInitialTransaction = $transaction->reference_no === $purchase->reference_no;
+                // Count remaining transactions for this purchase
+                $remainingTransactions = Transaction::where('purchase_id', $purchase->id)->get();
+                $transactionCount = $remainingTransactions->count();
 
-                // Check if after adjustment, there are no payments left
-                $noPaymentsLeft = $purchase->paid <= 0;
+                if ($transactionCount === 0) {
+                    // If no transactions left, delete the purchase
+                    $shouldDeleteParent = true;
 
-                if ($isInitialTransaction || $noPaymentsLeft) {
-                    // Delete all purchase items - this will affect the item's current stock calculation
-                    foreach ($purchaseItems as $purchaseItem) {
-                        $purchaseItem->delete();
-                    }
+                    // Get purchase items before deleting the purchase
+                    $purchaseItems = PurchaseItem::where('purchase_id', $purchase->id)->get();
 
-                    // Delete all related transactions
-                    Transaction::where('purchase_id', $purchase->id)->delete();
+                    // Delete purchase items
+                    PurchaseItem::where('purchase_id', $purchase->id)->delete();
 
                     // Delete the purchase
                     $purchase->delete();
 
-                    // Update item statuses based on their new calculated stock
+                    // Update affected items' status
                     foreach ($purchaseItems as $purchaseItem) {
                         $item = Item::find($purchaseItem->item_id);
                         if ($item) {
-                            // Get the new calculated current stock
                             $currentStock = $item->getCurrentStockAttribute();
-
-                            // Update item status if needed
                             if ($currentStock <= 0) {
                                 $item->status = 'Sold Out';
                             } else {
                                 $item->status = 'Available';
                             }
-
                             $item->save();
                         }
                     }
                 } else {
-                    // Just update the purchase status
-                    if ($purchase->paid <= 0) {
+                    // Recalculate the paid amount by summing all remaining transactions
+                    $totalPaid = $remainingTransactions->sum('payment_amount');
+
+                    // Update the purchase record
+                    $purchase->paid = $totalPaid;
+                    $purchase->dept = $purchase->total_amount - $totalPaid;
+
+                    // Update status based on new paid amount
+                    if ($totalPaid <= 0) {
                         $purchase->status = 'Unpaid';
-                    } else if ($purchase->paid < $purchase->total_amount) {
+                    } else if ($totalPaid < $purchase->total_amount) {
                         $purchase->status = 'Partial paid';
                     } else {
                         $purchase->status = 'Paid';
                     }
 
                     $purchase->save();
-
-                    // Delete only this transaction
-                    $transaction->delete();
                 }
             }
 
             // Handle sale-related transactions
             else if ($transaction->sale_id) {
                 $sale = Sale::findOrFail($transaction->sale_id);
-                $saleItems = SaleItem::where('sale_id', $sale->id)->get();
 
-                // Adjust the sale record's paid amount and debt
-                $sale->paid -= $transaction->payment_amount;
-                $sale->dept += $transaction->payment_amount;
+                // Delete the transaction first
+                $transaction->delete();
 
-                // Check if this is the initial transaction (matches the reference_no)
-                $isInitialTransaction = $transaction->reference_no === $sale->reference_no;
+                // Count remaining transactions for this sale
+                $remainingTransactions = Transaction::where('sale_id', $sale->id)->get();
+                $transactionCount = $remainingTransactions->count();
 
-                // Check if after adjustment, there are no payments left
-                $noPaymentsLeft = $sale->paid <= 0;
+                if ($transactionCount === 0) {
+                    // If no transactions left, delete the sale
+                    $shouldDeleteParent = true;
 
-                if ($isInitialTransaction || $noPaymentsLeft) {
-                    // Delete all sale items - this will affect item's current stock calculation
-                    foreach ($saleItems as $saleItem) {
-                        $saleItem->delete();
-                    }
+                    // Get sale items before deleting the sale
+                    $saleItems = SaleItem::where('sale_id', $sale->id)->get();
 
-                    // Delete all related transactions
-                    Transaction::where('sale_id', $sale->id)->delete();
+                    // Delete sale items
+                    SaleItem::where('sale_id', $sale->id)->delete();
 
                     // Delete the sale
                     $sale->delete();
 
-                    // Update item statuses based on their new calculated stock
+                    // Update affected items' status
                     foreach ($saleItems as $saleItem) {
                         $item = Item::find($saleItem->item_id);
                         if ($item) {
-                            // Get the new calculated current stock
                             $currentStock = $item->getCurrentStockAttribute();
-
-                            // Update item status if needed
                             if ($currentStock <= 0) {
                                 $item->status = 'Sold Out';
                             } else {
                                 $item->status = 'Available';
                             }
-
                             $item->save();
                         }
                     }
                 } else {
-                    // Just update the sale status
-                    if ($sale->paid <= 0) {
+                    // Recalculate the paid amount by summing all remaining transactions
+                    $totalPaid = $remainingTransactions->sum('payment_amount');
+
+                    // Update the sale record
+                    $sale->paid = $totalPaid;
+                    $sale->dept = $sale->total_amount - $totalPaid;
+
+                    // Update status based on new paid amount
+                    if ($totalPaid <= 0) {
                         $sale->status = 'Unpaid';
-                    } else if ($sale->paid < $sale->total_amount) {
+                    } else if ($totalPaid < $sale->total_amount) {
                         $sale->status = 'Partial paid';
                     } else {
                         $sale->status = 'Paid';
                     }
 
                     $sale->save();
-
-                    // Delete only this transaction
-                    $transaction->delete();
                 }
             }
 
             // If it has no purchase_id or sale_id, it's a standalone transaction
             else {
-                // Just delete the standalone transaction
+                // Just delete the transaction
                 $transaction->delete();
             }
 
@@ -573,7 +570,8 @@ class TransactionController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Transaction deleted successfully'
+                'message' => 'Transaction deleted successfully',
+                'deleted_parent' => $shouldDeleteParent
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -583,5 +581,127 @@ class TransactionController extends Controller
                 'message' => 'Failed to delete transaction: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function getItemsStatistics()
+    {
+        // Best-Selling Items - Top 5 items with highest sales
+        $bestSellingItems = DB::table('sale_items')
+            ->select('item_id', DB::raw('SUM(quantity) as total_quantity'), DB::raw('SUM(quantity * sale_price) as total_revenue'))
+            ->groupBy('item_id')
+            ->orderBy('total_quantity', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Slow-Moving Items - Items with less than 5 sales in the last 30 days
+        $slowMovingItems = DB::table('items')
+            ->leftJoin('sale_items', function ($join) {
+                $join->on('items.id', '=', 'sale_items.item_id')
+                    ->where('sale_items.created_at', '>=', now()->subDays(30));
+            })
+            ->select('items.id', 'items.name', DB::raw('COALESCE(SUM(sale_items.quantity), 0) as total_sold'))
+            ->groupBy('items.id', 'items.name')
+            ->having('total_sold', '<', 5)
+            ->limit(10)
+            ->get();
+
+        // Sales Trends - Last 6 months
+        $salesTrends = DB::table('sale_items')
+            ->select(
+                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                DB::raw('SUM(quantity) as total_quantity'),
+                DB::raw('SUM(quantity * sale_price) as total_revenue')
+            )
+            ->where('created_at', '>=', now()->subMonths(6))
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Total Revenue 
+        $totalRevenue = DB::table('sale_items')
+            ->sum(DB::raw('quantity * sale_price'));
+
+        // Discount Impact
+        $discountImpact = DB::table('sale_items')
+            ->select(
+                DB::raw('SUM(CASE WHEN discount > 0 THEN quantity * sale_price ELSE 0 END) as with_discount'),
+                DB::raw('SUM(CASE WHEN discount = 0 OR discount IS NULL THEN quantity * sale_price ELSE 0 END) as without_discount')
+            )
+            ->first();
+
+        // Purchase Trends - Monthly
+        $purchaseTrends = DB::table('purchase_items')
+            ->select(
+                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                DB::raw('SUM(quantity) as total_quantity'),
+                DB::raw('SUM(quantity * purchase_price) as total_cost')
+            )
+            ->where('created_at', '>=', now()->subMonths(6))
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Dead Stock - Items not sold in the last 90 days but have stock
+        $deadStock = DB::table('items')
+            ->select('items.id', 'items.name', 'items.sku')
+            ->whereNotExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('sale_items')
+                    ->whereRaw('sale_items.item_id = items.id')
+                    ->where('sale_items.created_at', '>=', now()->subDays(90));
+            })
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('purchase_items')
+                    ->whereRaw('purchase_items.item_id = items.id');
+            })
+            ->whereRaw('(SELECT SUM(purchase_items.quantity) FROM purchase_items WHERE purchase_items.item_id = items.id) > 
+                    COALESCE((SELECT SUM(sale_items.quantity) FROM sale_items WHERE sale_items.item_id = items.id), 0)')
+            ->limit(10)
+            ->get();
+
+        // Profit Per Item - Average profit margin across all items
+        $profitCalculation = DB::table('items')
+            ->select('items.id', 'items.name', 'items.sale_price')
+            ->selectRaw('(
+            SELECT AVG(purchase_price) 
+            FROM purchase_items 
+            WHERE purchase_items.item_id = items.id
+        ) as avg_purchase_price')
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('purchase_items')
+                    ->whereRaw('purchase_items.item_id = items.id');
+            })
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'sale_price' => $item->sale_price,
+                    'avg_purchase_price' => $item->avg_purchase_price,
+                    'profit_margin' => $item->sale_price - $item->avg_purchase_price,
+                    'profit_percentage' => $item->avg_purchase_price > 0
+                        ? (($item->sale_price - $item->avg_purchase_price) / $item->avg_purchase_price) * 100
+                        : 0
+                ];
+            })
+            ->sortByDesc('profit_margin')
+            ->take(10)
+            ->values();
+
+        return response()->json([
+            'success' => true,
+            'statistics' => [
+                'best_selling_items' => $bestSellingItems,
+                'slow_moving_items' => $slowMovingItems,
+                'sales_trends' => $salesTrends,
+                'total_revenue' => $totalRevenue,
+                'discount_impact' => $discountImpact,
+                'purchase_trends' => $purchaseTrends,
+                'dead_stock' => $deadStock,
+                'profit_calculation' => $profitCalculation
+            ]
+        ]);
     }
 }

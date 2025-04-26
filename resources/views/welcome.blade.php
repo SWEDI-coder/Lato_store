@@ -405,6 +405,19 @@
             padding: 1rem;
             /* add some spacing inside */
         }
+
+        #stats_container {
+            overflow: auto;
+            /* Enable both horizontal and vertical scrolling */
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling on iOS */
+            margin: 0 auto;
+            /* Centers the container */
+            max-width: 100%;
+            /* Ensures the container width does not exceed viewport width */
+            max-height: 490px;
+            /* Adjust height as needed */
+        }
     </style>
 </head>
 
@@ -880,6 +893,550 @@
                     </div>
                 </div>
             </div>
+
+            <div id="reports" class="tab-content">
+                <div class="flex justify-between mb-4">
+                    <h2 class="text-xl font-semibold">reports</h2>
+
+                    <div class="flex items-center gap-3">
+                        <!-- reports Stats Cards -->
+                        <div class="grid grid-cols-4 gap-3 mr-4">
+                            <div class="bg-white p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Purchases</div>
+                                <div id="total_purchases" class="text-lg font-bold">0</div>
+                            </div>
+                            <div class="bg-green-100 p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Income</div>
+                                <div id="total_income" class="text-lg font-bold text-green-600">0</div>
+                            </div>
+                            <div class="bg-yellow-100 p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Sales</div>
+                                <div id="total_sales" class="text-lg font-bold text-yellow-600">0</div>
+                            </div>
+                            <div class="bg-red-100 p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Expenses</div>
+                                <div id="total_expenses" class="text-lg font-bold text-red-600">0</div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-lg">
+                            <div class="relative group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07" />
+                                </svg>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
+                            </div>
+                            <div class="relative group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
+                                </svg>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">print</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full">
+                    <!-- Filter Container with responsive grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <input type="date" id="from_Date"
+                            class="px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="date" id="to_Date"
+                            class="px-3 py-1 border-2 border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <div id="stats_container" class=" p-3 border-gray-500 bg-gray-300 border-2">
+                                <!-- Statistics Content -->
+                                <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                                    <!-- Financial Metrics Container -->
+                                    <div id="financial_metrics_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                                        <h3 class="text-lg font-medium mb-4">Financial Overview</h3>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                            <div class="bg-blue-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Revenue</div>
+                                                <div id="fin_revenue" class="text-lg font-bold text-blue-600">0</div>
+                                            </div>
+                                            <div class="bg-green-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Gross Profit</div>
+                                                <div id="fin_gross_profit" class="text-lg font-bold text-green-600">0</div>
+                                                <div id="fin_gross_margin" class="text-xs text-gray-600">0%</div>
+                                            </div>
+                                            <div class="bg-red-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Expenses</div>
+                                                <div id="fin_expenses" class="text-lg font-bold text-red-600">0</div>
+                                            </div>
+                                            <div class="bg-purple-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Net Profit</div>
+                                                <div id="fin_net_profit" class="text-lg font-bold text-purple-600">0</div>
+                                                <div id="fin_net_margin" class="text-xs text-gray-600">0%</div>
+                                            </div>
+                                        </div>
+                                        <div class="h-64 mb-4">
+                                            <canvas id="monthly_profit_chart"></canvas>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="bg-gray-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Outstanding Receivables</div>
+                                                <div id="fin_receivables" class="text-lg font-bold text-gray-800">0</div>
+                                            </div>
+                                            <div class="bg-gray-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Outstanding Payables</div>
+                                                <div id="fin_payables" class="text-lg font-bold text-gray-800">0</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sales Analytics Container -->
+                                    <div id="sales_analytics_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                                        <h3 class="text-lg font-medium mb-4">Sales Analytics</h3>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <div class="h-64 mb-4">
+                                                    <canvas id="monthly_sales_chart"></canvas>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="h-64 mb-4">
+                                                    <canvas id="sales_by_day_chart"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Best Selling Products</h4>
+                                                <div class="overflow-x-auto">
+                                                    <table class="min-w-full divide-y divide-gray-200">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="best_selling_products_table" class="bg-white divide-y divide-gray-200">
+                                                            <!-- Data will be inserted here -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Sales by Status</h4>
+                                                <div class="h-64">
+                                                    <canvas id="sales_by_status_chart"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Inventory Health Container -->
+                                    <div id="inventory_health_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                                        <h3 class="text-lg font-medium mb-4">Inventory Health</h3>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                            <div class="bg-blue-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Total Inventory Value</div>
+                                                <div id="total_inventory_value" class="text-lg font-bold text-blue-600">0</div>
+                                            </div>
+                                            <div class="bg-yellow-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Low Stock Items</div>
+                                                <div id="low_stock_count" class="text-lg font-bold text-yellow-600">0</div>
+                                            </div>
+                                            <div class="bg-red-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Out of Stock Items</div>
+                                                <div id="out_of_stock_count" class="text-lg font-bold text-red-600">0</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Dead Stock Items</h4>
+                                                <div class="overflow-x-auto">
+                                                    <div id="dead_stock_table" class="min-w-full">
+                                                        <p class="text-center text-gray-500 py-4">Loading...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Slow Moving Items</h4>
+                                                <div class="overflow-x-auto">
+                                                    <div id="slow_moving_table" class="min-w-full">
+                                                        <p class="text-center text-gray-500 py-4">Loading...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-6">
+                                            <h4 class="text-md font-medium mb-2">Stock Turnover Rate</h4>
+                                            <div class="overflow-x-auto">
+                                                <table class="min-w-full divide-y divide-gray-200">
+                                                    <thead class="bg-gray-50">
+                                                        <tr>
+                                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sold Qty</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Inventory</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Turnover Rate</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="stock_turnover_table" class="bg-white divide-y divide-gray-200">
+                                                        <!-- Data will be inserted here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Customer Insights Container -->
+                                    <div id="customer_insights_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                                        <h3 class="text-lg font-medium mb-4">Customer Insights</h3>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                                            <div class="bg-blue-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Total Customers</div>
+                                                <div id="total_customers_count" class="text-lg font-bold text-blue-600">0</div>
+                                            </div>
+                                            <div class="bg-green-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">New Customers</div>
+                                                <div id="new_customers_count" class="text-lg font-bold text-green-600">0</div>
+                                            </div>
+                                            <div class="bg-purple-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Retention Rate</div>
+                                                <div id="retention_rate" class="text-lg font-bold text-purple-600">0%</div>
+                                            </div>
+                                            <div class="bg-indigo-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Avg Sale/Customer</div>
+                                                <div id="avg_sale_per_customer" class="text-lg font-bold text-indigo-600">0</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Top Customers</h4>
+                                                <div class="overflow-x-auto">
+                                                    <table class="min-w-full divide-y divide-gray-200">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Orders</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total Spent</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="top_customers_table" class="bg-white divide-y divide-gray-200">
+                                                            <!-- Data will be inserted here -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Customer Debt</h4>
+                                                <div class="overflow-x-auto">
+                                                    <table class="min-w-full divide-y divide-gray-200">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unpaid Orders</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Debt Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="customer_debt_table" class="bg-white divide-y divide-gray-200">
+                                                            <!-- Data will be inserted here -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Supplier Performance Container -->
+                                    <div id="supplier_performance_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                                        <h3 class="text-lg font-medium mb-4">Supplier Performance</h3>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Top Suppliers</h4>
+                                                <div class="overflow-x-auto">
+                                                    <table class="min-w-full divide-y divide-gray-200">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Orders</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="top_suppliers_table" class="bg-white divide-y divide-gray-200">
+                                                            <!-- Data will be inserted here -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Supplier Debt</h4>
+                                                <div class="overflow-x-auto">
+                                                    <table class="min-w-full divide-y divide-gray-200">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unpaid Orders</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Debt Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="supplier_debt_table" class="bg-white divide-y divide-gray-200">
+                                                            <!-- Data will be inserted here -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-6">
+                                            <h4 class="text-md font-medium mb-2">Average Items Per Purchase</h4>
+                                            <div class="overflow-x-auto">
+                                                <table class="min-w-full divide-y divide-gray-200">
+                                                    <thead class="bg-gray-50">
+                                                        <tr>
+                                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Purchase Count</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Items Count</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Items/Purchase</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="avg_items_table" class="bg-white divide-y divide-gray-200">
+                                                        <!-- Data will be inserted here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Product Performance Container -->
+                                    <div id="product_performance_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                                        <h3 class="text-lg font-medium mb-4">Product Performance</h3>
+
+                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Highest Margin Products</h4>
+                                                <div class="overflow-x-auto">
+                                                    <table class="min-w-full divide-y divide-gray-200">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sale Price</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
+                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Margin %</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="highest_margin_table" class="bg-white divide-y divide-gray-200">
+                                                            <!-- Data will be inserted here -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-md font-medium mb-2">Discount Impact</h4>
+                                                <div class="h-64">
+                                                    <canvas id="discount_impact_chart"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-6">
+                                            <h4 class="text-md font-medium mb-2">Profit Calculation</h4>
+                                            <div class="overflow-x-auto">
+                                                <div id="profit_table" class="min-w-full">
+                                                    <p class="text-center text-gray-500 py-4">Loading...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Business KPIs Container -->
+                                    <div id="business_kpis_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                                        <h3 class="text-lg font-medium mb-4">Business Performance KPIs</h3>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                            <div class="bg-indigo-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Sales Growth</div>
+                                                <div id="sales_growth" class="text-lg font-bold">0%</div>
+                                            </div>
+                                            <div class="bg-green-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Profit Growth</div>
+                                                <div id="profit_growth" class="text-lg font-bold">0%</div>
+                                            </div>
+                                            <div class="bg-purple-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Customer Growth</div>
+                                                <div id="customer_growth" class="text-lg font-bold">0%</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div class="bg-gray-50 p-4 rounded-md shadow">
+                                                <h4 class="text-md font-medium mb-3">Current Period</h4>
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <div class="text-xs text-gray-500">Period</div>
+                                                        <div id="current_period_dates" class="text-sm font-medium">-</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-xs text-gray-500">Sales</div>
+                                                        <div id="current_period_sales" class="text-sm font-medium">0</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-xs text-gray-500">Profit</div>
+                                                        <div id="current_period_profit" class="text-sm font-medium">0</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-xs text-gray-500">Customers</div>
+                                                        <div id="current_period_customers" class="text-sm font-medium">0</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bg-gray-50 p-4 rounded-md shadow">
+                                                <h4 class="text-md font-medium mb-3">Previous Period</h4>
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <div class="text-xs text-gray-500">Period</div>
+                                                        <div id="previous_period_dates" class="text-sm font-medium">-</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-xs text-gray-500">Sales</div>
+                                                        <div id="previous_period_sales" class="text-sm font-medium">0</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-xs text-gray-500">Profit</div>
+                                                        <div id="previous_period_profit" class="text-sm font-medium">0</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-xs text-gray-500">Customers</div>
+                                                        <div id="previous_period_customers" class="text-sm font-medium">0</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cash Flow Analysis Container -->
+                                    <div id="cash_flow_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                                        <h3 class="text-lg font-medium mb-4">Cash Flow Analysis</h3>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                            <div class="bg-green-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Total Inflow</div>
+                                                <div id="total_inflow" class="text-lg font-bold text-green-600">0</div>
+                                            </div>
+                                            <div class="bg-red-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Total Outflow</div>
+                                                <div id="total_outflow" class="text-lg font-bold text-red-600">0</div>
+                                            </div>
+                                            <div class="bg-blue-50 p-3 rounded-md shadow">
+                                                <div class="text-xs text-gray-500">Net Cash Flow</div>
+                                                <div id="net_cash_flow" class="text-lg font-bold">0</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-6">
+                                            <h4 class="text-md font-medium mb-2">Monthly Cash Flow</h4>
+                                            <div class="h-64">
+                                                <canvas id="monthly_cash_flow_chart"></canvas>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <h4 class="text-md font-medium mb-2">Cash Flow by Payment Method</h4>
+                                            <div class="overflow-x-auto">
+                                                <table class="min-w-full divide-y divide-gray-200">
+                                                    <thead class="bg-gray-50">
+                                                        <tr>
+                                                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Method</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Inflow</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Outflow</th>
+                                                            <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Net</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="payment_methods_table" class="bg-white divide-y divide-gray-200">
+                                                        <!-- Data will be inserted here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Original Best Selling Items Card -->
+                                    <div class="bg-white p-4 rounded-lg shadow">
+                                        <h3 class="text-lg font-medium mb-4">Best Selling Items</h3>
+                                        <div class="h-64">
+                                            <canvas id="best_selling_chart"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- Original Sales Trends Card -->
+                                    <div class="bg-white p-4 rounded-lg shadow">
+                                        <h3 class="text-lg font-medium mb-4">Sales Trends</h3>
+                                        <div class="h-64">
+                                            <canvas id="sales_trends_chart"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- Original Purchase Trends Card -->
+                                    <div class="bg-white p-4 rounded-lg shadow">
+                                        <h3 class="text-lg font-medium mb-4">Purchase Trends</h3>
+                                        <div class="h-64">
+                                            <canvas id="purchase_trends_chart"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- Original Discount Impact Card -->
+                                    <div class="bg-white p-4 rounded-lg shadow">
+                                        <h3 class="text-lg font-medium mb-4">Discount Impact</h3>
+                                        <div class="h-64">
+                                            <canvas id="discount_impact_chart"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- Original Dead Stock Card -->
+                                    <div class="bg-white p-4 rounded-lg shadow">
+                                        <h3 class="text-lg font-medium mb-4">Dead Stock Items</h3>
+                                        <div class="overflow-hidden overflow-x-auto">
+                                            <div id="dead_stock_table" class="min-w-full">
+                                                <p class="text-center text-gray-500 py-4">Loading...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Original Slow Moving Items Card -->
+                                    <div class="bg-white p-4 rounded-lg shadow">
+                                        <h3 class="text-lg font-medium mb-4">Slow Moving Items</h3>
+                                        <div class="overflow-hidden overflow-x-auto">
+                                            <div id="slow_moving_table" class="min-w-full">
+                                                <p class="text-center text-gray-500 py-4">Loading...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Original Profit Calculation Card -->
+                                    <div class="bg-white p-4 rounded-lg shadow col-span-1 lg:col-span-2">
+                                        <h3 class="text-lg font-medium mb-4">Profit Calculation</h3>
+                                        <div class="overflow-hidden overflow-x-auto">
+                                            <div id="profit_table" class="min-w-full">
+                                                <p class="text-center text-gray-500 py-4">Loading...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -2693,7 +3250,7 @@
             } else if (tabId === 'inventory') {
                 loadinventory();
             } else if (tabId === 'reports') {
-                loadreports();
+                loadStatistics();
             } else {
                 setTimeout(function() {
                     $('#' + tabId + '-loading').hide();
@@ -4129,6 +4686,7 @@
                         loadTransactions();
                         loadParties();
                         loadinventory();
+                        loadStatistics();
                     },
                     error: function(xhr) {
                         let errorMessage = 'There was an error while recording the Sales.';
@@ -4194,6 +4752,8 @@
                         loadPurchases();
                         loadinventory();
                         loadParties();
+                        loadTransactions();
+                        loadStatistics();
                     },
                     error: function(xhr) {
                         let errorMessage = 'There was an error while recording the purchase.';
@@ -4261,6 +4821,7 @@
                         loadTransactions();
                         loadinventory();
                         loadParties();
+                        loadStatistics();
                     },
                     error: function(xhr) {
                         let errorMessage = 'There was an error while updating the sales.';
@@ -4328,6 +4889,11 @@
                         hide_edit_purchaseMODAL();
                         showFeedbackModal('success', 'Purchase Updated!', 'Purchase has been updated successfully.');
                         resetEditPurchaseForm();
+                        loadPurchases();
+                        loadParties();
+                        loadinventory();
+                        loadSale();
+                        loadStatistics();
 
                         // Reload data if these functions exist
                         if (typeof loadTransactions === 'function') loadTransactions();
@@ -6140,9 +6706,14 @@
 
                             // Reset form
                             resetPaymentForm();
-
+                            hide_addTransactionModal();
                             // Reload data if needed
                             loadTransactions();
+                            loadParties();
+                            loadPurchases();
+                            loadSale();
+                            loadinventory();
+                            loadStatistics();
                         } else {
                             // Handle unexpected successful response format
                             showFeedbackModal('error', 'Unexpected Response', 'Received successful response but in unexpected format.');
@@ -6219,9 +6790,15 @@
 
                             // Reset form
                             resetPaymentForm();
+                            hide_addTransactionModal();
 
                             // Reload data if needed
                             loadTransactions();
+                            loadSale();
+                            loadPurchases();
+                            loadParties();
+                            loadinventory();
+                            loadStatistics();
                         } else {
                             // Handle unexpected successful response format
                             showFeedbackModal('error', 'Unexpected Response', 'Received successful response but in unexpected format.');
@@ -6734,6 +7311,10 @@
                         showFeedbackModal('success', 'Success', 'Transaction updated successfully');
                         hide_editTransactionModal();
                         loadTransactions();
+                        loadPurchases();
+                        loadParties();
+                        loadinventory();
+                        loadSale();
                     } else {
                         throw new Error(response.message);
                     }
@@ -6898,6 +7479,1307 @@
             // Remove any validation error highlighting
             $('.border-red-500').removeClass('border-red-500');
         }
+
+        // Enhanced loadStatistics function to fetch all comprehensive statistics
+        function loadStatistics() {
+            const filters = {
+                from_Date: document.getElementById('from_Date')?.value || '',
+                to_Date: document.getElementById('to_Date')?.value || '',
+            };
+
+            $.ajax({
+                type: "GET",
+                url: 'getBusinessStatistics', // Using our new comprehensive endpoint
+                data: filters,
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        renderComprehensiveStatistics(response.statistics);
+                    }
+                    $('#reports-loading').hide();
+                },
+                error: function(xhr, status, error) {
+                    $('#reports-loading').hide();
+                    showFeedbackModal('error', 'Error', `Failed to load statistics: ${error}`);
+                }
+            });
+        }
+
+        // Master function to render all statistics
+        function renderComprehensiveStatistics(stats) {
+            // Update KPI cards
+            updateKpiCards(stats);
+
+            // Render financial metrics section
+            renderFinancialMetrics(stats.financial_metrics);
+
+            // Render sales analytics
+            renderSalesAnalytics(stats.sales_analytics);
+
+            // Render inventory metrics
+            renderInventoryHealth(stats.inventory_health);
+
+            // Render customer insights
+            renderCustomerInsights(stats.customer_insights);
+
+            // Render supplier analytics
+            renderSupplierPerformance(stats.supplier_performance);
+
+            // Render product performance
+            renderProductPerformance(stats.product_performance);
+
+            // Render business KPIs
+            renderBusinessKPIs(stats.business_kpis);
+
+            // Render cash flow analysis
+            renderCashFlow(stats.cash_flow);
+        }
+
+        // Update top KPI summary cards
+        function updateKpiCards(stats) {
+            // Set values for the top KPI cards
+            $('#total_purchases').text(formatPrice(stats.purchase_analytics.total_purchase_amount || 0));
+            $('#total_income').text(formatPrice(stats.financial_metrics.total_revenue || 0));
+            $('#total_sales').text(stats.sales_analytics.total_sales || 0);
+            $('#total_expenses').text(formatPrice(stats.financial_metrics.total_expenses || 0));
+        }
+
+        // Render financial metrics
+        function renderFinancialMetrics(financialMetrics) {
+            // Create financial metrics container if it doesn't exist
+            if ($('#financial_metrics_container').length === 0) {
+                const financialMetricsHtml = `
+            <div id="financial_metrics_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                <h3 class="text-lg font-medium mb-4">Financial Overview</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <div class="bg-blue-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Revenue</div>
+                        <div id="fin_revenue" class="text-lg font-bold text-blue-600">0</div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Gross Profit</div>
+                        <div id="fin_gross_profit" class="text-lg font-bold text-green-600">0</div>
+                        <div id="fin_gross_margin" class="text-xs text-gray-600">0%</div>
+                    </div>
+                    <div class="bg-red-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Expenses</div>
+                        <div id="fin_expenses" class="text-lg font-bold text-red-600">0</div>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Net Profit</div>
+                        <div id="fin_net_profit" class="text-lg font-bold text-purple-600">0</div>
+                        <div id="fin_net_margin" class="text-xs text-gray-600">0%</div>
+                    </div>
+                </div>
+                <div class="h-64 mb-4">
+                    <canvas id="monthly_profit_chart"></canvas>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Outstanding Receivables</div>
+                        <div id="fin_receivables" class="text-lg font-bold text-gray-800">0</div>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Outstanding Payables</div>
+                        <div id="fin_payables" class="text-lg font-bold text-gray-800">0</div>
+                    </div>
+                </div>
+            </div>
+        `;
+                $('#stats_container').append(financialMetricsHtml);
+            }
+
+            // Update financial metrics values
+            $('#fin_revenue').text(formatPrice(financialMetrics.total_revenue || 0));
+            $('#fin_gross_profit').text(formatPrice(financialMetrics.gross_profit || 0));
+            $('#fin_gross_margin').text(`${financialMetrics.gross_profit_margin || 0}% margin`);
+            $('#fin_expenses').text(formatPrice(financialMetrics.total_expenses || 0));
+            $('#fin_net_profit').text(formatPrice(financialMetrics.net_profit || 0));
+            $('#fin_net_margin').text(`${financialMetrics.net_profit_margin || 0}% margin`);
+            $('#fin_receivables').text(formatPrice(financialMetrics.outstanding_receivables || 0));
+            $('#fin_payables').text(formatPrice(financialMetrics.outstanding_payables || 0));
+
+            // Render monthly profit chart
+            if (financialMetrics.monthly_profits && financialMetrics.monthly_profits.length > 0) {
+                const ctx = document.getElementById('monthly_profit_chart').getContext('2d');
+
+                // Prepare data for chart
+                const labels = financialMetrics.monthly_profits.map(item => item.month);
+                const revenueData = financialMetrics.monthly_profits.map(item => item.revenue);
+                const discountData = financialMetrics.monthly_profits.map(item => item.discounts || 0);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: 'Revenue',
+                                data: revenueData,
+                                backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                                borderColor: 'rgb(59, 130, 246)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Discounts',
+                                data: discountData,
+                                backgroundColor: 'rgba(239, 68, 68, 0.6)',
+                                borderColor: 'rgb(239, 68, 68)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Monthly Revenue & Discounts'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Amount (TZS)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Render sales analytics
+        function renderSalesAnalytics(salesAnalytics) {
+            // Create sales analytics container if it doesn't exist
+            if ($('#sales_analytics_container').length === 0) {
+                const salesAnalyticsHtml = `
+            <div id="sales_analytics_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                <h3 class="text-lg font-medium mb-4">Sales Analytics</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="h-64 mb-4">
+                            <canvas id="monthly_sales_chart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="h-64 mb-4">
+                            <canvas id="sales_by_day_chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Best Selling Products</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="best_selling_products_table" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Sales by Status</h4>
+                        <div class="h-64">
+                            <canvas id="sales_by_status_chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+                $('#stats_container').append(salesAnalyticsHtml);
+            }
+
+            // Render monthly sales chart
+            if (salesAnalytics.monthly_sales_trend && salesAnalytics.monthly_sales_trend.length > 0) {
+                const ctx = document.getElementById('monthly_sales_chart').getContext('2d');
+
+                // Prepare data for chart
+                const labels = salesAnalytics.monthly_sales_trend.map(item => item.month);
+                const countData = salesAnalytics.monthly_sales_trend.map(item => item.count);
+                const amountData = salesAnalytics.monthly_sales_trend.map(item => item.amount);
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: 'Number of Sales',
+                                data: countData,
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                borderColor: 'rgb(59, 130, 246)',
+                                borderWidth: 2,
+                                tension: 0.1,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Sales Amount',
+                                data: amountData,
+                                backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                                borderColor: 'rgb(16, 185, 129)',
+                                borderWidth: 2,
+                                tension: 0.1,
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Monthly Sales Trend'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: 'Count'
+                                }
+                            },
+                            y1: {
+                                beginAtZero: true,
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: 'Amount (TZS)'
+                                },
+                                grid: {
+                                    drawOnChartArea: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Render sales by day of week chart
+            if (salesAnalytics.sales_by_day_of_week && salesAnalytics.sales_by_day_of_week.length > 0) {
+                const ctx = document.getElementById('sales_by_day_chart').getContext('2d');
+
+                // Prepare data for chart
+                const labels = salesAnalytics.sales_by_day_of_week.map(item => item.day);
+                const countData = salesAnalytics.sales_by_day_of_week.map(item => item.count);
+                const amountData = salesAnalytics.sales_by_day_of_week.map(item => item.amount);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: 'Number of Sales',
+                                data: countData,
+                                backgroundColor: 'rgba(79, 70, 229, 0.6)',
+                                borderColor: 'rgb(79, 70, 229)',
+                                borderWidth: 1,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Sales Amount',
+                                data: amountData,
+                                type: 'line',
+                                backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                                borderColor: 'rgb(245, 158, 11)',
+                                borderWidth: 2,
+                                tension: 0.1,
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Sales by Day of Week'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: 'Count'
+                                }
+                            },
+                            y1: {
+                                beginAtZero: true,
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: 'Amount (TZS)'
+                                },
+                                grid: {
+                                    drawOnChartArea: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Populate best selling products table
+            if (salesAnalytics.best_selling_items && salesAnalytics.best_selling_items.length > 0) {
+                let tableHtml = '';
+
+                salesAnalytics.best_selling_items.forEach(item => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name || `Product #${item.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${item.total_quantity}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.total_revenue)}</td>
+                </tr>
+            `;
+                });
+
+                $('#best_selling_products_table').html(tableHtml);
+            }
+
+            // Render sales by status chart
+            if (salesAnalytics.sales_by_status && salesAnalytics.sales_by_status.length > 0) {
+                const ctx = document.getElementById('sales_by_status_chart').getContext('2d');
+
+                // Prepare data for chart
+                const labels = salesAnalytics.sales_by_status.map(item => item.status);
+                const countData = salesAnalytics.sales_by_status.map(item => item.count);
+                const amountData = salesAnalytics.sales_by_status.map(item => item.amount);
+
+                // Create color array based on status
+                const backgroundColors = salesAnalytics.sales_by_status.map(item => {
+                    switch (item.status) {
+                        case 'Paid':
+                            return 'rgba(16, 185, 129, 0.6)';
+                        case 'Partial paid':
+                            return 'rgba(245, 158, 11, 0.6)';
+                        case 'Unpaid':
+                            return 'rgba(239, 68, 68, 0.6)';
+                        case 'Cancelled':
+                            return 'rgba(107, 114, 128, 0.6)';
+                        default:
+                            return 'rgba(59, 130, 246, 0.6)';
+                    }
+                });
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: amountData,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Sales Amount by Status'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const percentage = ((value / amountData.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                                        return `${label}: ${formatPrice(value)} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Render inventory health metrics
+        function renderInventoryHealth(inventoryHealth) {
+            // Create inventory health container if it doesn't exist
+            if ($('#inventory_health_container').length === 0) {
+                const inventoryHealthHtml = `
+            <div id="inventory_health_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                <h3 class="text-lg font-medium mb-4">Inventory Health</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-blue-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Total Inventory Value</div>
+                        <div id="total_inventory_value" class="text-lg font-bold text-blue-600">0</div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Low Stock Items</div>
+                        <div id="low_stock_count" class="text-lg font-bold text-yellow-600">0</div>
+                    </div>
+                    <div class="bg-red-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Out of Stock Items</div>
+                        <div id="out_of_stock_count" class="text-lg font-bold text-red-600">0</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Dead Stock Items</h4>
+                        <div class="overflow-x-auto">
+                            <div id="dead_stock_table" class="min-w-full">
+                                <p class="text-center text-gray-500 py-4">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Slow Moving Items</h4>
+                        <div class="overflow-x-auto">
+                            <div id="slow_moving_table" class="min-w-full">
+                                <p class="text-center text-gray-500 py-4">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="text-md font-medium mb-2">Stock Turnover Rate</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sold Qty</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Inventory</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Turnover Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stock_turnover_table" class="bg-white divide-y divide-gray-200">
+                                <!-- Data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+                $('#stats_container').append(inventoryHealthHtml);
+            }
+
+            // Update inventory health metrics
+            $('#total_inventory_value').text(formatPrice(inventoryHealth.total_inventory_value || 0));
+            $('#low_stock_count').text(inventoryHealth.low_stock_items?.length || 0);
+            $('#out_of_stock_count').text(inventoryHealth.out_of_stock_items?.length || 0);
+
+            // Render dead stock table
+            renderDeadStockTable(inventoryHealth.dead_stock);
+
+            // Render slow moving items table
+            renderSlowMovingItemsTable(inventoryHealth.slow_moving_items);
+
+            // Populate stock turnover table
+            if (inventoryHealth.stock_turnover && inventoryHealth.stock_turnover.length > 0) {
+                let tableHtml = '';
+
+                inventoryHealth.stock_turnover.forEach(item => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name || `Product #${item.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${item.sold_quantity || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${item.avg_inventory ? item.avg_inventory.toFixed(1) : 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium ${item.turnover_rate > 3 ? 'text-green-600' : (item.turnover_rate < 1 ? 'text-red-600' : 'text-yellow-600')}">${item.turnover_rate}</td>
+                </tr>
+            `;
+                });
+
+                $('#stock_turnover_table').html(tableHtml);
+            }
+        }
+
+        // Render customer insights
+        function renderCustomerInsights(customerInsights) {
+            // Create customer insights container if it doesn't exist
+            if ($('#customer_insights_container').length === 0) {
+                const customerInsightsHtml = `
+            <div id="customer_insights_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                <h3 class="text-lg font-medium mb-4">Customer Insights</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                    <div class="bg-blue-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Total Customers</div>
+                        <div id="total_customers_count" class="text-lg font-bold text-blue-600">0</div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">New Customers</div>
+                        <div id="new_customers_count" class="text-lg font-bold text-green-600">0</div>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Retention Rate</div>
+                        <div id="retention_rate" class="text-lg font-bold text-purple-600">0%</div>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Avg Sale/Customer</div>
+                        <div id="avg_sale_per_customer" class="text-lg font-bold text-indigo-600">0</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Top Customers</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Orders</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total Spent</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="top_customers_table" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Customer Debt</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unpaid Orders</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Debt Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customer_debt_table" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+                $('#stats_container').append(customerInsightsHtml);
+            }
+
+            // Update customer insights metrics
+            $('#total_customers_count').text(customerInsights.total_customers || 0);
+            $('#new_customers_count').text(customerInsights.new_customers || 0);
+            $('#retention_rate').text(`${customerInsights.retention_rate || 0}%`);
+            $('#avg_sale_per_customer').text(formatPrice(customerInsights.average_sale_per_customer || 0));
+
+            // Populate top customers table
+            if (customerInsights.top_customers && customerInsights.top_customers.length > 0) {
+                let tableHtml = '';
+
+                customerInsights.top_customers.forEach(customer => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${customer.name || `Customer #${customer.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${customer.total_orders || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(customer.total_spent || 0)}</td>
+                </tr>
+            `;
+                });
+
+                $('#top_customers_table').html(tableHtml);
+            } else {
+                $('#top_customers_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-sm text-gray-500">No customers data available</td></tr>');
+            }
+
+            // Populate customer debt table
+            if (customerInsights.customer_debt && customerInsights.customer_debt.length > 0) {
+                let tableHtml = '';
+
+                customerInsights.customer_debt.forEach(customer => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${customer.name || `Customer #${customer.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${customer.unpaid_orders || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right text-red-600 font-medium">${formatPrice(customer.total_debt || 0)}</td>
+                </tr>
+            `;
+                });
+
+                $('#customer_debt_table').html(tableHtml);
+            } else {
+                $('#customer_debt_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-sm text-gray-500">No customer debt data available</td></tr>');
+            }
+        }
+
+        // Render supplier performance
+        function renderSupplierPerformance(supplierPerformance) {
+            // Create supplier performance container if it doesn't exist
+            if ($('#supplier_performance_container').length === 0) {
+                const supplierPerformanceHtml = `
+            <div id="supplier_performance_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                <h3 class="text-lg font-medium mb-4">Supplier Performance</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Top Suppliers</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Orders</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="top_suppliers_table" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Supplier Debt</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unpaid Orders</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Debt Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="supplier_debt_table" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="text-md font-medium mb-2">Average Items Per Purchase</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Purchase Count</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Items Count</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Items/Purchase</th>
+                                </tr>
+                            </thead>
+                            <tbody id="avg_items_table" class="bg-white divide-y divide-gray-200">
+                                <!-- Data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+                $('#stats_container').append(supplierPerformanceHtml);
+            }
+
+            // Populate top suppliers table
+            if (supplierPerformance.top_suppliers && supplierPerformance.top_suppliers.length > 0) {
+                let tableHtml = '';
+
+                supplierPerformance.top_suppliers.forEach(supplier => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${supplier.name || `Supplier #${supplier.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${supplier.total_orders || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(supplier.total_amount || 0)}</td>
+                </tr>
+            `;
+                });
+
+                $('#top_suppliers_table').html(tableHtml);
+            } else {
+                $('#top_suppliers_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-sm text-gray-500">No suppliers data available</td></tr>');
+            }
+
+            // Populate supplier debt table
+            if (supplierPerformance.supplier_debt && supplierPerformance.supplier_debt.length > 0) {
+                let tableHtml = '';
+
+                supplierPerformance.supplier_debt.forEach(supplier => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${supplier.name || `Supplier #${supplier.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${supplier.unpaid_orders || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right text-blue-600 font-medium">${formatPrice(supplier.total_debt || 0)}</td>
+                </tr>
+            `;
+                });
+
+                $('#supplier_debt_table').html(tableHtml);
+            } else {
+                $('#supplier_debt_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-sm text-gray-500">No supplier debt data available</td></tr>');
+            }
+
+            // Populate average items per purchase table
+            if (supplierPerformance.avg_items_per_purchase && supplierPerformance.avg_items_per_purchase.length > 0) {
+                let tableHtml = '';
+
+                supplierPerformance.avg_items_per_purchase.forEach(supplier => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${supplier.name || `Supplier #${supplier.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${supplier.purchase_count || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${supplier.items_count || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium">${supplier.avg_items ? supplier.avg_items.toFixed(1) : 0}</td>
+                </tr>
+            `;
+                });
+
+                $('#avg_items_table').html(tableHtml);
+            } else {
+                $('#avg_items_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-sm text-gray-500">No supplier purchase data available</td></tr>');
+            }
+        }
+
+        // Render product performance
+        function renderProductPerformance(productPerformance) {
+            // Create product performance container if it doesn't exist
+            if ($('#product_performance_container').length === 0) {
+                const productPerformanceHtml = `
+            <div id="product_performance_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                <h3 class="text-lg font-medium mb-4">Product Performance</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Highest Margin Products</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sale Price</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Margin %</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="highest_margin_table" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-md font-medium mb-2">Discount Impact</h4>
+                        <div class="h-64">
+                            <canvas id="discount_impact_chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="text-md font-medium mb-2">Profit Calculation</h4>
+                    <div class="overflow-x-auto">
+                        <div id="profit_table" class="min-w-full">
+                            <p class="text-center text-gray-500 py-4">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+                $('#stats_container').append(productPerformanceHtml);
+            }
+
+            // Populate highest margin products table
+            if (productPerformance.highest_margin_items && productPerformance.highest_margin_items.length > 0) {
+                let tableHtml = '';
+
+                productPerformance.highest_margin_items.forEach(item => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name || `Product #${item.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.sale_price || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.avg_purchase_price || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium ${item.profit_percentage > 30 ? 'text-green-600' : (item.profit_percentage < 10 ? 'text-red-600' : 'text-yellow-600')}">${item.profit_percentage ? item.profit_percentage.toFixed(1) : 0}%</td>
+                </tr>
+            `;
+                });
+
+                $('#highest_margin_table').html(tableHtml);
+            } else {
+                $('#highest_margin_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-sm text-gray-500">No margin data available</td></tr>');
+            }
+
+            // Render discount impact chart
+            if (productPerformance.discount_impact) {
+                const ctx = document.getElementById('discount_impact_chart').getContext('2d');
+
+                // Prepare data for chart
+                const discountImpact = productPerformance.discount_impact;
+                const data = [
+                    discountImpact.with_discount || 0,
+                    discountImpact.without_discount || 0
+                ];
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Sales with Discount', 'Sales without Discount'],
+                        datasets: [{
+                            data: data,
+                            backgroundColor: [
+                                'rgba(245, 158, 11, 0.6)',
+                                'rgba(59, 130, 246, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgb(245, 158, 11)',
+                                'rgb(59, 130, 246)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = data.reduce((a, b) => a + b, 0);
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                        return `${label}: ${formatPrice(value)} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Render profit table
+            renderProfitTable(productPerformance.highest_margin_items || []);
+        }
+
+        // Render business KPIs
+        function renderBusinessKPIs(businessKPIs) {
+            // Create business KPIs container if it doesn't exist
+            if ($('#business_kpis_container').length === 0) {
+                const businessKPIsHtml = `
+            <div id="business_kpis_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                <h3 class="text-lg font-medium mb-4">Business Performance KPIs</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-indigo-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Sales Growth</div>
+                        <div id="sales_growth" class="text-lg font-bold"></div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Profit Growth</div>
+                        <div id="profit_growth" class="text-lg font-bold"></div>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Customer Growth</div>
+                        <div id="customer_growth" class="text-lg font-bold"></div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-4 rounded-md shadow">
+                        <h4 class="text-md font-medium mb-3">Current Period</h4>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <div class="text-xs text-gray-500">Period</div>
+                                <div id="current_period_dates" class="text-sm font-medium"></div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Sales</div>
+                                <div id="current_period_sales" class="text-sm font-medium"></div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Profit</div>
+                                <div id="current_period_profit" class="text-sm font-medium"></div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Customers</div>
+                                <div id="current_period_customers" class="text-sm font-medium"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-md shadow">
+                        <h4 class="text-md font-medium mb-3">Previous Period</h4>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <div class="text-xs text-gray-500">Period</div>
+                                <div id="previous_period_dates" class="text-sm font-medium"></div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Sales</div>
+                                <div id="previous_period_sales" class="text-sm font-medium"></div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Profit</div>
+                                <div id="previous_period_profit" class="text-sm font-medium"></div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500">Customers</div>
+                                <div id="previous_period_customers" class="text-sm font-medium"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+                $('#stats_container').append(businessKPIsHtml);
+            }
+
+            // Update business KPIs
+
+            // Growth indicators
+            const salesGrowth = businessKPIs.sales_growth_rate || 0;
+            const profitGrowth = businessKPIs.profit_growth_rate || 0;
+            const customerGrowth = businessKPIs.customer_growth_rate || 0;
+
+            $('#sales_growth').text(`${salesGrowth > 0 ? '+' : ''}${salesGrowth}%`);
+            $('#sales_growth').addClass(salesGrowth >= 0 ? 'text-green-600' : 'text-red-600');
+
+            $('#profit_growth').text(`${profitGrowth > 0 ? '+' : ''}${profitGrowth}%`);
+            $('#profit_growth').addClass(profitGrowth >= 0 ? 'text-green-600' : 'text-red-600');
+
+            $('#customer_growth').text(`${customerGrowth > 0 ? '+' : ''}${customerGrowth}%`);
+            $('#customer_growth').addClass(customerGrowth >= 0 ? 'text-green-600' : 'text-red-600');
+
+            // Current period
+            $('#current_period_dates').text(`${businessKPIs.current_period?.from || ''} to ${businessKPIs.current_period?.to || ''}`);
+            $('#current_period_sales').text(formatPrice(businessKPIs.current_period?.sales || 0));
+            $('#current_period_profit').text(formatPrice(businessKPIs.current_period?.profit || 0));
+            $('#current_period_customers').text(businessKPIs.current_period?.customer_count || 0);
+
+            // Previous period
+            $('#previous_period_dates').text(`${businessKPIs.previous_period?.from || ''} to ${businessKPIs.previous_period?.to || ''}`);
+            $('#previous_period_sales').text(formatPrice(businessKPIs.previous_period?.sales || 0));
+            $('#previous_period_profit').text(formatPrice(businessKPIs.previous_period?.profit || 0));
+            $('#previous_period_customers').text(businessKPIs.previous_period?.customer_count || 0);
+        }
+
+        // Render cash flow analysis
+        function renderCashFlow(cashFlow) {
+            // Create cash flow container if it doesn't exist
+            if ($('#cash_flow_container').length === 0) {
+                const cashFlowHtml = `
+            <div id="cash_flow_container" class="bg-white p-4 rounded-lg shadow mb-6">
+                <h3 class="text-lg font-medium mb-4">Cash Flow Analysis</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-green-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Total Inflow</div>
+                        <div id="total_inflow" class="text-lg font-bold text-green-600">0</div>
+                    </div>
+                    <div class="bg-red-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Total Outflow</div>
+                        <div id="total_outflow" class="text-lg font-bold text-red-600">0</div>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-md shadow">
+                        <div class="text-xs text-gray-500">Net Cash Flow</div>
+                        <div id="net_cash_flow" class="text-lg font-bold">0</div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-md font-medium mb-2">Monthly Cash Flow</h4>
+                    <div class="h-64">
+                        <canvas id="monthly_cash_flow_chart"></canvas>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-md font-medium mb-2">Cash Flow by Payment Method</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Method</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Inflow</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Outflow</th>
+                                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Net</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payment_methods_table" class="bg-white divide-y divide-gray-200">
+                                <!-- Data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+                $('#stats_container').append(cashFlowHtml);
+            }
+
+            // Update cash flow values
+            $('#total_inflow').text(formatPrice(cashFlow.totals?.inflow || 0));
+            $('#total_outflow').text(formatPrice(cashFlow.totals?.outflow || 0));
+
+            const netCashFlow = (cashFlow.totals?.net || 0);
+            $('#net_cash_flow').text(formatPrice(netCashFlow));
+            $('#net_cash_flow').addClass(netCashFlow >= 0 ? 'text-blue-600' : 'text-red-600');
+
+            // Render monthly cash flow chart
+            if (cashFlow.monthly_cash_flow && cashFlow.monthly_cash_flow.length > 0) {
+                const ctx = document.getElementById('monthly_cash_flow_chart').getContext('2d');
+
+                // Prepare data for chart
+                const labels = cashFlow.monthly_cash_flow.map(item => item.month);
+                const inflowData = cashFlow.monthly_cash_flow.map(item => item.inflow);
+                const outflowData = cashFlow.monthly_cash_flow.map(item => item.outflow);
+                const netData = cashFlow.monthly_cash_flow.map(item => item.net);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: 'Inflow',
+                                data: inflowData,
+                                backgroundColor: 'rgba(16, 185, 129, 0.6)',
+                                borderColor: 'rgb(16, 185, 129)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Outflow',
+                                data: outflowData.map(val => -val), // Negative to show below axis
+                                backgroundColor: 'rgba(239, 68, 68, 0.6)',
+                                borderColor: 'rgb(239, 68, 68)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Net Flow',
+                                data: netData,
+                                type: 'line',
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                borderColor: 'rgb(59, 130, 246)',
+                                borderWidth: 2,
+                                tension: 0.1,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Amount (TZS)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        let value = context.parsed.y;
+
+                                        // For outflow, show positive values in the tooltip
+                                        if (label === 'Outflow') {
+                                            value = Math.abs(value);
+                                        }
+
+                                        return `${label}: ${formatPrice(value)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Populate payment methods table
+            if (cashFlow.payment_methods && cashFlow.payment_methods.length > 0) {
+                let tableHtml = '';
+
+                cashFlow.payment_methods.forEach(method => {
+                    tableHtml += `
+                <tr>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm">${method.method || 'Unknown'}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right text-green-600">${formatPrice(method.inflow || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right text-red-600">${formatPrice(method.outflow || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium ${method.net >= 0 ? 'text-blue-600' : 'text-red-600'}">${formatPrice(method.net || 0)}</td>
+                </tr>
+            `;
+                });
+
+                $('#payment_methods_table').html(tableHtml);
+            } else {
+                $('#payment_methods_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-sm text-gray-500">No payment method data available</td></tr>');
+            }
+        }
+
+        // Helper function to format prices with currency
+        function formatPrice(price) {
+            return new Intl.NumberFormat('sw-TZ', {
+                style: 'currency',
+                currency: 'TZS'
+            }).format(price);
+        }
+
+        // Updated versions of the existing render functions to work within the new framework
+
+        // Render dead stock table
+        function renderDeadStockTable(items) {
+            if (!items || items.length === 0) {
+                $('#dead_stock_table').html('<p class="text-center text-gray-500 py-4">No dead stock items found</p>');
+                return;
+            }
+
+            let html = `
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+    `;
+
+            items.forEach(item => {
+                html += `
+            <tr>
+                <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-sm">${item.sku || 'N/A'}</td>
+            </tr>
+        `;
+            });
+
+            html += `
+            </tbody>
+        </table>
+    `;
+
+            $('#dead_stock_table').html(html);
+        }
+
+        // Render slow moving items table
+        function renderSlowMovingItemsTable(items) {
+            if (!items || items.length === 0) {
+                $('#slow_moving_table').html('<p class="text-center text-gray-500 py-4">No slow-moving items found</p>');
+                return;
+            }
+
+            let html = `
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Units Sold (30 days)</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+    `;
+
+            items.forEach(item => {
+                html += `
+            <tr>
+                <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${item.total_sold}</td>
+            </tr>
+        `;
+            });
+
+            html += `
+            </tbody>
+        </table>
+    `;
+
+            $('#slow_moving_table').html(html);
+        }
+
+        // Render profit table
+        function renderProfitTable(items) {
+            if (!items || items.length === 0) {
+                $('#profit_table').html('<p class="text-center text-gray-500 py-4">No profit data available</p>');
+                return;
+            }
+
+            let html = `
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sale Price</th>
+                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
+                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Profit</th>
+                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Margin %</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+    `;
+
+            items.forEach(item => {
+                const profitMargin = item.profit_percentage || 0;
+                const profit = (item.sale_price || 0) - (item.avg_purchase_price || 0);
+
+                html += `
+            <tr>
+                <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.sale_price || 0)}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.avg_purchase_price || 0)}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(profit)}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-sm text-right ${profitMargin < 0 ? 'text-red-500' : 'text-green-500'}">${profitMargin.toFixed(2)}%</td>
+            </tr>
+        `;
+            });
+
+            html += `
+            </tbody>
+        </table>
+    `;
+
+            $('#profit_table').html(html);
+        }
+
+        // Initialize the functions when DOM is ready
+        $(document).ready(function() {
+            // Set default dates if none are provided
+            if (!$('#from_Date').val()) {
+                const sixMonthsAgo = new Date();
+                sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+                $('#from_Date').val(sixMonthsAgo.toISOString().split('T')[0]);
+            }
+
+            if (!$('#to_Date').val()) {
+                const today = new Date();
+                $('#to_Date').val(today.toISOString().split('T')[0]);
+            }
+
+            // Load statistics when tab is selected
+            $('#reports-tab').on('click', function() {
+                loadStatistics();
+            });
+
+            // Auto-load statistics if the reports tab is visible
+            if ($('#reports').is(':visible')) {
+                loadStatistics();
+            }
+        });
 
 
 
@@ -7169,6 +9051,8 @@
                     loadPurchases();
                     loadSale();
                     loadinventory();
+                    loadParties();
+                    loadStatistics();
                 },
                 error: function(error) {
                     const response = error.responseJSON;
@@ -7206,6 +9090,16 @@
             }, 400);
         }
 
+        function hide_supplier_customerCheckbox() {
+            let checkbox_s_c = document.getElementById('edit_supplierANDcustomer_paymentCHECKBOXID');
+            checkbox_s_c.classList.add('hidden');
+        }
+
+        function hide_otherpaymentCheckbox() {
+            let checkbox = document.getElementById('edit_other_paymentCHECKBOXID');
+            checkbox.classList.add('hidden');
+        }
+
         function show_editTransactionModal(transaction_id) {
             let dialog = document.getElementById('editTransactionModal');
             dialog.classList.remove('hidden');
@@ -7239,7 +9133,7 @@
                     if (transaction.part_id) {
                         // This is a part payment (supplier or customer)
                         const partType = transaction.part?.type;
-
+                        hide_otherpaymentCheckbox();
                         // Uncheck other payment checkbox and disable its fields
                         $('#edit_other_paymentCHECKBOXID').prop('checked', false);
                         $('#edit_parson_name').prop('disabled', true);
@@ -7300,6 +9194,8 @@
                             fetchPartSales(transaction.part_id, 'Sale_TableBodyEDIT');
                         }
                     } else {
+                        hide_supplier_customerCheckbox();
+
                         // This is an other payment
                         $('#edit_other_paymentCHECKBOXID').prop('checked', true);
                         $('#edit_parson_name').val(transaction.person_name || '');
@@ -7420,6 +9316,8 @@
                     loadTransactions();
                     loadinventory();
                     loadParties();
+                    loadPurchases();
+                    loadStatistics();
                 },
                 error: function(error) {
                     const response = error.responseJSON;
@@ -7464,6 +9362,8 @@
                     loadTransactions();
                     loadinventory();
                     loadParties();
+                    loadSale();
+                    loadStatistics();
                 },
                 error: function(error) {
                     const response = error.responseJSON;
