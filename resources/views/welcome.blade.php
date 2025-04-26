@@ -658,14 +658,9 @@
                                 <th class="py-3 px-6 text-left whitespace-nowrap">ref.no</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">Date</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">name</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">amount</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">method</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">type</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">sale paid</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">sale unpaid</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">purchase paid</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">purchase unpaid</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">purchase status</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">sale status</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">amount</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">tools</th>
                             </tr>
                         </thead>
@@ -1606,7 +1601,7 @@
         </div>
     </div>
 
-    <div id="Sales_Modal" class="fixed inset-0 overflow-y-auto h-full w-full hidden">
+    <div id="Sales_Modal" class="fixed inset-0 z-20 overflow-y-auto h-full w-full hidden">
         <div class="relative top-20 mx-auto p-5 border w-4/5 shadow-lg rounded-md bg-white">
             <div class="flex justify-between items-center border-b pb-3">
                 <h3 class="text-xl font-semibold">Sales Invoice</h3>
@@ -1942,17 +1937,17 @@
                                 <input type="checkbox" class="other_payment h-3 w-3 text-blue-600" />
                             </legend>
 
-                            <!-- Payment Type Selection -->
+                            <!-- Change this part in addTransactionModal -->
                             <div class="flex space-x-2 mb-2">
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="Payment" value="Payment" class="payment_type_radio h-3 w-3 text-blue-600" />
+                                    <input type="radio" name="payment_type" value="Payment" class="payment_type_radio h-3 w-3 text-blue-600" checked />
                                     <span class="ml-1 text-xs">Payment</span>
                                 </label>
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="Receipt" value="Receipt" class="payment_type_radio h-3 w-3 text-blue-600" />
+                                    <input type="radio" name="payment_type" value="Receipt" class="payment_type_radio h-3 w-3 text-blue-600" />
                                     <span class="ml-1 text-xs">Receipt</span>
                                 </label>
-                                <input type="hidden" name="type" id="payment_type">
+                                <input type="hidden" name="type" id="payment_type" value="Payment">
                             </div>
 
                             <div class="space-y-2">
@@ -2009,7 +2004,7 @@
 
                             <div class="flex justify-end">
                                 <input type="number" id="dept_paid" name="dept_paid" placeholder="0.00 Tzs"
-                                    class="px-2 py-1 w-24 border-2 border-blue-400 text-xs text-gray-800 bg-blue-100 rounded">
+                                    class="px-2 py-1 w-24 border-2 border-blue-400 text-xs text-gray-800 bg-blue-100 rounded cursor-not-allowed" readonly>
                             </div>
                         </div>
 
@@ -2169,17 +2164,17 @@
                                 <input type="checkbox" id="edit_other_paymentCHECKBOXID" class="edit_other_paymentCHECKBOX h-3 w-3 text-blue-600" />
                             </legend>
 
-                            <!-- Part Type Selection -->
+                            <!-- Change this part in editTransactionModal -->
                             <div class="flex space-x-2 mb-2">
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="Payment" value="Payment" class="payment_type_radioEDIT h-3 w-3 text-blue-600" />
+                                    <input type="radio" name="payment_type_edit" value="Payment" class="payment_type_radioEDIT h-3 w-3 text-blue-600" checked />
                                     <span class="ml-1 text-xs">Payment</span>
                                 </label>
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="Receipt" value="Receipt" class="payment_type_radioEDIT h-3 w-3 text-blue-600" />
+                                    <input type="radio" name="payment_type_edit" value="Receipt" class="payment_type_radioEDIT h-3 w-3 text-blue-600" />
                                     <span class="ml-1 text-xs">Receipt</span>
                                 </label>
-                                <input type="hidden" name="type" id="payment_type_edit">
+                                <input type="hidden" name="type" id="payment_type_edit" value="Payment">
                             </div>
 
                             <div class="space-y-2">
@@ -2232,10 +2227,13 @@
                             </div>
                         </div>
 
+
+
                         <!-- Edit Transaction Modal - Part Payment Fieldset -->
                         <fieldset class="border border-gray-500 rounded-lg px-2 py-2 mb-3">
-                            <legend class="text-xs font-semibold px-1">
+                            <legend class="text-xs font-semibold px-1 flex items-center gap-1">
                                 Part Payment
+                                <input type="checkbox" id="edit_supplierANDcustomer_paymentCHECKBOXID" class="edit_other_paymentCHECKBOX h-3 w-3 text-blue-600" />
                             </legend>
 
                             <!-- Part Type Selection -->
@@ -2291,6 +2289,7 @@
                                     <table class="w-full border border-blue-500 text-xs">
                                         <thead>
                                             <tr class="bg-teal-800 text-white">
+                                                <th class="py-1 px-2 text-left"><span></span></th>
                                                 <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Date</th>
                                                 <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Total</th>
                                                 <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Paid</th>
@@ -2312,6 +2311,7 @@
                                     <table class="w-full border border-green-500 text-xs">
                                         <thead>
                                             <tr class="bg-teal-800 text-white">
+                                                <th class="py-1 px-2 text-left"><span></span></th>
                                                 <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Date</th>
                                                 <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Total</th>
                                                 <th class="py-1 px-2 text-left whitespace-nowrap text-xs">Paid</th>
@@ -2346,6 +2346,151 @@
             </div>
         </div>
     </div>
+
+    <div id="delete_sale_Modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+        <!-- Overlay -->
+        <div class="absolute inset-0"></div>
+
+        <!-- Modal Content -->
+        <div class="relative w-full max-w-sm bg-white rounded-xl shadow-2xl border border-red-200 overflow-hidden mx-auto">
+            <!-- Header -->
+            <div class="px-4 sm:px-6 py-4 bg-red-50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-900">Delete sale</h2>
+                    </div>
+
+                    <button onclick="hide_delete_sale_Dialog()" class="p-2 hover:bg-red-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <svg class="w-5 h-5 text-gray-500 hover:text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="px-4 sm:px-6 py-4">
+                <div class="space-y-2">
+                    <p class="text-gray-600">Are you sure you want to delete this sale?</p>
+                    <p class="text-red-600 font-medium">This action cannot be undone.</p>
+                </div>
+
+                <form method="" action="#" class="mt-6">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" id="delete_sale_id">
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                        <button type="button" onclick="hide_delete_sale_Dialog()" class="w-full sm:flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            Cancel
+                        </button>
+                        <button type="submit" class="delete_sale_btn w-full sm:flex-1 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            Delete sale
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete_purchase_Modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+        <!-- Overlay -->
+        <div class="absolute inset-0"></div>
+
+        <!-- Modal Content -->
+        <div class="relative w-full max-w-sm bg-white rounded-xl shadow-2xl border border-red-200 overflow-hidden mx-auto">
+            <!-- Header -->
+            <div class="px-4 sm:px-6 py-4 bg-red-50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-900">Delete purchase</h2>
+                    </div>
+
+                    <button onclick="hide_delete_purchase_Dialog()" class="p-2 hover:bg-red-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <svg class="w-5 h-5 text-gray-500 hover:text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="px-4 sm:px-6 py-4">
+                <div class="space-y-2">
+                    <p class="text-gray-600">Are you sure you want to delete this purchase?</p>
+                    <p class="text-red-600 font-medium">This action cannot be undone.</p>
+                </div>
+
+                <form method="" action="#" class="mt-6">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" id="delete_purchase_id">
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                        <button type="button" onclick="hide_delete_purchase_Dialog()" class="w-full sm:flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            Cancel
+                        </button>
+                        <button type="submit" class="delete_purchase_btn w-full sm:flex-1 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            Delete purchase
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="delete_transaction_Modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+        <!-- Overlay -->
+        <div class="absolute inset-0"></div>
+
+        <!-- Modal Content -->
+        <div class="relative w-full max-w-sm bg-white rounded-xl shadow-2xl border border-red-200 overflow-hidden mx-auto">
+            <!-- Header -->
+            <div class="px-4 sm:px-6 py-4 bg-red-50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-900">Delete transaction</h2>
+                    </div>
+
+                    <button onclick="hide_delete_transaction_Dialog()" class="p-2 hover:bg-red-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <svg class="w-5 h-5 text-gray-500 hover:text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="px-4 sm:px-6 py-4">
+                <div class="space-y-2">
+                    <p class="text-gray-600">Are you sure you want to delete this transaction?</p>
+                    <p class="text-red-600 font-medium">This action cannot be undone.</p>
+                </div>
+
+                <form method="" action="#" class="mt-6">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" id="delete_transaction_id">
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                        <button type="button" onclick="hide_delete_transaction_Dialog()" class="w-full sm:flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            Cancel
+                        </button>
+                        <button type="submit" class="delete_transaction_btn w-full sm:flex-1 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            Delete transaction
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         function showFeedbackModal(type, title, message) {
@@ -2655,75 +2800,68 @@
                                 sale_status = transaction.sale.status || '-';
                             }
 
+                            // Add conditional styling based on transaction type
+                            const typeClass = transaction?.type === 'Payment' ? 'text-red-600 font-medium' :
+                                (transaction?.type === 'Receipt' ? 'text-green-600 font-medium' : '');
+
+                            // Add conditional styling for transaction amount
+                            const amountClass = transaction?.type === 'Payment' ? 'text-red-600 font-medium' :
+                                (transaction?.type === 'Receipt' ? 'text-green-600 font-medium' : '');
+
                             transactionHtml += `
-                        <tr class="bg-white border-b border-blue-400 hover:bg-gray-50">
-                            <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.reference_no || ' - '}</td>
-                            <td class="py-1 px-6 text-left whitespace-nowrap">${date}</td>
-                            <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.part?.name || ' - '}</td>
-                            <td class="py-1 px-6 text-right whitespace-nowrap">${payment_amount}</td>
-                            <td class="py-1 px-6 text-right whitespace-nowrap">${transaction.type || ' - '}</td>
-                            <td class="py-1 px-6 text-right whitespace-nowrap">${sale_paid}</td>
-                            <td class="py-1 px-6 text-right whitespace-nowrap ${sale_debt !== " - " ? "text-red-600 font-semibold" : ""}">${sale_debt}</td>
-                            <td class="py-1 px-6 text-right whitespace-nowrap">${purchase_paid}</td>
-                            <td class="py-1 px-6 text-right whitespace-nowrap ${purchase_debt !== " - " ? "text-red-600 font-semibold" : ""}">${purchase_debt}</td>
-                            <td class="py-1 px-6 text-center whitespace-nowrap">
-                                ${purchase_status !== "-" ? 
-                                `<span class="bg-${getStatusColor(purchase_status)}-100 text-${getStatusColor(purchase_status)}-800 py-1 px-3 rounded-full text-xs">
-                                    ${purchase_status}
-                                </span>` : " - "}
-                            </td>
-                            <td class="py-1 px-6 text-center whitespace-nowrap">
-                                ${sale_status !== "-" ? 
-                                `<span class="bg-${getStatusColor(sale_status)}-100 text-${getStatusColor(sale_status)}-800 py-1 px-3 rounded-full text-xs">
-                                    ${sale_status}
-                                </span>` : " - "}
-                            </td>
-                            <td class="px-6 py-1 text-center whitespace-nowrap">
-                                <div class="flex space-x-2">
-                                    <div class="relative group">
-                                        <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_transactionPREVIEW(${transaction.id})" class="show_transactionPREVIEW hover:text-blue-300 text-blue-900">
-                                            <svg class="w-5 h-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </button>
-                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
-                                            Preview
-                                        </span>
-                                    </div>
-                                    <span class="font-bold">|</span>
-                                    <div class="relative group">
-                                        <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_editTransactionModal(${transaction.id})" class="show_edit_transactionMODAL hover:text-green-500 text-green-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
-                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
-                                            </svg>
-                                        </button>
-                                        <!-- Tooltip -->
-                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
-                                            Edit
-                                        </span>
-                                    </div>
+                <tr class="bg-white border-b border-blue-400 hover:bg-gray-50">
+                    <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.reference_no || ' - '}</td>
+                    <td class="py-1 px-6 text-left whitespace-nowrap">${date}</td>
+                    <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.part?.name || ' '} ${transaction?.person_name || ' '}</td>
+                    <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.method || ' - '}</td>
+                    <td class="py-1 px-6 text-left whitespace-nowrap ${typeClass}">${transaction?.type || ' '}</td>
+                    <td class="py-1 px-6 text-left whitespace-nowrap ${amountClass}">${payment_amount}/= Tzs</td>
+                    <td class="px-6 py-1 text-left whitespace-nowrap">
+                        <div class="flex space-x-2">
+                            <div class="relative group">
+                                <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_transactionPREVIEW(${transaction.id})" class="show_transactionPREVIEW hover:text-blue-300 text-blue-900">
+                                    <svg class="w-5 h-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </button>
+                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                    Preview
+                                </span>
+                            </div>
+                            <span class="font-bold">|</span>
+                            <div class="relative group">
+                                <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_editTransactionModal(${transaction.id})" class="show_edit_transactionMODAL hover:text-green-500 text-green-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                    </svg>
+                                </button>
+                                <!-- Tooltip -->
+                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                    Edit
+                                </span>
+                            </div>
 
-                                    <span class="font-bold">|</span>
+                            <span class="font-bold">|</span>
 
-                                    <!-- Delete Button -->
-                                    <div class="relative group">
-                                        <button value="${transaction.id}" data-id="${transaction.id}" onclick="delete_transaction(${transaction.id})" class="delete_transaction hover:text-red-500 text-red-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
-                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                            </svg>
-                                        </button>
-                                        <!-- Tooltip -->
-                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
-                                            Delete
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                            <!-- Delete Button -->
+                            <div class="relative group">
+                                <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_delete_transaction_Dialog(${transaction.id})" class="show_delete_transaction_Dialog hover:text-red-500 text-red-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                    </svg>
+                                </button>
+                                <!-- Tooltip -->
+                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                    Delete
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
                         });
                     }
 
@@ -3183,8 +3321,8 @@
                                             <span class="font-bold">|</span>
 
                                             <!-- Delete Button -->
-                                            <div class="relative group" onclick="delete_Sales()">
-                                                <button value="${sale.id}" data-id="${sale.id}" class=" delete_Sales hover:text-red-500 text-red-800">
+                                            <div class="relative group">
+                                                <button value="${sale.id}" data-id="${sale.id}" onclick="show_delete_sale_Dialog(${sale.id})" class=" delete_Sales hover:text-red-500 text-red-800">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
                                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -3317,8 +3455,8 @@
                                             <span class="font-bold">|</span>
 
                                             <!-- Delete Button -->
-                                            <div class="relative group" onclick="delete_Purchase()">
-                                                <button value="${purchase.id}" data-id="${purchase.id}" class=" delete_purchase hover:text-red-500 text-red-800">
+                                            <div class="relative group">
+                                                <button value="${purchase.id}" data-id="${purchase.id}" onclick="show_delete_purchase_Dialog(${purchase.id})" class=" delete_purchase hover:text-red-500 text-red-800">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
                                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -4055,6 +4193,7 @@
                         hide_add_purchase_modal();
                         loadPurchases();
                         loadinventory();
+                        loadParties();
                     },
                     error: function(xhr) {
                         let errorMessage = 'There was an error while recording the purchase.';
@@ -4684,6 +4823,8 @@
             document.getElementById('sales_edit_date').value = today;
             document.getElementById('add_purchase_date').value = today;
             document.getElementById('purchase_edit_date').value = today;
+            document.getElementById('transaction_date').value = today;
+            document.getElementById('edit_transaction_date').value = today;
         });
 
         // Initialize on page load
@@ -4953,7 +5094,6 @@
         }
 
         function generateEFDReceipt(saleID) {
-            console.log(saleID);
             let efdModal = document.getElementById('efd_receipt');
             if (!efdModal) {
                 efdModal = document.createElement('div');
@@ -5358,41 +5498,41 @@
             const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
             iframeDoc.open();
             iframeDoc.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Purchase Invoice</title>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <!-- Include Tailwind CSS - same as in the main document -->
-            <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-            <style>
-                @page {
-                    margin: 10mm;
-                }
-                
-                /* Remove shadows for printing */
-                @media print {
-                    .shadow, .shadow-md, .shadow-lg, .shadow-xl {
-                        box-shadow: none !important;
-                    }
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Purchase Invoice</title>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <!-- Include Tailwind CSS - same as in the main document -->
+                    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+                    <style>
+                        @page {
+                            margin: 10mm;
+                        }
+                        
+                        /* Remove shadows for printing */
+                        @media print {
+                            .shadow, .shadow-md, .shadow-lg, .shadow-xl {
+                                box-shadow: none !important;
+                            }
 
-                    .no_print {
-                        display: none !important;
-                    }
-                    
-                    body {
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                    }
-                }
-            </style>
-        </head>
-        <body class="bg-white">
-            ${printContent}
-        </body>
-        </html>
-    `);
+                            .no_print {
+                                display: none !important;
+                            }
+                            
+                            body {
+                                -webkit-print-color-adjust: exact;
+                                print-color-adjust: exact;
+                            }
+                        }
+                    </style>
+                </head>
+                <body class="bg-white">
+                    ${printContent}
+                </body>
+                </html>
+             `);
             iframeDoc.close();
 
             // Wait for iframe to fully load before printing
@@ -5549,6 +5689,10 @@
 
         });
 
+
+
+
+
         // Unified part selection handler
         $(document).on('click', '.part_li', function(e) {
             e.preventDefault();
@@ -5632,37 +5776,6 @@
             }
         }); // Unified part search functionality
 
-        $(document).on('keyup', '.search_part', function() {
-            var inputElement = $(this);
-            var query = $.trim(inputElement.val());
-            var partList = inputElement.siblings('.partlist');
-            var partType = inputElement.data('type'); // 'Supplier', 'Customer', or empty for both
-
-            if (query !== '') {
-                $.ajax({
-                    type: 'POST',
-                    url: '/search_part', // New unified endpoint
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr('content'),
-                        query: query,
-                        type: partType
-                    },
-                    success: function(data) {
-                        if (data.trim() !== '') {
-                            partList.html(data).fadeIn();
-                        } else {
-                            partList.fadeOut();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error searching parts:', error);
-                        partList.fadeOut();
-                    }
-                });
-            } else {
-                partList.fadeOut();
-            }
-        });
 
         // Unified part selection handler
         $(document).on('click', '.part_li', function(e) {
@@ -5899,18 +6012,44 @@
             }
         }
 
-        // Handle payment type radio button changes
+        // Update the payment type radio button handler
         $(document).on('change', '.payment_type_radio', function() {
             const paymentType = $(this).val();
-            // Store the payment type in a hidden input field or as data attribute
+            // Store the payment type in the hidden input field
             $('#payment_type').val(paymentType);
+
+            // If part payment is selected, check if we need to adjust part type
+            if ($('.part_payment').is(':checked')) {
+                const currentPartType = $('#Part_Type_payment').val();
+
+                // If payment type and part type are incompatible, show warning
+                if ((paymentType === 'Payment' && currentPartType === 'Customer') ||
+                    (paymentType === 'Receipt' && currentPartType === 'Supplier')) {
+                    showFeedbackModal('warning', 'Warning',
+                        'The selected payment type is not typical for this part type. ' +
+                        'Suppliers usually receive payments, and customers usually provide receipts.');
+                }
+            }
         });
 
-        // Handle payment type radio button changes in edit modal
+        // Same for edit modal
         $(document).on('change', '.payment_type_radioEDIT', function() {
             const paymentType = $(this).val();
-            // Store the payment type in a hidden input field or as data attribute
+            // Store the payment type in the hidden input field
             $('#payment_type_edit').val(paymentType);
+
+            // If part payment is selected, check if we need to adjust part type
+            if ($('#edit_supplierANDcustomer_paymentCHECKBOXID').is(':checked')) {
+                const currentPartType = $('#Part_Type_paymentEDIT').val();
+
+                // If payment type and part type are incompatible, show warning
+                if ((paymentType === 'Payment' && currentPartType === 'Customer') ||
+                    (paymentType === 'Receipt' && currentPartType === 'Supplier')) {
+                    showFeedbackModal('warning', 'Warning',
+                        'The selected payment type is not typical for this part type. ' +
+                        'Suppliers usually receive payments, and customers usually provide receipts.');
+                }
+            }
         });
 
         // Update form submission to include payment type
@@ -5966,8 +6105,7 @@
                         return;
                     }
 
-                    // Get the payment type (Payment or Receipt)
-                    const paymentType = $('input[name="Payment"]:checked, input[name="Receipt"]:checked').val() || 'Payment';
+                    const paymentType = $('input[name="payment_type"]:checked').val() || 'Payment';
 
                     // Start with common data
                     let transactionData = {
@@ -6031,14 +6169,16 @@
                             return;
                         }
 
+                        // Replace this part in your payment_out_form submitHandler:
                         const transactionsData = [];
                         checkedTransactions.each(function() {
                             const $row = $(this).closest('tr');
                             const $balanceCell = $row.find('.balance');
 
-                            // Get original and new balance
+                            // Get original balance from data attribute
                             const originalBalance = $balanceCell.data('original-balance') ||
                                 parseFloat($balanceCell.text().replace(/[^\d.-]/g, ''));
+                            // Get current displayed balance
                             const newBalance = parseFloat($balanceCell.text().replace(/[^\d.-]/g, ''));
 
                             transactionsData.push({
@@ -6293,10 +6433,13 @@
 
             // Set appropriate payment type based on part type
             if (partType === 'Supplier') {
-                $('input[name="Payment"][value="Payment"]').prop('checked', true);
+                $('input[name="payment_type"][value="Payment"]').prop('checked', true);
+                $('#payment_type').val('Payment');
             } else if (partType === 'Customer') {
-                $('input[name="Receipt"][value="Receipt"]').prop('checked', true);
+                $('input[name="payment_type"][value="Receipt"]').prop('checked', true);
+                $('#payment_type').val('Receipt');
             }
+
 
             // Clear search and results
             $('#search_partFOR_payment').val('');
@@ -6515,8 +6658,7 @@
                 },
                 dept_paid: {
                     required: function() {
-                        return $("#supplier_paymentEDITcheckboxID").is(":checked") ||
-                            $("#customer_paymentEDITcheckboxID").is(":checked");
+                        return $("#edit_supplierANDcustomer_paymentCHECKBOXID").is(":checked");
                     }
                 }
             },
@@ -6534,9 +6676,8 @@
                 const transaction_id = $('#edit_transaction_id').val();
 
                 try {
-                    // Get the payment type (Payment or Receipt)
-                    const paymentType = $('input[name="Payment"]:checked, input[name="Receipt"]:checked').val() || 'Payment';
 
+                    const paymentType = $('input[name="payment_type_edit"]:checked').val() || 'Payment';
                     let formData = {
                         transaction_date: $('#edit_transaction_date').val(),
                         method: $('#edit_method').val(),
@@ -6546,8 +6687,7 @@
                     };
 
                     // Check which payment type is being handled
-                    const isPartPayment = $("#supplier_paymentEDITcheckboxID").is(":checked") ||
-                        $("#customer_paymentEDITcheckboxID").is(":checked");
+                    const isPartPayment = $("#edit_supplierANDcustomer_paymentCHECKBOXID").is(":checked");
 
                     // Handle part payment (supplier or customer)
                     if (isPartPayment) {
@@ -6604,108 +6744,6 @@
             }
         });
 
-
-        // Function to populate edit transaction modal - update to handle payment type
-        function populateEditTransactionModal(transactionId) {
-            $.ajax({
-                type: 'GET',
-                url: `/populate_transaction/${transactionId}`,
-                dataType: 'json',
-                success: function(transaction) {
-                    // Reset form first
-                    resetEditTransactionForm();
-
-                    // Set transaction ID for form submission
-                    $('#edit_transaction_id').val(transaction.id);
-
-                    // Set common fields
-                    $('#edit_transaction_date').val(transaction.transaction_date);
-                    $('#edit_method').val(transaction.method);
-                    $('#edit_journal_memo').val(transaction.journal_memo);
-
-                    // Set payment type (Payment or Receipt)
-                    if (transaction.type === 'Payment') {
-                        $('input[name="Payment"][value="Payment"]').prop('checked', true);
-                    } else if (transaction.type === 'Receipt') {
-                        $('input[name="Receipt"][value="Receipt"]').prop('checked', true);
-                    }
-
-                    // Check transaction type and set appropriate fields
-                    if (transaction.part_id) {
-                        // This is a part payment (supplier or customer)
-                        const partType = transaction.part?.type;
-
-                        if (partType === 'Supplier') {
-                            // Supplier payment
-                            $('#supplier_paymentEDITcheckboxID').prop('checked', true);
-                            $('.part_type_radioEDIT[value="Supplier"]').prop('checked', true);
-
-                            // Show supplier container, hide customer container
-                            $('#supplier_transactions_containerEDIT').removeClass('hidden');
-                            $('#customer_transactions_containerEDIT').addClass('hidden');
-
-                            // Set supplier name
-                            $('#search_partFOR_paymentEDIT').val(transaction.part?.name || '');
-                            $('#Part_ID_paymentEDIT').val(transaction.part_id);
-                            $('#Part_Type_paymentEDIT').val('Supplier');
-
-                            // Set payment amount
-                            $('#paidEDIT').val(transaction.payment_amount);
-
-                            // Fetch supplier balance and transactions
-                            fetchPartBalance(transaction.part_id);
-                            if (transaction.purchase_id) {
-                                // Fetch specific purchase
-                                fetchSinglePurchase(transaction.purchase_id, 'purchases_TableBodyEDIT');
-                            } else {
-                                // Fetch all supplier purchases
-                                fetchPartPurchases(transaction.part_id, 'purchases_TableBodyEDIT');
-                            }
-                        } else if (partType === 'Customer') {
-                            // Customer payment
-                            $('#customer_paymentEDITcheckboxID').prop('checked', true);
-                            $('.part_type_radioEDIT[value="Customer"]').prop('checked', true);
-
-                            // Show customer container, hide supplier container
-                            $('#supplier_transactions_containerEDIT').addClass('hidden');
-                            $('#customer_transactions_containerEDIT').removeClass('hidden');
-
-                            // Set customer name
-                            $('#search_partFOR_paymentEDIT').val(transaction.part?.name || '');
-                            $('#Part_ID_paymentEDIT').val(transaction.part_id);
-                            $('#Part_Type_paymentEDIT').val('Customer');
-
-                            // Set payment amount
-                            $('#paidEDIT').val(transaction.payment_amount);
-
-                            // Fetch customer balance and transactions
-                            fetchPartBalance(transaction.part_id);
-                            if (transaction.sale_id) {
-                                // Fetch specific sale
-                                fetchSingleSale(transaction.sale_id, 'Sale_TableBodyEDIT');
-                            } else {
-                                // Fetch all customer sales
-                                fetchPartSales(transaction.part_id, 'Sale_TableBodyEDIT');
-                            }
-                        }
-                    } else {
-                        // This is an other payment
-                        $('#edit_other_paymentCHECKBOXID').prop('checked', true);
-                        $('#edit_parson_name').val(transaction.person_name || '');
-                        $('#edit_payment_amount').val(transaction.payment_amount || '');
-                    }
-
-                    // Show the modal
-                    showEditTransactionModal();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching transaction:', error);
-                    showFeedbackModal('error', 'Error', 'Failed to load transaction data');
-                }
-            });
-        }
-
-
         // Add hidden inputs to both modals for payment type
         function addHiddenInputs() {
             if ($('#payment_type').length === 0) {
@@ -6725,18 +6763,141 @@
             $('input[name="Payment"][value="Payment"]').prop('checked', true);
         });
 
+        // Handle other payment checkbox in edit modal
+        $('#edit_other_paymentCHECKBOXID').on('change', function() {
+            if ($(this).is(':checked')) {
+                // Enable other payment inputs
+                $('#edit_parson_name').prop('disabled', false);
+                $('#edit_payment_amount').prop('disabled', false);
+
+                // Disable part payment inputs
+                disablePartPaymentInputsEdit();
+
+                // Uncheck supplier/customer payment checkbox
+                $('#edit_supplierANDcustomer_paymentCHECKBOXID').prop('checked', false);
+            } else {
+                // Disable other payment inputs if supplier/customer payment is not checked
+                if (!$('#edit_supplierANDcustomer_paymentCHECKBOXID').is(':checked')) {
+                    $('#edit_parson_name').prop('disabled', true);
+                    $('#edit_payment_amount').prop('disabled', true);
+                }
+            }
+        });
+
+        // Handle supplier/customer payment checkbox in edit modal
+        $('#edit_supplierANDcustomer_paymentCHECKBOXID').on('change', function() {
+            if ($(this).is(':checked')) {
+                // Enable part payment inputs
+                enablePartPaymentInputsEdit();
+
+                // Disable other payment inputs
+                $('#edit_parson_name').prop('disabled', true);
+                $('#edit_payment_amount').prop('disabled', true);
+                $('#edit_parson_name').val('');
+                $('#edit_payment_amount').val('');
+
+                // Uncheck other payment checkbox
+                $('#edit_other_paymentCHECKBOXID').prop('checked', false);
+            } else {
+                // Disable part payment inputs if other payment is not checked
+                if (!$('#edit_other_paymentCHECKBOXID').is(':checked')) {
+                    disablePartPaymentInputsEdit();
+                }
+            }
+        });
+
+        // Function to enable part payment inputs in edit modal
+        function enablePartPaymentInputsEdit() {
+            $('#search_partFOR_paymentEDIT').prop('disabled', false);
+            $('#paidEDIT').prop('disabled', false);
+            $('.part_type_radioEDIT').prop('disabled', false);
+        }
+
+        // Function to disable part payment inputs in edit modal
+        function disablePartPaymentInputsEdit() {
+            $('#search_partFOR_paymentEDIT').prop('disabled', true);
+            $('#paidEDIT').prop('disabled', true);
+            $('.part_type_radioEDIT').prop('disabled', true);
 
+            // Clear part payment fields
+            $('#search_partFOR_paymentEDIT').val('');
+            $('#Part_ID_paymentEDIT').val('');
+            $('#Part_Type_paymentEDIT').val('');
+            $('#paidEDIT').val('');
 
+            // Clear part tables
+            $('#purchases_TableBodyEDIT').html(`
+        <tr class="bg-white border-b border-blue-500">
+            <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="4">
+                Part payment disabled. Enable part payment to search for parts.
+            </td>
+        </tr>
+    `);
 
+            $('#Sale_TableBodyEDIT').html(`
+        <tr class="bg-white border-b border-green-500">
+            <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="4">
+                Part payment disabled. Enable part payment to search for parts.
+            </td>
+        </tr>
+    `);
+        }
 
+        // Function to reset the edit transaction form
+        function resetEditTransactionForm() {
+            // Reset all form fields
+            $('#edit_transaction_form')[0].reset();
 
+            // Clear input fields
+            $('#edit_parson_name').val('');
+            $('#edit_payment_amount').val('');
+            $('#edit_journal_memo').val('');
+            $('#edit_method').val('');
+            $('#search_partFOR_paymentEDIT').val('');
+            $('#Part_ID_paymentEDIT').val('');
+            $('#Part_Type_paymentEDIT').val('');
+            $('#paidEDIT').val('');
 
+            // Uncheck checkboxes
+            $('#edit_other_paymentCHECKBOXID').prop('checked', false);
+            $('#edit_supplierANDcustomer_paymentCHECKBOXID').prop('checked', false);
 
+            // Reset radio buttons
+            $('input[name="payment_type_edit"][value="Payment"]').prop('checked', true);
+            $('#payment_type_edit').val('Payment');
+            $('.part_type_radioEDIT[value="Supplier"]').prop('checked', true);
 
+            // Disable all input fields initially
+            $('#edit_parson_name').prop('disabled', true);
+            $('#edit_payment_amount').prop('disabled', true);
+            $('#search_partFOR_paymentEDIT').prop('disabled', true);
+            $('#paidEDIT').prop('disabled', true);
+            $('.part_type_radioEDIT').prop('disabled', true);
 
+            // Reset transaction tables
+            $('#purchases_TableBodyEDIT').html(`
+        <tr class="bg-white border-b border-blue-500">
+            <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="4">
+                No purchases found! Please search Supplier first.
+            </td>
+        </tr>
+    `);
 
+            $('#Sale_TableBodyEDIT').html(`
+        <tr class="bg-white border-b border-green-500">
+            <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="4">
+                No sales found! Please search Customer first.
+            </td>
+        </tr>
+    `);
 
+            // Hide/show appropriate transaction containers
+            $('#supplier_transactions_containerEDIT').removeClass('hidden');
+            $('#customer_transactions_containerEDIT').addClass('hidden');
 
+            // Remove any validation error highlighting
+            $('.border-red-500').removeClass('border-red-500');
+        }
 
 
 
@@ -6946,6 +7107,92 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+        function show_delete_transaction_Dialog(transaction_id) {
+            // Set the item ID to delete
+            $('#delete_transaction_id').val(transaction_id);
+            // Show the modal
+            const modal = document.getElementById('delete_transaction_Modal');
+            document.body.classList.add('overflow-hidden'); // Prevent background scrolling
+
+            // Display the modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Add animation
+            const modalContent = modal.querySelector('.relative');
+            modalContent.classList.add('animate-modal-in');
+
+            // Add event listener to close modal when clicking outside
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal || event.target === modal.querySelector('.absolute')) {
+                    hide_delete_transaction_Dialog();
+                }
+            });
+
+            // Add escape key listener
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    hide_delete_transaction_Dialog();
+                }
+            });
+        }
+
+        $(document).on('click', '.delete_transaction_btn', function(e) {
+            e.preventDefault();
+            var transaction_id = $('#delete_transaction_id').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "DELETE",
+                url: "/delete_transaction/" + transaction_id,
+                success: function(response) {
+
+                    hide_delete_transaction_Dialog();
+                    showFeedbackModal('success', 'Transaction Deleted!', 'Your Transaction has been Deleted successfully.');
+                    loadTransactions();
+                    loadPurchases();
+                    loadSale();
+                    loadinventory();
+                },
+                error: function(error) {
+                    const response = error.responseJSON;
+                    if (response && response.status === 'error') {
+                        showFeedbackModal('error', 'Deleting Failed!', 'There was an error Deleting the Transaction. Please try again.');
+                    }
+                }
+            });
+        });
+
+        function hide_delete_transaction_Dialog() {
+            let dialog = document.getElementById('delete_transaction_Modal');
+            const modalContent = dialog.querySelector('div');
+
+            // Add fade out animation
+            modalContent.classList.add('animate-fadeOut');
+
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+                dialog.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden');
+                modalContent.classList.remove('animate-fadeOut', 'animate-fadeIn');
+            }, 300);
+        }
 
         function show_addTransactionModal() {
             let dialog = document.getElementById('addTransactionModal');
@@ -6959,9 +7206,146 @@
             }, 400);
         }
 
-        function show_editTransactionModal() {
+        function show_editTransactionModal(transaction_id) {
             let dialog = document.getElementById('editTransactionModal');
             dialog.classList.remove('hidden');
+
+            $.ajax({
+                type: 'GET',
+                url: `/populate_transaction/${transaction_id}`,
+                dataType: 'json',
+                success: function(transaction) {
+                    // Reset form first
+                    resetEditTransactionForm();
+
+                    // Set transaction ID for form submission
+                    $('#edit_transaction_id').val(transaction.id);
+
+                    // Set common fields
+                    $('#edit_transaction_date').val(transaction.transaction_date);
+                    $('#edit_method').val(transaction.method);
+                    $('#edit_journal_memo').val(transaction.journal_memo);
+
+                    // Set payment type (Payment or Receipt)
+                    if (transaction.type === 'Payment') {
+                        $('input[name="payment_type_edit"][value="Payment"]').prop('checked', true);
+                        $('#payment_type_edit').val('Payment');
+                    } else if (transaction.type === 'Receipt') {
+                        $('input[name="payment_type_edit"][value="Receipt"]').prop('checked', true);
+                        $('#payment_type_edit').val('Receipt');
+                    }
+
+                    // Check transaction type and set appropriate fields
+                    if (transaction.part_id) {
+                        // This is a part payment (supplier or customer)
+                        const partType = transaction.part?.type;
+
+                        // Uncheck other payment checkbox and disable its fields
+                        $('#edit_other_paymentCHECKBOXID').prop('checked', false);
+                        $('#edit_parson_name').prop('disabled', true);
+                        $('#edit_payment_amount').prop('disabled', true);
+
+                        // Check supplier/customer payment checkbox
+                        $('#edit_supplierANDcustomer_paymentCHECKBOXID').prop('checked', true);
+
+                        // Enable part payment fields
+                        $('#search_partFOR_paymentEDIT').prop('disabled', false);
+                        $('#paidEDIT').prop('disabled', false);
+                        $('.part_type_radioEDIT').prop('disabled', false);
+
+                        if (partType === 'Supplier') {
+                            // Supplier payment
+                            $('.part_type_radioEDIT[value="Supplier"]').prop('checked', true);
+                            $('.payment_type_radioEDIT').prop('disabled', true);
+
+                            // Show supplier container, hide customer container
+                            $('#supplier_transactions_containerEDIT').removeClass('hidden');
+                            $('#customer_transactions_containerEDIT').addClass('hidden');
+
+                            // Set supplier name
+                            $('#search_partFOR_paymentEDIT').val(transaction.part?.name || '');
+                            $('#Part_ID_paymentEDIT').val(transaction.part_id);
+                            $('#Part_Type_paymentEDIT').val('Supplier');
+
+                            // Set payment amount
+                            $('#paidEDIT').val(transaction.payment_amount);
+
+                            // Fetch supplier balance and transactions
+                            fetchPartBalance(transaction.part_id);
+
+                            // Fetch all supplier purchases - simpler approach
+                            fetchPartPurchases(transaction.part_id, 'purchases_TableBodyEDIT');
+
+                        } else if (partType === 'Customer') {
+                            // Customer payment
+                            $('.part_type_radioEDIT[value="Customer"]').prop('checked', true);
+                            $('.payment_type_radioEDIT').prop('disabled', true);
+
+                            // Show customer container, hide supplier container
+                            $('#supplier_transactions_containerEDIT').addClass('hidden');
+                            $('#customer_transactions_containerEDIT').removeClass('hidden');
+
+                            // Set customer name
+                            $('#search_partFOR_paymentEDIT').val(transaction.part?.name || '');
+                            $('#Part_ID_paymentEDIT').val(transaction.part_id);
+                            $('#Part_Type_paymentEDIT').val('Customer');
+
+                            // Set payment amount
+                            $('#paidEDIT').val(transaction.payment_amount);
+
+                            // Fetch customer balance and transactions
+                            fetchPartBalance(transaction.part_id);
+
+                            // Fetch all customer sales - simpler approach
+                            fetchPartSales(transaction.part_id, 'Sale_TableBodyEDIT');
+                        }
+                    } else {
+                        // This is an other payment
+                        $('#edit_other_paymentCHECKBOXID').prop('checked', true);
+                        $('#edit_parson_name').val(transaction.person_name || '');
+                        $('#edit_payment_amount').val(transaction.payment_amount || '');
+
+                        // Enable other payment fields
+                        $('#edit_parson_name').prop('disabled', false);
+                        $('#edit_payment_amount').prop('disabled', false);
+
+                        // Uncheck supplier/customer payment checkbox and disable its fields
+                        $('#edit_supplierANDcustomer_paymentCHECKBOXID').prop('checked', false);
+
+                        // Disable part payment fields
+                        $('#search_partFOR_paymentEDIT').prop('disabled', true);
+                        $('#paidEDIT').prop('disabled', true);
+                        $('.part_type_radioEDIT').prop('disabled', true);
+
+                        // Clear part payment fields
+                        $('#search_partFOR_paymentEDIT').val('');
+                        $('#Part_ID_paymentEDIT').val('');
+                        $('#Part_Type_paymentEDIT').val('');
+                        $('#paidEDIT').val('');
+
+                        // Reset transaction tables
+                        $('#purchases_TableBodyEDIT').html(`
+                    <tr class="bg-white border-b border-blue-500">
+                        <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="4">
+                            Part payment disabled. Enable part payment to search for parts.
+                        </td>
+                    </tr>
+                `);
+
+                        $('#Sale_TableBodyEDIT').html(`
+                    <tr class="bg-white border-b border-green-500">
+                        <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="4">
+                            Part payment disabled. Enable part payment to search for parts.
+                        </td>
+                    </tr>
+                `);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching transaction:', error);
+                    showFeedbackModal('error', 'Error', 'Failed to load transaction data');
+                }
+            });
         }
 
         function hide_editTransactionModal() {
@@ -7008,6 +7392,93 @@
                     showFeedbackModal('error', 'Error!', xhr.responseJSON.message || 'Failed to get party details');
                 }
             });
+        }
+
+        function show_delete_sale_Dialog(sale_id) {
+            let dialog = document.getElementById('delete_sale_Modal');
+            dialog.classList.remove('hidden');
+            $('#delete_sale_id').val(sale_id);
+        }
+
+        $(document).on('click', '.delete_sale_btn', function(e) {
+            e.preventDefault();
+            var sale_id = $('#delete_sale_id').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "DELETE",
+                url: "/delete_sale/" + sale_id,
+                success: function(response) {
+                    hide_delete_sale_Dialog();
+                    showFeedbackModal('success', 'Sale Deleted!', 'Your Sale has been Deleted successfully.');
+                    loadSale();
+                    loadTransactions();
+                    loadinventory();
+                    loadParties();
+                },
+                error: function(error) {
+                    const response = error.responseJSON;
+                    if (response && response.status === 'error') {
+                        showFeedbackModal('error', 'Deleting Failed!', 'There was an error Deleting the Sale. Please try again.');
+                    }
+                }
+            });
+        });
+
+
+        function hide_delete_sale_Dialog() {
+            let dialog = document.getElementById('delete_sale_Modal');
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
+        }
+
+        function show_delete_purchase_Dialog(purchase_id) {
+            let dialog = document.getElementById('delete_purchase_Modal');
+            dialog.classList.remove('hidden');
+            $('#delete_purchase_id').val(purchase_id);
+        }
+
+        $(document).on('click', '.delete_purchase_btn', function(e) {
+            e.preventDefault();
+            var purchase_id = $('#delete_purchase_id').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "DELETE",
+                url: "/delete_purchase/" + purchase_id,
+                success: function(response) {
+                    hide_delete_purchase_Dialog();
+                    showFeedbackModal('success', 'Purchases Deleted!', 'Your Purchases has been Deleted successfully.');
+                    loadPurchases();
+                    loadTransactions();
+                    loadinventory();
+                    loadParties();
+                },
+                error: function(error) {
+                    const response = error.responseJSON;
+                    if (response && response.status === 'error') {
+                        showFeedbackModal('error', 'Deleting Failed!', 'There was an error Deleting the Purchases. Please try again.');
+                    }
+                }
+            });
+        });
+
+        function hide_delete_purchase_Dialog() {
+            let dialog = document.getElementById('delete_purchase_Modal');
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
         }
 
         function show_deletePartyModal(partyId) {

@@ -65,18 +65,8 @@ Route::get('/fetch_part_transactions', [PartController::class, 'fetch_part_trans
 Route::post('/record_payment_out', [TransactionController::class, 'record_payment_out'])->name('record_payment_out');
 Route::post('/record_payment_in', [TransactionController::class, 'record_payment_in'])->name('record_payment_in');
 Route::get('/fetch_transactions', [TransactionController::class, 'fetch_transactions'])->name('fetch_transactions');
-Route::get('/populate_tranEDITmodals/{id}', [TransactionController::class, 'populate_tranEDITmodals'])
-    ->name('populate_tranEDITmodals');
+Route::get('/populate_transaction/{id}', [TransactionController::class, 'populate_transaction'])
+    ->name('populate_transaction');
 Route::put('/transaction_update/{id}', [TransactionController::class, 'transaction_update'])
     ->name('transaction_update');
-Route::put('/withsale_transaction_update/{id}', [TransactionController::class, 'withsale_transaction_update'])
-    ->name('withsale_transaction_update');
-Route::delete('/delete_transaction_out/{id}', [TransactionController::class, 'delete_transaction_out'])->name('delete_transaction_out');
-
-
-Route::get('/populate_transaction/{id}', [TransactionController::class, 'populate_transaction'])->name('populate_transaction');
-
-// Transaction CRUD operations
-Route::post('/record_payment_in', [TransactionController::class, 'record_payment_in'])->name('record_payment_in');
-Route::put('/transaction_update/{id}', [TransactionController::class, 'transaction_update'])->name('transaction_update');
 Route::delete('/delete_transaction/{id}', [TransactionController::class, 'delete_transaction'])->name('delete_transaction');
