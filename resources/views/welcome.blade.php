@@ -804,6 +804,20 @@
                                 </svg>
                                 <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Statistics</span>
                             </div>
+                            <div class="relative group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07" />
+                                </svg>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
+                            </div>
+                            <div class="relative group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
+                                </svg>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">print</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -895,47 +909,30 @@
             </div>
 
             <div id="reports" class="tab-content">
-                <div class="flex justify-between mb-4">
-                    <h2 class="text-xl font-semibold">reports</h2>
+                <div class="flex justify-end mb-1">
 
                     <div class="flex items-center gap-3">
                         <!-- reports Stats Cards -->
                         <div class="grid grid-cols-4 gap-3 mr-4">
                             <div class="bg-white p-2 rounded-md shadow-lg text-center">
                                 <div class="text-xs text-gray-500">Purchases</div>
-                                <div id="total_purchases" class="text-lg font-bold">0</div>
+                                <div id="total_purchases" class="text-xs font-bold">0</div>
                             </div>
                             <div class="bg-green-100 p-2 rounded-md shadow-lg text-center">
                                 <div class="text-xs text-gray-500">Income</div>
-                                <div id="total_income" class="text-lg font-bold text-green-600">0</div>
+                                <div id="total_income" class="text-xs font-bold text-green-600">0</div>
                             </div>
                             <div class="bg-yellow-100 p-2 rounded-md shadow-lg text-center">
                                 <div class="text-xs text-gray-500">Sales</div>
-                                <div id="total_sales" class="text-lg font-bold text-yellow-600">0</div>
+                                <div id="total_sales" class="text-xs font-bold text-yellow-600">0</div>
                             </div>
                             <div class="bg-red-100 p-2 rounded-md shadow-lg text-center">
                                 <div class="text-xs text-gray-500">Expenses</div>
-                                <div id="total_expenses" class="text-lg font-bold text-red-600">0</div>
+                                <div id="total_expenses" class="text-xs font-bold text-red-600">0</div>
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-lg">
-                            <div class="relative group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07" />
-                                </svg>
-                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
-                            </div>
-                            <div class="relative group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
-                                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
-                                    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
-                                </svg>
-                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">print</span>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
 
@@ -955,25 +952,25 @@
                                 <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                                     <!-- Financial Metrics Container -->
-                                    <div id="financial_metrics_container" class="bg-white p-4 rounded-lg shadow mb-6">
-                                        <h3 class="text-lg font-medium mb-4">Financial Overview</h3>
+                                    <div id="financial_metrics_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+                                        <h3 class="text-lg font-medium mb-4 underline">Financial Overview</h3>
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                                            <div class="bg-blue-50 p-3 rounded-md shadow">
+                                            <div class="bg-blue-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Revenue</div>
-                                                <div id="fin_revenue" class="text-lg font-bold text-blue-600">0</div>
+                                                <div id="fin_revenue" class="text-xs font-bold text-blue-600">0</div>
                                             </div>
-                                            <div class="bg-green-50 p-3 rounded-md shadow">
+                                            <div class="bg-green-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Gross Profit</div>
-                                                <div id="fin_gross_profit" class="text-lg font-bold text-green-600">0</div>
+                                                <div id="fin_gross_profit" class="text-xs font-bold text-green-600">0</div>
                                                 <div id="fin_gross_margin" class="text-xs text-gray-600">0%</div>
                                             </div>
-                                            <div class="bg-red-50 p-3 rounded-md shadow">
+                                            <div class="bg-red-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Expenses</div>
-                                                <div id="fin_expenses" class="text-lg font-bold text-red-600">0</div>
+                                                <div id="fin_expenses" class="text-xs font-bold text-red-600">0</div>
                                             </div>
-                                            <div class="bg-purple-50 p-3 rounded-md shadow">
+                                            <div class="bg-purple-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Net Profit</div>
-                                                <div id="fin_net_profit" class="text-lg font-bold text-purple-600">0</div>
+                                                <div id="fin_net_profit" class="text-xs font-bold text-purple-600">0</div>
                                                 <div id="fin_net_margin" class="text-xs text-gray-600">0%</div>
                                             </div>
                                         </div>
@@ -981,20 +978,20 @@
                                             <canvas id="monthly_profit_chart"></canvas>
                                         </div>
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div class="bg-gray-50 p-3 rounded-md shadow">
+                                            <div class="bg-gray-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Outstanding Receivables</div>
-                                                <div id="fin_receivables" class="text-lg font-bold text-gray-800">0</div>
+                                                <div id="fin_receivables" class="text-xs font-bold text-gray-800">0</div>
                                             </div>
-                                            <div class="bg-gray-50 p-3 rounded-md shadow">
+                                            <div class="bg-gray-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Outstanding Payables</div>
-                                                <div id="fin_payables" class="text-lg font-bold text-gray-800">0</div>
+                                                <div id="fin_payables" class="text-xs font-bold text-gray-800">0</div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Sales Analytics Container -->
-                                    <div id="sales_analytics_container" class="bg-white p-4 rounded-lg shadow mb-6">
-                                        <h3 class="text-lg font-medium mb-4">Sales Analytics</h3>
+                                    <div id="sales_analytics_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+                                        <h3 class="text-lg font-medium mb-4 underline">Sales Analytics</h3>
 
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
@@ -1037,21 +1034,21 @@
                                     </div>
 
                                     <!-- Inventory Health Container -->
-                                    <div id="inventory_health_container" class="bg-white p-4 rounded-lg shadow mb-6">
-                                        <h3 class="text-lg font-medium mb-4">Inventory Health</h3>
+                                    <div id="inventory_health_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+                                        <h3 class="text-lg font-medium mb-4 underline">Inventory Health</h3>
 
                                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                            <div class="bg-blue-50 p-3 rounded-md shadow">
+                                            <div class="bg-blue-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Total Inventory Value</div>
-                                                <div id="total_inventory_value" class="text-lg font-bold text-blue-600">0</div>
+                                                <div id="total_inventory_value" class="text-xs font-bold text-blue-600">0</div>
                                             </div>
-                                            <div class="bg-yellow-50 p-3 rounded-md shadow">
+                                            <div class="bg-yellow-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Low Stock Items</div>
-                                                <div id="low_stock_count" class="text-lg font-bold text-yellow-600">0</div>
+                                                <div id="low_stock_count" class="text-xs font-bold text-yellow-600">0</div>
                                             </div>
-                                            <div class="bg-red-50 p-3 rounded-md shadow">
+                                            <div class="bg-red-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Out of Stock Items</div>
-                                                <div id="out_of_stock_count" class="text-lg font-bold text-red-600">0</div>
+                                                <div id="out_of_stock_count" class="text-xs font-bold text-red-600">0</div>
                                             </div>
                                         </div>
 
@@ -1095,25 +1092,25 @@
                                     </div>
 
                                     <!-- Customer Insights Container -->
-                                    <div id="customer_insights_container" class="bg-white p-4 rounded-lg shadow mb-6">
-                                        <h3 class="text-lg font-medium mb-4">Customer Insights</h3>
+                                    <div id="customer_insights_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+                                        <h3 class="text-lg font-medium mb-4 underline">Customer Insights</h3>
 
                                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                                            <div class="bg-blue-50 p-3 rounded-md shadow">
+                                            <div class="bg-blue-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Total Customers</div>
-                                                <div id="total_customers_count" class="text-lg font-bold text-blue-600">0</div>
+                                                <div id="total_customers_count" class="text-xs font-bold text-blue-600">0</div>
                                             </div>
-                                            <div class="bg-green-50 p-3 rounded-md shadow">
+                                            <div class="bg-green-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">New Customers</div>
-                                                <div id="new_customers_count" class="text-lg font-bold text-green-600">0</div>
+                                                <div id="new_customers_count" class="text-xs font-bold text-green-600">0</div>
                                             </div>
-                                            <div class="bg-purple-50 p-3 rounded-md shadow">
+                                            <div class="bg-purple-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Retention Rate</div>
-                                                <div id="retention_rate" class="text-lg font-bold text-purple-600">0%</div>
+                                                <div id="retention_rate" class="text-xs font-bold text-purple-600">0%</div>
                                             </div>
-                                            <div class="bg-indigo-50 p-3 rounded-md shadow">
+                                            <div class="bg-indigo-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Avg Sale/Customer</div>
-                                                <div id="avg_sale_per_customer" class="text-lg font-bold text-indigo-600">0</div>
+                                                <div id="avg_sale_per_customer" class="text-xs font-bold text-indigo-600">0</div>
                                             </div>
                                         </div>
 
@@ -1156,8 +1153,8 @@
                                     </div>
 
                                     <!-- Supplier Performance Container -->
-                                    <div id="supplier_performance_container" class="bg-white p-4 rounded-lg shadow mb-6">
-                                        <h3 class="text-lg font-medium mb-4">Supplier Performance</h3>
+                                    <div id="supplier_performance_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+                                        <h3 class="text-lg font-medium mb-4 underline">Supplier Performance</h3>
 
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
@@ -1217,8 +1214,8 @@
                                     </div>
 
                                     <!-- Product Performance Container -->
-                                    <div id="product_performance_container" class="bg-white p-4 rounded-lg shadow mb-6">
-                                        <h3 class="text-lg font-medium mb-4">Product Performance</h3>
+                                    <div id="product_performance_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+                                        <h3 class="text-lg font-medium mb-4 underline">Product Performance</h3>
 
                                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                             <div>
@@ -1227,10 +1224,10 @@
                                                     <table class="min-w-full divide-y divide-gray-200">
                                                         <thead class="bg-gray-50">
                                                             <tr>
-                                                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sale Price</th>
-                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
-                                                                <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Margin %</th>
+                                                                <th class="px-3 py-1 text-left text-xs font-medium text-gray-500 capitalized ">Product</th>
+                                                                <th class="px-3 py-1 text-right text-xs font-medium text-gray-500 capitalized ">Price</th>
+                                                                <th class="px-3 py-1 text-right text-xs font-medium text-gray-500 capitalized ">Cost</th>
+                                                                <th class="px-3 py-1 text-right text-xs font-medium text-gray-500 capitalized ">Margin %</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="highest_margin_table" class="bg-white divide-y divide-gray-200">
@@ -1258,64 +1255,64 @@
                                     </div>
 
                                     <!-- Business KPIs Container -->
-                                    <div id="business_kpis_container" class="bg-white p-4 rounded-lg shadow mb-6">
-                                        <h3 class="text-lg font-medium mb-4">Business Performance KPIs</h3>
+                                    <div id="business_kpis_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+                                        <h3 class="text-lg font-medium mb-4 underline">Business Performance KPIs</h3>
 
                                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                            <div class="bg-indigo-50 p-3 rounded-md shadow">
+                                            <div class="bg-indigo-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Sales Growth</div>
-                                                <div id="sales_growth" class="text-lg font-bold">0%</div>
+                                                <div id="sales_growth" class="text-xs font-bold">0%</div>
                                             </div>
-                                            <div class="bg-green-50 p-3 rounded-md shadow">
+                                            <div class="bg-green-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Profit Growth</div>
-                                                <div id="profit_growth" class="text-lg font-bold">0%</div>
+                                                <div id="profit_growth" class="text-xs font-bold">0%</div>
                                             </div>
-                                            <div class="bg-purple-50 p-3 rounded-md shadow">
+                                            <div class="bg-purple-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Customer Growth</div>
-                                                <div id="customer_growth" class="text-lg font-bold">0%</div>
+                                                <div id="customer_growth" class="text-xs font-bold">0%</div>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div class="bg-gray-50 p-4 rounded-md shadow">
+                                            <div class="bg-gray-50 p-4 rounded-md shadow-lg">
                                                 <h4 class="text-md font-medium mb-3">Current Period</h4>
                                                 <div class="grid grid-cols-2 gap-3">
                                                     <div>
                                                         <div class="text-xs text-gray-500">Period</div>
-                                                        <div id="current_period_dates" class="text-sm font-medium">-</div>
+                                                        <div id="current_period_dates" class="text-xs font-medium">-</div>
                                                     </div>
                                                     <div>
                                                         <div class="text-xs text-gray-500">Sales</div>
-                                                        <div id="current_period_sales" class="text-sm font-medium">0</div>
+                                                        <div id="current_period_sales" class="text-xs font-medium">0</div>
                                                     </div>
                                                     <div>
                                                         <div class="text-xs text-gray-500">Profit</div>
-                                                        <div id="current_period_profit" class="text-sm font-medium">0</div>
+                                                        <div id="current_period_profit" class="text-xs font-medium">0</div>
                                                     </div>
                                                     <div>
                                                         <div class="text-xs text-gray-500">Customers</div>
-                                                        <div id="current_period_customers" class="text-sm font-medium">0</div>
+                                                        <div id="current_period_customers" class="text-xs font-medium">0</div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="bg-gray-50 p-4 rounded-md shadow">
+                                            <div class="bg-gray-50 p-4 rounded-md shadow-lg">
                                                 <h4 class="text-md font-medium mb-3">Previous Period</h4>
                                                 <div class="grid grid-cols-2 gap-3">
                                                     <div>
                                                         <div class="text-xs text-gray-500">Period</div>
-                                                        <div id="previous_period_dates" class="text-sm font-medium">-</div>
+                                                        <div id="previous_period_dates" class="text-xs font-medium">-</div>
                                                     </div>
                                                     <div>
                                                         <div class="text-xs text-gray-500">Sales</div>
-                                                        <div id="previous_period_sales" class="text-sm font-medium">0</div>
+                                                        <div id="previous_period_sales" class="text-xs font-medium">0</div>
                                                     </div>
                                                     <div>
                                                         <div class="text-xs text-gray-500">Profit</div>
-                                                        <div id="previous_period_profit" class="text-sm font-medium">0</div>
+                                                        <div id="previous_period_profit" class="text-xs font-medium">0</div>
                                                     </div>
                                                     <div>
                                                         <div class="text-xs text-gray-500">Customers</div>
-                                                        <div id="previous_period_customers" class="text-sm font-medium">0</div>
+                                                        <div id="previous_period_customers" class="text-xs font-medium">0</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1323,21 +1320,21 @@
                                     </div>
 
                                     <!-- Cash Flow Analysis Container -->
-                                    <div id="cash_flow_container" class="bg-white p-4 rounded-lg shadow mb-6">
-                                        <h3 class="text-lg font-medium mb-4">Cash Flow Analysis</h3>
+                                    <div id="cash_flow_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
+                                        <h3 class="text-lg font-medium mb-4 underline">Cash Flow Analysis</h3>
 
                                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                            <div class="bg-green-50 p-3 rounded-md shadow">
+                                            <div class="bg-green-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Total Inflow</div>
-                                                <div id="total_inflow" class="text-lg font-bold text-green-600">0</div>
+                                                <div id="total_inflow" class="text-xs font-bold text-green-600">0</div>
                                             </div>
-                                            <div class="bg-red-50 p-3 rounded-md shadow">
+                                            <div class="bg-red-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Total Outflow</div>
-                                                <div id="total_outflow" class="text-lg font-bold text-red-600">0</div>
+                                                <div id="total_outflow" class="text-xs font-bold text-red-600">0</div>
                                             </div>
-                                            <div class="bg-blue-50 p-3 rounded-md shadow">
+                                            <div class="bg-blue-50 p-3 rounded-md shadow-lg">
                                                 <div class="text-xs text-gray-500">Net Cash Flow</div>
-                                                <div id="net_cash_flow" class="text-lg font-bold">0</div>
+                                                <div id="net_cash_flow" class="text-xs font-bold">0</div>
                                             </div>
                                         </div>
 
@@ -1364,68 +1361,6 @@
                                                         <!-- Data will be inserted here -->
                                                     </tbody>
                                                 </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Original Best Selling Items Card -->
-                                    <div class="bg-white p-4 rounded-lg shadow">
-                                        <h3 class="text-lg font-medium mb-4">Best Selling Items</h3>
-                                        <div class="h-64">
-                                            <canvas id="best_selling_chart"></canvas>
-                                        </div>
-                                    </div>
-
-                                    <!-- Original Sales Trends Card -->
-                                    <div class="bg-white p-4 rounded-lg shadow">
-                                        <h3 class="text-lg font-medium mb-4">Sales Trends</h3>
-                                        <div class="h-64">
-                                            <canvas id="sales_trends_chart"></canvas>
-                                        </div>
-                                    </div>
-
-                                    <!-- Original Purchase Trends Card -->
-                                    <div class="bg-white p-4 rounded-lg shadow">
-                                        <h3 class="text-lg font-medium mb-4">Purchase Trends</h3>
-                                        <div class="h-64">
-                                            <canvas id="purchase_trends_chart"></canvas>
-                                        </div>
-                                    </div>
-
-                                    <!-- Original Discount Impact Card -->
-                                    <div class="bg-white p-4 rounded-lg shadow">
-                                        <h3 class="text-lg font-medium mb-4">Discount Impact</h3>
-                                        <div class="h-64">
-                                            <canvas id="discount_impact_chart"></canvas>
-                                        </div>
-                                    </div>
-
-                                    <!-- Original Dead Stock Card -->
-                                    <div class="bg-white p-4 rounded-lg shadow">
-                                        <h3 class="text-lg font-medium mb-4">Dead Stock Items</h3>
-                                        <div class="overflow-hidden overflow-x-auto">
-                                            <div id="dead_stock_table" class="min-w-full">
-                                                <p class="text-center text-gray-500 py-4">Loading...</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Original Slow Moving Items Card -->
-                                    <div class="bg-white p-4 rounded-lg shadow">
-                                        <h3 class="text-lg font-medium mb-4">Slow Moving Items</h3>
-                                        <div class="overflow-hidden overflow-x-auto">
-                                            <div id="slow_moving_table" class="min-w-full">
-                                                <p class="text-center text-gray-500 py-4">Loading...</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Original Profit Calculation Card -->
-                                    <div class="bg-white p-4 rounded-lg shadow col-span-1 lg:col-span-2">
-                                        <h3 class="text-lg font-medium mb-4">Profit Calculation</h3>
-                                        <div class="overflow-hidden overflow-x-auto">
-                                            <div id="profit_table" class="min-w-full">
-                                                <p class="text-center text-gray-500 py-4">Loading...</p>
                                             </div>
                                         </div>
                                     </div>
@@ -3632,6 +3567,7 @@
                             showFeedbackModal('success', 'Item Added!', 'Your item has been added successfully.');
                             $("#add_item_form")[0].reset();
                             loadinventory();
+                            loadStatistics();
                             hide_add_item_modal();
 
                         } else {
@@ -4089,6 +4025,7 @@
                         if (response.success) {
                             showFeedbackModal('success', 'Item Updated!', 'Your item has been updated successfully.');
                             loadinventory();
+                            loadStatistics();
                             hide_EDIT_itemDialog();
                         } else {
                             showFeedbackModal('error', 'Update Failed!', 'Failed to update item. Please try again.');
@@ -4123,6 +4060,7 @@
                     hide_delete_itemDialog();
                     showFeedbackModal('success', 'Item Deleted!', 'Your item has been Deleted successfully.');
                     loadinventory();
+                    loadStatistics();
                 },
                 error: function(error) {
                     const response = error.responseJSON;
@@ -6157,6 +6095,7 @@
                             $('#addPartyModal').addClass('hidden');
                             showFeedbackModal('success', 'Success!', response.message);
                             loadParties();
+                            loadStatistics();
                         }
                     },
                     error: function(xhr) {
@@ -6208,6 +6147,7 @@
                             // Show success message
                             showFeedbackModal('success', 'Success!', response.message);
                             loadParties();
+                            loadStatistics();
                         }
                     },
                     error: function(xhr) {
@@ -6238,6 +6178,7 @@
                             // Close modal
                             $('#deletePartyModal').addClass('hidden');
                             loadParties();
+                            loadStatistics();
                             // Show success message
                             showFeedbackModal('success', 'Success!', response.message);
 
@@ -7315,6 +7256,7 @@
                         loadParties();
                         loadinventory();
                         loadSale();
+                        loadStatistics();
                     } else {
                         throw new Error(response.message);
                     }
@@ -7480,6 +7422,24 @@
             $('.border-red-500').removeClass('border-red-500');
         }
 
+        const filter_statistics_Inputs = [
+            'from_Date',
+            'to_Date',
+        ];
+
+        filter_statistics_Inputs.forEach(inputId => {
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.addEventListener('change', function() {
+                    loadStatistics();
+                });
+
+                inputElement.addEventListener('keyup', debounce(function() {
+                    loadStatistics();
+                }, 300));
+            }
+        });
+
         // Enhanced loadStatistics function to fetch all comprehensive statistics
         function loadStatistics() {
             const filters = {
@@ -7550,25 +7510,25 @@
             // Create financial metrics container if it doesn't exist
             if ($('#financial_metrics_container').length === 0) {
                 const financialMetricsHtml = `
-            <div id="financial_metrics_container" class="bg-white p-4 rounded-lg shadow mb-6">
+            <div id="financial_metrics_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
                 <h3 class="text-lg font-medium mb-4">Financial Overview</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                    <div class="bg-blue-50 p-3 rounded-md shadow">
+                    <div class="bg-blue-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Revenue</div>
                         <div id="fin_revenue" class="text-lg font-bold text-blue-600">0</div>
                     </div>
-                    <div class="bg-green-50 p-3 rounded-md shadow">
+                    <div class="bg-green-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Gross Profit</div>
-                        <div id="fin_gross_profit" class="text-lg font-bold text-green-600">0</div>
+                        <div id="fin_gross_profit" class="text-xs font-bold text-green-600">0</div>
                         <div id="fin_gross_margin" class="text-xs text-gray-600">0%</div>
                     </div>
-                    <div class="bg-red-50 p-3 rounded-md shadow">
+                    <div class="bg-red-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Expenses</div>
-                        <div id="fin_expenses" class="text-lg font-bold text-red-600">0</div>
+                        <div id="fin_expenses" class="text-xs font-bold text-red-600">0</div>
                     </div>
-                    <div class="bg-purple-50 p-3 rounded-md shadow">
+                    <div class="bg-purple-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Net Profit</div>
-                        <div id="fin_net_profit" class="text-lg font-bold text-purple-600">0</div>
+                        <div id="fin_net_profit" class="text-xs font-bold text-purple-600">0</div>
                         <div id="fin_net_margin" class="text-xs text-gray-600">0%</div>
                     </div>
                 </div>
@@ -7576,13 +7536,13 @@
                     <canvas id="monthly_profit_chart"></canvas>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-gray-50 p-3 rounded-md shadow">
+                    <div class="bg-gray-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Outstanding Receivables</div>
-                        <div id="fin_receivables" class="text-lg font-bold text-gray-800">0</div>
+                        <div id="fin_receivables" class="text-xs font-bold text-gray-800">0</div>
                     </div>
-                    <div class="bg-gray-50 p-3 rounded-md shadow">
+                    <div class="bg-gray-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Outstanding Payables</div>
-                        <div id="fin_payables" class="text-lg font-bold text-gray-800">0</div>
+                        <div id="fin_payables" class="text-xs font-bold text-gray-800">0</div>
                     </div>
                 </div>
             </div>
@@ -7657,7 +7617,7 @@
             // Create sales analytics container if it doesn't exist
             if ($('#sales_analytics_container').length === 0) {
                 const salesAnalyticsHtml = `
-            <div id="sales_analytics_container" class="bg-white p-4 rounded-lg shadow mb-6">
+            <div id="sales_analytics_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
                 <h3 class="text-lg font-medium mb-4">Sales Analytics</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -7844,9 +7804,9 @@
                 salesAnalytics.best_selling_items.forEach(item => {
                     tableHtml += `
                 <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name || `Product #${item.id}`}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${item.total_quantity}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.total_revenue)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs">${item.name || `Product #${item.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${item.total_quantity}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${formatPrice(item.total_revenue)}</td>
                 </tr>
             `;
                 });
@@ -7918,21 +7878,21 @@
             // Create inventory health container if it doesn't exist
             if ($('#inventory_health_container').length === 0) {
                 const inventoryHealthHtml = `
-            <div id="inventory_health_container" class="bg-white p-4 rounded-lg shadow mb-6">
+            <div id="inventory_health_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
                 <h3 class="text-lg font-medium mb-4">Inventory Health</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div class="bg-blue-50 p-3 rounded-md shadow">
+                    <div class="bg-blue-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Total Inventory Value</div>
-                        <div id="total_inventory_value" class="text-lg font-bold text-blue-600">0</div>
+                        <div id="total_inventory_value" class="text-xs font-bold text-blue-600">0</div>
                     </div>
-                    <div class="bg-yellow-50 p-3 rounded-md shadow">
+                    <div class="bg-yellow-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Low Stock Items</div>
-                        <div id="low_stock_count" class="text-lg font-bold text-yellow-600">0</div>
+                        <div id="low_stock_count" class="text-xs font-bold text-yellow-600">0</div>
                     </div>
-                    <div class="bg-red-50 p-3 rounded-md shadow">
+                    <div class="bg-red-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Out of Stock Items</div>
-                        <div id="out_of_stock_count" class="text-lg font-bold text-red-600">0</div>
+                        <div id="out_of_stock_count" class="text-xs font-bold text-red-600">0</div>
                     </div>
                 </div>
                 
@@ -7990,21 +7950,29 @@
             renderSlowMovingItemsTable(inventoryHealth.slow_moving_items);
 
             // Populate stock turnover table
+            // Fix for the stock turnover table rendering
             if (inventoryHealth.stock_turnover && inventoryHealth.stock_turnover.length > 0) {
                 let tableHtml = '';
 
                 inventoryHealth.stock_turnover.forEach(item => {
+                    // Convert to numbers and handle potential null/undefined values
+                    const soldQuantity = Number(item.sold_quantity || 0);
+                    const avgInventory = Number(item.avg_inventory || 0);
+                    const turnoverRate = Number(item.turnover_rate || 0);
+
                     tableHtml += `
-                <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name || `Product #${item.id}`}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${item.sold_quantity || 0}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${item.avg_inventory ? item.avg_inventory.toFixed(1) : 0}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium ${item.turnover_rate > 3 ? 'text-green-600' : (item.turnover_rate < 1 ? 'text-red-600' : 'text-yellow-600')}">${item.turnover_rate}</td>
-                </tr>
-            `;
+                        <tr>
+                            <td class="px-3 py-2 whitespace-nowrap text-xs">${item.name || `Product #${item.id}`}</td>
+                            <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${soldQuantity}</td>
+                            <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${avgInventory.toFixed(1)}</td>
+                            <td class="px-3 py-2 whitespace-nowrap text-xs text-right font-medium ${turnoverRate > 3 ? 'text-green-600' : (turnoverRate < 1 ? 'text-red-600' : 'text-yellow-600')}">${turnoverRate.toFixed(2)}</td>
+                        </tr>
+                    `;
                 });
 
                 $('#stock_turnover_table').html(tableHtml);
+            } else {
+                $('#stock_turnover_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-xs text-gray-500">No stock turnover data available</td></tr>');
             }
         }
 
@@ -8013,25 +7981,25 @@
             // Create customer insights container if it doesn't exist
             if ($('#customer_insights_container').length === 0) {
                 const customerInsightsHtml = `
-            <div id="customer_insights_container" class="bg-white p-4 rounded-lg shadow mb-6">
+            <div id="customer_insights_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
                 <h3 class="text-lg font-medium mb-4">Customer Insights</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                    <div class="bg-blue-50 p-3 rounded-md shadow">
+                    <div class="bg-blue-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Total Customers</div>
-                        <div id="total_customers_count" class="text-lg font-bold text-blue-600">0</div>
+                        <div id="total_customers_count" class="text-xs font-bold text-blue-600">0</div>
                     </div>
-                    <div class="bg-green-50 p-3 rounded-md shadow">
+                    <div class="bg-green-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">New Customers</div>
-                        <div id="new_customers_count" class="text-lg font-bold text-green-600">0</div>
+                        <div id="new_customers_count" class="text-xs font-bold text-green-600">0</div>
                     </div>
-                    <div class="bg-purple-50 p-3 rounded-md shadow">
+                    <div class="bg-purple-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Retention Rate</div>
-                        <div id="retention_rate" class="text-lg font-bold text-purple-600">0%</div>
+                        <div id="retention_rate" class="text-xs font-bold text-purple-600">0%</div>
                     </div>
-                    <div class="bg-indigo-50 p-3 rounded-md shadow">
+                    <div class="bg-indigo-50 p-3 rounded-md shadow-lg">
                         <div class="text-xs text-gray-500">Avg Sale/Customer</div>
-                        <div id="avg_sale_per_customer" class="text-lg font-bold text-indigo-600">0</div>
+                        <div id="avg_sale_per_customer" class="text-xs font-bold text-indigo-600">0</div>
                     </div>
                 </div>
                 
@@ -8089,16 +8057,16 @@
                 customerInsights.top_customers.forEach(customer => {
                     tableHtml += `
                 <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${customer.name || `Customer #${customer.id}`}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${customer.total_orders || 0}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(customer.total_spent || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs">${customer.name || `Customer #${customer.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${customer.total_orders || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${formatPrice(customer.total_spent || 0)}</td>
                 </tr>
             `;
                 });
 
                 $('#top_customers_table').html(tableHtml);
             } else {
-                $('#top_customers_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-sm text-gray-500">No customers data available</td></tr>');
+                $('#top_customers_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-xs text-gray-500">No customers data available</td></tr>');
             }
 
             // Populate customer debt table
@@ -8108,16 +8076,16 @@
                 customerInsights.customer_debt.forEach(customer => {
                     tableHtml += `
                 <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${customer.name || `Customer #${customer.id}`}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${customer.unpaid_orders || 0}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right text-red-600 font-medium">${formatPrice(customer.total_debt || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs">${customer.name || `Customer #${customer.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${customer.unpaid_orders || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right text-red-600 font-medium">${formatPrice(customer.total_debt || 0)}</td>
                 </tr>
             `;
                 });
 
                 $('#customer_debt_table').html(tableHtml);
             } else {
-                $('#customer_debt_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-sm text-gray-500">No customer debt data available</td></tr>');
+                $('#customer_debt_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-xs text-gray-500">No customer debt data available</td></tr>');
             }
         }
 
@@ -8126,7 +8094,7 @@
             // Create supplier performance container if it doesn't exist
             if ($('#supplier_performance_container').length === 0) {
                 const supplierPerformanceHtml = `
-            <div id="supplier_performance_container" class="bg-white p-4 rounded-lg shadow mb-6">
+            <div id="supplier_performance_container" class="bg-white p-4 rounded-lg shadow-lg mb-6">
                 <h3 class="text-lg font-medium mb-4">Supplier Performance</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -8196,16 +8164,16 @@
                 supplierPerformance.top_suppliers.forEach(supplier => {
                     tableHtml += `
                 <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${supplier.name || `Supplier #${supplier.id}`}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${supplier.total_orders || 0}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(supplier.total_amount || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs">${supplier.name || `Supplier #${supplier.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${supplier.total_orders || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${formatPrice(supplier.total_amount || 0)}</td>
                 </tr>
             `;
                 });
 
                 $('#top_suppliers_table').html(tableHtml);
             } else {
-                $('#top_suppliers_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-sm text-gray-500">No suppliers data available</td></tr>');
+                $('#top_suppliers_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-xs text-gray-500">No suppliers data available</td></tr>');
             }
 
             // Populate supplier debt table
@@ -8215,36 +8183,42 @@
                 supplierPerformance.supplier_debt.forEach(supplier => {
                     tableHtml += `
                 <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${supplier.name || `Supplier #${supplier.id}`}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${supplier.unpaid_orders || 0}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right text-blue-600 font-medium">${formatPrice(supplier.total_debt || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs">${supplier.name || `Supplier #${supplier.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${supplier.unpaid_orders || 0}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right text-blue-600 font-medium">${formatPrice(supplier.total_debt || 0)}</td>
                 </tr>
             `;
                 });
 
                 $('#supplier_debt_table').html(tableHtml);
             } else {
-                $('#supplier_debt_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-sm text-gray-500">No supplier debt data available</td></tr>');
+                $('#supplier_debt_table').html('<tr><td colspan="3" class="px-3 py-4 text-center text-xs text-gray-500">No supplier debt data available</td></tr>');
             }
 
             // Populate average items per purchase table
+            // Fix for the average items per purchase table
             if (supplierPerformance.avg_items_per_purchase && supplierPerformance.avg_items_per_purchase.length > 0) {
                 let tableHtml = '';
 
                 supplierPerformance.avg_items_per_purchase.forEach(supplier => {
+                    // Convert values to numbers and handle null/undefined
+                    const purchaseCount = Number(supplier.purchase_count || 0);
+                    const itemsCount = Number(supplier.items_count || 0);
+                    const avgItems = Number(supplier.avg_items || 0);
+
                     tableHtml += `
-                <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${supplier.name || `Supplier #${supplier.id}`}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${supplier.purchase_count || 0}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${supplier.items_count || 0}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium">${supplier.avg_items ? supplier.avg_items.toFixed(1) : 0}</td>
-                </tr>
-            `;
+            <tr>
+                <td class="px-3 py-2 whitespace-nowrap text-xs">${supplier.name || `Supplier #${supplier.id}`}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${purchaseCount}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${itemsCount}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs text-right font-medium">${avgItems.toFixed(1)}</td>
+            </tr>
+        `;
                 });
 
                 $('#avg_items_table').html(tableHtml);
             } else {
-                $('#avg_items_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-sm text-gray-500">No supplier purchase data available</td></tr>');
+                $('#avg_items_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-xs text-gray-500">No supplier purchase data available</td></tr>');
             }
         }
 
@@ -8263,10 +8237,10 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sale Price</th>
-                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
-                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Margin %</th>
+                                        <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 capitalized whitespace-nowrap">Product</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 capitalized whitespace-nowrap">Sale</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 capitalized whitespace-nowrap">Cost</th>
+                                        <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 capitalized whitespace-nowrap whitespace-nowrap">Margin %</th>
                                     </tr>
                                 </thead>
                                 <tbody id="highest_margin_table" class="bg-white divide-y divide-gray-200">
@@ -8303,17 +8277,17 @@
                 productPerformance.highest_margin_items.forEach(item => {
                     tableHtml += `
                 <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name || `Product #${item.id}`}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.sale_price || 0)}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.avg_purchase_price || 0)}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium ${item.profit_percentage > 30 ? 'text-green-600' : (item.profit_percentage < 10 ? 'text-red-600' : 'text-yellow-600')}">${item.profit_percentage ? item.profit_percentage.toFixed(1) : 0}%</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs">${item.name || `Product #${item.id}`}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${formatPrice(item.sale_price || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${formatPrice(item.avg_purchase_price || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right font-medium ${item.profit_percentage > 30 ? 'text-green-600' : (item.profit_percentage < 10 ? 'text-red-600' : 'text-yellow-600')}">${item.profit_percentage ? item.profit_percentage.toFixed(1) : 0}%</td>
                 </tr>
             `;
                 });
 
                 $('#highest_margin_table').html(tableHtml);
             } else {
-                $('#highest_margin_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-sm text-gray-500">No margin data available</td></tr>');
+                $('#highest_margin_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-xs text-gray-500">No margin data available</td></tr>');
             }
 
             // Render discount impact chart
@@ -8618,17 +8592,17 @@
                 cashFlow.payment_methods.forEach(method => {
                     tableHtml += `
                 <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm">${method.method || 'Unknown'}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right text-green-600">${formatPrice(method.inflow || 0)}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right text-red-600">${formatPrice(method.outflow || 0)}</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-sm text-right font-medium ${method.net >= 0 ? 'text-blue-600' : 'text-red-600'}">${formatPrice(method.net || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs">${method.method || 'Unknown'}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right text-green-600">${formatPrice(method.inflow || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right text-red-600">${formatPrice(method.outflow || 0)}</td>
+                    <td class="px-3 py-2 whitespace-nowrap text-xs text-right font-medium ${method.net >= 0 ? 'text-blue-600' : 'text-red-600'}">${formatPrice(method.net || 0)}</td>
                 </tr>
             `;
                 });
 
                 $('#payment_methods_table').html(tableHtml);
             } else {
-                $('#payment_methods_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-sm text-gray-500">No payment method data available</td></tr>');
+                $('#payment_methods_table').html('<tr><td colspan="4" class="px-3 py-4 text-center text-xs text-gray-500">No payment method data available</td></tr>');
             }
         }
 
@@ -8663,8 +8637,8 @@
             items.forEach(item => {
                 html += `
             <tr>
-                <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name}</td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm">${item.sku || 'N/A'}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs">${item.name}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs">${item.sku || 'N/A'}</td>
             </tr>
         `;
             });
@@ -8698,8 +8672,8 @@
             items.forEach(item => {
                 html += `
             <tr>
-                <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name}</td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${item.total_sold}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs">${item.name}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${item.total_sold}</td>
             </tr>
         `;
             });
@@ -8724,10 +8698,10 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sale Price</th>
+                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Sale</th>
                     <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
                     <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Profit</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Margin %</th>
+                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Margin %</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -8739,11 +8713,11 @@
 
                 html += `
             <tr>
-                <td class="px-3 py-2 whitespace-nowrap text-sm">${item.name}</td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.sale_price || 0)}</td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(item.avg_purchase_price || 0)}</td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-right">${formatPrice(profit)}</td>
-                <td class="px-3 py-2 whitespace-nowrap text-sm text-right ${profitMargin < 0 ? 'text-red-500' : 'text-green-500'}">${profitMargin.toFixed(2)}%</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs">${item.name}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${formatPrice(item.sale_price || 0)}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${formatPrice(item.avg_purchase_price || 0)}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs text-right">${formatPrice(profit)}</td>
+                <td class="px-3 py-2 whitespace-nowrap text-xs text-right ${profitMargin < 0 ? 'text-red-500' : 'text-green-500'}">${profitMargin.toFixed(2)}%</td>
             </tr>
         `;
             });
