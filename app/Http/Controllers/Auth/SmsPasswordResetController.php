@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class SmsPasswordResetController extends Controller
 {
@@ -27,46 +28,62 @@ class SmsPasswordResetController extends Controller
 
     public function sendResetCode(Request $request)
     {
-        $request->validate([
-            'phone' => 'required|string|regex:/^[0-9]{9}$/',
-        ], [
-            'phone.regex' => 'The phone number must be 9 digits without country code.',
-        ]);
-
-        // Add the country code
-        $phone = '255' . $request->phone;
-
-        // Check if user exists with this phone number
-        $user = User::where('phone', $phone)->first();
-
-        if (!$user) {
-            return back()->withErrors(['phone' => 'We could not find a user with that phone number.']);
+        try {
+            $request->validate([
+                'phone' => 'required|string|regex:/^[0-9]{9}$/',
+            ], [
+                'phone.regex' => 'The phone number must be 9 digits without country code.',
+            ]);
+    
+            // Add the country code
+            $phone = '255' . $request->phone;
+    
+            // Check if user exists with this phone number
+            $user = User::where('phone', $phone)->first();
+    
+            if (!$user) {
+                return back()->withErrors(['phone' => 'We could not find a user with that phone number.']);
+            }
+    
+            // Generate a verification code (6 digits)
+            $code = random_int(100000, 999999);
+    
+            // Store the code in the password_reset_tokens table
+            $token = Str::random(60);
+    
+            DB::table('password_reset_tokens')->updateOrInsert(
+                ['phone' => $phone],
+                [
+                    'token' => $token,
+                    'code' => $code,
+                    'created_at' => Carbon::now()
+                ]
+            );
+    
+            // Send SMS with the verification code
+            $message = "Your password reset code is: $code";
+            $response = $this->smsController->sendSingleDestination($phone, $message);
+            
+            // Log the SMS response for debugging (optional)
+            Log::info('SMS Response: ' . json_encode($response));
+    
+            // Store the phone in session
+            session(['reset_phone' => $phone]);
+            
+            // Make sure session is saved before redirect
+            session()->save();
+    
+            // Redirect to verification page
+            return redirect()->route('password.sms.verify.form')
+                ->with('status', 'We have sent your password reset code to your phone!');
+                
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Password reset error: ' . $e->getMessage());
+            
+            // Return with error message
+            return back()->withErrors(['error' => 'An error occurred while processing your request: ' . $e->getMessage()]);
         }
-
-        // Generate a verification code (6 digits)
-        $code = random_int(100000, 999999);
-
-        // Store the code in the password_reset_tokens table
-        $token = Str::random(60);
-
-        DB::table('password_reset_tokens')->updateOrInsert(
-            ['phone' => $phone],
-            [
-                'token' => $token,
-                'code' => $code,
-                'created_at' => Carbon::now()
-            ]
-        );
-
-        // Send SMS with the verification code
-        $message = "Your password reset code is: $code";
-        $this->smsController->sendSingleDestination($phone, $message);
-
-        // Store the phone in session
-        session(['reset_phone' => $phone]);
-
-        return redirect()->route('password.sms.verify.form')
-            ->with('status', 'We have sent your password reset code to your phone!');
     }
 
     public function showVerifyCodeForm()

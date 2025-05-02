@@ -161,13 +161,13 @@ class RegisterController extends Controller
         ], [
             'phone.regex' => 'The phone number must be 9 digits without country code.',
         ]);
-
+    
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-
+    
         try {
             // Add the country code to the phone number
             $fullPhone = '255' . $request->phone;
@@ -179,7 +179,7 @@ class RegisterController extends Controller
                 'phone' => $fullPhone,
                 'password' => Hash::make($request->password),
             ]);
-
+    
             // Store the phone number in session for verification
             session(['phone_for_verification' => $fullPhone]);
             
@@ -187,7 +187,7 @@ class RegisterController extends Controller
             $this->sendVerificationCode($fullPhone);
             
             // Redirect to phone verification page
-            return redirect()->route('password.sms.request')
+            return redirect()->route('phone.verify')
                 ->with('status', 'Account created successfully! Please verify your phone number.');
                 
         } catch (\Exception $e) {
@@ -278,7 +278,7 @@ class RegisterController extends Controller
         return redirect()->route('phone.verify')
             ->with('status', 'A new verification code has been sent to your phone.');
     }
-
+    
     public function verifyCode(Request $request)
     {
         $phone = session('phone_for_verification');
@@ -325,17 +325,14 @@ class RegisterController extends Controller
             DB::table('verification_codes')->where('phone', $phone)->delete();
             session()->forget(['phone_for_verification', 'last_verification_sent']);
             
-            // Log the user in
-            Auth::login($user);
-            
-            return redirect()->route('home')
-                ->with('status', 'Your phone number has been verified successfully!');
+            // Redirect to login page with success message
+            return redirect()->route('login')
+                ->with('status', 'Your phone number has been verified successfully! You can now login.');
         }
         
         return redirect()->route('register')
             ->with('error', 'We could not find your account. Please register again.');
     }
-    
 
     public function add_employee(Request $request)
     {

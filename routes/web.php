@@ -43,6 +43,11 @@ Route::get('reset-password/{token}', [SmsPasswordResetController::class, 'showRe
 Route::post('reset-password', [SmsPasswordResetController::class, 'reset'])
     ->name('password.sms.update');
 
+    // Phone verification routes
+Route::get('phone-verify', [RegisterController::class, 'showVerificationForm'])->name('phone.verify');
+Route::post('phone-verify', [RegisterController::class, 'verifyCode'])->name('phone.verify.submit');
+Route::post('phone-resend', [RegisterController::class, 'resendCode'])->name('phone.verify.resend');
+
     Route::get('/', [Welcomecontroller::class, 'welcome'])->name('welcome');
 
     // items controller

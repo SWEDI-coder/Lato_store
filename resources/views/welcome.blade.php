@@ -423,14 +423,27 @@
 
 <body class="bg-gray-400 min-h-screen">
     <!-- Fixed Navbar -->
-    <nav class="fixed top-0 left-0 right-0 bg-indigo-700 text-white shadow-lg z-10">
+    <nav class="fixed top-0 left-0 right-0 bg-amber-900 text-white shadow-lg z-10">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
-                <div class="text-xl font-bold navbar-brand animate__animated animate__fadeIn">[shop name]</div>
+                <div class="text-xl font-bold navbar-brand animate__animated animate__fadeIn transform transition mr-5 hover:-translate-x-2 duration-300 cursor-pointer">
+                <span id="postCount" class=" absolute ml-6 flex h-3 w-3 right-0">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-600 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+                    </span>
+                    <a href="#" onclick="showEditpasswordModal()" class="capitalize underline font-bold font-serif px-3">
+                        {{ collect(explode(' ', preg_replace('/[^a-zA-Z\s]/', '', auth()->user()->name)))->first() }}
+                    </a>
+                </div>
                 <div class="hidden md:flex space-x-4 animate__animated animate__fadeIn">
-                    <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">Home</a>
-                    <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">About</a>
-                    <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">Contact</a>
+                    <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">Website</a>
+                    <a href="{{ route('welcome') }}" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">Refresh</a>
+                    <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="lg:inline-block lg:ml-auto lg:mr-3 py-1 px-6 bg-gray-100 hover:bg-gray-200 text-xs text-gray-900 hover:text-red-600 font-bold rounded-xl transition duration-200">
+                        Logout
+                    </button>
+                </form>
                 </div>
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="focus:outline-none transition-transform duration-300">
@@ -441,9 +454,14 @@
                 </div>
             </div>
             <div id="mobile-menu" class="md:hidden">
-                <a href="#" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">Home</a>
-                <a href="#" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">About</a>
-                <a href="#" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">Contact</a>
+                <a href="#" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">Website</a>
+                <a href="{{ route('welcome') }}" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">Refresh</a>
+                <form action="{{ route('logout') }}" method="POST" class="mb-1">
+                    @csrf
+                    <button type="submit" class="lg:inline-block lg:ml-auto lg:mr-3 py-1 px-6 bg-gray-100 hover:bg-gray-200 text-xs text-gray-900 hover:text-red-600 font-bold rounded-xl transition duration-200">
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
     </nav>

@@ -31,12 +31,19 @@
         <!-- Right Side - Login Form -->
         <div class="flex md:w-1/2 justify-center py-10 items-center">
             <div class="bg-white p-8 shadow-lg rounded-lg w-full max-w-md">
-                <!-- Flash Message -->
-                @if (session('status'))
-                <div class="bg-red-500 p-4 rounded-lg mb-6 text-white text-center">
-                    {{ session('status') }}
-                </div>
-                @endif
+
+            <!-- Flash Messages -->
+            @if (session('success'))
+            <div class="bg-green-500 p-4 rounded-lg mb-6 text-white text-center">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if (session('status'))
+            <div class="bg-red-500 p-4 rounded-lg mb-6 text-white text-center">
+                {{ session('status') }}
+            </div>
+            @endif
 
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
