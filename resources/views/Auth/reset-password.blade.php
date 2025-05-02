@@ -15,10 +15,10 @@
 </head>
 
 <body>
-    <div class="h-screen md:flex bg-gray-100">
+    <div class="h-screen md:flex bg-gray-300">
         <!-- Left Side - Brand Content -->
         <div class="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-emerald-700 to-teal-500 justify-around items-center hidden">
-            <img src="{{ asset('images/shop_logo.png') }}" alt="Shop Logo" class="absolute max-w-full scale-75 top-0 max-h-full object-contain rounded-lg">
+            <img src="{{ asset('images/shop_logo.png') }}" alt="Shop Logo" class="absolute max-w-full scale-75 top-0 max-h-full object-contain rounded-lg hidden">
             <div class="mt-32">
                 <h1 class="text-white font-bold text-4xl font-sans">Your Shop Name</h1>
                 <p class="text-white mt-1">Create a new secure password.</p>
@@ -56,7 +56,7 @@
                     <!-- Password Field -->
                     <div class="mb-4">
                         <label for="password" class="block text-gray-700 text-sm font-bold mb-2">New Password</label>
-                        <div class="flex items-center border-2 border-gray-300 py-2 px-3 rounded-lg @error('password') border-red-500 @enderror">
+                        <div class="flex items-center border-2 class_attrib py-2 px-3 rounded-lg @error('password') border-red-500 @enderror">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
                                 fill="currentColor">
                                 <path fill-rule="evenodd"
@@ -127,5 +127,13 @@
             </div>
         </div>
     </div>
+    <script>
+        add_classList();
+
+        function add_classList() {
+            const dialogs = document.querySelectorAll('.class_attrib');
+            dialogs.forEach(dialog => dialog.classList.add('border-gray-300'));
+        }
+    </script>
 </body>
 </html>

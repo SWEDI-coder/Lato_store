@@ -15,10 +15,10 @@
 </head>
 
 <body>
-    <div class="h-screen md:flex bg-gray-100">
+    <div class="h-screen md:flex bg-gray-300">
         <!-- Left Side - Brand Content -->
         <div class="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-emerald-700 to-teal-500 justify-around items-center hidden">
-            <img src="{{ asset('images/shop_logo.png') }}" alt="Shop Logo" class="absolute max-w-full scale-75 top-0 max-h-full object-contain rounded-lg">
+            <img src="{{ asset('images/shop_logo.png') }}" alt="Shop Logo" class="absolute max-w-full scale-75 top-0 max-h-full object-contain rounded-lg hidden">
             <div class="mt-32">
                 <h1 class="text-white font-bold text-4xl font-sans">Your Shop Name</h1>
                 <p class="text-white mt-1">Verify your phone number to complete registration.</p>
@@ -71,7 +71,7 @@
                                 name="code[]" 
                                 id="code-{{ $i }}" 
                                 maxlength="1" 
-                                class="w-full h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 @error('code.'.$i-1) border-red-500 @enderror" 
+                                class="w-full h-12 text-center text-xl font-bold border-2 class_attrib rounded-lg focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 @error('code.'.$i-1) border-red-500 @enderror" 
                                 inputmode="numeric"
                                 pattern="[0-9]"
                                 autocomplete="one-time-code"
@@ -173,5 +173,13 @@
             </div>
         </div>
     </div>
+    <script>
+        add_classList();
+
+        function add_classList() {
+            const dialogs = document.querySelectorAll('.class_attrib');
+            dialogs.forEach(dialog => dialog.classList.add('border-gray-300'));
+        }
+    </script>
 </body>
 </html>
