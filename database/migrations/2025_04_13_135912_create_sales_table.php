@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('reference_no')->unique();
             $table->date('sale_date');
             $table->foreignId('part_id')->nullable();
-            $table->decimal('total_amount', 10, 2);
-            $table->decimal('total_discount', 8, 2)->nullable();
-            $table->decimal('dept', 8, 2)->nullable();
-            $table->decimal('paid', 8, 2)->nullable();
+            $table->decimal('total_amount', 25, 2);
+            $table->decimal('total_discount', 25, 2)->nullable();
+            $table->decimal('dept', 25, 2)->nullable();
+            $table->decimal('paid', 25, 2)->nullable();
             $table->enum('status', ['Paid', 'Partial paid', 'Unpaid', 'Draft', 'Cancelled', 'Pending'])->default('Unpaid');
 
             $table->string('efd_number')->nullable();

@@ -23,6 +23,17 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'gender',
+        'role',
+        'address',
+        'status',
+    ];
+
+    const User_Roles = [
+        '1' => 'Director',
+        '2' => 'CEO',
+        '4' => 'Manager',
+        '5' => 'Salesman',
     ];
 
     /**

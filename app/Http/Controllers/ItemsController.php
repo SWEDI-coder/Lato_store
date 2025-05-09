@@ -164,23 +164,6 @@ class ItemsController extends Controller
         }
     }
 
-    public function search_items(Request $request)
-    {
-
-        if ($request->get('query')) {
-            $query = $request->get('query');
-            $items = Item::where('name', 'LIKE', "%{$query}%")->get();
-            $output = '<ul class=" bg-gray-300  shadow-md rounded border-2 border-gray-500 text-sm absolute top-auto w-full z-30 mt-1 ">';
-            foreach ($items as $item) {
-                $output .= '
-                    <li value=' . $item->id . ' class="items_lists cursor-pointer px-2 font-semibold hover:bg-gray-100 hover:text-blue-800"><a href="#">' . $item->name . '</a></li>
-                ';
-            }
-            $output .= '</ul>';
-            echo $output;
-        }
-    }
-
     public function find_item_details(Request $request)
     {
         $item = Item::with(['purchaseItems', 'saleItems'])->findOrFail($request->id);
@@ -195,7 +178,7 @@ class ItemsController extends Controller
             'current_stock' => $item->getCurrentStockAttribute(),
             'latest_purchase_price' => $item->getLatestPurchasePriceAttribute(),
             'latest_sale_price' => $item->getLatestSalePriceAttribute(),
-            'latest_discount' => $item->getLatestDiscountAttribute(),
+            'latest_discount' => $item->getLatestpurchase_DiscountAttribute(),
             'latest_sale_discount' => $item->getLatestSale_DiscountAttribute(),
         ]);
     }
@@ -354,9 +337,6 @@ class ItemsController extends Controller
         ]);
     }
 
-    /**
-     * Calculate the status of an item based on stock and expiry date
-     */
     private function calculateItemStatus($currentStock, $expireDate, $currentStatus)
     {
         if ($currentStock <= 0) {
@@ -373,59 +353,6 @@ class ItemsController extends Controller
         }
 
         return 'Available';
-    }
-
-    public function fetch_Items_Counts(Request $request)
-    {
-
-        $query = Item::query();
-
-        if ($request->filled('search')) {
-            $search = '%' . $request->search . '%';
-            $query->where(function ($q) use ($search) {
-                $q->where('items.name', 'like', $search)
-                    ->orWhere('items.sku', 'like', $search)
-                    ->orWhere('items.description', 'like', $search);
-            });
-        }
-
-        $items = $query->get();
-
-        // Get purchase and sale quantities
-        $purchaseSaleData = DB::select("
-            SELECT 
-                i.id,
-                COALESCE(SUM(pi.quantity), 0) as total_purchased,
-                COALESCE(SUM(si.quantity), 0) as total_sold
-            FROM items i
-            LEFT JOIN purchase_items pi ON i.id = pi.item_id
-            LEFT JOIN sale_items si ON i.id = si.item_id
-            GROUP BY i.id
-        ");
-
-        $stockData = collect($purchaseSaleData)->keyBy('id');
-
-        $counts = [
-            'total' => $items->count(),
-            'available' => 0,
-            'sold_out' => 0,
-            'expired' => 0,
-            'damaged' => 0,
-            'low_stock' => 0
-        ];
-
-        foreach ($items as $item) {
-            $data = $stockData[$item->id] ?? null;
-            $currentStock = $data ? ($data->total_purchased - $data->total_sold) : 0;
-
-            if ($item->status === 'Available') $counts['available']++;
-            if ($item->status === 'Sold Out') $counts['sold_out']++;
-            if ($item->status === 'Expired') $counts['expired']++;
-            if ($item->status === 'Damage') $counts['damaged']++;
-            if ($currentStock < 10) $counts['low_stock']++;
-        }
-
-        return response()->json($counts);
     }
 
     public function delete_item($id)
@@ -512,93 +439,6 @@ class ItemsController extends Controller
         }
     }
 
-    public function fetch_all_items()
-    {
-        try {
-            // Get all items with their latest purchase and sale details
-            $items = Item::all()->map(function ($item) {
-                // Get the latest purchase details
-                $latestPurchase = PurchaseItem::where('item_id', $item->id)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
-
-                // Get the latest sale details
-                $latestSale = SaleItem::where('item_id', $item->id)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
-
-                // Get purchase statistics
-                $purchaseStats = PurchaseItem::where('item_id', $item->id)
-                    ->selectRaw('
-                    COUNT(*) as total_purchases,
-                    SUM(quantity) as total_quantity_purchased,
-                    AVG(purchase_price) as average_purchase_price,
-                    MAX(purchase_price) as highest_purchase_price,
-                    MIN(purchase_price) as lowest_purchase_price
-                ')
-                    ->first();
-
-                // Get sale statistics
-                $saleStats = SaleItem::where('item_id', $item->id)
-                    ->selectRaw('
-                    COUNT(*) as total_sales,
-                    SUM(quantity) as total_quantity_sold,
-                    AVG(sale_price) as average_sale_price,
-                    MAX(sale_price) as highest_sale_price,
-                    MIN(sale_price) as lowest_sale_price
-                ')
-                    ->first();
-
-                $currentStock = ($purchaseStats->total_quantity_purchased ?? 0) - ($saleStats->total_quantity_sold ?? 0);
-                $newStatus = $this->calculateItemStatus($currentStock, $latestPurchase?->expire_date, $item->status);
-
-                return [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'sku' => $item->sku,
-                    'description' => $item->description,
-                    'sale_price' => $item->sale_price,
-                    'status' => $newStatus,
-                    'current_stock' => $currentStock,
-                    'latest_purchase' => $latestPurchase ? [
-                        'purchase_price' => $latestPurchase->purchase_price,
-                        'expire_date' => $latestPurchase->expire_date,
-                        'purchase_date' => $latestPurchase->created_at,
-                        'quantity' => $latestPurchase->quantity
-                    ] : null,
-                    'latest_sale' => $latestSale ? [
-                        'sale_price' => $latestSale->sale_price,
-                        'sale_date' => $latestSale->created_at
-                    ] : null,
-                    'purchase_stats' => [
-                        'total_purchases' => $purchaseStats->total_purchases ?? 0,
-                        'total_quantity' => $purchaseStats->total_quantity_purchased ?? 0,
-                        'average_price' => round($purchaseStats->average_purchase_price ?? 0, 2),
-                        'highest_price' => $purchaseStats->highest_purchase_price ?? 0,
-                        'lowest_price' => $purchaseStats->lowest_purchase_price ?? 0
-                    ],
-                    'sale_stats' => [
-                        'total_sales' => $saleStats->total_sales ?? 0,
-                        'total_quantity' => $saleStats->total_quantity_sold ?? 0,
-                        'average_price' => round($saleStats->average_sale_price ?? 0, 2),
-                        'highest_price' => $saleStats->highest_sale_price ?? 0,
-                        'lowest_price' => $saleStats->lowest_price ?? 0
-                    ]
-                ];
-            });
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $items
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error fetching items: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-    
     public function fetch_item(Request $request)
     {
         if ($request->get('query')) {
@@ -639,5 +479,138 @@ class ItemsController extends Controller
             $output .= '</ul>';
             echo $output;
         }
+    }
+
+    public function show_items_stock(Request $request)
+    {
+        // Get request parameters
+        $itemIds = $request->input('item_ids', '');
+        $status = $request->input('status', '');
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date');
+        $minQuantity = $request->input('min_quantity');
+        $maxQuantity = $request->input('max_quantity');
+        $search = $request->input('search', '');
+
+        // Parse item IDs
+        $itemIdsArray = !empty($itemIds) ? explode(',', $itemIds) : [];
+
+        // Start query builder
+        $query = Item::query();
+
+        // Apply filters
+        if (!empty($itemIdsArray)) {
+            $query->whereIn('id', $itemIdsArray);
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('sku', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Get all matching items
+        $items = $query->get();
+
+        // Filter items by stock quantity manually (since it's a computed attribute)
+        $filteredItems = $items->filter(function ($item) use ($minQuantity, $maxQuantity) {
+            $stock = $item->getCurrentStockAttribute();
+
+            if ($minQuantity !== null && $stock < (int)$minQuantity) {
+                return false;
+            }
+
+            if ($maxQuantity !== null && $stock > (int)$maxQuantity) {
+                return false;
+            }
+
+            return true;
+        });
+
+        // Prepare the result data
+        $result = [];
+        $totalStock = 0;
+        $totalLatestValue = 0;
+        $totalOldestValue = 0;
+
+        foreach ($filteredItems as $item) {
+            $currentStock = $item->getCurrentStockAttribute();
+            $totalStock += $currentStock;
+
+            // Get latest purchase price
+            $latestPurchase = $item->purchaseItems()
+                ->orderBy('created_at', 'desc')
+                ->first();
+            $latestPrice = $latestPurchase ? $latestPurchase->purchase_price : 0;
+
+            // Get oldest purchase price
+            $oldestPurchase = $item->purchaseItems()
+                ->orderBy('created_at', 'asc')
+                ->first();
+            $oldestPrice = $oldestPurchase ? $oldestPurchase->purchase_price : 0;
+
+            // Calculate stock values
+            $latestValue = $currentStock * $latestPrice;
+            $oldestValue = $currentStock * $oldestPrice;
+
+            $totalLatestValue += $latestValue;
+            $totalOldestValue += $oldestValue;
+
+            // For date filtering of transactions if specified
+            $purchaseQuery = $item->purchaseItems();
+            $saleQuery = $item->saleItems();
+
+            if ($fromDate) {
+                $purchaseQuery->where('created_at', '>=', $fromDate);
+                $saleQuery->where('created_at', '>=', $fromDate);
+            }
+
+            if ($toDate) {
+                $purchaseQuery->where('created_at', '<=', $toDate . ' 23:59:59');
+                $saleQuery->where('created_at', '<=', $toDate . ' 23:59:59');
+            }
+
+            $purchaseCount = $purchaseQuery->sum('quantity');
+            $saleCount = $saleQuery->sum('quantity');
+
+            // Add to result array
+            $result[] = [
+                'id' => $item->id,
+                'sku' => $item->sku ?? 'N/A',
+                'name' => $item->name,
+                'description' => $item->description,
+                'current_stock' => $currentStock,
+                'latest_price' => $latestPrice,
+                'oldest_price' => $oldestPrice,
+                'latest_value' => $latestValue,
+                'oldest_value' => $oldestValue,
+                'status' => $item->status,
+                'purchases' => $purchaseCount,
+                'sales' => $saleCount,
+            ];
+        }
+
+        // Calculate averages
+        $avgLatestPrice = $totalStock > 0 ? $totalLatestValue / $totalStock : 0;
+        $avgOldestPrice = $totalStock > 0 ? $totalOldestValue / $totalStock : 0;
+
+        // Return JSON response
+        return response()->json([
+            'items' => $result,
+            'stats' => [
+                'total_items' => count($result),
+                'total_stock' => $totalStock,
+                'total_latest_value' => $totalLatestValue,
+                'total_oldest_value' => $totalOldestValue,
+                'avg_latest_price' => $avgLatestPrice,
+                'avg_oldest_price' => $avgOldestPrice,
+            ]
+        ]);
     }
 }

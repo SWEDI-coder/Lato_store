@@ -66,7 +66,7 @@ class Item extends Model
             ?->sale_price ?? 0;
     }
 
-    public function getLatestDiscountAttribute()
+    public function getLatestpurchase_DiscountAttribute()
     {
         return $this->purchaseItems()
             ->latest()

@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('reference_no')->unique();
             $table->date('purchase_date');
             $table->foreignId('part_id')->nullable();
-            $table->decimal('total_amount');
-            $table->decimal('total_discount')->nullable();
-            $table->decimal('dept')->nullable();
-            $table->decimal('paid')->nullable();
+            $table->decimal('total_amount', 25, 2);           // Increased to handle trillion-level values
+            $table->decimal('total_discount', 25, 2)->nullable(); // Increased to handle trillion-level values
+            $table->decimal('dept', 25, 2)->nullable();       // Increased to handle trillion-level values
+            $table->decimal('paid', 25, 2)->nullable();       // Increased to handle trillion-level values
             $table->enum('status', ['Paid', 'Partial paid', 'Unpaid', 'Draft', 'Cancelled', 'Pending'])->default('Unpaid');
             $table->timestamps();
         });

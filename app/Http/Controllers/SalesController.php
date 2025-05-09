@@ -258,6 +258,7 @@ class SalesController extends Controller
 
                 if ($transaction) {
                     $transaction->update([
+                        'part_id' => $SaleData['part_id'], // Can be null
                         'payment_amount' => $SaleData['paid'],
                         'dept_paid' => $SaleData['paid'],
                         'dept_remain' => $sale->dept,

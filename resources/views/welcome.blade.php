@@ -370,7 +370,8 @@
             font-style: italic;
         }
 
-        #transaction_table_container {
+        #transaction_table_container,
+        #parties_table_container {
             overflow: auto;
             -webkit-overflow-scrolling: touch;
             margin: 0 auto;
@@ -427,7 +428,7 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="text-xl font-bold navbar-brand animate__animated animate__fadeIn transform transition mr-5 hover:-translate-x-2 duration-300 cursor-pointer">
-                <span id="postCount" class=" absolute ml-6 flex h-3 w-3 right-0">
+                    <span id="postCount" class=" absolute ml-6 flex h-3 w-3 right-0">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-600 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
                     </span>
@@ -436,14 +437,23 @@
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-4 animate__animated animate__fadeIn">
-                    <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">Website</a>
-                    <a href="{{ route('welcome') }}" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">Refresh</a>
+                    <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe2 mt-1.5 scale-125" viewBox="0 0 16 16">
+                            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855q-.215.403-.395.872c.705.157 1.472.257 2.282.287zM4.249 3.539q.214-.577.481-1.078a7 7 0 0 1 .597-.933A7 7 0 0 0 3.051 3.05q.544.277 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9 9 0 0 1-1.565-.667A6.96 6.96 0 0 0 1.018 7.5zm1.4-2.741a12.3 12.3 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332M8.5 5.09V7.5h2.99a12.3 12.3 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.6 13.6 0 0 1 7.5 10.91V8.5zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741zm-3.282 3.696q.18.469.395.872c.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a7 7 0 0 1-.598-.933 9 9 0 0 1-.481-1.079 8.4 8.4 0 0 0-1.198.49 7 7 0 0 0 2.276 1.522zm-1.383-2.964A13.4 13.4 0 0 1 3.508 8.5h-2.49a6.96 6.96 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667m6.728 2.964a7 7 0 0 0 2.275-1.521 8.4 8.4 0 0 0-1.197-.49 9 9 0 0 1-.481 1.078 7 7 0 0 1-.597.933M8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855q.216-.403.395-.872A12.6 12.6 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.96 6.96 0 0 0 14.982 8.5h-2.49a13.4 13.4 0 0 1-.437 3.008M14.982 7.5a6.96 6.96 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008zM11.27 2.461q.266.502.482 1.078a8.4 8.4 0 0 0 1.196-.49 7 7 0 0 0-2.275-1.52c.218.283.418.597.597.932m-.488 1.343a8 8 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z" />
+                        </svg>
+                    </a>
+                    <a href="{{ route('welcome') }}" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise mt-1.5 scale-125" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+                        </svg>
+                    </a>
                     <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="lg:inline-block lg:ml-auto lg:mr-3 py-1 px-6 bg-gray-100 hover:bg-gray-200 text-xs text-gray-900 hover:text-red-600 font-bold rounded-xl transition duration-200">
-                        Logout
-                    </button>
-                </form>
+                        @csrf
+                        <button type="submit" class="lg:inline-block lg:ml-auto lg:mr-3 py-1 px-6 bg-gray-100 hover:bg-gray-200 text-xs text-gray-900 hover:text-red-600 font-bold rounded-xl transition duration-200">
+                            Logout
+                        </button>
+                    </form>
                 </div>
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="focus:outline-none transition-transform duration-300">
@@ -454,8 +464,17 @@
                 </div>
             </div>
             <div id="mobile-menu" class="md:hidden">
-                <a href="#" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">Website</a>
-                <a href="{{ route('welcome') }}" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">Refresh</a>
+                <a href="#" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe2 mt-1.5 scale-125 ml-1" viewBox="0 0 16 16">
+                        <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855q-.215.403-.395.872c.705.157 1.472.257 2.282.287zM4.249 3.539q.214-.577.481-1.078a7 7 0 0 1 .597-.933A7 7 0 0 0 3.051 3.05q.544.277 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9 9 0 0 1-1.565-.667A6.96 6.96 0 0 0 1.018 7.5zm1.4-2.741a12.3 12.3 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332M8.5 5.09V7.5h2.99a12.3 12.3 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.6 13.6 0 0 1 7.5 10.91V8.5zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741zm-3.282 3.696q.18.469.395.872c.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a7 7 0 0 1-.598-.933 9 9 0 0 1-.481-1.079 8.4 8.4 0 0 0-1.198.49 7 7 0 0 0 2.276 1.522zm-1.383-2.964A13.4 13.4 0 0 1 3.508 8.5h-2.49a6.96 6.96 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667m6.728 2.964a7 7 0 0 0 2.275-1.521 8.4 8.4 0 0 0-1.197-.49 9 9 0 0 1-.481 1.078 7 7 0 0 1-.597.933M8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855q.216-.403.395-.872A12.6 12.6 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.96 6.96 0 0 0 14.982 8.5h-2.49a13.4 13.4 0 0 1-.437 3.008M14.982 7.5a6.96 6.96 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008zM11.27 2.461q.266.502.482 1.078a8.4 8.4 0 0 0 1.196-.49 7 7 0 0 0-2.275-1.52c.218.283.418.597.597.932m-.488 1.343a8 8 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z" />
+                    </svg>
+                </a>
+                <a href="{{ route('welcome') }}" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise mt-1.5 scale-125 ml-1" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+                    </svg>
+                </a>
                 <form action="{{ route('logout') }}" method="POST" class="mb-1">
                     @csrf
                     <button type="submit" class="lg:inline-block lg:ml-auto lg:mr-3 py-1 px-6 bg-gray-100 hover:bg-gray-200 text-xs text-gray-900 hover:text-red-600 font-bold rounded-xl transition duration-200">
@@ -468,10 +487,11 @@
 
     <!-- Main Content with Tabs -->
     <main class="container mx-auto px-4 pt-24 pb-8">
-        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Work Sheet</h1>
+        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">lato store</h1>
 
         <!-- Tab Navigation -->
         <div class="flex flex-wrap border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-2 animate__animated animate__fadeIn">
+
             <button class="tab-button active px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="sales">
                 Sales
             </button>
@@ -490,11 +510,14 @@
             <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="reports">
                 Reports
             </button>
+            <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="employees">
+                Employees
+            </button>
         </div>
 
         <!-- Tab Content -->
         <div class="bg-gray-50 rounded-lg shadow-md p-4 sm:p-6 animate__animated animate__fadeIn">
-            <!-- Sales Tab Content -->
+
             <div id="sales" class="tab-content active">
                 <div class=" flex justify-between">
                     <h2 class="text-xl font-semibold mb-1">Sales Management</h2>
@@ -514,13 +537,6 @@
                                 <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
-                        </div>
-
-                        <div class="relative group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
-                            </svg>
-                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Transactions</span>
                         </div>
 
                     </div>
@@ -546,15 +562,16 @@
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 text-left">s/n</th>
                                 <th class="py-3 px-6 text-left">ref.no</th>
                                 <th class="py-3 px-6 text-left">Date</th>
                                 <th class="py-3 px-6 text-left">Customer</th>
-                                <th class="py-3 px-6 text-right">discount</th>
-                                <th class="py-3 px-6 text-center">amount</th>
-                                <th class="py-3 px-6 text-center">paid</th>
-                                <th class="py-3 px-6 text-center">unpaid</th>
-                                <th class="py-3 px-6 text-center">status</th>
-                                <th class="py-3 px-6 text-center">tools</th>
+                                <th class="py-3 px-6 text-left">discount</th>
+                                <th class="py-3 px-6 text-left">amount</th>
+                                <th class="py-3 px-6 text-left">paid</th>
+                                <th class="py-3 px-6 text-left">unpaid</th>
+                                <th class="py-3 px-6 text-left">status</th>
+                                <th class="py-3 px-6 text-left no_print">tools</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -567,7 +584,6 @@
                 </div>
             </div>
 
-            <!-- purchases Tab Content -->
             <div id="purchases" class="tab-content">
                 <div class=" flex justify-between">
                     <h2 class="text-xl font-semibold mb-1">Purchases Management</h2>
@@ -587,13 +603,6 @@
                                 <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
-                        </div>
-
-                        <div class="relative group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
-                            </svg>
-                            <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Transactions</span>
                         </div>
 
                     </div>
@@ -620,6 +629,7 @@
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 text-left">s/n</th>
                                 <th class="py-3 px-6 text-left">ref.no</th>
                                 <th class="py-3 px-6 text-left">Date</th>
                                 <th class="py-3 px-6 text-left">Supplier</th>
@@ -628,7 +638,7 @@
                                 <th class="py-3 px-6 text-left">paid</th>
                                 <th class="py-3 px-6 text-left">unpaid</th>
                                 <th class="py-3 px-6 text-left">status</th>
-                                <th class="py-3 px-6 text-left">tools</th>
+                                <th class="py-3 px-6 text-left no_print">tools</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -686,13 +696,14 @@
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 text-left whitespace-nowrap">s/n</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">ref.no</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">Date</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">name</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">method</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">type</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">amount</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">tools</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap no_print">tools</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -754,11 +765,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="responsive-table">
+                <div class="responsive-table" id="parties_table_container">
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                <th class="py-3 px-6 text-left whitespace-nowrap">KEY</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap">s/n</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">TIN</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">NAME</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">EMAIL</th>
@@ -768,7 +779,7 @@
                                 <th class="py-3 px-6 text-left whitespace-nowrap">PAID</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">DEPT</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">STATUS</th>
-                                <th class="py-3 px-6 text-left whitespace-nowrap">TOOLS</th>
+                                <th class="py-3 px-6 text-left whitespace-nowrap no_print">TOOLS</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -815,26 +826,12 @@
                                 </svg>
                                 <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
                             </div>
+
                             <div class="relative group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-bar-graph scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
-                                    <path d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5z" />
-                                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
-                                </svg>
-                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Statistics</span>
-                            </div>
-                            <div class="relative group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                <svg id="stock_btn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up hidden scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07" />
                                 </svg>
-                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
-                            </div>
-                            <div class="relative group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
-                                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
-                                    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
-                                </svg>
-                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">print</span>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Stock</span>
                             </div>
                         </div>
                     </div>
@@ -846,9 +843,6 @@
                         <!-- Search Filter -->
                         <div class="w-full">
                             <div class="relative">
-                                <svg class="w-5 h-5 text-gray-400 absolute right-3 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
                                 <input
                                     type="text"
                                     id="searchTable_items"
@@ -905,13 +899,15 @@
                             <table id="inventory" class="min-w-full bg-white">
                                 <thead>
                                     <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                        <th class="no-sort no_print text-cennter bg-green-500 py-3 px-2"><input type="checkbox" id="select_all_items" /></th>
+                                        <th class="py-3 px-6 text-left">s/n</th>
                                         <th class="py-3 px-6 text-left">SKU</th>
                                         <th class="py-3 px-6 text-left">Product</th>
                                         <th class="py-3 px-6 text-left">Category</th>
-                                        <th class="py-3 px-6 text-right">Stock</th>
-                                        <th class="py-3 px-6 text-right">Price</th>
-                                        <th class="py-3 px-6 text-center">Status</th>
-                                        <th class="py-3 px-6 text-center">Actions</th>
+                                        <th class="py-3 px-6 text-left">Stock</th>
+                                        <th class="py-3 px-6 text-left">Price</th>
+                                        <th class="py-3 px-6 text-left">Status</th>
+                                        <th class="py-3 px-6 text-left no_print">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-600 text-sm">
@@ -1390,6 +1386,95 @@
                 </div>
             </div>
 
+            <div id="employees" class="tab-content">
+                <div class="flex justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Employees</h2>
+
+                    <div class="flex items-center gap-3">
+                        <!-- employees Stats Cards -->
+                        <div class="grid grid-cols-4 gap-3 mr-4">
+                            <div class="bg-white p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Total</div>
+                                <div id="total_employees" class="text-lg font-bold">0</div>
+                            </div>
+                            <div class="bg-green-100 p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Male</div>
+                                <div id="male_count_employees" class="text-lg font-bold text-green-600">0</div>
+                            </div>
+                            <div class="bg-yellow-100 p-2 rounded-md shadow-lg text-center">
+                                <div class="text-xs text-gray-500">Female</div>
+                                <div id="female_count_employees" class="text-lg font-bold text-yellow-600">0</div>
+                            </div>
+
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-lg">
+                            <div class="relative group">
+                                <svg onclick="show_add_employee_Dialog()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                                    <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5" />
+                                </svg>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
+                            </div>
+
+                            <div class="relative group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
+                                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
+                                </svg>
+                                <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">print</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full">
+                    <!-- Filter Container with responsive grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <!-- Search Filter -->
+                        <div class="w-full">
+                            <div class="relative">
+                                <svg class="w-5 h-5 text-gray-400 absolute right-3 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <input
+                                    type="text"
+                                    id="search_emlpoyee_inTable"
+                                    placeholder="Search by name, other details..."
+                                    class="w-full px-3 h-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table id="employees" class="min-w-full bg-white">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                        <th class="py-3 px-6 text-left">S/N</th>
+                                        <th class="py-3 px-6 text-left">Name</th>
+                                        <th class="py-3 px-6 text-left">Phone</th>
+                                        <th class="py-3 px-6 text-left">Email</th>
+                                        <th class="py-3 px-6 text-left">Gender</th>
+                                        <th class="py-3 px-6 text-left">Role</th>
+                                        <th class="py-3 px-6 text-left">Status</th>
+                                        <th class="py-3 px-6 text-left">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600 text-sm">
+                                    <!-- Table rows will be loaded via AJAX -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="employees-loading" class="mt-4 flex justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-800"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -1423,120 +1508,112 @@
         </div>
     </div>
 
-    <div id="add_sales_modal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-4">
+    <!-- Sales Modal -->
+    <div id="add_sales_modal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-2 sm:p-4">
+        <div class="fixed inset-0" onclick="hide_add_sales_modal()"></div>
         <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
             <!-- Modal Header with Close Button -->
-            <div class="sticky top-0 bg-white z-10 px-4 py-3 flex justify-between items-center border-b border-gray-200">
-                <h1 class="text-base lg:text-lg font-semibold">New Sales</h1>
+            <div class="sticky top-0 bg-white z-10 px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center border-b border-gray-200">
+                <h1 class="text-sm sm:text-base lg:text-lg font-semibold">New Sales</h1>
                 <button onclick="hide_add_sales_modal()" class="text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
                 </button>
             </div>
 
             <!-- Modal Content with Scrollable Area -->
-            <div class="overflow-y-auto p-4 max-h-[calc(100vh-8rem)]">
-                <form method="post" class="space-y-4" id="sales_form">
+            <div class="overflow-y-auto p-2 sm:p-4 max-h-[calc(100vh-8rem)]">
+                <form method="post" class="space-y-3 sm:space-y-4" id="sales_form">
                     <!-- Description and Submit Button -->
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                        <div class="w-full sm:w-3/4">
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="Description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="add_sale_description" name="Description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3">
+                        <div class="w-full">
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="Description" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Description:</label>
+                                <textarea id="add_sale_description" name="Description" rows="2" placeholder="Enter description" class="w-full flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                         </div>
-                        <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Record Sale</button>
+                        <button class="mt-2 sm:mt-0 px-3 sm:px-4 py-1.5 sm:py-2 text-white text-xs sm:text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto whitespace-nowrap" type="submit">Record Sale</button>
                     </div>
 
                     <!-- Customer and Date Section -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
                         <!-- Date Input -->
                         <div>
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="date" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Date:</label>
                                 <input type="date" id="add_sale_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
 
                         <!-- Customer Search -->
                         <div>
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="search_Customer" class="text-xs sm:text-sm font-medium text-gray-700">Customer:</label>
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="search_Customer" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Customer:</label>
                                 <div class="relative w-full">
-                                    <svg class="fill-current text-gray-500 w-4 h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <svg class="fill-current text-gray-500 w-3 h-3 sm:w-4 sm:h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
                                     </svg>
-                                    <input placeholder="Customer" name="Customer" id="search_Customer" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
+                                    <input placeholder="Customer" name="Customer" id="search_Customer" class="pl-7 sm:pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
                                     <div class="Customerlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
                                     <input type="hidden" class="Customer_ID" id="Customer_ID" name="Customer_id[]" />
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Show Sales Button -->
-                        <div class="flex items-center">
-                            <div onclick="show_SalesDialog()" class="bg-green-500 hover:bg-green-400 rounded px-3 py-1.5 transition cursor-pointer">
-                                <span class="text-white text-xs sm:text-sm">Show Sales</span>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Table Container -->
-                    <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
+                    <div class="mt-3 sm:mt-4 border border-gray-300 rounded-lg overflow-hidden">
                         <div class="overflow-x-auto">
                             <table id="record_sales_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
-                                        <th class="py-2 px-2 text-left font-medium">Stock</th>
-                                        <th class="py-2 px-2 text-left font-medium">Qtn</th>
-                                        <th class="py-2 px-2 text-left font-medium">Item</th>
-                                        <th class="py-2 px-2 text-left font-medium">Description</th>
-                                        <th class="py-2 px-2 text-left hidden md:table-cell font-medium">Expire Date</th>
-                                        <th class="py-2 px-2 text-left font-medium">Unit Price</th>
-                                        <th class="py-2 px-2 text-left font-medium">Discount</th>
-                                        <th class="py-2 px-2 text-left font-medium">Net Price</th>
-                                        <th class="py-2 px-2 text-left font-medium">Action</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Qty</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Item</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Desc</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left hidden md:table-cell font-medium">Expire</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Price</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Disc</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Net</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-center font-medium">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr id="tbl_id" class="border-b border-gray-300">
                                         <td class="p-1">
-                                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
+                                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-8 sm:w-10 text-center rounded-full" type="text" />
                                         </td>
                                         <td class="p-1 tbl-id">
-                                            <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-14 px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+                                            <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-12 sm:w-14 px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
                                         </td>
                                         <td class="p-1">
                                             <div class="relative">
-                                                <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                                <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[60px] sm:min-w-[100px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
                                                 <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
                                                 <input type="hidden" class="item_id" name="item_id" />
                                             </div>
                                         </td>
                                         <td class="p-1">
-                                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                                        </td>
-                                        <td class="hidden md:table-cell p-1">
-                                            <input type="date" id="date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
+                                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
                                         </td>
                                         <td class="p-1">
-                                            <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+                                            <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00" class="unit_price w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="text" readonly />
                                         </td>
                                         <td class="p-1">
-                                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00" class="discount w-full min-w-[50px] sm:min-w-[70px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                                         </td>
-                                        <td id="ntl" class="ntl text-center p-1"><span class="">TSh</span>0.00</td>
+                                        <td id="ntl" class="ntl text-center p-1 text-xs sm:text-sm"><span class="">TSh</span>0.00</td>
                                         <td class="p-1">
-                                            <div class="flex justify-center gap-2">
+                                            <div class="flex justify-center gap-1 sm:gap-2">
                                                 <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                                     </svg>
                                                 </button>
                                                 <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                                                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
                                                     </svg>
@@ -1547,20 +1624,20 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-gray-100 border-t-2 border-gray-400">
-                                        <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
-                                        <td class="p-2">
-                                            <input name="paid" placeholder="0.00 Tzs" id="add_sale_paid" class="paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                        <td colspan="2" class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium text-xs sm:text-sm whitespace-nowrap">Paid:</td>
+                                        <td class="p-1 sm:p-2">
+                                            <input name="paid" placeholder="0.00 Tzs" id="add_sale_paid" class="paid w-full px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                                         </td>
-                                        <td colspan="2" class="p-2">
-                                            <div class="flex items-center gap-2">
-                                                <span class="text-xs sm:text-sm font-medium">Dept:</span>
+                                        <td colspan="2" class="p-1 sm:p-2">
+                                            <div class="flex items-center gap-1 sm:gap-2">
+                                                <span class="text-xs sm:text-sm font-medium whitespace-nowrap">Debt:</span>
                                                 <div class="text-red-600">
                                                     <span class="dept text-xs sm:text-sm" id="add_sale_debt">0.00</span>
                                                     <span class="text-xs sm:text-sm">Tzs</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td colspan="4" class="p-2 text-right">
+                                        <td colspan="4" class="p-1 sm:p-2 text-right">
                                             <span class="text-xs sm:text-sm font-medium">Total: </span>
                                             <span id="add_sale_total" class="font-bold text-green-700 text-xs sm:text-sm total_amount">0.00 <span>Tzs</span></span>
                                         </td>
@@ -1574,81 +1651,76 @@
         </div>
     </div>
 
-    <div id="editSalesModal" class="fixed hidden inset-0 z-20 overflow-y-auto items-center justify-center p-4">
+    <!-- Edit Sales Modal -->
+    <div id="editSalesModal" class="fixed hidden inset-0 z-20 overflow-y-auto items-center justify-center p-2 sm:p-4">
+        <div class="fixed inset-0" onclick="hide_edit_SalesMODAL()"></div>
         <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
             <!-- Modal Header with Close Button -->
-            <div class="sticky top-0 bg-white z-10 px-4 py-3 flex justify-between items-center border-b border-gray-200">
-                <h1 class="text-base lg:text-lg font-semibold">Edit Sales</h1>
+            <div class="sticky top-0 bg-white z-10 px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center border-b border-gray-200">
+                <h1 class="text-sm sm:text-base lg:text-lg font-semibold">Edit Sales</h1>
                 <button onclick="hide_edit_SalesMODAL()" class="text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
                 </button>
             </div>
 
             <!-- Modal Content with Scrollable Area -->
-            <div class="overflow-y-auto p-4 max-h-[calc(100vh-8rem)]">
-                <form method="post" class="space-y-4" id="sales_edit_Sale_form">
+            <div class="overflow-y-auto p-2 sm:p-4 max-h-[calc(100vh-8rem)]">
+                <form method="post" class="space-y-3 sm:space-y-4" id="sales_edit_Sale_form">
                     <input type="hidden" id="sales_edit_Sales_id" name="Sales_id">
 
                     <!-- Description and Submit Button -->
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                        <div class="w-full sm:w-3/4">
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="sales_edit_description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="sales_edit_description" name="description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3">
+                        <div class="w-full">
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="sales_edit_description" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Description:</label>
+                                <textarea id="sales_edit_description" name="description" rows="2" placeholder="Enter description" class="w-full flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                         </div>
-                        <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Update Sale</button>
+                        <button class="mt-2 sm:mt-0 px-3 sm:px-4 py-1.5 sm:py-2 text-white text-xs sm:text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto whitespace-nowrap" type="submit">Update Sale</button>
                     </div>
 
                     <!-- Customer and Date Section -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
                         <!-- Date Input -->
                         <div>
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="sales_edit_date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="sales_edit_date" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Date:</label>
                                 <input type="date" id="sales_edit_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
 
                         <!-- Customer Search -->
                         <div>
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="sales_edit_Customer" class="text-xs sm:text-sm font-medium text-gray-700">Customer:</label>
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="sales_edit_Customer" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Customer:</label>
                                 <div class="relative w-full">
-                                    <svg class="fill-current text-gray-500 w-4 h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <svg class="fill-current text-gray-500 w-3 h-3 sm:w-4 sm:h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
                                     </svg>
-                                    <input placeholder="Customer" name="Customer" id="sales_edit_Customer" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
+                                    <input placeholder="Customer" name="Customer" id="sales_edit_Customer" class="pl-7 sm:pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
                                     <div class="Customerlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
                                     <input type="hidden" id="sales_edit_Customer_id" name="Customer_id" />
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Show Sales Button -->
-                        <div class="flex items-center">
-                            <div onclick="show_SalesDialog()" class="bg-green-500 hover:bg-green-400 rounded px-3 py-1.5 transition cursor-pointer">
-                                <span class="text-white text-xs sm:text-sm">Show Sales</span>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Table Container -->
-                    <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
+                    <div class="mt-3 sm:mt-4 border border-gray-300 rounded-lg overflow-hidden">
                         <div class="overflow-x-auto">
                             <table id="sales_edit_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
-                                        <th class="py-2 px-2 text-left font-medium">Stock</th>
-                                        <th class="py-2 px-2 text-left font-medium">Qtn</th>
-                                        <th class="py-2 px-2 text-left font-medium">Item</th>
-                                        <th class="py-2 px-2 text-left font-medium">Description</th>
-                                        <th class="py-2 px-2 text-left font-medium">Unit Price</th>
-                                        <th class="py-2 px-2 text-left font-medium">Discount</th>
-                                        <th class="py-2 px-2 text-left font-medium">Net Price</th>
-                                        <th class="py-2 px-2 text-left font-medium">Action</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Qty</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Item</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Desc</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Price</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Disc</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Net</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-center font-medium">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="sales_edit_items_container">
@@ -1656,22 +1728,274 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="bg-gray-100 border-t-2 border-gray-400">
-                                        <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
-                                        <td class="p-2">
-                                            <input name="paid" placeholder="0.00 Tzs" id="sales_edit_paid" class="edit_paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                        <td colspan="2" class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium text-xs sm:text-sm whitespace-nowrap">Paid:</td>
+                                        <td class="p-1 sm:p-2">
+                                            <input name="paid" placeholder="0.00 Tzs" id="sales_edit_paid" class="edit_paid w-full px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                                         </td>
-                                        <td colspan="2" class="p-2">
-                                            <div class="flex items-center gap-2">
-                                                <span class="text-xs sm:text-sm font-medium">Debt:</span>
+                                        <td colspan="2" class="p-1 sm:p-2">
+                                            <div class="flex items-center gap-1 sm:gap-2">
+                                                <span class="text-xs sm:text-sm font-medium whitespace-nowrap">Debt:</span>
                                                 <div class="text-red-600">
                                                     <span class="edit_debt text-xs sm:text-sm" id="sales_edit_debt">0.00</span>
                                                     <span class="text-xs sm:text-sm">Tzs</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td colspan="3" class="p-2 text-right">
+                                        <td colspan="3" class="p-1 sm:p-2 text-right">
                                             <span class="text-xs sm:text-sm font-medium">Total: </span>
                                             <span id="sales_edit_total" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="add_purchase_modal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-2 sm:p-4">
+        <div class="fixed inset-0" onclick="hide_add_purchase_modal()"></div>
+        <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
+            <!-- Modal Header with Close Button -->
+            <div class="sticky top-0 bg-white z-10 px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center border-b border-gray-200">
+                <h1 class="text-sm sm:text-base lg:text-lg font-semibold">New Purchase</h1>
+                <button onclick="hide_add_purchase_modal()" class="text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content with Scrollable Area -->
+            <div class="overflow-y-auto p-2 sm:p-4 max-h-[calc(100vh-8rem)]">
+                <form method="post" class="space-y-3 sm:space-y-4" id="purchases_form" action="">
+                    @csrf
+                    <!-- Description and Submit Button -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3">
+                        <div class="w-full">
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="Description" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Description:</label>
+                                <textarea id="add_purchase_description" name="Description" rows="2" placeholder="Enter description" class="w-full flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                        </div>
+                        <button class="mt-2 sm:mt-0 px-3 sm:px-4 py-1.5 sm:py-2 text-white text-xs sm:text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto whitespace-nowrap" type="submit">Record Purchase</button>
+                    </div>
+
+                    <!-- Supplier and Date Section -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+                        <!-- Date Input -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="date" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Date:</label>
+                                <input type="date" id="add_purchase_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <!-- Supplier Search -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="search_supplier" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Supplier:</label>
+                                <div class="relative w-full">
+                                    <svg class="fill-current text-gray-500 w-3 h-3 sm:w-4 sm:h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                                    </svg>
+                                    <input placeholder="Supplier" name="supplier" id="search_supplier" class="pl-7 sm:pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
+                                    <div class="supplierlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
+                                    <input type="hidden" class="Supplier_ID" id="Supplier_ID" name="Supplier_id[]" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table Container -->
+                    <div class="mt-3 sm:mt-4 border border-gray-300 rounded-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table id="purchase_record_table" class="min-w-full text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-green-200">
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Qty</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Item</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Desc</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Expire</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Price</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Disc</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Net</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-center font-medium">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="tbl_id" class="border-b border-gray-300">
+                                        <td class="p-1">
+                                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-8 sm:w-10 text-center rounded-full" type="text" />
+                                        </td>
+                                        <td class="p-1 tbl-id">
+                                            <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-12 sm:w-14 px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+                                        </td>
+                                        <td class="p-1">
+                                            <div class="relative">
+                                                <input placeholder="Item" name="item_name" id="purchase_item_name" data-type="item_name" class="item_name border w-full min-w-[60px] sm:min-w-[100px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                                <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                                <input type="hidden" class="item_id" name="item_id" />
+                                            </div>
+                                        </td>
+                                        <td class="p-1">
+                                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+                                        </td>
+                                        <td class="p-1">
+                                            <input type="date" name="expire_date" class="px-1 sm:px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
+                                        </td>
+                                        <td class="p-1">
+                                            <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00" class="unit_price w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+                                        </td>
+                                        <td class="p-1">
+                                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00" class="discount w-full min-w-[50px] sm:min-w-[70px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                        </td>
+                                        <td class="ntl text-center p-1 text-xs sm:text-sm"><span>TSh</span>0.00</td>
+                                        <td class="p-1">
+                                            <div class="flex justify-center gap-1 sm:gap-2">
+                                                <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                                    </svg>
+                                                </button>
+                                                <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bg-gray-100 border-t-2 border-gray-400">
+                                        <td colspan="2" class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium text-xs sm:text-sm whitespace-nowrap">Paid:</td>
+                                        <td class="p-1 sm:p-2">
+                                            <input name="paid" placeholder="0.00 Tzs" id="add_purchase_paid" class="paid w-full px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                        </td>
+                                        <td colspan="2" class="p-1 sm:p-2">
+                                            <div class="flex items-center gap-1 sm:gap-2">
+                                                <span class="text-xs sm:text-sm font-medium whitespace-nowrap">Debt:</span>
+                                                <div class="text-red-600">
+                                                    <span class="dept text-xs sm:text-sm" id="add_purchase_debt">0.00</span>
+                                                    <span class="text-xs sm:text-sm">Tzs</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td colspan="4" class="p-1 sm:p-2 text-right">
+                                            <span class="text-xs sm:text-sm font-medium">Total: </span>
+                                            <span id="add_purchase_total" class="font-bold text-green-700 text-xs sm:text-sm total_amount">0.00 <span>Tzs</span></span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Purchase Modal -->
+    <div id="editPurchaseModal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-2 sm:p-4">
+        <div class="fixed inset-0" onclick="hide_edit_purchaseMODAL()"></div>
+        <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
+            <!-- Modal Header with Close Button -->
+            <div class="sticky top-0 bg-white z-10 px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center border-b border-gray-200">
+                <h1 class="text-sm sm:text-base lg:text-lg font-semibold">Edit Purchase</h1>
+                <button onclick="hide_edit_purchaseMODAL()" class="text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content with Scrollable Area -->
+            <div class="overflow-y-auto p-2 sm:p-4 max-h-[calc(100vh-8rem)]">
+                <form method="post" class="space-y-3 sm:space-y-4" id="purchase_edit_purchases_form">
+                    <input type="hidden" id="purchase_edit_purchase_id" name="purchase_id">
+
+                    <!-- Description and Submit Button -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3">
+                        <div class="w-full">
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="purchase_edit_description" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Description:</label>
+                                <textarea id="purchase_edit_description" name="description" rows="2" placeholder="Enter description" class="w-full flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                        </div>
+                        <button class="mt-2 sm:mt-0 px-3 sm:px-4 py-1.5 sm:py-2 text-white text-xs sm:text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto whitespace-nowrap" type="submit">Update Purchase</button>
+                    </div>
+
+                    <!-- Supplier and Date Section -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+                        <!-- Date Input -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="purchase_edit_date" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Date:</label>
+                                <input type="date" id="purchase_edit_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <!-- Supplier Search -->
+                        <div>
+                            <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                                <label for="purchase_edit_supplier" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Supplier:</label>
+                                <div class="relative w-full">
+                                    <svg class="fill-current text-gray-500 w-3 h-3 sm:w-4 sm:h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+                                    </svg>
+                                    <input placeholder="Supplier" name="supplier" id="purchase_edit_supplier" class="pl-7 sm:pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
+                                    <div class="supplierlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
+                                    <input type="hidden" id="purchase_edit_supplier_id" name="supplier_id" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table Container -->
+                    <div class="mt-3 sm:mt-4 border border-gray-300 rounded-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table id="purchase_edit_table" class="min-w-full text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-green-200">
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Qty</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Item</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Desc</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Expire</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Price</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Disc</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Net</th>
+                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-center font-medium">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="purchase_edit_items_container">
+                                    <!-- Items will be dynamically added here -->
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bg-gray-100 border-t-2 border-gray-400">
+                                        <td colspan="2" class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium text-xs sm:text-sm whitespace-nowrap">Paid:</td>
+                                        <td class="p-1 sm:p-2">
+                                            <input name="paid" placeholder="0.00 Tzs" id="purchase_edit_paid" class="edit_paid w-full px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                                        </td>
+                                        <td colspan="2" class="p-1 sm:p-2">
+                                            <div class="flex items-center gap-1 sm:gap-2">
+                                                <span class="text-xs sm:text-sm font-medium whitespace-nowrap">Debt:</span>
+                                                <div class="text-red-600">
+                                                    <span class="edit_debt text-xs sm:text-sm" id="purchase_edit_debt">0.00</span>
+                                                    <span class="text-xs sm:text-sm">Tzs</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td colspan="4" class="p-1 sm:p-2 text-right">
+                                            <span class="text-xs sm:text-sm font-medium">Total: </span>
+                                            <span id="purchase_edit_total" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -1702,7 +2026,7 @@
                     <!-- Item Name -->
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-800 mb-1">Item name:</label>
-                        <input type="text" id="name" name="name" placeholder="Item name" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                        <input type="text" name="name" placeholder="Item name" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                         <div id="Errorname" class="text-red-600 text-sm mt-1"></div>
                     </div>
 
@@ -1843,268 +2167,6 @@
                         <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700 transition-colors">
                             Update
                         </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="add_purchase_modal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-4">
-        <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
-            <!-- Modal Header with Close Button -->
-            <div class="sticky top-0 bg-white z-10 px-4 py-3 flex justify-between items-center border-b border-gray-200">
-                <h1 class="text-base lg:text-lg font-semibold">New Purchase</h1>
-                <button onclick="hide_add_purchase_modal()" class="text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Modal Content with Scrollable Area -->
-            <div class="overflow-y-auto p-4 max-h-[calc(100vh-8rem)]">
-                <form method="post" class="space-y-4" id="purchases_form" action="">
-                    @csrf
-                    <!-- Description and Submit Button -->
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                        <div class="w-full sm:w-3/4">
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="Description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="add_purchase_description" name="Description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-                            </div>
-                        </div>
-                        <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Record Purchase</button>
-                    </div>
-
-                    <!-- Supplier and Date Section -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Date Input -->
-                        <div>
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
-                                <input type="date" id="add_purchase_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                        </div>
-
-                        <!-- Supplier Search -->
-                        <div>
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="search_supplier" class="text-xs sm:text-sm font-medium text-gray-700">Supplier:</label>
-                                <div class="relative w-full">
-                                    <svg class="fill-current text-gray-500 w-4 h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-                                    </svg>
-                                    <input placeholder="Supplier" name="supplier" id="search_supplier" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
-                                    <div class="supplierlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
-                                    <input type="hidden" class="Supplier_ID" id="Supplier_ID" name="Supplier_id[]" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Show Purchases Button -->
-                        <div class="flex items-center">
-                            <div onclick="show_purchasesDialog()" class="bg-green-500 hover:bg-green-400 rounded px-3 py-1.5 transition cursor-pointer">
-                                <span class="text-white text-xs sm:text-sm">Show Purchases</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Table Container -->
-                    <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table id="purchase_record_table" class="min-w-full text-xs sm:text-sm">
-                                <thead>
-                                    <tr class="bg-green-200">
-                                        <th class="py-2 px-2 text-left font-medium">Stock</th>
-                                        <th class="py-2 px-2 text-left font-medium">Qtn</th>
-                                        <th class="py-2 px-2 text-left font-medium">Item</th>
-                                        <th class="py-2 px-2 text-left font-medium">Description</th>
-                                        <th class="py-2 px-2 text-left font-medium">Expire Date</th>
-                                        <th class="py-2 px-2 text-left font-medium">Unit Price</th>
-                                        <th class="py-2 px-2 text-left font-medium">Discount</th>
-                                        <th class="py-2 px-2 text-left font-medium">Net Price</th>
-                                        <th class="py-2 px-2 text-left font-medium">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr id="tbl_id" class="border-b border-gray-300">
-                                        <td class="p-1">
-                                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
-                                        </td>
-                                        <td class="p-1 tbl-id">
-                                            <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
-                                        </td>
-                                        <td class="p-1">
-                                            <div class="relative">
-                                                <input placeholder="Item" name="item_name" id="purchase_item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                                                <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                                                <input type="hidden" class="item_id" name="item_id" />
-                                            </div>
-                                        </td>
-                                        <td class="p-1">
-                                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                                        </td>
-                                        <td class="p-1">
-                                            <input type="date" name="expire_date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
-                                        </td>
-                                        <td class="p-1">
-                                            <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
-                                        </td>
-                                        <td class="p-1">
-                                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-                                        </td>
-                                        <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
-                                        <td class="p-1">
-                                            <div class="flex justify-center gap-2">
-                                                <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                                    </svg>
-                                                </button>
-                                                <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr class="bg-gray-100 border-t-2 border-gray-400">
-                                        <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
-                                        <td class="p-2">
-                                            <input name="paid" placeholder="0.00 Tzs" id="add_purchase_paid" class="paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-                                        </td>
-                                        <td colspan="2" class="p-2">
-                                            <div class="flex items-center gap-2">
-                                                <span class="text-xs sm:text-sm font-medium">Dept:</span>
-                                                <div class="text-red-600">
-                                                    <span class="dept text-xs sm:text-sm" id="add_purchase_debt">0.00</span>
-                                                    <span class="text-xs sm:text-sm">Tzs</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td colspan="4" class="p-2 text-right">
-                                            <span class="text-xs sm:text-sm font-medium">Total: </span>
-                                            <span id="add_purchase_total" class="font-bold text-green-700 text-xs sm:text-sm total_amount">0.00 <span>Tzs</span></span>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="editPurchaseModal" class="fixed inset-0 z-20 overflow-y-auto hidden items-center justify-center p-4">
-        <div class="relative bg-white border-2 border-amber-900 rounded-xl shadow-xl w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden">
-            <!-- Modal Header with Close Button -->
-            <div class="sticky top-0 bg-white z-10 px-4 py-3 flex justify-between items-center border-b border-gray-200">
-                <h1 class="text-base lg:text-lg font-semibold">Edit Purchase</h1>
-                <button onclick="hide_edit_purchaseMODAL()" class="text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Modal Content with Scrollable Area -->
-            <div class="overflow-y-auto p-4 max-h-[calc(100vh-8rem)]">
-                <form method="post" class="space-y-4" id="purchase_edit_purchases_form">
-                    <input type="hidden" id="purchase_edit_purchase_id" name="purchase_id">
-
-                    <!-- Description and Submit Button -->
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                        <div class="w-full sm:w-3/4">
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="purchase_edit_description" class="text-xs sm:text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="purchase_edit_description" name="description" rows="2" placeholder="Enter description" class="w-full sm:w-auto flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-                            </div>
-                        </div>
-                        <button class="px-4 py-2 text-white text-sm bg-gray-800 rounded hover:bg-gray-700 transition w-full sm:w-auto" type="submit">Update Purchase</button>
-                    </div>
-
-                    <!-- Supplier and Date Section -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Date Input -->
-                        <div>
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="purchase_edit_date" class="text-xs sm:text-sm font-medium text-gray-700">Date:</label>
-                                <input type="date" id="purchase_edit_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                        </div>
-
-                        <!-- Supplier Search -->
-                        <div>
-                            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                                <label for="purchase_edit_supplier" class="text-xs sm:text-sm font-medium text-gray-700">Supplier:</label>
-                                <div class="relative w-full">
-                                    <svg class="fill-current text-gray-500 w-4 h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-                                    </svg>
-                                    <input placeholder="Supplier" name="supplier" id="purchase_edit_supplier" class="pl-8 pr-2 py-1 bg-gray-100 text-xs sm:text-sm w-full rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="text" />
-                                    <div class="supplierlist absolute w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-48 overflow-y-auto"></div>
-                                    <input type="hidden" id="purchase_edit_supplier_id" name="supplier_id" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Show Purchases Button -->
-                        <div class="flex items-center">
-                            <div onclick="show_purchasesDialog()" class="bg-green-500 hover:bg-green-400 rounded px-3 py-1.5 transition cursor-pointer">
-                                <span class="text-white text-xs sm:text-sm">Show Purchases</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Table Container -->
-                    <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table id="purchase_edit_table" class="min-w-full text-xs sm:text-sm">
-                                <thead>
-                                    <tr class="bg-green-200">
-                                        <th class="py-2 px-2 text-left font-medium">Stock</th>
-                                        <th class="py-2 px-2 text-left font-medium">Qtn</th>
-                                        <th class="py-2 px-2 text-left font-medium">Item</th>
-                                        <th class="py-2 px-2 text-left font-medium">Description</th>
-                                        <th class="py-2 px-2 text-left font-medium">Expire Date</th>
-                                        <th class="py-2 px-2 text-left font-medium">Unit Price</th>
-                                        <th class="py-2 px-2 text-left font-medium">Discount</th>
-                                        <th class="py-2 px-2 text-left font-medium">Net Price</th>
-                                        <th class="py-2 px-2 text-left font-medium">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="purchase_edit_items_container">
-                                    <!-- Items will be dynamically added here -->
-                                </tbody>
-                                <tfoot>
-                                    <tr class="bg-gray-100 border-t-2 border-gray-400">
-                                        <td colspan="2" class="py-2 px-2 text-left font-medium">Paid:</td>
-                                        <td class="p-2">
-                                            <input name="paid" placeholder="0.00 Tzs" id="purchase_edit_paid" class="edit_paid w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-                                        </td>
-                                        <td colspan="2" class="p-2">
-                                            <div class="flex items-center gap-2">
-                                                <span class="text-xs sm:text-sm font-medium">Debt:</span>
-                                                <div class="text-red-600">
-                                                    <span class="edit_debt text-xs sm:text-sm" id="purchase_edit_debt">0.00</span>
-                                                    <span class="text-xs sm:text-sm">Tzs</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td colspan="4" class="p-2 text-right">
-                                            <span class="text-xs sm:text-sm font-medium">Total: </span>
-                                            <span id="purchase_edit_total" class="font-bold text-green-700 text-xs sm:text-sm">0.00 <span>Tzs</span></span>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -2482,11 +2544,6 @@
                         </fieldset>
 
                         <div class="relative mb-3">
-                            <button type="button" onclick="show_transaction_MODAL()" id="view_transaction"
-                                class="mb-3 bg-blue-500 text-white text-xs px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                View Transactions
-                            </button>
-
                             <!-- Journal Memo -->
                             <div class="sm:flex sm:items-start sm:justify-between mb-2">
                                 <label for="journal_memo" class="block text-xs font-medium text-gray-700 sm:mt-1 mb-1 sm:mb-0">Journal memo:</label>
@@ -3001,6 +3058,491 @@
         </div>
     </div>
 
+    <!-- Add Employee Modal -->
+    <div id="add_employee_Modal" class="fixed inset-0 z-20 hidden items-center justify-center">
+        <div class="w-full max-w-xl rounded-lg bg-white p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-1">
+                <h3 class="text-lg font-bold text-gray-900">Add New Employee</h3>
+                <button onclick="hide_add_employee_Dialog()" class="text-gray-400 hover:text-gray-500">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div>
+                <form id="addEmployeeForm" method="POST" action="/add_employee">
+                    @csrf
+
+                    <!-- Name Field -->
+                    <div class="mb-2">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-600">*</span></label>
+                        <input type="text" name="name" id="name" class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" required>
+                    </div>
+
+                    <!-- Email Field (Optional) -->
+                    <div class="mb-2">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" name="email" class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                        <p class="mt-1 text-xs text-gray-500">Optional - User can add this later</p>
+                    </div>
+
+                    <!-- Phone Field (Optional) -->
+                    <div class="mb-2">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <div class="flex rounded-md shadow-sm">
+                            <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+                                255
+                            </span>
+                            <input type="text" name="phone" id="phone"
+                                class="block w-full flex-1 rounded-none border rounded-r-md border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                                pattern="[0-9]{9}" maxlength="9" placeholder="712345678">
+                        </div>
+                        <p class=" text-xs text-gray-500">Optional - User will be prompted to add this upon login if missing</p>
+                    </div>
+
+                    <!-- Password Information Note -->
+                    <div class="mb-2 p-3 bg-red-100 rounded-lg">
+                        <p class="text-sm text-gray-600">
+                            <i class="fas fa-info-circle text-teal-600 mr-1"></i>
+                            Default password will be set to <strong>12345678</strong>
+                        </p>
+                    </div>
+
+                    <!-- Role Field -->
+                    <div class="mb-2">
+                        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select name="role" id="role" class=" border block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                            <option value="">Select Role</option>
+                            @foreach(App\Models\User::User_Roles as $key => $role)
+                            <option value="{{ $role }}">{{ $role }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Gender Field -->
+                    <div class="mb-2">
+                        <label class="block text-sm font-medium text-gray-700">Gender</label>
+                        <div class="mt-1 flex space-x-6">
+                            <div class="flex items-center">
+                                <input id="gender-male" name="gender" type="radio" value="Male" class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500">
+                                <label for="gender-male" class="ml-2 block text-sm text-gray-700">Male</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="gender-female" name="gender" type="radio" value="Female" class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500">
+                                <label for="gender-female" class="ml-2 block text-sm text-gray-700">Female</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Field -->
+                    <div class="mb-2">
+                        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                        <textarea name="address" rows="3" class="border block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="hide_add_employee_Dialog()" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Cancel
+                        </button>
+                        <button type="submit" class="rounded-md bg-teal-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Add Employee
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Employee Modal -->
+    <div id="edit_employee_Modal" class="fixed inset-0 z-20 hidden items-center justify-center">
+        <div class="w-full max-w-xl rounded-lg bg-white p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-1">
+                <h3 class="text-lg font-bold text-gray-900">Edit Employee</h3>
+                <button onclick="hide_edit_employee_Dialog()" class="text-gray-400 hover:text-gray-500">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div>
+                <form id="editEmployeeForm" method="POST">
+                    @csrf
+                    @method('POST')
+                    <input type="hidden" name="employee_id" id="edit_employee_id">
+
+                    <!-- Name Field -->
+                    <div class="mb-2">
+                        <label for="edit_name" class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-600">*</span></label>
+                        <input type="text" name="name" id="edit_user_name" class="mt-1 border block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" required>
+                    </div>
+
+                    <!-- Email Field (Optional) -->
+                    <div class="mb-2">
+                        <label for="edit_email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" name="email" id="edit_user_email" class="mt-1 border block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                        <p class="mt-1 text-xs text-gray-500">Optional - User can add this later</p>
+                    </div>
+
+                    <!-- Phone Field (Optional) -->
+                    <div class="mb-2">
+                        <label for="edit_phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <div class="flex rounded-md shadow-sm">
+                            <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+                                255
+                            </span>
+                            <input type="text" name="phone" id="edit_phone"
+                                class="block w-full flex-1 border rounded-none rounded-r-md border-gray-300 focus:border-teal-500 focus:ring-teal-500"
+                                pattern="[0-9]{9}" maxlength="9" placeholder="712345678">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Optional - User will be prompted to add this upon login if missing</p>
+                    </div>
+
+                    <!-- Role Field -->
+                    <div class="mb-2">
+                        <label for="edit_role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select name="role" id="edit_role" class="mt-1 border block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                            <option value="">Select Role</option>
+                            @foreach(App\Models\User::User_Roles as $key => $role)
+                            <option value="{{ $role }}">{{ $role }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Gender Field -->
+                    <div class="mb-2">
+                        <label class="block text-sm font-medium text-gray-700">Gender</label>
+                        <div class="mt-1 flex space-x-6">
+                            <div class="flex items-center">
+                                <input id="edit_gender_male" name="gender" type="radio" value="Male" class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500">
+                                <label for="edit_gender_male" class="ml-2 block text-sm text-gray-700">Male</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="edit_gender_female" name="gender" type="radio" value="Female" class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500">
+                                <label for="edit_gender_female" class="ml-2 block text-sm text-gray-700">Female</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Field -->
+                    <div class="mb-2">
+                        <label for="edit_address" class="block text-sm font-medium text-gray-700">Address</label>
+                        <textarea name="address" id="edit_user_address" rows="3" class="mt-1 border block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="hide_edit_employee_Dialog()" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Cancel
+                        </button>
+                        <button type="submit" class="rounded-md bg-teal-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="delete_employeeModal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+        <!-- Overlay -->
+        <div class="absolute inset-0"></div>
+
+        <!-- Modal Content -->
+        <div class="relative w-full max-w-sm bg-white rounded-xl shadow-2xl border border-red-200 overflow-hidden mx-auto">
+            <!-- Header -->
+            <div class="px-4 sm:px-6 py-4 bg-red-50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-900">Delete Employee</h2>
+                    </div>
+
+                    <button onclick="hide_delete_employeeDialog()" class="p-2 hover:bg-red-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <svg class="w-5 h-5 text-gray-500 hover:text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="px-4 sm:px-6 py-4">
+                <div class="space-y-2">
+                    <p class="text-gray-600 flex">
+                        Are you sure you want to delete
+                        <span id="delete_employee_name" class="text-blue-700 ml-1 font-bold"></span>?
+                    </p>
+
+                    <p class="text-red-600 font-medium">This action cannot be undone.</p>
+                </div>
+
+                <form method="" action="#" class="mt-6">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" id="delete_employee_id">
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                        <button type="button" onclick="hide_delete_employeeDialog()" class="w-full sm:flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            Cancel
+                        </button>
+                        <button type="submit" class="delete_employee_btn w-full sm:flex-1 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            Delete employee
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Password Modal -->
+    <section id="EditpasswordModal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+        <div class="w-full max-w-md bg-white border-2 border-green-700 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 p-6 relative">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                    Change Password
+                </h2>
+                <button onclick="hideEditpasswordModal()" class="text-gray-600 hover:text-red-500 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="changePasswordForm" class="space-y-4">
+                @csrf
+                @method('post')
+                <input type="hidden" id="userId" name="user_id" value="{{ auth()->user()->id }}">
+
+                <div>
+                    <label for="current_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Current Password
+                    </label>
+                    <input type="password" name="current_password" id="current_password"
+                        placeholder="••••••••"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 
+                           dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        required>
+                </div>
+
+                <div>
+                    <label for="new_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        New Password
+                    </label>
+                    <input type="password" name="new_password" id="new_password"
+                        placeholder="••••••••"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 
+                           dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        required>
+                </div>
+
+                <div>
+                    <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Confirm Password
+                    </label>
+                    <input type="password" name="confirm_password" id="confirm_password"
+                        placeholder="••••••••"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 
+                           dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        required>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors">
+                    Reset Password
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Stock Modal -->
+    <div id="stock_Modal" class="fixed inset-0 z-20 hidden overflow-auto items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center border-b p-4 bg-gray-100 rounded-t-lg">
+                <h3 class="text-xl font-semibold flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-graph-up mr-2" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07" />
+                    </svg>
+                    Stock Details (<span id="modal_selected_count">0</span> Items)
+                </h3>
+                <button onclick="hide_stock_Modal()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="p-4 bg-gray-50 border-b">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Status Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select id="modal_status_filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Status</option>
+                            <option value="Available">Available</option>
+                            <option value="Not Available">Not Available</option>
+                            <option value="Sold Out">Sold Out</option>
+                            <option value="Damage">Damaged</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Active">Active</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="date" id="from_date" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="From">
+                            <span class="text-gray-500">to</span>
+                            <input type="date" id="to_date" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="To">
+                        </div>
+                    </div>
+
+                    <!-- Period Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Period</label>
+                        <select id="period_filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Custom Period</option>
+                            <option value="today">Today</option>
+                            <option value="this_week">This Week</option>
+                            <option value="last_week">Last Week</option>
+                            <option value="this_month">This Month</option>
+                            <option value="last_month">Last Month</option>
+                            <option value="this_year">This Year</option>
+                            <option value="last_year">Last Year</option>
+                        </select>
+                    </div>
+
+                    <!-- Quantity Range Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Quantity Range</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="number" id="modal_min_quantity" class="flex-1 px-3 py-2 border border-gray-300 lg:w-10 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Min" min="0">
+                            <span class="text-gray-500">to</span>
+                            <input type="number" id="modal_max_quantity" class="flex-1 px-3 py-2 border border-gray-300 lg:w-10 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Max" min="0">
+                        </div>
+                    </div>
+
+                    <!-- Search Filter -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                        <input type="text" id="modal_search" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Search by name, SKU...">
+                    </div>
+
+                    <!-- Price Calculation Method -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Price Calculation</label>
+                        <select id="price_calculation" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="latest">Latest Purchase Price</option>
+                            <option value="oldest">Oldest Purchase Price</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="flex justify-end mt-4 gap-3">
+                    <button id="apply_filters" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel mr-2" viewBox="0 0 16 16">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
+                        </svg>
+                        Apply Filters
+                    </button>
+                    <button id="reset_filters" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise mr-2" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z" />
+                            <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466" />
+                        </svg>
+                        Reset
+                    </button>
+                    <button id="print_stock_report" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer mr-2" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2z" />
+                        </svg>
+                        Print Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-4 overflow-auto">
+                <!-- Stats Summary Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+                    <div class="bg-blue-100 p-3 rounded-lg shadow">
+                        <h4 class="text-sm text-gray-600">Total Items</h4>
+                        <p id="modal_total_items" class="text-xl font-bold text-blue-700">0</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-lg shadow">
+                        <h4 class="text-sm text-gray-600">Total Stock</h4>
+                        <p id="modal_total_stock" class="text-xl font-bold text-green-700">0</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-lg shadow">
+                        <h4 class="text-sm text-gray-600">Stock Value (Latest)</h4>
+                        <p id="modal_stock_value_latest" class="text-xl font-bold text-purple-700">TZS 0</p>
+                    </div>
+                    <div class="bg-indigo-100 p-3 rounded-lg shadow">
+                        <h4 class="text-sm text-gray-600">Stock Value (Oldest)</h4>
+                        <p id="modal_stock_value_oldest" class="text-xl font-bold text-indigo-700">TZS 0</p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-lg shadow">
+                        <h4 class="text-sm text-gray-600">Avg. Item Price</h4>
+                        <p id="modal_avg_price" class="text-xl font-bold text-orange-700">TZS 0</p>
+                    </div>
+                </div>
+
+                <!-- Hidden input for selected items -->
+                <input type="hidden" id="selected_items" name="selected_items" value="">
+
+                <!-- Stock Table -->
+                <div class="overflow-x-auto bg-white rounded-lg shadow">
+                    <table id="stock_table" class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S/N</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Current Stock</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Latest Price</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Oldest Price</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Stock Value</th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="stock_table_body">
+                            <!-- Stock data will be loaded dynamically via JavaScript -->
+                            <tr class="text-center">
+                                <td colspan="7" class="px-6 py-4 text-sm text-gray-500">Loading stock data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="border-t p-4 bg-gray-100 rounded-b-lg mt-auto">
+                <div class="flex justify-between items-center">
+                    <div class="text-sm text-gray-500">
+                        Last updated: <span id="last_updated">Now</span>
+                    </div>
+                    <button onclick="hide_stock_Modal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <iframe id="printFrame_for_items_stocks" style="display: none; height: 0; width: 0;"></iframe>
+    <iframe id="printFrame" style="display: none; height: 0; width: 0;"></iframe>
 
     <script>
         function showFeedbackModal(type, title, message) {
@@ -3204,6 +3746,8 @@
                 loadinventory();
             } else if (tabId === 'reports') {
                 loadStatistics();
+            } else if (tabId === 'employees') {
+                loadEmployees();
             } else {
                 setTimeout(function() {
                     $('#' + tabId + '-loading').hide();
@@ -3257,7 +3801,7 @@
                     </td>
                 </tr>`;
                     } else {
-                        data.forEach(function(transaction) {
+                        data.forEach(function(transaction, key) {
                             const date = new Date(transaction.transaction_date).toLocaleDateString();
                             const payment_amount = parseFloat(transaction.payment_amount || 0).toLocaleString('en-TZ', {
                                 minimumFractionDigits: 2,
@@ -3320,13 +3864,14 @@
 
                             transactionHtml += `
                 <tr class="bg-white border-b border-blue-400 hover:bg-gray-50">
+                    <td class="py-1 px-6 text-left whitespace-nowrap">${key + 1}</td>
                     <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.reference_no || ' - '}</td>
                     <td class="py-1 px-6 text-left whitespace-nowrap">${date}</td>
                     <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.part?.name || ' '} ${transaction?.person_name || ' '}</td>
                     <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.method || ' - '}</td>
                     <td class="py-1 px-6 text-left whitespace-nowrap ${typeClass}">${transaction?.type || ' '}</td>
                     <td class="py-1 px-6 text-left whitespace-nowrap ${amountClass}">${payment_amount}/= Tzs</td>
-                    <td class="px-6 py-1 text-left whitespace-nowrap">
+                    <td class="px-6 py-1 text-left whitespace-nowrap no_print">
                         <div class="flex space-x-2">
                             <div class="relative group">
                                 <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_transactionPREVIEW(${transaction.id})" class="show_transactionPREVIEW hover:text-blue-300 text-blue-900">
@@ -3450,50 +3995,50 @@
                             const totalDiscount = formatCurrency(transactionData.total_discount);
 
                             customersHtml += `
-                        <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
-                            <td class="py-2 px-6 text-left whitespace-nowrap">${key + 1}</td>
-                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.tin_number || ' - '}</td>
-                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.name}</td>
-                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.email || ' - '}</td>
-                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.phone_number || ' - '}</td>
-                            <td class="py-2 px-6 text-right whitespace-nowrap">${item.type || ' - '}</td>
-                            <td class="py-2 px-6 text-right whitespace-nowrap">${totalAmount}</td>
-                            <td class="py-2 px-6 text-right whitespace-nowrap">${totalPaid}</td>
-                            <td class="py-2 px-6 text-right whitespace-nowrap">${totalDebt}</td>
-                            <td class="py-2 px-6 text-center whitespace-nowrap">
-                                <span class="bg-${getStatusColor(transactionData.status)}-100 text-${getStatusColor(transactionData.status)}-800 py-1 px-3 rounded-full text-xs">
-                                    ${transactionData.status || 'N/A'}
-                                </span>
-                            </td>
-                            <td class="px-6 py-2 text-center whitespace-nowrap">
-                                <div class="flex space-x-1 justify-center">
-                                    <div class="relative group">
-                                        <button value="${item.id}" data-id="${item.id}" onclick="show_editPartyModal(${item.id})" class="hover:text-green-500 text-green-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
-                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
-                                            </svg>
-                                        </button>
-                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
-                                            Edit
+                                <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${key + 1}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.tin_number || ' - '}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.name}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.email || ' - '}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.phone_number || ' - '}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.type || ' - '}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${totalAmount}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${totalPaid}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${totalDebt}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">
+                                        <span class="bg-${getStatusColor(transactionData.status)}-100 text-${getStatusColor(transactionData.status)}-800 py-1 px-3 rounded-full text-xs">
+                                            ${transactionData.status || 'N/A'}
                                         </span>
-                                    </div>
-                                    <span class="font-bold">|</span>
-                                    <div class="relative group">
-                                        <button value="${item.id}" data-id="${item.id}" onclick="show_deletePartyModal(${item.id})" class="hover:text-red-500 text-red-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
-                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                            </svg>
-                                        </button>
-                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
-                                            Delete
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                                    </td>
+                                    <td class="px-6 py-2 text-left whitespace-nowrap no_print">
+                                        <div class="flex space-x-1 justify-center">
+                                            <div class="relative group">
+                                                <button value="${item.id}" data-id="${item.id}" onclick="show_editPartyModal(${item.id})" class="hover:text-green-500 text-green-800">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                        <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                                    </svg>
+                                                </button>
+                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                                    Edit
+                                                </span>
+                                            </div>
+                                            <span class="font-bold">|</span>
+                                            <div class="relative group">
+                                                <button value="${item.id}" data-id="${item.id}" onclick="show_deletePartyModal(${item.id})" class="hover:text-red-500 text-red-800">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                                    </svg>
+                                                </button>
+                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                                    Delete
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
                         });
                     }
 
@@ -3524,6 +4069,8 @@
             switch (status) {
                 case 'Available':
                     return 'green';
+                case 'Verified':
+                    return 'green';
                 case 'Paid':
                     return 'green';
                 case 'Sold Out':
@@ -3539,6 +4086,8 @@
                 case 'Expired':
                     return 'red';
                 case 'Unpaid':
+                    return 'red';
+                case 'Not Verified':
                     return 'red';
                 default:
                     return 'gray';
@@ -3666,7 +4215,7 @@
                             </td>
                         </tr>`;
                     } else {
-                        data.forEach(function(item) {
+                        data.forEach(function(item, key) {
                             // Format the price with currency symbol
                             const formattedPrice = new Intl.NumberFormat('en-US', {
                                 style: 'currency',
@@ -3675,17 +4224,19 @@
 
                             inventoryHtml += `
                                 <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
+                                    <td class="text-center no_print"><input type="checkbox" value="${item.id}" class="item_checkbox" /></td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${key + 1}</td>
                                     <td class="py-2 px-6 text-left whitespace-nowrap">${item.sku || 'N/A'}</td>
                                     <td class="py-2 px-6 text-left whitespace-nowrap">${item.name}</td>
                                     <td class="py-2 px-6 text-left whitespace-nowrap">${item.category || 'General'}</td>
-                                    <td class="py-2 px-6 text-right whitespace-nowrap">${item.current_stock || 0}</td>
-                                    <td class="py-2 px-6 text-right whitespace-nowrap">${formattedPrice}</td>
-                                    <td class="py-2 px-6 text-center whitespace-nowrap">
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.current_stock || 0}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">${formattedPrice}</td>
+                                    <td class="py-2 px-6 text-left whitespace-nowrap">
                                         <span class="bg-${getStatusColor(item.status)}-100 text-${getStatusColor(item.status)}-800 py-1 px-3 rounded-full text-xs">
                                             ${item.status || 'N/A'}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-2 text-center whitespace-nowrap">
+                                    <td class="px-6 py-2 text-left whitespace-nowrap no_print">
                                         <div class="flex space-x-1 justify-center">
                                             <div class="relative group">
                                                 <button value="${item.id}" data-id="${item.id}" onclick="show_EDIT_itemDialog(${item.id})" class="hover:text-green-500 text-green-800">
@@ -3723,6 +4274,174 @@
                 error: function() {
                     $('#inventory tbody').html('<tr><td colspan="7" class="text-center py-4 text-red-500">Failed to load inventory data</td></tr>');
                     $('#inventory-loading').hide();
+                }
+            });
+        }
+
+
+        const filter_employee_Inputs = [
+            'search_emlpoyee_inTable',
+        ];
+
+        filter_employee_Inputs.forEach(inputId => {
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.addEventListener('change', function() {
+                    loadEmployees();
+                });
+
+                inputElement.addEventListener('keyup', debounce(function() {
+                    loadEmployees();
+                }, 300));
+            }
+        });
+
+        function loadEmployees() {
+            const filters = {
+                search: document.getElementById('search_emlpoyee_inTable')?.value || '',
+            };
+
+            $('#employees-loading').show();
+            $('#employees tbody').empty();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('fetch_employees') }}",
+                data: filters,
+                dataType: "json",
+                success: function(response) {
+
+                    // Clear previous counts before updating
+                    $('#male_count_employees').text('0');
+                    $('#female_count_employees').text('0');
+                    $('#total_employees').text('0');
+
+                    // Update counts from response
+                    if (response.counts) {
+                        $('#male_count_employees').text(response.counts.employees_male_count);
+                        $('#female_count_employees').text(response.counts.employees_female_count);
+                        $('#total_employees').text(response.counts.total_employees);
+                    }
+
+                    let EmployeesHtml = '';
+
+                    if (response.items.length === 0) {
+                        EmployeesHtml +=
+                            `<tr>
+                            <td class="py-1 px-6 text-center text-red-600 italic" colspan="8">
+                                No employee found! Please add employee report.
+                            </td>
+                        </tr>`;
+                    } else {
+                        const currentUserRole = "{{ Auth::user()->role }}";
+                        const currentUserEmail = "{{ Auth::user()->email }}";
+
+                        response.items.forEach(function(employee, key) {
+                            // Determine if delete button should be visible for this employee
+                            let canDelete = false;
+
+                            if (currentUserEmail === 'swedyharuny@gmail.com') {
+                                // Special admin can delete anyone
+                                canDelete = true;
+                            } else if (currentUserRole === 'CEO' && employee.email !== 'swedyharuny@gmail.com') {
+                                // CEOs can delete anyone except special admin
+                                canDelete = true;
+                            } else if (currentUserRole === 'Director' && employee.email !== 'swedyharuny@gmail.com') {
+                                // Directors can delete anyone except special admin
+                                canDelete = true;
+                            } else if (currentUserRole === 'Manager' &&
+                                employee.email !== 'swedyharuny@gmail.com' &&
+                                employee.role !== 'Director') {
+                                // Managers can delete anyone except Directors and special admin
+                                canDelete = true;
+                            } else if (currentUserRole === 'Salesman' &&
+                                employee.email !== 'swedyharuny@gmail.com' &&
+                                employee.role !== 'Director' &&
+                                employee.role !== 'Manager') {
+                                // Salesmen can delete anyone except Directors, Managers and special admin
+                                canDelete = true;
+                            }
+
+                            // Format phone number nicely for display (if it exists)
+                            let formattedPhone = employee?.phone || '';
+
+                            // Get status color based on verification status
+                            const statusColor = getStatusColor(employee?.status || 'Not Verified');
+                            const statusClass = `text-${statusColor}-600 font-medium`;
+                            const statusBgClass = `bg-${statusColor}-100`;
+
+                            // Format status display with appropriate color
+                            const statusDisplay = employee?.status ?
+                                `<span class="${statusClass} ${statusBgClass} px-2 py-1 rounded-full text-xs">${employee.status}</span>` :
+                                `<span class="text-gray-400 bg-gray-100 px-2 py-1 rounded-full text-xs">Not Set</span>`;
+
+                            EmployeesHtml += `
+                     <tr class="bg-white border-b border-blue-500">
+                        <td class="py-1 px-6 text-left">${key + 1}</td>
+                        <td class="py-1 px-6 text-left whitespace-nowrap">${employee?.name || ''}</td>
+                        <td class="py-1 px-6 text-left whitespace-nowrap">${formattedPhone}</td>
+                        <td class="py-1 px-6 text-left whitespace-nowrap">${employee?.email || ''}</td>
+                        <td class="py-1 px-6 text-left whitespace-nowrap">${employee?.gender || ''}</td>
+                        <td class="py-1 px-6 text-left whitespace-nowrap">${employee?.role || ''}</td>
+                        <td class="py-1 px-6 text-left whitespace-nowrap">${statusDisplay}</td>
+                        <td class="py-1 flex gap-3 px-6 no_print whitespace-nowrap">
+                            <div class="flex space-x-1">
+                                <div class="relative group hidden">
+                                    <button value="${employee.id}" data-id="${employee.id}" onclick="show_employeeProfile_modal(${employee.id})" data-employee-id="123" class="show_employeeProfile_modal hover:text-blue-300 text-blue-900">
+                                        <svg class="w-5 h-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                    </button>
+                                    <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                        Preview
+                                    </span>
+                                </div>
+                                <span class="font-bold hidden">|</span>
+                                <div class="relative group">
+                                    <button value="${employee.id}" data-id="${employee.id}" onclick="edit_employee(${employee.id})" class="show_editemployeeProfile hover:text-green-500 text-green-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                        </svg>
+                                    </button>
+                                    <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                        Edit
+                                    </span>
+                                </div>
+                                ${canDelete ? `
+                                <span class="font-bold">|</span>
+                                <div class="relative group">
+                                    <button value="${employee.id}" data-id="${employee.id}" onclick="delete_employee(${employee.id}, '${employee.name}')" class="delete_employeeProfile hover:text-red-500 text-red-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                        </svg>
+                                    </button>
+                                    <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                        Delete
+                                    </span>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>`;
+                        });
+                    }
+
+                    $('#employees tbody').html(EmployeesHtml);
+                    $('#employees-loading').hide();
+                },
+                error: function() {
+                    $('#employees tbody').html('<tr><td colspan="8" class="text-center py-4">Failed to load employees data</td></tr>');
+                    $('#employees-loading').hide();
+
+                    // Show error with feedback modal
+                    showFeedbackModal(
+                        'error',
+                        'Error Loading Data',
+                        'Failed to load employees data. Please try again.'
+                    );
                 }
             });
         }
@@ -3773,7 +4492,7 @@
                             </td>
                         </tr>`;
                     } else {
-                        data.forEach(function(sale) {
+                        data.forEach(function(sale, key) {
                             const date = new Date(sale.sale_date).toLocaleDateString();
                             const total = parseFloat(sale.total_amount).toLocaleString('en-TZ', {
                                 minimumFractionDigits: 2,
@@ -3790,19 +4509,20 @@
 
                             salesHtml += `
                                 <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${key + 1}</td>
                                     <td class="py-1 px-6 text-left whitespace-nowrap">${sale.reference_no || ' - '}</td>
                                     <td class="py-1 px-6 text-left whitespace-nowrap">${date}</td>
                                     <td class="py-1 px-6 text-left whitespace-nowrap">${sale.customer?.name || ' - '}</td>
-                                    <td class="py-1 px-6 text-right whitespace-nowrap">${sale.total_discount || 0}</td>
-                                    <td class="py-1 px-6 text-right whitespace-nowrap">${total}</td>
-                                    <td class="py-1 px-6 text-right whitespace-nowrap">${paid}</td>
-                                    <td class="py-1 px-6 text-right whitespace-nowrap">${debt}</td>
-                                    <td class="py-1 px-6 text-center whitespace-nowrap">
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${sale.total_discount || 0}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${total}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${paid}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${debt}</td>
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">
                                         <span class="bg-${getStatusColor(sale.status)}-100 text-${getStatusColor(sale.status)}-800 py-1 px-3 rounded-full text-xs">
                                             ${sale.status || ' - '}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-1 text-center whitespace-nowrap">
+                                    <td class="px-6 py-1 text-left no_print whitespace-nowrap">
                                         <div class="flex space-x-2">
                                             <div class="relative group">
                                                 <button value="${sale.id}" data-id="${sale.id}" onclick="show_SalesPREVIEW(${sale.id})" class="show_SalesPREVIEW hover:text-blue-300 text-blue-900">
@@ -3907,7 +4627,7 @@
                             </td>
                         </tr>`;
                     } else {
-                        data.forEach(function(purchase) {
+                        data.forEach(function(purchase, key) {
                             const date = new Date(purchase.purchase_date).toLocaleDateString();
                             const total = parseFloat(purchase.total_amount).toLocaleString('en-TZ', {
                                 minimumFractionDigits: 2,
@@ -3924,6 +4644,7 @@
 
                             purchasesHtml += `
                                 <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
+                                    <td class="py-1 px-6 text-left whitespace-nowrap">${key + 1}</td>
                                     <td class="py-1 px-6 text-left whitespace-nowrap">${purchase.reference_no || ' - '}</td>
                                     <td class="py-1 px-6 text-left whitespace-nowrap">${date}</td>
                                     <td class="py-1 px-6 text-left whitespace-nowrap">${purchase.supplier?.name || ' - '}</td>
@@ -3936,7 +4657,7 @@
                                             ${purchase.status || ' - '}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-1 text-left whitespace-nowrap">
+                                    <td class="px-6 py-1 text-left whitespace-nowrap no_print">
                                         <div class="flex space-x-2">
                                             <div class="relative group">
                                                 <button value="${purchase.id}" data-id="${purchase.id}" onclick="show_purchasePREVIEW(${purchase.id})" class="show_purchasePREVIEW hover:text-blue-300 text-blue-900">
@@ -6813,6 +7534,7 @@
             $('#search_partFOR_payment').val('');
             $('#part_balance').val('');
             $('#Part_ID_payment').val('');
+            $('#part_balance').val('');
 
             // Uncheck checkboxes
             $('.other_payment').prop('checked', false);
@@ -8773,6 +9495,1526 @@
             }
         });
 
+        // Function to populate the edit form with employee data
+        function edit_employee(employeeId) {
+            // Show the modal
+            let dialog = document.getElementById('edit_employee_Modal');
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+
+            // Set the form action
+            document.getElementById('editEmployeeForm').action = `/update_employee/${employeeId}`;
+
+            // Set the employee ID in the hidden field
+            document.getElementById('edit_employee_id').value = employeeId;
+
+            // Fetch the employee data
+            fetch(`/get_employee/${employeeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Check if employee data exists
+                    if (!data.user) {
+                        showFeedbackModal('error', 'Error', 'Failed to load employee data.');
+                        return;
+                    }
+
+                    const employee = data.user;
+
+                    // Populate the form fields - using the correct IDs from your HTML
+                    document.getElementById('edit_user_name').value = employee.name || '';
+                    document.getElementById('edit_user_email').value = employee.email || '';
+
+                    // Format phone number (remove 255 prefix if present)
+                    let phoneNumber = employee.phone || '';
+                    if (phoneNumber && phoneNumber.startsWith('255')) {
+                        phoneNumber = phoneNumber.substring(3);
+                    } else {
+                        phoneNumber = '';
+                    }
+                    document.getElementById('edit_phone').value = phoneNumber;
+
+                    // Set role
+                    document.getElementById('edit_role').value = employee.role || '';
+
+                    // Set gender
+                    if (employee.gender === 'Male') {
+                        document.getElementById('edit_gender_male').checked = true;
+                    } else if (employee.gender === 'Female') {
+                        document.getElementById('edit_gender_female').checked = true;
+                    } else {
+                        // Clear gender selection if none set
+                        document.getElementById('edit_gender_male').checked = false;
+                        document.getElementById('edit_gender_female').checked = false;
+                    }
+
+                    // Set address
+                    document.getElementById('edit_user_address').value = employee.address || '';
+                })
+                .catch(error => {
+                    console.error('Error fetching employee data:', error);
+                    showFeedbackModal('error', 'Error', 'Failed to load employee data. Please try again.');
+                });
+        }
+
+        // Form submission handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add Employee Form
+            const addEmployeeForm = document.getElementById('addEmployeeForm');
+            if (addEmployeeForm) {
+                addEmployeeForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(addEmployeeForm);
+
+                    fetch('/add_employee', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Close the modal first
+                                hide_add_employee_Dialog();
+
+                                // Show success message with feedback modal
+                                showFeedbackModal(
+                                    'success',
+                                    'Employee Added',
+                                    'New employee has been added successfully! Default password is 12345678'
+                                );
+
+                                // Refresh the employee list without full page reload
+                                loadEmployees();
+
+                                // Clear form for next use
+                                addEmployeeForm.reset();
+                            } else {
+                                // Show error message with feedback modal
+                                showFeedbackModal(
+                                    'error',
+                                    'Error Adding Employee',
+                                    data.message || 'Failed to add employee. Please try again.'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error adding employee:', error);
+                            showFeedbackModal('error', 'Server Error', 'An unexpected error occurred. Please try again.');
+                        });
+                });
+            }
+
+            // Edit Employee Form
+            const editEmployeeForm = document.getElementById('editEmployeeForm');
+            if (editEmployeeForm) {
+                editEmployeeForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(editEmployeeForm);
+                    const employeeId = document.getElementById('edit_employee_id').value;
+
+                    // Log the form data for debugging
+                    console.log("Updating employee", employeeId);
+                    for (let [key, value] of formData.entries()) {
+                        console.log(key, value);
+                    }
+
+                    fetch(`/update_employee/${employeeId}`, {
+                            method: 'POST', // Changed from PUT to POST to work with Laravel's form handling
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Close the modal
+                                hide_edit_employee_Dialog();
+
+                                // Show success message with feedback modal
+                                showFeedbackModal(
+                                    'success',
+                                    'Employee Updated',
+                                    'Employee information has been updated successfully!'
+                                );
+
+                                // Refresh the employee list without full page reload
+                                loadEmployees();
+                            } else {
+                                // Show error message with feedback modal
+                                showFeedbackModal(
+                                    'error',
+                                    'Error Updating Employee',
+                                    data.message || 'Failed to update employee. Please try again.'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error updating employee:', error);
+                            showFeedbackModal('error', 'Server Error', 'An unexpected error occurred. Please try again.');
+                        });
+                });
+            }
+        });
+
+        $(document).on('click', '.delete_employee_btn', function(e) {
+            e.preventDefault();
+            var employee_id = $('#delete_employee_id').val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "DELETE",
+                url: "/delete_employee/" + employee_id,
+                dataType: 'json',
+                beforeSend: function() {
+                    // Disable delete button and show loading state
+                    $('.delete_employee_btn').prop('disabled', true)
+                        .html('<i class="fas fa-spinner fa-spin mr-1"></i> Deleting...')
+                        .addClass('opacity-75');
+                },
+                success: function(response) {
+                    hide_delete_employeeDialog();
+
+                    // Check if we have a success response
+                    if (response && response.status === 'success') {
+                        showFeedbackModal(
+                            'success',
+                            'Employee Deleted',
+                            response.message || 'Employee has been deleted successfully!'
+                        );
+
+                        // Refresh the employee list
+                        loadEmployees();
+                    } else {
+                        // Handle unexpected success response format
+                        showFeedbackModal(
+                            'warning',
+                            'Operation Completed',
+                            'The operation completed but with an unexpected response. Please verify the changes.'
+                        );
+
+                        // Refresh anyway to be safe
+                        loadEmployees();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Get response data
+                    let errorMessage = 'There was an error deleting the employee. Please try again.';
+                    let errorTitle = 'Deletion Failed';
+
+                    // Try to extract detailed error from response
+                    try {
+                        const response = xhr.responseJSON;
+
+                        if (response) {
+                            // Use the error message from response if available
+                            errorMessage = response.message || errorMessage;
+
+                            // Set different titles based on error type
+                            if (xhr.status === 403) {
+                                errorTitle = 'Permission Denied';
+                                errorMessage = 'You do not have permission to delete this employee.';
+                            } else if (xhr.status === 404) {
+                                errorTitle = 'Employee Not Found';
+                                errorMessage = 'The employee you are trying to delete could not be found.';
+                            } else if (xhr.status === 422) {
+                                errorTitle = 'Validation Error';
+                            } else if (xhr.status >= 500) {
+                                errorTitle = 'Server Error';
+                                errorMessage = 'A server error occurred. Please try again later.';
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error parsing error response:', e);
+                    }
+
+                    // Show the error feedback
+                    showFeedbackModal('error', errorTitle, errorMessage);
+
+                    // Hide the modal
+                    hide_delete_employeeDialog();
+                },
+                complete: function() {
+                    // Reset button state regardless of success/failure
+                    $('.delete_employee_btn').prop('disabled', false)
+                        .html('Delete employee')
+                        .removeClass('opacity-75');
+                }
+            });
+        });
+
+        function delete_employee(employeeId, employeeName) {
+            // Set the item ID to delete
+            $('#delete_employee_id').val(employeeId);
+            let firstName = employeeName.replace(/[^a-zA-Z\s]/g, '').split(' ')[0];
+            $('#delete_employee_name').text(firstName);
+
+            // Show the modal
+            const modal = document.getElementById('delete_employeeModal');
+            document.body.classList.add('overflow-hidden'); // Prevent background scrolling
+
+            // Display the modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Add animation
+            const modalContent = modal.querySelector('.relative');
+            modalContent.classList.add('animate-modal-in');
+
+            // Add event listener to close modal when clicking outside
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal || event.target === modal.querySelector('.absolute')) {
+                    hide_delete_employeeDialog();
+                }
+            });
+
+            // Add escape key listener
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    hide_delete_employeeDialog();
+                }
+            });
+        }
+
+        function hide_delete_employeeDialog() {
+            const modal = document.getElementById('delete_employeeModal');
+            const modalContent = modal.querySelector('.relative');
+
+            // Add exit animation
+            modalContent.classList.remove('animate-modal-in');
+            modalContent.classList.add('animate-modal-out');
+
+            // Wait for animation to complete before hiding
+            setTimeout(function() {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                modalContent.classList.remove('animate-modal-out');
+                document.body.classList.remove('overflow-hidden');
+
+                // Remove event listeners
+                modal.removeEventListener('click', hide_delete_employeeDialog);
+                document.removeEventListener('keydown', hide_delete_employeeDialog);
+            }, 200);
+        }
+
+
+        function update_SelectedCount() {
+            const selectedCount = $('.item_checkbox:checked').length; // Count checked checkboxes
+            $('#selected_items_count').text(`${selectedCount}`); // Update the text
+        }
+
+        // Handle select all checkbox
+        $('#select_all_items').on('change', function() {
+            $('.item_checkbox').prop('checked', this.checked);
+            toggle_stock_btn();
+            grab_items_ids();
+            update_SelectedCount();
+        });
+
+        // Handle individual items checkbox change
+        $(document).on('change', '.item_checkbox', function() {
+            let allChecked = $('.item_checkbox').length === $('.item_checkbox:checked').length;
+            $('#select_all_items').prop('checked', allChecked);
+            toggle_stock_btn();
+            grab_items_ids();
+            update_SelectedCount();
+        });
+
+
+        // Show/Hide stock button
+        function toggle_stock_btn() {
+            let anyChecked = $('.item_checkbox:checked').length > 0 || $('#select_all_items').prop('checked');
+            if (anyChecked) {
+                $('#stock_btn').removeClass('hidden');
+            } else {
+                $('#stock_btn').addClass('hidden');
+            }
+        }
+
+        // Grab all selected items IDs
+        function grab_items_ids() {
+            let selectedIds = [];
+            $('.item_checkbox:checked').each(function() {
+                selectedIds.push($(this).val());
+            });
+            $('#selected_items').val(selectedIds.join(','));
+        }
+
+        function hide_stock_Modal() {
+            let dialog = document.getElementById('stock_Modal');
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
+        }
+
+        // Initialize dates to current date on modal open
+        function initializeDates() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+            document.getElementById('to_date').value = formattedDate;
+
+            // Set from_date to 30 days before by default
+            const fromDate = new Date();
+            fromDate.setDate(today.getDate() - 30);
+            document.getElementById('from_date').value = fromDate.toISOString().split('T')[0];
+        }
+
+        // Set period based dropdown selection
+        function setPeriodDates(period) {
+            const today = new Date();
+            let fromDate = new Date();
+
+            switch (period) {
+                case 'today':
+                    // From and To both set to today
+                    document.getElementById('from_date').value = today.toISOString().split('T')[0];
+                    document.getElementById('to_date').value = today.toISOString().split('T')[0];
+                    break;
+                case 'this_week':
+                    // Start of current week (Sunday)
+                    fromDate.setDate(today.getDate() - today.getDay());
+                    document.getElementById('from_date').value = fromDate.toISOString().split('T')[0];
+                    document.getElementById('to_date').value = today.toISOString().split('T')[0];
+                    break;
+                case 'last_week':
+                    // Start of last week (Sunday)
+                    fromDate.setDate(today.getDate() - today.getDay() - 7);
+                    let toLastWeek = new Date(fromDate);
+                    toLastWeek.setDate(fromDate.getDate() + 6);
+                    document.getElementById('from_date').value = fromDate.toISOString().split('T')[0];
+                    document.getElementById('to_date').value = toLastWeek.toISOString().split('T')[0];
+                    break;
+                case 'this_month':
+                    // First day of current month
+                    fromDate.setDate(1);
+                    document.getElementById('from_date').value = fromDate.toISOString().split('T')[0];
+                    document.getElementById('to_date').value = today.toISOString().split('T')[0];
+                    break;
+                case 'last_month':
+                    // First day of last month
+                    fromDate.setDate(1);
+                    fromDate.setMonth(today.getMonth() - 1);
+                    let toLastMonth = new Date(fromDate);
+                    toLastMonth.setMonth(fromDate.getMonth() + 1);
+                    toLastMonth.setDate(0); // Last day of the previous month
+                    document.getElementById('from_date').value = fromDate.toISOString().split('T')[0];
+                    document.getElementById('to_date').value = toLastMonth.toISOString().split('T')[0];
+                    break;
+                case 'this_year':
+                    // First day of current year
+                    fromDate.setMonth(0);
+                    fromDate.setDate(1);
+                    document.getElementById('from_date').value = fromDate.toISOString().split('T')[0];
+                    document.getElementById('to_date').value = today.toISOString().split('T')[0];
+                    break;
+                case 'last_year':
+                    // First day of last year
+                    fromDate.setFullYear(today.getFullYear() - 1);
+                    fromDate.setMonth(0);
+                    fromDate.setDate(1);
+                    let toLastYear = new Date(fromDate);
+                    toLastYear.setMonth(11);
+                    toLastYear.setDate(31);
+                    document.getElementById('from_date').value = fromDate.toISOString().split('T')[0];
+                    document.getElementById('to_date').value = toLastYear.toISOString().split('T')[0];
+                    break;
+                default:
+                    // Don't change dates
+                    break;
+            }
+        }
+
+        // Load stock data with applied filters
+        function loadStockData() {
+            const selectedIds = document.getElementById('selected_items').value;
+            const statusFilter = document.getElementById('modal_status_filter').value;
+            const fromDate = document.getElementById('from_date').value;
+            const toDate = document.getElementById('to_date').value;
+            const minQuantity = document.getElementById('modal_min_quantity').value;
+            const maxQuantity = document.getElementById('modal_max_quantity').value;
+            const searchTerm = document.getElementById('modal_search').value;
+            const priceCalculation = document.getElementById('price_calculation').value;
+
+            // Show loading state
+            document.getElementById('stock_table_body').innerHTML = `
+                <tr class="text-center">
+                    <td colspan="7" class="px-6 py-4">
+                        <div class="flex justify-center">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-800"></div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            // Make an AJAX call to the backend
+            $.ajax({
+                url: "/items/stock",
+                type: "GET",
+                data: {
+                    item_ids: selectedIds,
+                    status: statusFilter,
+                    from_date: fromDate,
+                    to_date: toDate,
+                    min_quantity: minQuantity,
+                    max_quantity: maxQuantity,
+                    search: searchTerm
+                },
+                success: function(response) {
+                    renderStockData(response.items, priceCalculation);
+                    updateStockStats(response.stats, priceCalculation);
+                    updateLastUpdated();
+                },
+                error: function(xhr) {
+                    document.getElementById('stock_table_body').innerHTML = `
+                <tr class="text-center">
+                    <td colspan="7" class="px-6 py-4 text-sm text-red-500">
+                        Error loading stock data. Please try again.
+                    </td>
+                </tr>
+            `;
+                    console.error("Error loading stock data:", xhr.responseText);
+                }
+            });
+        }
+
+        // Render stock data to the table
+        function renderStockData(data, priceCalculation) {
+            const tableBody = document.getElementById('stock_table_body');
+
+            if (data.length === 0) {
+                tableBody.innerHTML = `
+                    <tr class="text-center">
+                        <td colspan="7" class="px-6 py-4 text-sm text-gray-500">No stock data found with the applied filters.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            data.forEach(function(item, key) {
+                const price = priceCalculation === 'latest' ? item.latest_price : item.oldest_price;
+                const stockValue = priceCalculation === 'latest' ? item.latest_value : item.oldest_value;
+
+                // Determine status class for color-coding
+                let statusClass = 'bg-gray-100 text-gray-800';
+                if (item.status === 'Available') {
+                    statusClass = 'bg-green-100 text-green-800';
+                } else if (item.status === 'Not Available') {
+                    statusClass = 'bg-yellow-100 text-yellow-800';
+                } else if (item.status === 'Sold Out') {
+                    statusClass = 'bg-red-100 text-red-800';
+                } else if (item.status === 'Damage') {
+                    statusClass = 'bg-red-100 text-red-800';
+                } else if (item.status === 'Expired') {
+                    statusClass = 'bg-purple-100 text-purple-800';
+                } else if (item.status === 'Inactive') {
+                    statusClass = 'bg-gray-100 text-gray-800';
+                } else if (item.status === 'Active') {
+                    statusClass = 'bg-blue-100 text-blue-800';
+                }
+
+                html += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${key + 1}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.sku}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${item.current_stock}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${formatCurrency(item.latest_price)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${formatCurrency(item.oldest_price)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${formatCurrency(stockValue)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                                ${item.status}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableBody.innerHTML = html;
+        }
+
+        // Update stock statistics
+        function updateStockStats(stats, priceCalculation) {
+            // Update stats in the UI
+            document.getElementById('modal_total_items').textContent = stats.total_items;
+            document.getElementById('modal_total_stock').textContent = stats.total_stock;
+            document.getElementById('modal_stock_value_latest').textContent = formatCurrency(stats.total_latest_value);
+            document.getElementById('modal_stock_value_oldest').textContent = formatCurrency(stats.total_oldest_value);
+            document.getElementById('modal_avg_price').textContent = formatCurrency(
+                priceCalculation === 'latest' ? stats.avg_latest_price : stats.avg_oldest_price
+            );
+            document.getElementById('modal_selected_count').textContent = stats.total_items;
+        }
+
+        // Update the last updated timestamp
+        function updateLastUpdated() {
+            const now = new Date();
+            const formattedTime = now.toLocaleTimeString();
+            document.getElementById('last_updated').textContent = formattedTime;
+        }
+
+        // Print stock report function
+        function printStockReport() {
+            const priceCalculation = document.getElementById('price_calculation').value;
+            const stockTableBody = document.getElementById('stock_table_body');
+            // Get the print frame
+            const printFrame = document.getElementById('printFrame_for_items_stocks');
+
+            // Set date and time for print
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString();
+            const formattedTime = now.toLocaleTimeString();
+
+            // Get stats for print
+            const totalItems = document.getElementById('modal_total_items').textContent;
+            const totalStock = document.getElementById('modal_total_stock').textContent;
+            const stockValue = priceCalculation === 'latest' ?
+                document.getElementById('modal_stock_value_latest').textContent :
+                document.getElementById('modal_stock_value_oldest').textContent;
+            const avgPrice = document.getElementById('modal_avg_price').textContent;
+
+            // Prepare table content for printing
+            let tableHtml = '';
+            const rows = stockTableBody.getElementsByTagName('tr');
+
+            if (rows.length === 0 || (rows.length === 1 && rows[0].cells.length === 1)) {
+                tableHtml = `<tr><td colspan="7" style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">No stock data available</td></tr>`;
+            } else {
+                for (let i = 0; i < rows.length; i++) {
+                    const cells = rows[i].cells;
+                    // Skip rows that are just messages (like "No data found")
+                    if (cells.length < 7) continue;
+
+                    // Get cell values, including the S/N from the first column
+                    const sn = cells[0].textContent;
+                    const sku = cells[1].textContent;
+                    const product = cells[2].textContent;
+                    const stock = cells[3].textContent;
+                    const latestPrice = cells[4].textContent;
+                    const oldestPrice = cells[5].textContent;
+                    const price = priceCalculation === 'latest' ? latestPrice : oldestPrice;
+                    const value = cells[6].textContent;
+                    const status = cells[7].querySelector('span').textContent.trim();
+
+                    tableHtml += `
+                <tr>
+                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sn}</td>
+                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sku}</td>
+                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${product}</td>
+                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${stock}</td>
+                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${price}</td>
+                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${value}</td>
+                    <td style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">${status}</td>
+                </tr>
+            `;
+                }
+            }
+
+            // Create print content with inline styles
+            const printContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Stock Report</title>
+            <style>
+                @page { 
+                    margin: 0.5cm; 
+                }
+                body { 
+                    font-family: Arial, sans-serif; 
+                    margin: 0; 
+                    padding: 10px;
+                    font-size: 11px;
+                }
+                table { 
+                    width: 100%; 
+                    border-collapse: collapse; 
+                    margin-bottom: 10px; 
+                }
+                th { 
+                    border: 1px solid #000; 
+                    padding: 3px; 
+                    background-color: #f2f2f2; 
+                    text-align: left;
+                    font-size: 10px;
+                    font-weight: bold;
+                }
+                td { 
+                    border: 1px solid #000; 
+                    padding: 3px; 
+                    font-size: 10px;
+                }
+                .print-header { 
+                    margin-bottom: 10px; 
+                    text-align: center;
+                }
+                .print-summary { 
+                    margin-top: 10px; 
+                    font-weight: bold;
+                    font-size: 10px;
+                }
+                h1 { 
+                    text-align: center; 
+                    margin: 5px 0;
+                    font-size: 14px;
+                }
+                .flex-space-between {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+                    font-size: 10px;
+                }
+                .report-info {
+                    font-size: 10px;
+                    color: #444;
+                    text-align: center;
+                    margin-bottom: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="print-header">
+                <h1>STOCK REPORT</h1>
+                <div class="report-info">Generated on: ${formattedDate} ${formattedTime}</div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>SKU</th>
+                        <th>PRODUCT</th>
+                        <th style="text-align: right;">QTY</th>
+                        <th style="text-align: right;">PRICE (TZS)</th>
+                        <th style="text-align: right;">VALUE (TZS)</th>
+                        <th style="text-align: center;">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableHtml}
+                </tbody>
+            </table>
+            
+            <div class="print-summary">
+                <div class="flex-space-between">
+                    <div>Total Items: ${totalItems}</div>
+                    <div>Total Stock: ${totalStock}</div>
+                    <div>Total Value: ${stockValue}</div>
+                    <div>Avg. Price: ${avgPrice}</div>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+
+            // Write to the iframe
+            const frameDoc = printFrame.contentDocument || printFrame.contentWindow.document;
+            frameDoc.open();
+            frameDoc.write(printContent);
+            frameDoc.close();
+
+            // Trigger print after a small delay to ensure content is loaded
+            setTimeout(function() {
+                try {
+                    printFrame.contentWindow.focus();
+                    printFrame.contentWindow.print();
+                } catch (e) {
+                    console.error("Printing failed:", e);
+                    alert("Printing failed. Please try again.");
+                }
+            }, 500);
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // When stock button is clicked
+            $('#stock_btn').on('click', function() {
+                // Update modal selected count
+                const selectedCount = $('.item_checkbox:checked').length;
+                $('#modal_selected_count').text(selectedCount);
+
+                // Initialize dates
+                initializeDates();
+
+                // Load stock data
+                loadStockData();
+            });
+
+            // Period filter change
+            $('#period_filter').on('change', function() {
+                const period = $(this).val();
+                if (period) {
+                    setPeriodDates(period);
+                }
+            });
+
+            // Apply filters button
+            $('#apply_filters').on('click', function() {
+                loadStockData();
+            });
+
+            // Reset filters button
+            $('#reset_filters').on('click', function() {
+                $('#modal_status_filter').val('');
+                $('#modal_min_quantity').val('');
+                $('#modal_max_quantity').val('');
+                $('#modal_search').val('');
+                $('#price_calculation').val('latest');
+
+                // Reset period to default (30 days)
+                $('#period_filter').val('');
+                initializeDates();
+
+                // Reload data
+                loadStockData();
+            });
+
+            // Print report button
+            $('#print_stock_report').on('click', function() {
+                printStockReport();
+            });
+
+            // Search input keyup
+            $('#modal_search').on('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    loadStockData();
+                }
+            });
+
+            // Date inputs change
+            $('#from_date, #to_date').on('change', function() {
+                // When manually changing dates, reset the period dropdown
+                $('#period_filter').val('');
+            });
+        });
+
+
+        // Enhanced show modal function with animation
+        function show_stock_Modal() {
+            const modal = document.getElementById('stock_Modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Ensure we have latest selected items
+            grab_items_ids();
+
+            // Update the selected count
+            const selectedCount = $('.item_checkbox:checked').length;
+            $('#modal_selected_count').text(selectedCount);
+
+            // Initialize dates and load data
+            initializeDates();
+            loadStockData();
+        }
+
+        // Make sure the stock button uses the enhanced show modal function
+        $(document).ready(function() {
+            $('#stock_btn').off('click').on('click', function() {
+                show_stock_Modal();
+                grab_items_ids(); // Ensure all selected IDs are grabbed
+            });
+        });
+
+        function printGenericTable(tableId, title, subtitle, columnConfig, filterInfo) {
+            // Add current date and time for the report
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Create a clone of the table to manipulate for printing
+            const originalContent = document.getElementById(tableId);
+            const clonedContent = originalContent.cloneNode(true);
+
+            // Remove all elements with no_print class
+            const noPrintElements = clonedContent.querySelectorAll('.no_print');
+            noPrintElements.forEach(element => {
+                element.remove();
+            });
+
+            // Get print frame
+            const printFrame = document.getElementById('printFrame');
+            if (!printFrame) {
+                // Create the iframe if it doesn't exist
+                const iframe = document.createElement('iframe');
+                iframe.id = 'printFrame';
+                iframe.style.position = 'absolute';
+                iframe.style.top = '-9999px';
+                iframe.style.left = '-9999px';
+                document.body.appendChild(iframe);
+            }
+
+            const frameDoc = printFrame.contentDocument || printFrame.contentWindow.document;
+
+            // Prepare filter information string
+            let filterString = '';
+            if (filterInfo) {
+                const filters = [];
+                for (const key in filterInfo) {
+                    if (filterInfo[key]) {
+                        filters.push(`${key}: ${filterInfo[key]}`);
+                    }
+                }
+                filterString = filters.join(' | ');
+            }
+
+            // Generate column style definitions
+            let columnStyles = '';
+            for (const col in columnConfig.widths) {
+                columnStyles += `.${col} { width: ${columnConfig.widths[col]}; }\n`;
+            }
+
+            frameDoc.open();
+            frameDoc.write(`
+        <html>
+        <head>
+            <title>${title}</title>
+            <style>
+                @page {
+                    margin: 0.5cm;
+                }
+                @media print {
+                    * {
+                        box-sizing: border-box;
+                    }
+                    html, body {
+                        margin: 0;
+                        padding: 0;
+                        width: 100%;
+                        font-size: 9pt;
+                        font-family: Arial, sans-serif;
+                    }
+                    .container {
+                        width: 100%;
+                        max-width: 100%;
+                        padding: 5px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        table-layout: fixed;
+                    }
+                    th, td {
+                        border: 0.5px solid #000;
+                        padding: 2px 3px;
+                        font-size: 8pt;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        text-align: left;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                    }
+                    .report-header {
+                        text-align: center;
+                        margin-bottom: 5px;
+                    }
+                    .report-header h2 {
+                        margin: 2px 0;
+                        font-size: 12pt;
+                    }
+                    .report-meta {
+                        font-size: 8pt;
+                        margin-bottom: 3px;
+                        text-align: left;
+                    }
+                    .report-date {
+                        text-align: right;
+                        font-size: 8pt;
+                        margin-bottom: 5px;
+                    }
+                    /* Status colors */
+                    .status-paid { background-color: #d1fae5; color: #065f46; }
+                    .status-unpaid { background-color: #fee2e2; color: #b91c1c; }
+                    .status-partial { background-color: #fef3c7; color: #92400e; }
+                    .status-available { background-color: #d1fae5; color: #065f46; }
+                    .status-not-available { background-color: #fef3c7; color: #92400e; }
+                    .status-sold-out { background-color: #fee2e2; color: #b91c1c; }
+                    
+                    /* Column widths */
+                    ${columnStyles}
+                    
+                    /* Remove any remnant scrollbars */
+                    ::-webkit-scrollbar {
+                        display: none;
+                    }
+                    * {
+                        overflow: visible !important;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="report-header">
+                    <h2 style="font-weight: bold;">${title}</h2>
+                    <h2>${subtitle}</h2>
+                </div>
+                
+                <div class="report-date">
+                    Generated: ${dateString}
+                </div>
+                
+                ${filterString ? `<div class="report-meta">
+                    <strong>Filters:</strong> ${filterString}
+                </div>` : ''}
+            </div>
+    `);
+
+            // Create the table header
+            frameDoc.write(`
+        <table>
+            <thead>
+                <tr>
+    `);
+
+            // Add header columns
+            for (const col of columnConfig.columns) {
+                frameDoc.write(`<th class="${col.class}">${col.label}</th>`);
+            }
+
+            frameDoc.write(`
+                </tr>
+            </thead>
+            <tbody>
+    `);
+
+            // Get all table rows and create optimized ones for print
+            const tableRows = clonedContent.querySelectorAll('tbody tr');
+
+            if (tableRows.length === 0) {
+                frameDoc.write(`
+            <tr>
+                <td colspan="${columnConfig.columns.length}" style="text-align: center;">No data found</td>
+            </tr>
+        `);
+            } else {
+                let rowIndex = 1;
+
+                tableRows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+
+                    if (cells.length > 1) { // Skip empty message rows
+                        frameDoc.write(`<tr>`);
+
+                        // Handle each column according to the configuration
+                        for (const col of columnConfig.columns) {
+                            let cellContent = '';
+
+                            if (col.type === 'index') {
+                                cellContent = rowIndex;
+                            } else if (col.cellIndex !== undefined && cells[col.cellIndex]) {
+                                cellContent = cells[col.cellIndex].textContent.trim();
+
+                                // Add status styling if needed
+                                if (col.type === 'status') {
+                                    const statusClass = getStatusClass(cellContent);
+                                    if (statusClass) {
+                                        cellContent = `<span class="${statusClass}">${cellContent}</span>`;
+                                    }
+                                }
+
+                                // Format currency if needed
+                                if (col.type === 'currency' && cellContent && cellContent !== '-') {
+                                    // Remove any existing formatting and format consistently
+                                    const numValue = parseFloat(cellContent.replace(/[^0-9.-]+/g, ''));
+                                    if (!isNaN(numValue)) {
+                                        cellContent = numValue.toLocaleString('en-TZ', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        });
+                                    }
+                                }
+                            }
+
+                            frameDoc.write(`<td class="${col.class}">${cellContent}</td>`);
+                        }
+
+                        frameDoc.write(`</tr>`);
+                        rowIndex++;
+                    }
+                });
+            }
+
+            frameDoc.write(`
+            </tbody>
+        </table>
+        </body>
+        </html>
+    `);
+
+            frameDoc.close();
+
+            // Small delay to ensure content is loaded before printing
+            setTimeout(() => {
+                printFrame.contentWindow.focus();
+                printFrame.contentWindow.print();
+            }, 500);
+        }
+
+        // Helper function to get status class for styling
+        function getStatusClass(status) {
+            const statusLower = status.toLowerCase();
+
+            if (statusLower.includes('paid') && !statusLower.includes('unpaid') && !statusLower.includes('partial')) {
+                return 'status-paid';
+            } else if (statusLower.includes('unpaid')) {
+                return 'status-unpaid';
+            } else if (statusLower.includes('partial')) {
+                return 'status-partial';
+            } else if (statusLower.includes('available')) {
+                return 'status-available';
+            } else if (statusLower.includes('not available')) {
+                return 'status-not-available';
+            } else if (statusLower.includes('sold out')) {
+                return 'status-sold-out';
+            }
+
+            return '';
+        }
+
+        /**
+         * Print Sales Table
+         */
+        function printSalesTable() {
+            // Get filter information
+            const search = document.getElementById('Salesearch')?.value || 'All';
+            const startDate = document.getElementById('sale_startDate')?.value || 'All';
+            const endDate = document.getElementById('sale_endDate')?.value || 'All';
+
+            const filterInfo = {
+                'Search': search !== '' ? search : 'All',
+                'Start Date': startDate !== '' ? startDate : 'All',
+                'End Date': endDate !== '' ? endDate : 'All'
+            };
+
+            // Define column configuration
+            const columnConfig = {
+                columns: [{
+                        label: 'S/N',
+                        class: 'col-sn',
+                        type: 'index'
+                    },
+                    {
+                        label: 'Ref.No',
+                        class: 'col-ref',
+                        cellIndex: 1
+                    },
+                    {
+                        label: 'Date',
+                        class: 'col-date',
+                        cellIndex: 2
+                    },
+                    {
+                        label: 'Customer',
+                        class: 'col-customer',
+                        cellIndex: 3
+                    },
+                    {
+                        label: 'Discount',
+                        class: 'col-discount',
+                        cellIndex: 4,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Amount',
+                        class: 'col-amount',
+                        cellIndex: 5,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Paid',
+                        class: 'col-paid',
+                        cellIndex: 6,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Unpaid',
+                        class: 'col-unpaid',
+                        cellIndex: 7,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Status',
+                        class: 'col-status',
+                        cellIndex: 8,
+                        type: 'status'
+                    }
+                ],
+                widths: {
+                    'col-sn': '5%',
+                    'col-ref': '10%',
+                    'col-date': '10%',
+                    'col-customer': '20%',
+                    'col-discount': '10%',
+                    'col-amount': '15%',
+                    'col-paid': '10%',
+                    'col-unpaid': '10%',
+                    'col-status': '10%'
+                }
+            };
+
+            printGenericTable('sales', 'SALES REPORT', 'TRANSACTION DETAILS', columnConfig, filterInfo);
+        }
+
+        /**
+         * Print Purchases Table
+         */
+        function printPurchasesTable() {
+            // Get filter information
+            const search = document.getElementById('Purchasessearch')?.value || 'All';
+            const startDate = document.getElementById('PurchasesstartDate')?.value || 'All';
+            const endDate = document.getElementById('PurchasesendDate')?.value || 'All';
+
+            const filterInfo = {
+                'Search': search !== '' ? search : 'All',
+                'Start Date': startDate !== '' ? startDate : 'All',
+                'End Date': endDate !== '' ? endDate : 'All'
+            };
+
+            // Define column configuration
+            const columnConfig = {
+                columns: [{
+                        label: 'S/N',
+                        class: 'col-sn',
+                        type: 'index'
+                    },
+                    {
+                        label: 'Ref.No',
+                        class: 'col-ref',
+                        cellIndex: 1
+                    },
+                    {
+                        label: 'Date',
+                        class: 'col-date',
+                        cellIndex: 2
+                    },
+                    {
+                        label: 'Supplier',
+                        class: 'col-supplier',
+                        cellIndex: 3
+                    },
+                    {
+                        label: 'Discount',
+                        class: 'col-discount',
+                        cellIndex: 4,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Total',
+                        class: 'col-total',
+                        cellIndex: 5,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Paid',
+                        class: 'col-paid',
+                        cellIndex: 6,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Unpaid',
+                        class: 'col-unpaid',
+                        cellIndex: 7,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Status',
+                        class: 'col-status',
+                        cellIndex: 8,
+                        type: 'status'
+                    }
+                ],
+                widths: {
+                    'col-sn': '5%',
+                    'col-ref': '10%',
+                    'col-date': '10%',
+                    'col-supplier': '20%',
+                    'col-discount': '10%',
+                    'col-total': '15%',
+                    'col-paid': '10%',
+                    'col-unpaid': '10%',
+                    'col-status': '10%'
+                }
+            };
+
+            printGenericTable('purchases', 'PURCHASES REPORT', 'TRANSACTION DETAILS', columnConfig, filterInfo);
+        }
+
+        /**
+         * Print Transactions Table
+         */
+        function printTransactionsTable() {
+            // Get filter information
+            const search = document.getElementById('transactionsearch')?.value || 'All';
+            const startDate = document.getElementById('transactionstartDate')?.value || 'All';
+            const endDate = document.getElementById('transactionendDate')?.value || 'All';
+
+            const filterInfo = {
+                'Search': search !== '' ? search : 'All',
+                'Start Date': startDate !== '' ? startDate : 'All',
+                'End Date': endDate !== '' ? endDate : 'All'
+            };
+
+            // Define column configuration
+            const columnConfig = {
+                columns: [{
+                        label: 'S/N',
+                        class: 'col-sn',
+                        type: 'index'
+                    },
+                    {
+                        label: 'Ref.No',
+                        class: 'col-ref',
+                        cellIndex: 1
+                    },
+                    {
+                        label: 'Date',
+                        class: 'col-date',
+                        cellIndex: 2
+                    },
+                    {
+                        label: 'Name',
+                        class: 'col-name',
+                        cellIndex: 3
+                    },
+                    {
+                        label: 'Method',
+                        class: 'col-method',
+                        cellIndex: 4
+                    },
+                    {
+                        label: 'Type',
+                        class: 'col-type',
+                        cellIndex: 5
+                    },
+                    {
+                        label: 'Amount',
+                        class: 'col-amount',
+                        cellIndex: 6,
+                        type: 'currency'
+                    }
+                ],
+                widths: {
+                    'col-sn': '5%',
+                    'col-ref': '15%',
+                    'col-date': '15%',
+                    'col-name': '20%',
+                    'col-method': '15%',
+                    'col-type': '15%',
+                    'col-amount': '15%'
+                }
+            };
+
+            printGenericTable('transaction_table_container', 'TRANSACTIONS REPORT', 'PAYMENT DETAILS', columnConfig, filterInfo);
+        }
+
+        /**
+         * Print Parties (Customers/Suppliers) Table
+         */
+        function printPartiesTable() {
+            // Get filter information
+            const search = document.getElementById('partDetails_filterTable')?.value || 'All';
+            const status = document.getElementById('filterby_status_inTable')?.value || 'All';
+            const type = document.getElementById('filter_type_inTable')?.value || 'All';
+
+            const filterInfo = {
+                'Search': search !== '' ? search : 'All',
+                'Status': status !== '' ? status : 'All',
+                'Type': type !== '' ? type : 'All'
+            };
+
+            // Define column configuration
+            const columnConfig = {
+                columns: [{
+                        label: 'S/N',
+                        class: 'col-sn',
+                        type: 'index'
+                    },
+                    {
+                        label: 'TIN',
+                        class: 'col-tin',
+                        cellIndex: 1
+                    },
+                    {
+                        label: 'Name',
+                        class: 'col-name',
+                        cellIndex: 2
+                    },
+                    {
+                        label: 'Email',
+                        class: 'col-email',
+                        cellIndex: 3
+                    },
+                    {
+                        label: 'Phone',
+                        class: 'col-phone',
+                        cellIndex: 4
+                    },
+                    {
+                        label: 'Type',
+                        class: 'col-type',
+                        cellIndex: 5
+                    },
+                    {
+                        label: 'Amount',
+                        class: 'col-amount',
+                        cellIndex: 6,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Paid',
+                        class: 'col-paid',
+                        cellIndex: 7,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Debt',
+                        class: 'col-debt',
+                        cellIndex: 8,
+                        type: 'currency'
+                    },
+                    {
+                        label: 'Status',
+                        class: 'col-status',
+                        cellIndex: 9,
+                        type: 'status'
+                    }
+                ],
+                widths: {
+                    'col-sn': '5%',
+                    'col-tin': '10%',
+                    'col-name': '15%',
+                    'col-email': '15%',
+                    'col-phone': '10%',
+                    'col-type': '10%',
+                    'col-amount': '10%',
+                    'col-paid': '10%',
+                    'col-debt': '10%',
+                    'col-status': '5%'
+                }
+            };
+
+            printGenericTable('parties_table_container', 'PARTIES REPORT', 'CUSTOMERS & SUPPLIERS', columnConfig, filterInfo);
+        }
+
+        /**
+         * Print Employees Table
+         */
+        function printEmployeesTable() {
+            // Get filter information
+            const search = document.getElementById('search_emlpoyee_inTable')?.value || 'All';
+
+            const filterInfo = {
+                'Search': search !== '' ? search : 'All'
+            };
+
+            // Define column configuration
+            const columnConfig = {
+                columns: [{
+                        label: 'S/N',
+                        class: 'col-sn',
+                        type: 'index'
+                    },
+                    {
+                        label: 'Name',
+                        class: 'col-name',
+                        cellIndex: 1
+                    },
+                    {
+                        label: 'Phone',
+                        class: 'col-phone',
+                        cellIndex: 2
+                    },
+                    {
+                        label: 'Email',
+                        class: 'col-email',
+                        cellIndex: 3
+                    },
+                    {
+                        label: 'Gender',
+                        class: 'col-gender',
+                        cellIndex: 4
+                    },
+                    {
+                        label: 'Role',
+                        class: 'col-role',
+                        cellIndex: 5
+                    },
+                    {
+                        label: 'Status',
+                        class: 'col-status',
+                        cellIndex: 6,
+                        type: 'status'
+                    }
+                ],
+                widths: {
+                    'col-sn': '5%',
+                    'col-name': '25%',
+                    'col-phone': '15%',
+                    'col-email': '20%',
+                    'col-gender': '10%',
+                    'col-role': '15%',
+                    'col-status': '10%'
+                }
+            };
+
+            printGenericTable('employees', 'EMPLOYEES REPORT', 'STAFF DETAILS', columnConfig, filterInfo);
+        }
+
+        // Function to attach print button event listeners
+        function attachPrintButtonListeners() {
+            // Add hidden iframe for printing if it doesn't exist
+            if (!document.getElementById('printFrame')) {
+                const iframe = document.createElement('iframe');
+                iframe.id = 'printFrame';
+                iframe.style.position = 'absolute';
+                iframe.style.top = '-9999px';
+                iframe.style.left = '-9999px';
+                document.body.appendChild(iframe);
+            }
+
+            // Find all print buttons and attach event listeners
+            const printButtons = document.querySelectorAll('.bi-printer');
+            printButtons.forEach(button => {
+                // Get parent tab content to determine which print function to call
+                const parentTab = button.closest('.tab-content');
+                if (parentTab) {
+                    button.addEventListener('click', function() {
+                        if (parentTab.id === 'sales') {
+                            printSalesTable();
+                        } else if (parentTab.id === 'purchases') {
+                            printPurchasesTable();
+                        } else if (parentTab.id === 'transaction') {
+                            printTransactionsTable();
+                        } else if (parentTab.id === 'customers') {
+                            printPartiesTable();
+                        } else if (parentTab.id === 'employees') {
+                            printEmployeesTable();
+                        }
+                    });
+                }
+            });
+        }
+
+        // Call this function when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            attachPrintButtonListeners();
+        });
 
 
 
@@ -8892,104 +11134,206 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function showEditpasswordModal() {
+            let dialog = document.getElementById('EditpasswordModal');
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+        }
+
+        function hideEditpasswordModal() {
+            let dialog = document.getElementById('EditpasswordModal');
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
+        }
+
+        document.getElementById('EditpasswordModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                hideEditpasswordModal();
+            }
+        });
+
+        $('#changePasswordForm').validate({
+            errorPlacement: function($error, $element) {
+                $error.appendTo($element.closest("div"));
+            },
+            rules: {
+                current_password: {
+                    required: true
+                },
+                new_password: {
+                    required: true,
+                    minlength: 8
+                },
+                confirm_password: {
+                    required: true,
+                    equalTo: "#new_password" // Validate that confirm_password matches new_password
+                }
+            },
+            messages: {
+                current_password: {
+                    required: "Current password is required"
+                },
+                new_password: {
+                    required: "New password is required",
+                    minlength: "Password must be at least 8 characters"
+                },
+                confirm_password: {
+                    required: "Please confirm your password",
+                    equalTo: "Passwords do not match"
+                }
+            },
+            submitHandler: function(form) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                const formData = $(form).serializeArray();
+                const userId = $('#userId').val();
+
+                $.ajax({
+                    url: '/change-password',
+                    type: "POST",
+                    data: formData,
+                    beforeSend: function() {
+                        console.log('Loading...');
+                    },
+                    success: function(response) {
+                        $("#changePasswordForm")[0].reset();
+                        hideEditpasswordModal();
+                        showFeedbackModal('success', 'Password Changed!', 'Password has been change successfully.');
+
+                    },
+                    error: function(error) {
+                        showFeedbackModal('error', 'Changing Failed!', 'There was an error Changing Password. Please try again.');
+
+                    }
+                });
+            }
+        });
+
+
+        function show_add_employee_Dialog(employeeID) {
+            let dialog = document.getElementById('add_employee_Modal');
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+        }
+
+        function hide_add_employee_Dialog() {
+            let dialog = document.getElementById('add_employee_Modal');
+
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
+        }
+
+        function hide_edit_employee_Dialog() {
+            let dialog = document.getElementById('edit_employee_Modal');
+
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+            }, 400);
+        }
 
 
         function show_delete_transaction_Dialog(transaction_id) {
@@ -9213,20 +11557,20 @@
 
                         // Reset transaction tables
                         $('#purchases_TableBodyEDIT').html(`
-                    <tr class="bg-white border-b border-blue-500">
-                        <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="4">
-                            Part payment disabled. Enable part payment to search for parts.
-                        </td>
-                    </tr>
-                `);
+<tr class="bg-white border-b border-blue-500">
+    <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="5">
+        Part payment disabled.
+    </td>
+</tr>
+`);
 
                         $('#Sale_TableBodyEDIT').html(`
-                    <tr class="bg-white border-b border-green-500">
-                        <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="4">
-                            Part payment disabled. Enable part payment to search for parts.
-                        </td>
-                    </tr>
-                `);
+<tr class="bg-white border-b border-green-500">
+    <td class="py-1 px-2 text-center text-red-600 italic text-xs" colspan="5">
+        Part payment disabled.
+    </td>
+</tr>
+`);
                     }
                 },
                 error: function(xhr, status, error) {
@@ -9556,6 +11900,8 @@
             });
         }
 
+
+
         function hide_delete_itemDialog() {
             const modal = document.getElementById('DELETE_ItemModal');
             const modalContent = modal.querySelector('.relative');
@@ -9574,23 +11920,40 @@
 
         // Add these animation classes to your CSS
         document.head.insertAdjacentHTML('beforeend', `
-            <style>
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(-20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                @keyframes fadeOut {
-                    from { opacity: 1; transform: translateY(0); }
-                    to { opacity: 0; transform: translateY(-20px); }
-                }
-                .animate-fadeIn {
-                    animation: fadeIn 0.3s ease-out forwards;
-                }
-                .animate-fadeOut {
-                    animation: fadeOut 0.3s ease-out forwards;
-                }
-            </style>
-            `);
+<style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .animate-fadeOut {
+        animation: fadeOut 0.3s ease-out forwards;
+    }
+</style>
+`);
 
         function show_edit_SalesMODAL() {
             let dialog = document.getElementById('editSalesModal');
@@ -9739,98 +12102,95 @@
             getRowTemplate() {
                 if (this.modalType === 'sales') {
                     return `
-                    <tr class="border-b border-gray-300">
-                        <td class="p-1">
-                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
-                        </td>
-                        <td class="p-1 tbl-id">
-                            <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-14 px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
-                        </td>
-                        <td class="p-1">
-                            <div class="relative">
-                                <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                                <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                                <input type="hidden" class="item_id" name="item_id" />
-                            </div>
-                        </td>
-                        <td class="p-1">
-                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                        </td>
-                        <td class="hidden md:table-cell p-1">
-                            <input type="date" id="date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
-                        </td>
-                        <td class="p-1">
-                            <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
-                        </td>
-                        <td class="p-1">
-                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-                        </td>
-                        <td id="ntl" class="ntl text-center p-1"><span class="">TSh</span>0.00</td>
-                        <td class="p-1">
-                            <div class="flex justify-center gap-2">
-                                <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                    </svg>
-                                </button>
-                                <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+<tr class="border-b border-gray-300">
+    <td class="p-1">
+        <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
+    </td>
+    <td class="p-1 tbl-id">
+        <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-14 px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+    </td>
+    <td class="p-1">
+        <div class="relative">
+            <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+            <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+            <input type="hidden" class="item_id" name="item_id" />
+        </div>
+    </td>
+    <td class="p-1">
+        <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+    </td>
+    <td class="p-1">
+        <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="text" readonly />
+    </td>
+    <td class="p-1">
+        <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+    </td>
+    <td id="ntl" class="ntl text-center p-1"><span class="">TSh</span>0.00</td>
+    <td class="p-1">
+        <div class="flex justify-center gap-2">
+            <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+            <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                 } else { // purchase
                     return `
-                    <tr class="border-b border-gray-300">
-                        <td class="p-1">
-                            <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
-                        </td>
-                        <td class="p-1 tbl-id">
-                            <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
-                        </td>
-                        <td class="p-1">
-                            <div class="relative">
-                                <input placeholder="Item" id="purchase_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                                <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                                <input type="hidden" class="item_id" name="item_id" />
-                            </div>
-                        </td>
-                        <td class="p-1">
-                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                        </td>
-                        <td class="p-1">
-                            <input type="date" name="expire_date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
-                        </td>
-                        <td class="p-1">
-                            <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
-                        </td>
-                        <td class="p-1">
-                            <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-                        </td>
-                        <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
-                        <td class="p-1">
-                            <div class="flex justify-center gap-2">
-                                <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                    </svg>
-                                </button>
-                                <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+<tr class="border-b border-gray-300">
+    <td class="p-1">
+        <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
+    </td>
+    <td class="p-1 tbl-id">
+        <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+    </td>
+    <td class="p-1">
+        <div class="relative">
+            <input placeholder="Item" id="purchase_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+            <input type="hidden" class="item_id" name="item_id" />
+        </div>
+    </td>
+    <td class="p-1">
+        <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+    </td>
+    <td class="p-1">
+        <input type="date" name="expire_date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
+    </td>
+    <td class="p-1">
+        <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+    </td>
+    <td class="p-1">
+        <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+    </td>
+    <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
+    <td class="p-1">
+        <div class="flex justify-center gap-2">
+            <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+            <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                 }
             }
 
@@ -9838,95 +12198,95 @@
             getEditRowTemplate() {
                 if (this.modalType === 'sales') {
                     return `
-                        <tr class="border-b border-gray-300">
-                            <td class="p-1">
-                                <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-                            </td>
-                            <td class="p-1">
-                                <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-                            </td>
-                            <td class="p-1">
-                                <div class="relative">
-                                    <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                                    <input type="hidden" name="item_ids[]" value="">
-                                </div>
-                            </td>
-                            <td class="p-1">
-                                <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                            </td>
-                            <td class="p-1">
-                                <input value="" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-                            </td>
-                            <td class="p-1">
-                                <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-                            </td>
-                            <td class="edit_net_price text-center p-1">TSh 0.00</td>
-                            <td class="p-1">
-                                <div class="flex justify-center gap-2">
-                                    <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                        </svg>
-                                    </button>
-                                    <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+<tr class="border-b border-gray-300">
+    <td class="p-1">
+        <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+    </td>
+    <td class="p-1">
+        <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+    </td>
+    <td class="p-1">
+        <div class="relative">
+            <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+            <input type="hidden" name="item_ids[]" value="">
+        </div>
+    </td>
+    <td class="p-1">
+        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+    </td>
+    <td class="p-1">
+        <input value="" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="number" step="0.01" readonly required>
+    </td>
+    <td class="p-1">
+        <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+    </td>
+    <td class="edit_net_price text-center p-1">TSh 0.00</td>
+    <td class="p-1">
+        <div class="flex justify-center gap-2">
+            <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+            <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                 } else { // purchase
                     return `
-                        <tr class="border-b border-gray-300">
-                            <td class="p-1">
-                                <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-                            </td>
-                            <td class="p-1">
-                                <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-                            </td>
-                            <td class="p-1">
-                                <div class="relative">
-                                    <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                                    <input type="hidden" name="item_ids[]" value="">
-                                </div>
-                            </td>
-                            <td class="p-1">
-                                <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                            </td>
-                            <td class="p-1">
-                                <input type="date" value="" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
-                            </td>
-                            <td class="p-1">
-                                <input value="" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-                            </td>
-                            <td class="p-1">
-                                <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-                            </td>
-                            <td class="edit_net_price text-center p-1">TSh 0.00</td>
-                            <td class="p-1">
-                                <div class="flex justify-center gap-2">
-                                    <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                        </svg>
-                                    </button>
-                                    <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+<tr class="border-b border-gray-300">
+    <td class="p-1">
+        <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+    </td>
+    <td class="p-1">
+        <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+    </td>
+    <td class="p-1">
+        <div class="relative">
+            <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+            <input type="hidden" name="item_ids[]" value="">
+        </div>
+    </td>
+    <td class="p-1">
+        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
+    </td>
+    <td class="p-1">
+        <input type="date" value="" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
+    </td>
+    <td class="p-1">
+        <input value="" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+    </td>
+    <td class="p-1">
+        <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+    </td>
+    <td class="edit_net_price text-center p-1">TSh 0.00</td>
+    <td class="p-1">
+        <div class="flex justify-center gap-2">
+            <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+            <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                 }
             }
 
@@ -9972,95 +12332,95 @@
 
                 if (this.modalType === 'purchase') {
                     return `
-                <tr class="border-b border-gray-300">
-                    <td class="p-1">
-                        <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-                    </td>
-                    <td class="p-1">
-                        <div class="relative">
-                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" id="edit_purchase_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                            <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
-                        </div>
-                    </td>
-                    <td class="p-1">
-                        <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
-                    </td>
-                    <td class="p-1">
-                        <input type="date" value="${item?.expire_date || ''}" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.purchase_price || ''}" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-                    </td>
-                    <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.purchase_price || 0, item?.discount || 0)}</td>
-                    <td class="p-1">
-                        <div class="flex justify-center gap-2">
-                            <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                </svg>
-                            </button>
-                            <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
+<tr class="border-b border-gray-300">
+    <td class="p-1">
+        <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+    </td>
+    <td class="p-1">
+        <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+    </td>
+    <td class="p-1">
+        <div class="relative">
+            <input value="${item?.item?.name || ''}" name="edit_item_name[]" id="edit_purchase_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+            <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
+        </div>
+    </td>
+    <td class="p-1">
+        <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
+    </td>
+    <td class="p-1">
+        <input type="date" value="${item?.expire_date || ''}" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
+    </td>
+    <td class="p-1">
+        <input value="${item?.purchase_price || ''}" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+    </td>
+    <td class="p-1">
+        <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+    </td>
+    <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.purchase_price || 0, item?.discount || 0)}</td>
+    <td class="p-1">
+        <div class="flex justify-center gap-2">
+            <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+            <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                 } else { // sales
                     return `
-                <tr class="border-b border-gray-300">
-                    <td class="p-1">
-                        <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-                    </td>
-                    <td class="p-1">
-                        <div class="relative">
-                            <input value="${item?.item?.name || ''}" name="edit_item_name[]" id="edit_sale_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-                            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-                            <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
-                        </div>
-                    </td>
-                    <td class="p-1">
-                        <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.sale_price || ''}" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-                    </td>
-                    <td class="p-1">
-                        <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-                    </td>
-                    <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.sale_price || 0, item?.discount || 0)}</td>
-                    <td class="p-1">
-                        <div class="flex justify-center gap-2">
-                            <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                </svg>
-                            </button>
-                            <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
+<tr class="border-b border-gray-300">
+    <td class="p-1">
+        <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+    </td>
+    <td class="p-1">
+        <input value="${item?.quantity || ''}" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+    </td>
+    <td class="p-1">
+        <div class="relative">
+            <input value="${item?.item?.name || ''}" name="edit_item_name[]" id="edit_sale_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+            <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
+        </div>
+    </td>
+    <td class="p-1">
+        <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
+    </td>
+    <td class="p-1">
+        <input value="${item?.sale_price || ''}" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="number" step="0.01" readonly required>
+    </td>
+    <td class="p-1">
+        <input value="${item?.discount || '0'}" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+    </td>
+    <td class="edit_net_price text-center p-1">TSh ${this.calculateNetPrice(item?.quantity || 0, item?.sale_price || 0, item?.discount || 0)}</td>
+    <td class="p-1">
+        <div class="flex justify-center gap-2">
+            <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
+            <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+            </button>
+        </div>
+    </td>
+</tr>
+`;
                 }
             }
 

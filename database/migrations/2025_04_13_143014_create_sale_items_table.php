@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('item_id');
             $table->foreignId('part_id')->nullable();
             $table->integer('quantity');
-            $table->decimal('sale_price', 10, 2);
-            $table->decimal('discount', 8, 2)->nullable();
+            $table->decimal('sale_price', 25, 2);
+            $table->decimal('discount', 25, 2)->nullable();
             $table->timestamps();
 
             $table->index('item_id');

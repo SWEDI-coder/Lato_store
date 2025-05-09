@@ -51,18 +51,14 @@ Route::post('phone-resend', [RegisterController::class, 'resendCode'])->name('ph
     Route::get('/', [Welcomecontroller::class, 'welcome'])->name('welcome');
 
     // items controller
-    Route::get('/Items', [ItemsController::class, 'Items'])->name('Items');
-    Route::get('/edit_item_details/{id}', [ItemsController::class, 'edit_item_details'])->name('edit_item_details');
-    Route::get('/fetch_Items_Counts', [ItemsController::class, 'fetch_Items_Counts'])->name('fetch_Items_Counts');
     Route::post('/fetch_item', [ItemsController::class, 'fetch_item'])->name('fetch_item');
     Route::get('find_item_details', [ItemsController::class, 'find_item_details'])->name('find_item_details');
-
     Route::post('/store_item', [ItemsController::class, 'store_item'])->name('store_item');
     Route::get('/fetch_inventory', [ItemsController::class, 'fetch_inventory'])->name('fetch_inventory');
     Route::get('/edit_item_details/{id}', [ItemsController::class, 'edit_item_details'])->name('edit_item_details');
     Route::put('/update_item/{id}', [ItemsController::class, 'update_item'])->name('update_item');
     Route::delete('/delete_item/{id}', [ItemsController::class, 'delete_item'])->name('delete_item');
-    Route::get('/fetch_all_items', [ItemsController::class, 'fetch_all_items'])->name('fetch_all_items');
+    Route::get('/items/stock', [ItemsController::class, 'show_items_stock'])->name('items.stock');
 
     // sales controller 
     Route::get('fetch_Customer_Sale', [SalesController::class, 'fetch_Customer_Sale'])->name('fetch_Customer_Sale');
@@ -109,3 +105,10 @@ Route::post('phone-resend', [RegisterController::class, 'resendCode'])->name('ph
     Route::delete('/delete_transaction/{id}', [TransactionController::class, 'delete_transaction'])->name('delete_transaction');
     // Add this route to your routes/web.php or routes/api.php file
     Route::get('getBusinessStatistics', [BusinessStatisticsController::class, 'getBusinessStatistics'])->name('getBusinessStatistics');
+
+    Route::get('fetch_employees', [RegisterController::class, 'fetch_employees'])->name('fetch_employees');
+    Route::post('/add_employee', [RegisterController::class, 'add_employee'])->name('add_employee');
+    Route::post('/update_employee/{id}', [RegisterController::class, 'update_employee'])->name('update_employee');
+    Route::get('/get_employee/{id}', [RegisterController::class, 'get_employee'])->name('get_employee');
+    Route::delete('/delete_employee/{id}', [RegisterController::class, 'delete_employee'])->name('delete_employee');
+    Route::post('/change-password', [RegisterController::class, 'changePassword'])->name('change.password');

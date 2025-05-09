@@ -20,11 +20,11 @@ return new class extends Migration
             $table->foreignId('part_id')->nullable();
             $table->enum('type', ['Payment', 'Receipt'])->nullable();
             $table->string('method')->nullable();
-            $table->decimal('payment_amount', 10, 2)->nullable();
+            $table->decimal('payment_amount', 25, 2)->nullable();
             $table->string('journal_memo')->nullable();
             $table->date('transaction_date')->nullable();
-            $table->decimal('dept_paid', 10, 2)->nullable();
-            $table->decimal('dept_remain', 10, 2)->nullable();
+            $table->decimal('dept_paid', 25, 2)->nullable();
+            $table->decimal('dept_remain', 25, 2)->nullable();
             $table->timestamps();
         });
     }

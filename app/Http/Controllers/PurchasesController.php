@@ -262,6 +262,7 @@ class PurchasesController extends Controller
 
                 if ($transaction) {
                     $transaction->update([
+                        'purchase_id' => $purchase->id,
                         'payment_amount' => $purchasesData['paid'],
                         'dept_paid' => $purchasesData['paid'],
                         'dept_remain' => $purchase->dept,

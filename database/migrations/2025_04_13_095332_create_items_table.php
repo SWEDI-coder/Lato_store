@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('sku')->unique()->nullable();
             $table->string('description')->nullable();
-            $table->decimal('sale_price', 10, 2)->nullable();
+            $table->decimal('sale_price', 25, 2)->nullable();
             $table->enum('status', ['Available', 'Not Available', 'Expired', 'Damage', 'Sold Out', 'Inactive', 'Active'])->nullable();
             $table->timestamps();
         });
