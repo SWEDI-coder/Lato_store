@@ -487,7 +487,7 @@
 
     <!-- Main Content with Tabs -->
     <main class="container mx-auto px-4 pt-24 pb-8">
-        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">lato store</h1>
+        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Lato store</h1>
 
         <!-- Tab Navigation -->
         <div class="flex flex-wrap border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-2 animate__animated animate__fadeIn">
