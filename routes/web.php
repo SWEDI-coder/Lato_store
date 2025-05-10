@@ -60,6 +60,11 @@ Route::post('phone-resend', [RegisterController::class, 'resendCode'])->name('ph
     Route::delete('/delete_item/{id}', [ItemsController::class, 'delete_item'])->name('delete_item');
     Route::get('/items/stock', [ItemsController::class, 'show_items_stock'])->name('items.stock');
 
+    // Reference data endpoints
+Route::get('/brands', [ItemsController::class, 'getBrands'])->name('brands');
+Route::get('/mattress-types', [ItemsController::class, 'getMattressTypes'])->name('mattress_types');
+Route::get('/mattress-sizes', [ItemsController::class, 'getMattressSizes'])->name('mattress_sizes');
+
     // sales controller 
     Route::get('fetch_Customer_Sale', [SalesController::class, 'fetch_Customer_Sale'])->name('fetch_Customer_Sale');
     Route::post('/record_Sale', [SalesController::class, 'record_Sale'])->name('record_Sale');

@@ -18,6 +18,16 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->decimal('sale_price', 25, 2)->nullable();
             $table->enum('status', ['Available', 'Not Available', 'Expired', 'Damage', 'Sold Out', 'Inactive', 'Active'])->nullable();
+
+            $table->foreignId('brand_id')->nullable();
+            $table->foreignId('mattress_type_id')->nullable();
+            $table->foreignId('mattress_size_id')->nullable();
+            $table->boolean('is_mattress')->default(false);
+            $table->date('manufacture_date')->nullable();
+            $table->date('expiry_date')->nullable();
+            $table->string('barcode')->nullable();
+            $table->string('color')->nullable();
+            $table->string('warranty_period')->nullable();
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Duka</title>
+    <title>Latto store</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- jQuery CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -487,7 +487,7 @@
 
     <!-- Main Content with Tabs -->
     <main class="container mx-auto px-4 pt-24 pb-8">
-        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Bobu store</h1>
+        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Latto store</h1>
 
         <!-- Tab Navigation -->
         <div class="flex flex-wrap border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-2 animate__animated animate__fadeIn">
@@ -838,15 +838,15 @@
                 </div>
 
                 <div class="w-full">
-                    <!-- Filter Container with responsive grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <!-- Filter Container - first row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
                         <!-- Search Filter -->
                         <div class="w-full">
                             <div class="relative">
                                 <input
                                     type="text"
                                     id="searchTable_items"
-                                    placeholder="Search by name, SKU, or description..."
+                                    placeholder="Search..."
                                     class="w-full px-3 h-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
@@ -864,6 +864,50 @@
                                 <option value="Expired">Expired</option>
                                 <option value="Inactive">Inactive</option>
                                 <option value="Active">Active</option>
+                            </select>
+                        </div>
+
+                        <!-- Product Type Filter -->
+                        <div class="w-full">
+                            <select
+                                id="is_mattress_filter"
+                                class="w-full px-3 h-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">All Products</option>
+                                <option value="1">Mattresses Only</option>
+                                <option value="0">Non-Mattress Items</option>
+                            </select>
+                        </div>
+
+                        <!-- Brand Filter -->
+                        <div class="w-full">
+                            <select
+                                id="brand_filter"
+                                class="w-full px-3 h-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">All Brands</option>
+                                <!-- Brands will be loaded dynamically -->
+                            </select>
+                        </div>
+
+                        <!-- Mattress Type Filter -->
+                        <div class="w-full">
+                            <select
+                                id="mattress_type_filter"
+                                class="w-full px-3 h-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">All Types</option>
+                                <!-- Types will be loaded dynamically -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Filter Container - second row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <!-- Mattress Size Filter -->
+                        <div class="w-full">
+                            <select
+                                id="mattress_size_filter"
+                                class="w-full px-3 h-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">All Sizes</option>
+                                <!-- Sizes will be loaded dynamically -->
                             </select>
                         </div>
 
@@ -890,7 +934,17 @@
                         <div class="w-full flex items-center">
                             <label class="flex items-center cursor-pointer">
                                 <input type="checkbox" id="sort_items_by_Alphabet" class="form-checkbox h-5 w-5 text-blue-600">
+                                <span class="ml-2 text-gray-700">Sort</span>
                             </label>
+                        </div>
+
+                        <!-- Clear Filters Button -->
+                        <div class="w-full">
+                            <button
+                                onclick="clearAllFilters()"
+                                class="w-full px-4 h-10 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:ring-2 focus:ring-gray-500">
+                                Clear Filters
+                            </button>
                         </div>
                     </div>
 
@@ -899,11 +953,12 @@
                             <table id="inventory" class="min-w-full bg-white">
                                 <thead>
                                     <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                                        <th class="no-sort no_print text-cennter bg-green-500 py-3 px-2"><input type="checkbox" id="select_all_items" /></th>
+                                        <th class="no-sort no_print text-center bg-green-500 py-3 px-2"><input type="checkbox" id="select_all_items" /></th>
                                         <th class="py-3 px-6 text-left">s/n</th>
-                                        <th class="py-3 px-6 text-left">SKU</th>
                                         <th class="py-3 px-6 text-left">Product</th>
-                                        <th class="py-3 px-6 text-left">Category</th>
+                                        <th class="py-3 px-6 text-left">Brand</th>
+                                        <th class="py-3 px-6 text-left">Type</th>
+                                        <th class="py-3 px-6 text-left">Size</th>
                                         <th class="py-3 px-6 text-left">Stock</th>
                                         <th class="py-3 px-6 text-left">Price</th>
                                         <th class="py-3 px-6 text-left">Status</th>
@@ -2007,8 +2062,9 @@
         </div>
     </div>
 
+    <!-- Add Item Modal -->
     <div id="add_item_modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
-        <div class="w-full max-w-md transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
+        <div class="w-full max-w-3xl transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
             <!-- Modal Header with Close Button -->
             <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
                 <h2 class="font-bold text-lg">Add New Item</h2>
@@ -2023,32 +2079,86 @@
             <div class="px-4 py-4">
                 <form action="" method="POST" id="add_item_form">
                     @csrf
-                    <!-- Item Name -->
-                    <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium text-gray-800 mb-1">Item name:</label>
-                        <input type="text" name="name" placeholder="Item name" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                        <div id="Errorname" class="text-red-600 text-sm mt-1"></div>
+                    <!-- Product Type Toggle -->
+                    <div class="mb-2">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="is_mattress" id="is_mattress" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                            <span class="ms-3 text-sm font-medium text-gray-900">This is a mattress product</span>
+                        </label>
                     </div>
 
-                    <!-- Description -->
-                    <div class="mb-4">
-                        <label for="description" class="block text-sm font-medium text-gray-800 mb-1">Description:</label>
-                        <textarea name="description" id="description" rows="2" class="w-full px-3 py-2 bg-gray-100 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500" placeholder="Item description!"></textarea>
+                    <!-- Basic Information Section -->
+                    <div class="bg-gray-100 px-4 py-3 mb-2 rounded shadow-inner">
+                        <h3 class="font-bold text-gray-700 mb-2">Basic Information</h3>
+
+                        <!-- Item Name -->
+                        <div class="mb-2">
+                            <input type="text" name="name" placeholder="Item name" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                            <div id="Errorname" class="text-red-600 text-sm mt-1"></div>
+                        </div>
+
+
+                        <!-- Prices -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                            <div>
+                                <input type="number" step="0.01" id="sale_price" name="sale_price" placeholder="Sale price" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                <div id="Errorsale_price" class="text-red-600 text-sm mt-1"></div>
+                            </div>
+                            <!-- Description -->
+                            <div>
+                                <textarea name="description" id="description" rows="2" class="w-full px-3 py-1 bg-gray-100 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500" placeholder="Item description!"></textarea>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <!-- Sale Price -->
-                    <div class="mb-4">
-                        <label for="sale_price" class="block text-sm font-medium text-gray-800 mb-1">Sale Price:</label>
-                        <input type="number" step="0.01" id="sale_price" name="sale_price" placeholder="Sale price" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                        <div id="Errorsale_price" class="text-red-600 text-sm mt-1"></div>
+                    <!-- Mattress-specific details, conditionally displayed -->
+                    <div id="mattress_details" class="hidden bg-gray-100 px-4 py-3 mb-1 rounded shadow-inner">
+                        <h3 class="font-bold text-gray-700 mb-1">Mattress Details</h3>
+
+                        <!-- Brand, Type, Size -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-1">
+                            <div>
+                                <label for="brand_id" class="block text-sm font-medium text-gray-800 mb-1">Brand:</label>
+                                <select id="brand_id" name="brand_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                    <option value="">Select Brand</option>
+                                    <!-- Brands will be loaded here via JS -->
+                                </select>
+                            </div>
+                            <div>
+                                <label for="mattress_type_id" class="block text-sm font-medium text-gray-800 mb-1">Type:</label>
+                                <select id="mattress_type_id" name="mattress_type_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                    <option value="">Select Type</option>
+                                    <!-- Types will be loaded here via JS -->
+                                </select>
+                            </div>
+                            <div>
+                                <label for="mattress_size_id" class="block text-sm font-medium text-gray-800 mb-1">Size:</label>
+                                <select id="mattress_size_id" name="mattress_size_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                    <option value="">Select Size</option>
+                                    <!-- Sizes will be loaded here via JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Additional Details -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <input type="text" id="color" name="color" placeholder="Product color" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                            </div>
+                            <div>
+                                <input type="text" id="warranty_period" name="warranty_period" placeholder="Warranty period" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="flex justify-end space-x-2 mt-6">
-                        <button type="button" onclick="hide_add_item_modal()" class="px-4 py-2 cursor-pointer bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none transition">
+                    <div class="flex justify-end space-x-2 mt-2">
+                        <button type="button" onclick="hide_add_item_modal()" class="px-4 py-1 cursor-pointer bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none transition">
                             Cancel
                         </button>
-                        <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-700 focus:outline-none transition">
+                        <button type="submit" class="px-4 py-1 bg-gray-900 text-white rounded hover:bg-gray-700 focus:outline-none transition">
                             Record
                         </button>
                     </div>
@@ -2056,6 +2166,124 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Item Modal -->
+    <div id="edit_item_modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+        <div class="w-full max-w-3xl transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
+            <!-- Modal Header with Close Button -->
+            <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+                <h2 class="font-bold text-lg">Edit Item</h2>
+                <button onclick="hide_EDIT_itemDialog()" class="p-2 rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors">
+                    <svg class="fill-current text-gray-900 hover:text-white w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="px-4 py-4">
+                <form action="" method="POST" id="edit_item_form">
+                    @csrf
+                    <input type="hidden" id="edit_item_id">
+
+                    <!-- Product Type Toggle -->
+                    <div class="mb-4">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="is_mattress" id="Edit_is_mattress" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                            <span class="ms-3 text-sm font-medium text-gray-900">This is a mattress product</span>
+                        </label>
+                    </div>
+
+                    <!-- Basic Information Section -->
+                    <div class="bg-gray-100 px-4 py-3 mb-2 rounded shadow-inner">
+                        <h3 class="font-bold text-gray-700 mb-2">Basic Information</h3>
+
+                        <!-- Item Name and SKU -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                            <div>
+                                <input type="text" id="Edit_item_name" name="name" placeholder="Item name" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                <div id="Erroritem_name" class="text-red-600 text-sm mt-1"></div>
+                            </div>
+                            <div>
+                                <input type="number" step="0.01" id="Edit_sale_price" name="sale_price" placeholder="Sale price" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                <div id="Errorsale_price" class="text-red-600 text-sm mt-1"></div>
+                            </div>
+                        </div>
+
+                        <!-- Prices -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                            <div>
+                                <select id="Edit_status" name="status" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                    <option value="">Select Status</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Damage">Damage</option>
+                                </select>
+                            </div>
+
+                            <!-- Description -->
+                            <div>
+                                <textarea name="description" id="Edit_item_description" rows="2" class="w-full px-3 py-1 bg-gray-100 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500" placeholder="Item description!"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mattress-specific details, conditionally displayed -->
+                    <div id="edit_mattress_details" class="hidden bg-gray-100 px-4 py-3 mb-2 rounded shadow-inner">
+                        <h3 class="font-bold text-gray-700 mb-2">Mattress Details</h3>
+
+                        <!-- Brand, Type, Size -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+                            <div>
+                                <label for="Edit_brand_id" class="block text-sm font-medium text-gray-800 mb-1">Brand:</label>
+                                <select id="Edit_brand_id" name="brand_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                    <option value="">Select Brand</option>
+                                    <!-- Brands will be loaded here via JS -->
+                                </select>
+                            </div>
+                            <div>
+                                <label for="Edit_mattress_type_id" class="block text-sm font-medium text-gray-800 mb-1">Type:</label>
+                                <select id="Edit_mattress_type_id" name="mattress_type_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                    <option value="">Select Type</option>
+                                    <!-- Types will be loaded here via JS -->
+                                </select>
+                            </div>
+                            <div>
+                                <label for="Edit_mattress_size_id" class="block text-sm font-medium text-gray-800 mb-1">Size:</label>
+                                <select id="Edit_mattress_size_id" name="mattress_size_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                                    <option value="">Select Size</option>
+                                    <!-- Sizes will be loaded here via JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Additional Details -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="Edit_color" class="block text-sm font-medium text-gray-800 mb-1">Color:</label>
+                                <input type="text" id="Edit_color" name="color" placeholder="Product color" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                            </div>
+                            <div>
+                                <label for="Edit_warranty_period" class="block text-sm font-medium text-gray-800 mb-1">Warranty:</label>
+                                <input type="text" id="Edit_warranty_period" name="warranty_period" placeholder="Warranty period" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-2 mt-2">
+                        <button type="button" onclick="hide_EDIT_itemDialog()" class="px-4 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-1 bg-gray-900 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700 transition-colors">
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <div id="DELETE_ItemModal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
         <!-- Overlay -->
@@ -2098,74 +2326,6 @@
                         </button>
                         <button type="submit" class="delete_Item_btn w-full sm:flex-1 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                             Delete Item
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="edit_item_modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
-        <div class="w-full max-w-md transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
-            <!-- Modal Header with Close Button -->
-            <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
-                <h2 class="font-bold text-lg">Edit Item</h2>
-                <button onclick="hide_EDIT_itemDialog()" class="p-2 rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors">
-                    <svg class="fill-current text-gray-900 hover:text-white w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="px-4 py-4">
-                <form action="" method="POST" id="edit_item_form">
-                    @csrf
-                    <input type="hidden" id="edit_item_id">
-
-                    <!-- Item Name -->
-                    <div class="mb-4">
-                        <label for="Edit_item_name" class="block text-sm font-medium text-gray-800 mb-1">Item name:</label>
-                        <input type="text" id="Edit_item_name" name="name" placeholder="Item name" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                        <div id="Erroritem_name" class="text-red-600 text-sm mt-1"></div>
-                    </div>
-
-                    <!-- SKU -->
-                    <div class="mb-4">
-                        <input type="text" id="Edit_sku" name="sku" placeholder="SKU" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500 cursor-not-allowed" readonly>
-                        <div id="Errorsku" class="text-red-600 text-sm mt-1"></div>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="mb-1">
-                        <label for="Edit_item_description" class="block text-sm font-medium text-gray-800 mb-1">Description:</label>
-                        <textarea name="description" id="Edit_item_description" rows="2" class="w-full px-3 py-2 bg-gray-100 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500" placeholder="Item description!"></textarea>
-                    </div>
-
-                    <!-- Sale Price -->
-                    <div class="mb-1">
-                        <label for="Edit_sale_price" class="block text-sm font-medium text-gray-800 mb-1">Sale Price:</label>
-                        <input type="number" step="0.01" id="Edit_sale_price" name="sale_price" placeholder="Sale price" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                        <div id="Errorsale_price" class="text-red-600 text-sm mt-1"></div>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="mb-1">
-                        <select id="Edit_status" disabled name="status" class="w-full px-3 py-2 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500 cursor-not-allowed">
-                            <option value="Available">Available</option>
-                            <option value="Expired">Expired</option>
-                            <option value="Damage">Damage</option>
-                            <option value="Sold Out">Sold Out</option>
-                        </select>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex justify-end space-x-2 mt-6">
-                        <button type="button" onclick="hide_EDIT_itemDialog()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors">
-                            Cancel
-                        </button>
-                        <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700 transition-colors">
-                            Update
                         </button>
                     </div>
                 </form>
@@ -3510,6 +3670,9 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S/N</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Current Stock</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Latest Price</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Oldest Price</th>
@@ -3520,7 +3683,7 @@
                         <tbody class="bg-white divide-y divide-gray-200" id="stock_table_body">
                             <!-- Stock data will be loaded dynamically via JavaScript -->
                             <tr class="text-center">
-                                <td colspan="7" class="px-6 py-4 text-sm text-gray-500">Loading stock data...</td>
+                                <td colspan="11" class="px-6 py-4 text-sm text-gray-500">Loading stock data...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -3743,6 +3906,7 @@
             } else if (tabId === 'customers') {
                 loadParties();
             } else if (tabId === 'inventory') {
+                loadFilterOptions();
                 loadinventory();
             } else if (tabId === 'reports') {
                 loadStatistics();
@@ -4094,74 +4258,20 @@
             }
         }
 
-        $('#add_item_form').validate({
-            errorPlacement: function($error, $element) {
-                $error.appendTo($element.closest("div"));
-            },
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 30
-                },
-                sale_price: {
-                    number: true,
-                    min: 0
-                }
-            },
-            messages: {
-                name: {
-                    required: "Name is required",
-                    minlength: "Must be at least 3 characters.",
-                    maxlength: "Must not be greater than 30 characters"
-                },
-                sale_price: {
-                    number: "Please enter a valid price",
-                    min: "Price cannot be negative"
-                }
-            },
-            submitHandler: function(form) {
-                const formData = $(form).serializeArray();
-                $.ajax({
-                    url: "{{ route('store_item') }}",
-                    type: "POST",
-                    data: formData,
-                    beforeSend: function() {
-                        // Optionally show a loading spinner
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            showFeedbackModal('success', 'Item Added!', 'Your item has been added successfully.');
-                            $("#add_item_form")[0].reset();
-                            loadinventory();
-                            loadStatistics();
-                            hide_add_item_modal();
-
-                        } else {
-                            showFeedbackModal('error', 'Submission Failed!', 'Failed to add item. Please try again.');
-                        }
-                    },
-                    error: function(error) {
-                        const response = error.responseJSON;
-                        if (response && response.status === 'error' && response.conflicts) {
-                            const message = `${response.message} ( : ${response.conflicts.name})`;
-                            showFeedbackModal('error', 'Submission Failed!', message);
-                        } else {
-                            showFeedbackModal('error', 'Submission Failed!', 'There was an error adding the item. Please try again.');
-                        }
-                    }
-                });
-            }
-        });
-
+        // Updated filter inputs list
         const filter_inventory_Inputs = [
             'searchTable_items',
             'item_status_filter',
+            'is_mattress_filter',
+            'brand_filter',
+            'mattress_type_filter',
+            'mattress_size_filter',
             'min_quantity',
             'max_quantity',
             'sort_items_by_Alphabet',
         ];
 
+        // Add event listeners for all filter inputs
         filter_inventory_Inputs.forEach(inputId => {
             const inputElement = document.getElementById(inputId);
             if (inputElement) {
@@ -4175,10 +4285,87 @@
             }
         });
 
+
+        // Function to load filter options
+        function loadFilterOptions() {
+            // Load brands
+            $.ajax({
+                type: "GET",
+                url: "{{ route('brands') }}",
+                success: function(response) {
+                    if (response.success) {
+                        const brands = response.data;
+                        let options = '<option value="">All Brands</option>';
+                        brands.forEach(brand => {
+                            options += `<option value="${brand.id}">${brand.name}</option>`;
+                        });
+                        $('#brand_filter').html(options);
+                    }
+                }
+            });
+
+            // Load mattress types
+            $.ajax({
+                type: "GET",
+                url: "{{ route('mattress_types') }}",
+                success: function(response) {
+                    if (response.success) {
+                        const types = response.data;
+                        let options = '<option value="">All Types</option>';
+                        types.forEach(type => {
+                            options += `<option value="${type.id}">${type.name} (${type.code})</option>`;
+                        });
+                        $('#mattress_type_filter').html(options);
+                    }
+                }
+            });
+
+            // Load mattress sizes
+            $.ajax({
+                type: "GET",
+                url: "{{ route('mattress_sizes') }}",
+                success: function(response) {
+                    if (response.success) {
+                        const sizes = response.data;
+                        let options = '<option value="">All Sizes</option>';
+                        sizes.forEach(size => {
+                            options += `<option value="${size.id}">${size.size_code}</option>`;
+                        });
+                        $('#mattress_size_filter').html(options);
+                    }
+                }
+            });
+        }
+
+        // Load filter options on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFilterOptions();
+        });
+
+
+        // Function to clear all filters
+        function clearAllFilters() {
+            document.getElementById('searchTable_items').value = '';
+            document.getElementById('item_status_filter').value = '';
+            document.getElementById('is_mattress_filter').value = '';
+            document.getElementById('brand_filter').value = '';
+            document.getElementById('mattress_type_filter').value = '';
+            document.getElementById('mattress_size_filter').value = '';
+            document.getElementById('min_quantity').value = '';
+            document.getElementById('max_quantity').value = '';
+            document.getElementById('sort_items_by_Alphabet').checked = false;
+            loadinventory();
+        }
+
+        // Main loadinventory function
         function loadinventory() {
             const filters = {
                 search: document.getElementById('searchTable_items')?.value || '',
                 status: document.getElementById('item_status_filter')?.value || '',
+                is_mattress: document.getElementById('is_mattress_filter')?.value || '',
+                brand_id: document.getElementById('brand_filter')?.value || '',
+                mattress_type_id: document.getElementById('mattress_type_filter')?.value || '',
+                mattress_size_id: document.getElementById('mattress_size_filter')?.value || '',
                 min: document.getElementById('min_quantity')?.value || '',
                 max: document.getElementById('max_quantity')?.value || '',
                 sort_alphabetically: document.getElementById('sort_items_by_Alphabet')?.checked ? 1 : 0,
@@ -4210,10 +4397,10 @@
 
                     if (data.length === 0) {
                         inventoryHtml += `<tr>
-                            <td class="py-1 px-6 text-center text-red-600 italic" colspan="6">
-                                No items found! Please register inventory.
-                            </td>
-                        </tr>`;
+                    <td class="py-1 px-6 text-center text-red-600 italic" colspan="11">
+                        No items found! Please register inventory.
+                    </td>
+                </tr>`;
                     } else {
                         data.forEach(function(item, key) {
                             // Format the price with currency symbol
@@ -4222,49 +4409,58 @@
                                 currency: 'TZS'
                             }).format(item.sale_price || 0);
 
+                            // Get brand, type, and size info
+                            const brandName = item.brand ? item.brand.name : '-';
+                            const typeName = item.mattress_type ? item.mattress_type.name : '-';
+                            const sizeCode = item.mattress_size ? item.mattress_size.size_code : '-';
+
                             inventoryHtml += `
-                                <tr class="bg-white border-b border-blue-200 hover:bg-gray-50">
-                                    <td class="text-center no_print"><input type="checkbox" value="${item.id}" class="item_checkbox" /></td>
-                                    <td class="py-2 px-6 text-left whitespace-nowrap">${key + 1}</td>
-                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.sku || 'N/A'}</td>
-                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.name}</td>
-                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.category || 'General'}</td>
-                                    <td class="py-2 px-6 text-left whitespace-nowrap">${item.current_stock || 0}</td>
-                                    <td class="py-2 px-6 text-left whitespace-nowrap">${formattedPrice}</td>
-                                    <td class="py-2 px-6 text-left whitespace-nowrap">
-                                        <span class="bg-${getStatusColor(item.status)}-100 text-${getStatusColor(item.status)}-800 py-1 px-3 rounded-full text-xs">
-                                            ${item.status || 'N/A'}
+                        <tr class="bg-white border-b border-blue-200 hover:bg-gray-50 ${item.is_mattress ? 'bg-blue-50' : ''}">
+                            <td class="text-center no_print"><input type="checkbox" value="${item.id}" class="item_checkbox" /></td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${key + 1}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">
+                                ${item.display_name || item.name}
+                                ${item.is_mattress ? '<span class="text-xs text-blue-600 ml-2">(Mattress)</span>' : ''}
+                            </td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${brandName}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${typeName}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${sizeCode}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${item.current_stock || 0}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${formattedPrice}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">
+                                <span class="bg-${getStatusColor(item.status)}-100 text-${getStatusColor(item.status)}-800 py-1 px-3 rounded-full text-xs">
+                                    ${item.status || 'N/A'}
+                                </span>
+                            </td>
+                            <td class="px-6 py-2 text-left whitespace-nowrap no_print">
+                                <div class="flex space-x-1 justify-center">
+                                    <div class="relative group">
+                                        <button value="${item.id}" data-id="${item.id}" onclick="show_EDIT_itemDialog(${item.id})" class="hover:text-green-500 text-green-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Edit
                                         </span>
-                                    </td>
-                                    <td class="px-6 py-2 text-left whitespace-nowrap no_print">
-                                        <div class="flex space-x-1 justify-center">
-                                            <div class="relative group">
-                                                <button value="${item.id}" data-id="${item.id}" onclick="show_EDIT_itemDialog(${item.id})" class="hover:text-green-500 text-green-800">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square scale-125 mt-1" viewBox="0 0 16 16">
-                                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                        <path fill-rule="evenodd" d="M1 13.5A1.5.5 0 0 0 2.5 15h11a1.5.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5.5 0 0 0 1 2.5z"/>
-                                                    </svg>
-                                                </button>
-                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
-                                                    Edit
-                                                </span>
-                                            </div>
-                                            <span class="font-bold">|</span>
-                                            <div class="relative group">
-                                                <button value="${item.id}" data-id="${item.id}" onclick="show_delete_itemDialog(${item.id})" class="delete_item hover:text-red-500 text-red-800">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
-                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                                    </svg>
-                                                </button>
-                                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
-                                                    Delete
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `;
+                                    </div>
+                                    <span class="font-bold">|</span>
+                                    <div class="relative group">
+                                        <button value="${item.id}" data-id="${item.id}" onclick="show_delete_itemDialog(${item.id})" class="delete_item hover:text-red-500 text-red-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash scale-125 mt-1 hover:text-red-500 text-red-800" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                                            Delete
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
                         });
                     }
 
@@ -4272,12 +4468,11 @@
                     $('#inventory-loading').hide();
                 },
                 error: function() {
-                    $('#inventory tbody').html('<tr><td colspan="7" class="text-center py-4 text-red-500">Failed to load inventory data</td></tr>');
+                    $('#inventory tbody').html('<tr><td colspan="11" class="text-center py-4 text-red-500">Failed to load inventory data</td></tr>');
                     $('#inventory-loading').hide();
                 }
             });
         }
-
 
         const filter_employee_Inputs = [
             'search_emlpoyee_inTable',
@@ -4716,71 +4911,7 @@
             });
         }
 
-        $('#edit_item_form').validate({
-            errorPlacement: function($error, $element) {
-                $error.appendTo($element.closest("div"));
-            },
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 30
-                },
-                sku: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 50
-                },
-                sale_price: {
-                    number: true,
-                    min: 0
-                }
-            },
-            messages: {
-                name: {
-                    required: "Name is required",
-                    minlength: "Must be at least 3 characters.",
-                    maxlength: "Must not be greater than 30 characters"
-                },
-                sku: {
-                    required: "SKU is required",
-                    minlength: "Must be at least 3 characters.",
-                    maxlength: "Must not be greater than 50 characters"
-                },
-                sale_price: {
-                    number: "Please enter a valid price",
-                    min: "Price cannot be negative"
-                }
-            },
-            submitHandler: function(form) {
-                const itemId = $('#edit_item_id').val();
-                const formData = $(form).serializeArray();
 
-                $.ajax({
-                    url: `/update_item/${itemId}`,
-                    type: "PUT",
-                    data: formData,
-                    success: function(response) {
-                        if (response.success) {
-                            showFeedbackModal('success', 'Item Updated!', 'Your item has been updated successfully.');
-                            loadinventory();
-                            loadStatistics();
-                            hide_EDIT_itemDialog();
-                        } else {
-                            showFeedbackModal('error', 'Update Failed!', 'Failed to update item. Please try again.');
-                        }
-                    },
-                    error: function(error) {
-                        const response = error.responseJSON;
-                        if (response && response.status === 'error') {
-                            showFeedbackModal('error', 'Update Failed!', response.message);
-                        } else {
-                            showFeedbackModal('error', 'Update Failed!', 'There was an error updating the item. Please try again.');
-                        }
-                    }
-                });
-            }
-        });
 
         $(document).on('click', '.delete_Item_btn', function(e) {
             e.preventDefault();
@@ -9947,7 +10078,7 @@
             // Show loading state
             document.getElementById('stock_table_body').innerHTML = `
                 <tr class="text-center">
-                    <td colspan="7" class="px-6 py-4">
+                    <td colspan="11" class="px-6 py-4">
                         <div class="flex justify-center">
                             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-800"></div>
                         </div>
@@ -9975,16 +10106,18 @@
                 },
                 error: function(xhr) {
                     document.getElementById('stock_table_body').innerHTML = `
-                <tr class="text-center">
-                    <td colspan="7" class="px-6 py-4 text-sm text-red-500">
-                        Error loading stock data. Please try again.
-                    </td>
-                </tr>
-            `;
+                        <tr class="text-center">
+                            <td colspan="11" class="px-6 py-4 text-sm text-red-500">
+                                Error loading stock data. Please try again.
+                            </td>
+                        </tr>
+                    `;
                     console.error("Error loading stock data:", xhr.responseText);
                 }
             });
         }
+
+
 
         // Render stock data to the table
         function renderStockData(data, priceCalculation) {
@@ -9993,7 +10126,7 @@
             if (data.length === 0) {
                 tableBody.innerHTML = `
                     <tr class="text-center">
-                        <td colspan="7" class="px-6 py-4 text-sm text-gray-500">No stock data found with the applied filters.</td>
+                        <td colspan="11" class="px-6 py-4 text-sm text-gray-500">No stock data found with the applied filters.</td>
                     </tr>
                 `;
                 return;
@@ -10003,6 +10136,15 @@
             data.forEach(function(item, key) {
                 const price = priceCalculation === 'latest' ? item.latest_price : item.oldest_price;
                 const stockValue = priceCalculation === 'latest' ? item.latest_value : item.oldest_value;
+
+                // Format display name for mattresses
+                let displayName = item.name;
+                if (item.is_mattress && (item.brand || item.mattress_type || item.mattress_size)) {
+                    const brandName = item.brand ? item.brand.name : '';
+                    const typeName = item.mattress_type ? item.mattress_type.name : '';
+                    const sizeCode = item.mattress_size ? item.mattress_size.size_code : '';
+                    displayName = `${brandName} ${typeName} ${sizeCode}`.trim();
+                }
 
                 // Determine status class for color-coding
                 let statusClass = 'bg-gray-100 text-gray-800';
@@ -10023,10 +10165,16 @@
                 }
 
                 html += `
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 ${item.is_mattress ? 'bg-blue-50' : ''}">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${key + 1}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.sku}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            ${displayName}
+                            ${item.is_mattress ? '<span class="text-xs text-blue-600 ml-2">(Mattress)</span>' : ''}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.brand ? item.brand.name : '-'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.mattress_type ? item.mattress_type.name : '-'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.mattress_size ? item.mattress_size.size_code : '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${item.current_stock}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${formatCurrency(item.latest_price)}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${formatCurrency(item.oldest_price)}</td>
@@ -10088,134 +10236,144 @@
             const rows = stockTableBody.getElementsByTagName('tr');
 
             if (rows.length === 0 || (rows.length === 1 && rows[0].cells.length === 1)) {
-                tableHtml = `<tr><td colspan="7" style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">No stock data available</td></tr>`;
+                tableHtml = `<tr><td colspan="9" style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">No stock data available</td></tr>`;
             } else {
                 for (let i = 0; i < rows.length; i++) {
                     const cells = rows[i].cells;
                     // Skip rows that are just messages (like "No data found")
-                    if (cells.length < 7) continue;
+                    if (cells.length < 11) continue;
 
-                    // Get cell values, including the S/N from the first column
+                    // Get cell values
                     const sn = cells[0].textContent;
                     const sku = cells[1].textContent;
-                    const product = cells[2].textContent;
-                    const stock = cells[3].textContent;
-                    const latestPrice = cells[4].textContent;
-                    const oldestPrice = cells[5].textContent;
+                    const product = cells[2].textContent.replace(/\(Mattress\)/g, '').trim();
+                    const brand = cells[3].textContent;
+                    const type = cells[4].textContent;
+                    const size = cells[5].textContent;
+                    const stock = cells[6].textContent;
+                    const latestPrice = cells[7].textContent;
+                    const oldestPrice = cells[8].textContent;
                     const price = priceCalculation === 'latest' ? latestPrice : oldestPrice;
-                    const value = cells[6].textContent;
-                    const status = cells[7].querySelector('span').textContent.trim();
+                    const value = cells[9].textContent;
+                    const status = cells[10].querySelector('span').textContent.trim();
 
                     tableHtml += `
-                <tr>
-                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sn}</td>
-                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sku}</td>
-                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${product}</td>
-                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${stock}</td>
-                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${price}</td>
-                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${value}</td>
-                    <td style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">${status}</td>
-                </tr>
-            `;
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sn}</td>
+                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sku}</td>
+                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${product}</td>
+                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${brand}</td>
+                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${type}</td>
+                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${size}</td>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${stock}</td>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${price}</td>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${value}</td>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">${status}</td>
+                        </tr>
+                    `;
                 }
             }
 
             // Create print content with inline styles
             const printContent = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Stock Report</title>
-            <style>
-                @page { 
-                    margin: 0.5cm; 
-                }
-                body { 
-                    font-family: Arial, sans-serif; 
-                    margin: 0; 
-                    padding: 10px;
-                    font-size: 11px;
-                }
-                table { 
-                    width: 100%; 
-                    border-collapse: collapse; 
-                    margin-bottom: 10px; 
-                }
-                th { 
-                    border: 1px solid #000; 
-                    padding: 3px; 
-                    background-color: #f2f2f2; 
-                    text-align: left;
-                    font-size: 10px;
-                    font-weight: bold;
-                }
-                td { 
-                    border: 1px solid #000; 
-                    padding: 3px; 
-                    font-size: 10px;
-                }
-                .print-header { 
-                    margin-bottom: 10px; 
-                    text-align: center;
-                }
-                .print-summary { 
-                    margin-top: 10px; 
-                    font-weight: bold;
-                    font-size: 10px;
-                }
-                h1 { 
-                    text-align: center; 
-                    margin: 5px 0;
-                    font-size: 14px;
-                }
-                .flex-space-between {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 5px;
-                    font-size: 10px;
-                }
-                .report-info {
-                    font-size: 10px;
-                    color: #444;
-                    text-align: center;
-                    margin-bottom: 5px;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="print-header">
-                <h1>STOCK REPORT</h1>
-                <div class="report-info">Generated on: ${formattedDate} ${formattedTime}</div>
-            </div>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>S/N</th>
-                        <th>SKU</th>
-                        <th>PRODUCT</th>
-                        <th style="text-align: right;">QTY</th>
-                        <th style="text-align: right;">PRICE (TZS)</th>
-                        <th style="text-align: right;">VALUE (TZS)</th>
-                        <th style="text-align: center;">STATUS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${tableHtml}
-                </tbody>
-            </table>
-            
-            <div class="print-summary">
-                <div class="flex-space-between">
-                    <div>Total Items: ${totalItems}</div>
-                    <div>Total Stock: ${totalStock}</div>
-                    <div>Total Value: ${stockValue}</div>
-                    <div>Avg. Price: ${avgPrice}</div>
-                </div>
-            </div>
-        </body>
-        </html>
-    `;
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Stock Report</title>
+                    <style>
+                        @page { 
+                            margin: 0.5cm; 
+                            size: landscape;
+                        }
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            margin: 0; 
+                            padding: 10px;
+                            font-size: 11px;
+                        }
+                        table { 
+                            width: 100%; 
+                            border-collapse: collapse; 
+                            margin-bottom: 10px; 
+                        }
+                        th { 
+                            border: 1px solid #000; 
+                            padding: 3px; 
+                            background-color: #f2f2f2; 
+                            text-align: left;
+                            font-size: 10px;
+                            font-weight: bold;
+                        }
+                        td { 
+                            border: 1px solid #000; 
+                            padding: 3px; 
+                            font-size: 10px;
+                        }
+                        .print-header { 
+                            margin-bottom: 10px; 
+                            text-align: center;
+                        }
+                        .print-summary { 
+                            margin-top: 10px; 
+                            font-weight: bold;
+                            font-size: 10px;
+                        }
+                        h1 { 
+                            text-align: center; 
+                            margin: 5px 0;
+                            font-size: 14px;
+                        }
+                        .flex-space-between {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 5px;
+                            font-size: 10px;
+                        }
+                        .report-info {
+                            font-size: 10px;
+                            color: #444;
+                            text-align: center;
+                            margin-bottom: 5px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="print-header">
+                        <h1>STOCK REPORT</h1>
+                        <div class="report-info">Generated on: ${formattedDate} ${formattedTime}</div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>SKU</th>
+                                <th>PRODUCT</th>
+                                <th>BRAND</th>
+                                <th>TYPE</th>
+                                <th>SIZE</th>
+                                <th style="text-align: right;">QTY</th>
+                                <th style="text-align: right;">PRICE (TZS)</th>
+                                <th style="text-align: right;">VALUE (TZS)</th>
+                                <th style="text-align: center;">STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableHtml}
+                        </tbody>
+                    </table>
+                    
+                    <div class="print-summary">
+                        <div class="flex-space-between">
+                            <div>Total Items: ${totalItems}</div>
+                            <div>Total Stock: ${totalStock}</div>
+                            <div>Total Value: ${stockValue}</div>
+                            <div>Avg. Price: ${avgPrice}</div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
 
             // Write to the iframe
             const frameDoc = printFrame.contentDocument || printFrame.contentWindow.document;
@@ -10378,109 +10536,109 @@
 
             frameDoc.open();
             frameDoc.write(`
-        <html>
-        <head>
-            <title>${title}</title>
-            <style>
-                @page {
-                    margin: 0.5cm;
-                }
-                @media print {
-                    * {
-                        box-sizing: border-box;
-                    }
-                    html, body {
-                        margin: 0;
-                        padding: 0;
-                        width: 100%;
-                        font-size: 9pt;
-                        font-family: Arial, sans-serif;
-                    }
-                    .container {
-                        width: 100%;
-                        max-width: 100%;
-                        padding: 5px;
-                    }
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        table-layout: fixed;
-                    }
-                    th, td {
-                        border: 0.5px solid #000;
-                        padding: 2px 3px;
-                        font-size: 8pt;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        text-align: left;
-                    }
-                    th {
-                        background-color: #f2f2f2;
-                        font-weight: bold;
-                    }
-                    .report-header {
-                        text-align: center;
-                        margin-bottom: 5px;
-                    }
-                    .report-header h2 {
-                        margin: 2px 0;
-                        font-size: 12pt;
-                    }
-                    .report-meta {
-                        font-size: 8pt;
-                        margin-bottom: 3px;
-                        text-align: left;
-                    }
-                    .report-date {
-                        text-align: right;
-                        font-size: 8pt;
-                        margin-bottom: 5px;
-                    }
-                    /* Status colors */
-                    .status-paid { background-color: #d1fae5; color: #065f46; }
-                    .status-unpaid { background-color: #fee2e2; color: #b91c1c; }
-                    .status-partial { background-color: #fef3c7; color: #92400e; }
-                    .status-available { background-color: #d1fae5; color: #065f46; }
-                    .status-not-available { background-color: #fef3c7; color: #92400e; }
-                    .status-sold-out { background-color: #fee2e2; color: #b91c1c; }
-                    
-                    /* Column widths */
-                    ${columnStyles}
-                    
-                    /* Remove any remnant scrollbars */
-                    ::-webkit-scrollbar {
-                        display: none;
-                    }
-                    * {
-                        overflow: visible !important;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="report-header">
-                    <h2 style="font-weight: bold;">${title}</h2>
-                    <h2>${subtitle}</h2>
-                </div>
-                
-                <div class="report-date">
-                    Generated: ${dateString}
-                </div>
-                
-                ${filterString ? `<div class="report-meta">
-                    <strong>Filters:</strong> ${filterString}
-                </div>` : ''}
-            </div>
-    `);
+                <html>
+                <head>
+                    <title>${title}</title>
+                    <style>
+                        @page {
+                            margin: 0.5cm;
+                        }
+                        @media print {
+                            * {
+                                box-sizing: border-box;
+                            }
+                            html, body {
+                                margin: 0;
+                                padding: 0;
+                                width: 100%;
+                                font-size: 9pt;
+                                font-family: Arial, sans-serif;
+                            }
+                            .container {
+                                width: 100%;
+                                max-width: 100%;
+                                padding: 5px;
+                            }
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                table-layout: fixed;
+                            }
+                            th, td {
+                                border: 0.5px solid #000;
+                                padding: 2px 3px;
+                                font-size: 8pt;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                text-align: left;
+                            }
+                            th {
+                                background-color: #f2f2f2;
+                                font-weight: bold;
+                            }
+                            .report-header {
+                                text-align: center;
+                                margin-bottom: 5px;
+                            }
+                            .report-header h2 {
+                                margin: 2px 0;
+                                font-size: 12pt;
+                            }
+                            .report-meta {
+                                font-size: 8pt;
+                                margin-bottom: 3px;
+                                text-align: left;
+                            }
+                            .report-date {
+                                text-align: right;
+                                font-size: 8pt;
+                                margin-bottom: 5px;
+                            }
+                            /* Status colors */
+                            .status-paid { background-color: #d1fae5; color: #065f46; }
+                            .status-unpaid { background-color: #fee2e2; color: #b91c1c; }
+                            .status-partial { background-color: #fef3c7; color: #92400e; }
+                            .status-available { background-color: #d1fae5; color: #065f46; }
+                            .status-not-available { background-color: #fef3c7; color: #92400e; }
+                            .status-sold-out { background-color: #fee2e2; color: #b91c1c; }
+                            
+                            /* Column widths */
+                            ${columnStyles}
+                            
+                            /* Remove any remnant scrollbars */
+                            ::-webkit-scrollbar {
+                                display: none;
+                            }
+                            * {
+                                overflow: visible !important;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="report-header">
+                            <h2 style="font-weight: bold;">${title}</h2>
+                            <h2>${subtitle}</h2>
+                        </div>
+                        
+                        <div class="report-date">
+                            Generated: ${dateString}
+                        </div>
+                        
+                        ${filterString ? `<div class="report-meta">
+                            <strong>Filters:</strong> ${filterString}
+                        </div>` : ''}
+                    </div>
+            `);
 
             // Create the table header
             frameDoc.write(`
-        <table>
-            <thead>
-                <tr>
-    `);
+                <table>
+                    <thead>
+                        <tr>
+            `);
 
             // Add header columns
             for (const col of columnConfig.columns) {
@@ -11771,6 +11929,48 @@
             }, 400);
         }
 
+        // Toggle mattress details section based on checkbox
+        function toggleMattressDetails() {
+            const checkbox = document.getElementById('is_mattress');
+            const mattressDetails = document.getElementById('mattress_details');
+
+            if (checkbox.checked) {
+                mattressDetails.classList.remove('hidden');
+            } else {
+                mattressDetails.classList.add('hidden');
+            }
+        }
+
+        // Toggle edit mattress details section based on checkbox
+        function toggleEditMattressDetails() {
+            const checkbox = document.getElementById('Edit_is_mattress');
+            const mattressDetails = document.getElementById('edit_mattress_details');
+
+            if (checkbox.checked) {
+                mattressDetails.classList.remove('hidden');
+            } else {
+                mattressDetails.classList.add('hidden');
+            }
+        }
+
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add toggle listeners
+            const mattressCheckbox = document.getElementById('is_mattress');
+            if (mattressCheckbox) {
+                mattressCheckbox.addEventListener('change', toggleMattressDetails);
+            }
+
+            const editMattressCheckbox = document.getElementById('Edit_is_mattress');
+            if (editMattressCheckbox) {
+                editMattressCheckbox.addEventListener('change', toggleEditMattressDetails);
+            }
+
+            // Load reference data on page load
+            loadBrands();
+            loadMattressTypes();
+            loadMattressSizes();
+        });
 
         function show_add_item_modal() {
             let dialog = document.getElementById('add_item_modal');
@@ -11812,6 +12012,229 @@
             }, 300);
         }
 
+        // Load brands to dropdowns
+        function loadBrands() {
+            $.ajax({
+                type: "GET",
+                url: "/brands",
+                success: function(response) {
+                    if (response.success) {
+                        const brands = response.data;
+                        let options = '<option value="">Select Brand</option>';
+
+                        brands.forEach(brand => {
+                            options += `<option value="${brand.id}">${brand.name}</option>`;
+                        });
+
+                        $('#brand_id').html(options);
+                        $('#Edit_brand_id').html(options);
+                    }
+                },
+                error: function(error) {
+                    console.error("Error loading brands:", error);
+                }
+            });
+        }
+
+        // Load mattress types to dropdowns
+        function loadMattressTypes() {
+            $.ajax({
+                type: "GET",
+                url: "/mattress-types",
+                success: function(response) {
+                    if (response.success) {
+                        const types = response.data;
+                        let options = '<option value="">Select Type</option>';
+
+                        types.forEach(type => {
+                            options += `<option value="${type.id}">${type.name} (${type.code})</option>`;
+                        });
+
+                        $('#mattress_type_id').html(options);
+                        $('#Edit_mattress_type_id').html(options);
+                    }
+                },
+                error: function(error) {
+                    console.error("Error loading mattress types:", error);
+                }
+            });
+        }
+
+        // Load mattress sizes to dropdowns
+        function loadMattressSizes() {
+            $.ajax({
+                type: "GET",
+                url: "/mattress-sizes",
+                success: function(response) {
+                    if (response.success) {
+                        const sizes = response.data;
+                        let options = '<option value="">Select Size</option>';
+
+                        sizes.forEach(size => {
+                            options += `<option value="${size.id}">${size.size_code}</option>`;
+                        });
+
+                        $('#mattress_size_id').html(options);
+                        $('#Edit_mattress_size_id').html(options);
+                    }
+                },
+                error: function(error) {
+                    console.error("Error loading mattress sizes:", error);
+                }
+            });
+        }
+
+        // Update validation rules for add item form
+        $('#add_item_form').validate({
+            errorPlacement: function($error, $element) {
+                $error.appendTo($element.closest("div"));
+            },
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30
+                },
+                sale_price: {
+                    number: true,
+                    min: 0
+                },
+            },
+            messages: {
+                name: {
+                    required: "Name is required",
+                    minlength: "Must be at least 3 characters.",
+                    maxlength: "Must not be greater than 30 characters"
+                },
+                sale_price: {
+                    number: "Please enter a valid price",
+                    min: "Price cannot be negative"
+                },
+            },
+            submitHandler: function(form) {
+                const formData = $(form).serializeArray();
+
+                // Handle the is_mattress checkbox - add it if not already in formData
+                let isMattressInForm = formData.some(field => field.name === 'is_mattress');
+                if (!isMattressInForm) {
+                    formData.push({
+                        name: 'is_mattress',
+                        value: '0' // Send '0' for false
+                    });
+                } else {
+                    // Find and update the value to be 1 for true
+                    formData.forEach(field => {
+                        if (field.name === 'is_mattress') {
+                            field.value = '1';
+                        }
+                    });
+                }
+
+                $.ajax({
+                    url: "{{ route('store_item') }}",
+                    type: "POST",
+                    data: formData,
+                    beforeSend: function() {
+                        // Optionally show a loading spinner
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            showFeedbackModal('success', 'Item Added!', 'Your item has been added successfully.');
+                            $("#add_item_form")[0].reset();
+                            loadinventory();
+                            loadStatistics();
+                            hide_add_item_modal();
+                        } else {
+                            showFeedbackModal('error', 'Submission Failed!', 'Failed to add item. Please try again.');
+                        }
+                    },
+                    error: function(error) {
+                        const response = error.responseJSON;
+                        if (response && response.status === 'error' && response.conflicts) {
+                            const message = `${response.message} ( : ${response.conflicts.name})`;
+                            showFeedbackModal('error', 'Submission Failed!', message);
+                        } else {
+                            showFeedbackModal('error', 'Submission Failed!', 'There was an error adding the item. Please try again.');
+                        }
+                    }
+                });
+            }
+        });
+
+        // Update validation rules for edit item form
+        $('#edit_item_form').validate({
+            errorPlacement: function($error, $element) {
+                $error.appendTo($element.closest("div"));
+            },
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30
+                },
+                sale_price: {
+                    number: true,
+                    min: 0
+                },
+            },
+            messages: {
+                name: {
+                    required: "Name is required",
+                    minlength: "Must be at least 3 characters.",
+                    maxlength: "Must not be greater than 30 characters"
+                },
+                sale_price: {
+                    number: "Please enter a valid price",
+                    min: "Price cannot be negative"
+                },
+            },
+            submitHandler: function(form) {
+                const itemId = $('#edit_item_id').val();
+                const formData = $(form).serializeArray();
+
+                // Handle the is_mattress checkbox - add it if not already in formData
+                let isMattressInForm = formData.some(field => field.name === 'is_mattress');
+                if (!isMattressInForm) {
+                    formData.push({
+                        name: 'is_mattress',
+                        value: '0' // Send '0' for false
+                    });
+                } else {
+                    // Find and update the value to be 1 for true
+                    formData.forEach(field => {
+                        if (field.name === 'is_mattress') {
+                            field.value = '1';
+                        }
+                    });
+                }
+
+                $.ajax({
+                    url: `/update_item/${itemId}`,
+                    type: "PUT",
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            showFeedbackModal('success', 'Item Updated!', 'Your item has been updated successfully.');
+                            loadinventory();
+                            loadStatistics();
+                            hide_EDIT_itemDialog();
+                        } else {
+                            showFeedbackModal('error', 'Update Failed!', 'Failed to update item. Please try again.');
+                        }
+                    },
+                    error: function(error) {
+                        const response = error.responseJSON;
+                        if (response && response.status === 'error') {
+                            showFeedbackModal('error', 'Update Failed!', response.message);
+                        } else {
+                            showFeedbackModal('error', 'Update Failed!', 'There was an error updating the item. Please try again.');
+                        }
+                    }
+                });
+            }
+        });
+
+        // Show edit item modal
         function show_EDIT_itemDialog(itemId) {
             $.ajax({
                 type: "GET",
@@ -11820,19 +12243,34 @@
                     var item = response.data;
                     $('#Edit_item_name').val(item.name);
                     $('#Edit_sku').val(item.sku);
-                    $('#Edit_status').val(item.status);
+                    $('#Edit_status').val(item.status ? item.status : 'Select status');
                     $('#Edit_item_description').val(item.description);
-                    $('#Edit_sale_price').val(item.sale_price ? item.sale_price : '0.000');
+                    $('#Edit_sale_price').val(item.sale_price ? item.sale_price : '0.00');
+
+
+                    // Set mattress-specific fields
+                    $('#Edit_is_mattress').prop('checked', item.is_mattress);
+
+                    if (item.is_mattress) {
+                        $('#edit_mattress_details').removeClass('hidden');
+                        $('#Edit_brand_id').val(item.brand_id);
+                        $('#Edit_mattress_type_id').val(item.mattress_type_id);
+                        $('#Edit_mattress_size_id').val(item.mattress_size_id);
+                        $('#Edit_color').val(item.color);
+                        $('#Edit_warranty_period').val(item.warranty_period);
+                    } else {
+                        $('#edit_mattress_details').addClass('hidden');
+                    }
 
                     $('#edit_item_id').val(item.id);
-
                 },
                 error: function(error) {
                     console.error(error);
                 }
             });
+
             let dialog = document.getElementById('edit_item_modal');
-            document.body.classList.add('overflow-hidden'); // Prevent scrolling when modal is open
+            document.body.classList.add('overflow-hidden');
             dialog.classList.remove('hidden');
             dialog.classList.add('flex');
 
@@ -11868,6 +12306,7 @@
                 document.body.classList.remove('overflow-hidden');
                 modalContent.classList.remove('animate-fadeOut', 'animate-fadeIn');
             }, 300);
+            $("#edit_item_form")[0].reset();
         }
 
         function show_delete_itemDialog(itemId) {

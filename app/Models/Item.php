@@ -15,12 +15,25 @@ class Item extends Model
         'sku',
         'description',
         'sale_price',
-        'status'
+        'status',
+
+        'brand_id',
+        'mattress_type_id',
+        'mattress_size_id',
+        'is_mattress',
+        'manufacture_date',
+        'expiry_date',
+        'barcode',
+        'color',
+        'warranty_period'
     ];
 
     protected $casts = [
         'sale_price' => 'decimal:2',
-        'status' => 'string'
+        'status' => 'string',
+        'is_mattress' => 'boolean',
+        'manufacture_date' => 'date',
+        'expiry_date' => 'date'
     ];
 
     public function purchases()
@@ -36,6 +49,21 @@ class Item extends Model
     public function saleItems()
     {
         return $this->hasMany(SaleItem::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function mattressType()
+    {
+        return $this->belongsTo(MattressType::class);
+    }
+
+    public function mattressSize()
+    {
+        return $this->belongsTo(MattressSize::class);
     }
 
     public function hasTransactions()
@@ -80,5 +108,18 @@ class Item extends Model
             ->latest()
             ->first()
             ?->discount ?? 0;
+    }
+
+    public function getFormattedNameAttribute()
+    {
+        if (!$this->is_mattress) {
+            return $this->name;
+        }
+
+        $brandName = $this->brand ? $this->brand->name : '';
+        $typeName = $this->mattressType ? $this->mattressType->name : '';
+        $sizeCode = $this->mattressSize ? $this->mattressSize->size_code : '';
+
+        return "{$brandName} {$typeName} {$sizeCode}";
     }
 }

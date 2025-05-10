@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Brand;
+use App\Models\MattressType;
+use App\Models\MattressSize;
 use App\Models\PurchaseItem;
 use App\Models\SaleItem;
 use App\Models\Transaction;
@@ -13,13 +16,18 @@ use Carbon\Carbon;
 
 class ItemsController extends Controller
 {
-
     public function store_item(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'sale_price' => 'nullable|numeric|min:0',
+            'is_mattress' => 'nullable|in:0,1,true,false', // Allow string values
+            'brand_id' => 'nullable|exists:brands,id',
+            'mattress_type_id' => 'nullable|exists:mattress_types,id',
+            'mattress_size_id' => 'nullable|exists:mattress_sizes,id',
+            'color' => 'nullable|string|max:50',
+            'warranty_period' => 'nullable|string|max:50',
         ]);
 
         try {
@@ -27,12 +35,17 @@ class ItemsController extends Controller
                 'name' => $request->name,
                 'description' => $request->description,
                 'sale_price' => $request->sale_price,
-                'status' => 'Inactive', // Set status here
+                'status' => 'Inactive',
+                'is_mattress' => filter_var($request->is_mattress, FILTER_VALIDATE_BOOLEAN), // Convert to boolean
+                'brand_id' => $request->brand_id,
+                'mattress_type_id' => $request->mattress_type_id,
+                'mattress_size_id' => $request->mattress_size_id,
+                'color' => $request->color,
+                'warranty_period' => $request->warranty_period,
             ]);
             $item->save();
 
             $sku_no = 'SKU-' . time() . rand(10, 99) . '-' . $item->id;
-
             $item->update(['sku' => $sku_no]);
 
             return response()->json([
@@ -55,10 +68,22 @@ class ItemsController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'sale_price' => 'nullable|numeric|min:0',
+            'is_mattress' => 'nullable|in:0,1,true,false', // Allow string values
+            'brand_id' => 'nullable|exists:brands,id',
+            'mattress_type_id' => 'nullable|exists:mattress_types,id',
+            'mattress_size_id' => 'nullable|exists:mattress_sizes,id',
+            'color' => 'nullable|string|max:50',
+            'warranty_period' => 'nullable|string|max:50',
         ]);
 
         try {
             $item = Item::findOrFail($id);
+
+            // Convert is_mattress to boolean
+            if (isset($validated['is_mattress'])) {
+                $validated['is_mattress'] = filter_var($validated['is_mattress'], FILTER_VALIDATE_BOOLEAN);
+            }
+
             $item->update($validated);
 
             return response()->json([
@@ -75,11 +100,12 @@ class ItemsController extends Controller
         }
     }
 
+
     public function edit_item_details($id)
     {
         try {
             // Find the item
-            $item = Item::findOrFail($id);
+            $item = Item::with(['brand', 'mattressType', 'mattressSize'])->findOrFail($id);
 
             // Get the latest purchase details for this item
             $latestPurchase = PurchaseItem::where('item_id', $id)
@@ -122,6 +148,17 @@ class ItemsController extends Controller
                 'description' => $item->description,
                 'sale_price' => $item->sale_price,
                 'status' => $newStatus,
+
+                'is_mattress' => $item->is_mattress,
+                'brand_id' => $item->brand_id,
+                'brand_name' => $item->brand?->name,
+                'mattress_type_id' => $item->mattress_type_id,
+                'mattress_type_name' => $item->mattressType?->name,
+                'mattress_size_id' => $item->mattress_size_id,
+                'mattress_size' => $item->mattressSize?->size_code,
+                'color' => $item->color,
+                'warranty_period' => $item->warranty_period,
+
                 'latest_purchase' => $latestPurchase ? [
                     'purchase_price' => $latestPurchase->purchase_price,
                     'expire_date' => $latestPurchase->expire_date,
@@ -164,6 +201,33 @@ class ItemsController extends Controller
         }
     }
 
+    public function getBrands()
+    {
+        $brands = Brand::where('active', true)->get();
+        return response()->json([
+            'success' => true,
+            'data' => $brands
+        ]);
+    }
+
+    public function getMattressTypes()
+    {
+        $types = MattressType::where('active', true)->get();
+        return response()->json([
+            'success' => true,
+            'data' => $types
+        ]);
+    }
+
+    public function getMattressSizes()
+    {
+        $sizes = MattressSize::where('active', true)->get();
+        return response()->json([
+            'success' => true,
+            'data' => $sizes
+        ]);
+    }
+
     public function find_item_details(Request $request)
     {
         $item = Item::with(['purchaseItems', 'saleItems'])->findOrFail($request->id);
@@ -191,18 +255,54 @@ class ItemsController extends Controller
         $max = $request->get('max');
         $sort_alphabetically = $request->get('sort_alphabetically');
 
+        // Add new filters for mattress-specific options
+        $brand_id = $request->get('brand_id');
+        $mattress_type_id = $request->get('mattress_type_id');
+        $mattress_size_id = $request->get('mattress_size_id');
+        $is_mattress = $request->get('is_mattress');
+
         $mainQuery = Item::query();
 
         if ($search) {
             $mainQuery->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%")
                     ->orWhere('sku', 'LIKE', "%{$search}%")
-                    ->orWhere('description', 'LIKE', "%{$search}%");
+                    ->orWhere('description', 'LIKE', "%{$search}%")
+                    ->orWhereHas('brand', function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('mattressType', function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('code', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('mattressSize', function ($query) use ($search) {
+                        $query->where('size_code', 'LIKE', "%{$search}%");
+                    });
             });
         }
 
         if ($status) {
             $mainQuery->where('status', $status);
+        }
+
+        // Filter by brand
+        if ($brand_id) {
+            $mainQuery->where('brand_id', $brand_id);
+        }
+
+        // Filter by mattress type
+        if ($mattress_type_id) {
+            $mainQuery->where('mattress_type_id', $mattress_type_id);
+        }
+
+        // Filter by mattress size
+        if ($mattress_size_id) {
+            $mainQuery->where('mattress_size_id', $mattress_size_id);
+        }
+
+        // Filter by is_mattress
+        if ($is_mattress !== null) {
+            $mainQuery->where('is_mattress', $is_mattress);
         }
 
         if ($min) {
@@ -218,7 +318,9 @@ class ItemsController extends Controller
         }
 
         $query = clone $mainQuery;
-        $query->with(['purchaseItems', 'saleItems']);
+
+        // Include relationships
+        $query->with(['purchaseItems', 'saleItems', 'brand', 'mattressType', 'mattressSize']);
 
         if ($sort_alphabetically) {
             $query->orderBy('name', 'asc');
@@ -228,6 +330,7 @@ class ItemsController extends Controller
 
         $items = $query->get();
 
+        // Status counts
         $total_inventory = $items->count();
         $Available_count = $items->where('status', 'Available')->count();
         $Not_Available_count = $items->where('status', 'Not Available')->count();
@@ -237,6 +340,7 @@ class ItemsController extends Controller
         $Inactive_count = $items->where('status', 'Inactive')->count();
         $Active_count = $items->where('status', 'Active')->count();
 
+        // Get purchase and sale data
         $purchaseData = DB::table('purchase_items')
             ->select('item_id')
             ->selectRaw('SUM(quantity) as total_purchased')
@@ -253,10 +357,10 @@ class ItemsController extends Controller
             ->select('item_id', 'purchase_price', 'expire_date', 'created_at')
             ->whereIn('item_id', $items->pluck('id'))
             ->whereRaw('created_at = (
-                SELECT MAX(created_at) 
-                FROM purchase_items as pi 
-                WHERE pi.item_id = purchase_items.item_id
-            )')
+            SELECT MAX(created_at) 
+            FROM purchase_items as pi 
+            WHERE pi.item_id = purchase_items.item_id
+        )')
             ->get()
             ->keyBy('item_id');
 
@@ -264,10 +368,10 @@ class ItemsController extends Controller
             ->select('item_id', 'sale_price', 'created_at')
             ->whereIn('item_id', $items->pluck('id'))
             ->whereRaw('created_at = (
-                SELECT MAX(created_at) 
-                FROM sale_items as pi 
-                WHERE pi.item_id = sale_items.item_id
-            )')
+            SELECT MAX(created_at) 
+            FROM sale_items as pi 
+            WHERE pi.item_id = sale_items.item_id
+        )')
             ->get()
             ->keyBy('item_id');
 
@@ -290,16 +394,44 @@ class ItemsController extends Controller
             // Calculate profit per item
             $profitPerItem = $item->sale_price - ($latestPurchase?->purchase_price ?? 0);
 
+            // Generate display name based on item type
+            $displayName = $item->name;
+            if ($item->is_mattress && ($item->brand || $item->mattressType || $item->mattressSize)) {
+                $brandName = $item->brand ? $item->brand->name : '';
+                $typeName = $item->mattressType ? $item->mattressType->name : '';
+                $sizeCode = $item->mattressSize ? $item->mattressSize->size_code : '';
+                $displayName = trim("{$brandName} {$typeName} {$sizeCode}");
+            }
+
             return [
                 'id' => $item->id,
                 'sku' => $item->sku ?? 'N/A',
                 'name' => $item->name,
+                'display_name' => $displayName,
                 'description' => $item->description,
                 'category' => $item->category ?? 'General',
                 'sale_price' => $item->sale_price,
                 'status' => $newStatus,
                 'current_stock' => $currentStock,
                 'expire_date' => $latestPurchase?->expire_date,
+                'is_mattress' => $item->is_mattress,
+                'brand' => $item->brand ? [
+                    'id' => $item->brand->id,
+                    'name' => $item->brand->name
+                ] : null,
+                'mattress_type' => $item->mattressType ? [
+                    'id' => $item->mattressType->id,
+                    'name' => $item->mattressType->name,
+                    'code' => $item->mattressType->code
+                ] : null,
+                'mattress_size' => $item->mattressSize ? [
+                    'id' => $item->mattressSize->id,
+                    'size_code' => $item->mattressSize->size_code,
+                    'width' => $item->mattressSize->width,
+                    'length' => $item->mattressSize->length
+                ] : null,
+                'color' => $item->color,
+                'warranty_period' => $item->warranty_period,
                 'stats' => [
                     'total_purchased' => $totalPurchased,
                     'total_sold' => $totalSold,
@@ -365,6 +497,7 @@ class ItemsController extends Controller
             $purchaseItems = PurchaseItem::where('item_id', $id)->with('purchase')->get();
             $saleItems = SaleItem::where('item_id', $id)->with('sale')->get();
 
+            // Process purchase items
             foreach ($purchaseItems as $purchaseItem) {
                 $purchase = $purchaseItem->purchase;
 
@@ -388,6 +521,7 @@ class ItemsController extends Controller
                 }
             }
 
+            // Process sale items
             foreach ($saleItems as $saleItem) {
                 $sale = $saleItem->sale;
 
@@ -410,8 +544,14 @@ class ItemsController extends Controller
                 }
             }
 
-            $item->status = 'Inactive';
-            $item->save();
+            // Clear relationships before deleting
+            $item->update([
+                'brand_id' => null,
+                'mattress_type_id' => null,
+                'mattress_size_id' => null,
+            ]);
+
+            // Delete the item
             $item->delete();
 
             DB::commit();
@@ -495,8 +635,8 @@ class ItemsController extends Controller
         // Parse item IDs
         $itemIdsArray = !empty($itemIds) ? explode(',', $itemIds) : [];
 
-        // Start query builder
-        $query = Item::query();
+        // Start query builder with relationships
+        $query = Item::with(['brand', 'mattressType', 'mattressSize']);
 
         // Apply filters
         if (!empty($itemIdsArray)) {
@@ -511,7 +651,17 @@ class ItemsController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('sku', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('mattressType', function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('code', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('mattressSize', function ($query) use ($search) {
+                        $query->where('size_code', 'LIKE', "%{$search}%");
+                    });
             });
         }
 
@@ -593,6 +743,24 @@ class ItemsController extends Controller
                 'status' => $item->status,
                 'purchases' => $purchaseCount,
                 'sales' => $saleCount,
+                'is_mattress' => $item->is_mattress,
+                'brand' => $item->brand ? [
+                    'id' => $item->brand->id,
+                    'name' => $item->brand->name
+                ] : null,
+                'mattress_type' => $item->mattressType ? [
+                    'id' => $item->mattressType->id,
+                    'name' => $item->mattressType->name,
+                    'code' => $item->mattressType->code
+                ] : null,
+                'mattress_size' => $item->mattressSize ? [
+                    'id' => $item->mattressSize->id,
+                    'size_code' => $item->mattressSize->size_code,
+                    'width' => $item->mattressSize->width,
+                    'length' => $item->mattressSize->length
+                ] : null,
+                'color' => $item->color,
+                'warranty_period' => $item->warranty_period
             ];
         }
 
