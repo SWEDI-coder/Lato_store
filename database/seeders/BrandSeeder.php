@@ -26,6 +26,8 @@ class BrandSeeder extends Seeder
             ['name' => 'GOLD STAR', 'description' => 'DODOMA COMFORT LTD'],
             ['name' => 'JUMBO FOAM', 'description' => 'DODOMA COMFORT LTD'],
             ['name' => 'GOLDSUN', 'description' => 'Goldsun Mattress Ltd'],
+            ['name' => 'FURAHA', 'description' => 'Furaha Mattress Ltd'],
+            ['name' => 'DODOMA ASILI', 'description' => 'Dodoma Mattress Ltd'],
         ];
 
         foreach ($brands as $brand) {

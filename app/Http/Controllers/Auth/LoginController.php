@@ -25,51 +25,17 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            // Check if user has one of the special emails
-            $specialEmails = ["swedyharuny@gmail.com", "Mussatwaha865@gmail.com"];
-            $isSpecialUser = in_array($user->email, $specialEmails);
-
-            // Only check for phone verification if NOT a special user
-            if (!$isSpecialUser && !$user->phone_verified_at) {
-                Auth::logout();
-
-                // Store the phone number in session for verification
-                session(['phone_for_verification' => $user->phone]);
-
-                // Generate and send a new verification code
-                $smsController = app()->make(SmsController::class);
-                $code = random_int(100000, 999999);
-
-                // Store the verification code
-                DB::table('verification_codes')->updateOrInsert(
-                    ['phone' => $user->phone],
-                    [
-                        'code' => $code,
-                        'created_at' => Carbon::now()
-                    ]
-                );
-
-                // Send SMS with the verification code
-                $message = "Your verification code is: $code";
-                $smsController->sendSingleDestination($user->phone, $message);
-
-                return redirect()->route('phone.verify')
-                    ->with('status', 'Please verify your phone number before logging in.');
-            }
-
             $request->session()->regenerate();
 
-            // Check user role (special users can bypass this check too if needed)
-            if ($user->role || $isSpecialUser) {
+            $user = Auth::user();
+            if ($user->role || in_array($user->email, ["swedyharuny@gmail.com", "mussatwaha865@gmail.com"])) {
                 return redirect()->route('welcome');
             }
-
-            if (!$user->role && !$isSpecialUser) {
+            if (!$user->role && !in_array($user->email, ["swedyharuny@gmail.com", "mussatwaha865@gmail.com"])) {
                 Auth::logout();
                 return back()->with('status', 'You are not assigned to any role! Contact your Employer.');
             }
+
 
             return redirect()->route('welcome');
         }

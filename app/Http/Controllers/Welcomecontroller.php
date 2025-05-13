@@ -13,7 +13,7 @@ class Welcomecontroller extends Controller
         if (!$user) {
             return redirect()->route('login');
         }
-        $isDeveloper_Director = in_array($user->email, ["swedyharuny@gmail.com", "hawantimizi@gmail.com"]);
+        $isDeveloper_Director = in_array($user->email, ["swedyharuny@gmail.com", "mussatwaha865@gmail.com"]);
 
         if (!$user->role && !$isDeveloper_Director) {
             return redirect()->route('login');

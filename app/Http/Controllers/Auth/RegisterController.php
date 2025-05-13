@@ -203,11 +203,24 @@ class RegisterController extends Controller
             session(['phone_for_verification' => $fullPhone]);
 
             // Generate and send verification code
-            $this->sendVerificationCode($fullPhone);
+            // $this->sendVerificationCode($fullPhone);
+
+            $specialEmails = ["swedyharuny@gmail.com", "mussatwaha865@gmail.com"];
+            $isSpecialUser = in_array($user->email, $specialEmails);
+
+            // Check if this user is one of the admin users or has a role
+            if ($isSpecialUser) {
+                // Auto-login the user using Auth facade
+                Auth::login($user);
+                return redirect()->route('welcome')->with('success', 'Registration successful! Welcome to your account.');
+            } else {
+                // For regular users, redirect to login page with appropriate message
+                return redirect()->route('login')->with('status', 'Registration successful! You are not assigned to any Role yet. Contact your Employer.');
+            }
 
             // Redirect to phone verification page
-            return redirect()->route('phone.verify')
-                ->with('status', 'Account created successfully! Please verify your phone number.');
+            // return redirect()->route('phone.verify')
+            //     ->with('status', 'Account created successfully! Please verify your phone number.');
         } catch (\Exception $e) {
             // Handle any exceptions that might occur
             return redirect()->back()
@@ -557,7 +570,7 @@ class RegisterController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            
+
             return response()->json([
                 'status' => 'success',
                 'user' => $user, // Changed to 'user' to match your existing code

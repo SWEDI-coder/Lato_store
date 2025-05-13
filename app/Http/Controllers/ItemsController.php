@@ -19,7 +19,7 @@ class ItemsController extends Controller
     public function store_item(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'sale_price' => 'nullable|numeric|min:0',
             'is_mattress' => 'nullable|in:0,1,true,false', // Allow string values
@@ -65,7 +65,7 @@ class ItemsController extends Controller
     public function update_item($id, Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'sale_price' => 'nullable|numeric|min:0',
             'is_mattress' => 'nullable|in:0,1,true,false', // Allow string values
@@ -225,25 +225,6 @@ class ItemsController extends Controller
         return response()->json([
             'success' => true,
             'data' => $sizes
-        ]);
-    }
-
-    public function find_item_details(Request $request)
-    {
-        $item = Item::with(['purchaseItems', 'saleItems'])->findOrFail($request->id);
-
-        return response()->json([
-            'id' => $item->id,
-            'name' => $item->name,
-            'sku' => $item->sku,
-            'description' => $item->description,
-            'sale_price' => $item->sale_price,
-            'status' => $item->status,
-            'current_stock' => $item->getCurrentStockAttribute(),
-            'latest_purchase_price' => $item->getLatestPurchasePriceAttribute(),
-            'latest_sale_price' => $item->getLatestSalePriceAttribute(),
-            'latest_discount' => $item->getLatestpurchase_DiscountAttribute(),
-            'latest_sale_discount' => $item->getLatestSale_DiscountAttribute(),
         ]);
     }
 
@@ -579,48 +560,6 @@ class ItemsController extends Controller
         }
     }
 
-    public function fetch_item(Request $request)
-    {
-        if ($request->get('query')) {
-            $query = $request->get('query');
-            $items = Item::where('name', 'LIKE', "%{$query}%")
-                ->orWhere('sku', 'LIKE', "%{$query}%")
-                ->get();
-
-            $output = '<ul class="item-search-results">';
-
-            if ($items->count() > 0) {
-                foreach ($items as $item) {
-                    $totalPurchased = $item->purchaseItems()->sum('quantity') ?? 0;
-                    $totalSold = $item->saleItems()->sum('quantity') ?? 0;
-                    $currentStock = $totalPurchased - $totalSold;
-
-                    // Determine stock status color
-                    $stockColorClass = 'text-green-500';
-                    if ($currentStock <= 0) {
-                        $stockColorClass = 'text-red-500';
-                    } elseif ($currentStock < 5) {
-                        $stockColorClass = 'text-yellow-500';
-                    }
-
-                    // Simpler item display with just name as main content
-                    $output .= '
-                    <li value="' . $item->id . '" class="items_lists" data-id="' . $item->id . '" data-stock="' . $currentStock . '">
-                        <span class="item-name">' . $item->name . '</span>
-                        <span class="' . $stockColorClass . ' text-sm font-semibold item-stock">
-                                Stock: ' . $currentStock . '
-                        </span>
-                    </li>';
-                }
-            } else {
-                $output .= '<li class="no-results">No items found</li>';
-            }
-
-            $output .= '</ul>';
-            echo $output;
-        }
-    }
-
     public function show_items_stock(Request $request)
     {
         // Get request parameters
@@ -779,6 +718,128 @@ class ItemsController extends Controller
                 'avg_latest_price' => $avgLatestPrice,
                 'avg_oldest_price' => $avgOldestPrice,
             ]
+        ]);
+    }
+
+    /**
+     * Updated fetch_item method to support searching by brand, mattress type, and size
+     * It also returns enhanced search results with these details
+     */
+    public function fetch_item(Request $request)
+    {
+        if ($request->get('query')) {
+            $query = $request->get('query');
+
+            // Enhanced search using eager loading and searching across related models
+            $items = Item::with(['brand', 'mattressType', 'mattressSize'])
+                ->where(function ($q) use ($query) {
+                    $q->where('name', 'LIKE', "%{$query}%")
+                        ->orWhere('sku', 'LIKE', "%{$query}%")
+                        ->orWhereHas('brand', function ($brandQuery) use ($query) {
+                            $brandQuery->where('name', 'LIKE', "%{$query}%");
+                        })
+                        ->orWhereHas('mattressType', function ($typeQuery) use ($query) {
+                            $typeQuery->where('name', 'LIKE', "%{$query}%")
+                                ->orWhere('code', 'LIKE', "%{$query}%");
+                        })
+                        ->orWhereHas('mattressSize', function ($sizeQuery) use ($query) {
+                            $sizeQuery->where('size_code', 'LIKE', "%{$query}%");
+                        });
+                })
+                ->get();
+
+            $output = '<ul class="item-search-results">';
+
+            if ($items->count() > 0) {
+                foreach ($items as $item) {
+                    $totalPurchased = $item->purchaseItems()->sum('quantity') ?? 0;
+                    $totalSold = $item->saleItems()->sum('quantity') ?? 0;
+                    $currentStock = $totalPurchased - $totalSold;
+
+                    // Determine stock status color
+                    $stockColorClass = 'text-green-500';
+                    if ($currentStock <= 0) {
+                        $stockColorClass = 'text-red-500';
+                    } elseif ($currentStock < 5) {
+                        $stockColorClass = 'text-yellow-500';
+                    }
+
+                    // Format item info for display
+                    $brandDisplay = $item->brand ? $item->brand->name : '';
+                    $typeDisplay = $item->mattressType ? $item->mattressType->name : '';
+                    $sizeDisplay = $item->mattressSize ? $item->mattressSize->size_code : '';
+
+                    // Store details in data attributes for use when item is selected
+                    $output .= '
+                <li value="' . $item->id . '" 
+                    class="items_lists p-2 border-b hover:bg-gray-100 cursor-pointer flex justify-between items-center" 
+                    data-id="' . $item->id . '" 
+                    data-stock="' . $currentStock . '"
+                    data-brand="' . $brandDisplay . '"
+                    data-type="' . $typeDisplay . '"
+                    data-size="' . $sizeDisplay . '">
+                    <div class="flex-1">
+                        <div class="font-medium item-name">' . $item->name . '</div>
+                        <div class="text-xs text-gray-600">
+                            ' . ($brandDisplay ? '<span class="item-brand mr-2">' . $brandDisplay . '</span>' : '') . '
+                            ' . ($typeDisplay ? '<span class="item-type mr-2">' . $typeDisplay . '</span>' : '') . '
+                            ' . ($sizeDisplay ? '<span class="item-size">' . $sizeDisplay . '</span>' : '') . '
+                        </div>
+                    </div>
+                    <span class="' . $stockColorClass . ' text-sm font-semibold item-stock whitespace-nowrap">
+                        Stock: ' . $currentStock . '
+                    </span>
+                </li>';
+                }
+            } else {
+                $output .= '<li class="no-results p-2 text-center text-gray-500">No items found</li>';
+            }
+
+            $output .= '</ul>';
+            echo $output;
+        }
+    }
+
+    /**
+     * Updated find_item_details method to include brand, mattress type, and size information
+     */
+    public function find_item_details(Request $request)
+    {
+        $item = Item::with(['purchaseItems', 'saleItems', 'brand', 'mattressType', 'mattressSize'])
+            ->findOrFail($request->id);
+
+        // Format the full name with brand, type and size
+        $formattedName = $item->name;
+
+        if ($item->is_mattress) {
+            $brandName = $item->brand ? $item->brand->name : '';
+            $typeName = $item->mattressType ? $item->mattressType->name : '';
+            $sizeCode = $item->mattressSize ? $item->mattressSize->size_code : '';
+
+            // Update the formatted name to include these details
+            $formattedName = trim("$brandName $typeName $sizeCode");
+        }
+
+        return response()->json([
+            'id' => $item->id,
+            'name' => $item->name,
+            'formatted_name' => $formattedName,
+            'sku' => $item->sku,
+            'description' => $item->description,
+            'sale_price' => $item->sale_price,
+            'status' => $item->status,
+            'current_stock' => $item->getCurrentStockAttribute(),
+            'latest_purchase_price' => $item->getLatestPurchasePriceAttribute(),
+            'latest_sale_price' => $item->getLatestSalePriceAttribute(),
+            'latest_discount' => $item->getLatestpurchase_DiscountAttribute(),
+            'latest_sale_discount' => $item->getLatestSale_DiscountAttribute(),
+            'brand' => $item->brand ? $item->brand->name : null,
+            'brand_id' => $item->brand_id,
+            'mattress_type' => $item->mattressType ? $item->mattressType->name : null,
+            'mattress_type_id' => $item->mattress_type_id,
+            'mattress_size' => $item->mattressSize ? $item->mattressSize->size_code : null,
+            'mattress_size_id' => $item->mattress_size_id,
+            'is_mattress' => $item->is_mattress,
         ]);
     }
 }

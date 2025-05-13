@@ -419,18 +419,75 @@
             max-height: 490px;
             /* Adjust height as needed */
         }
+
+        /* Enhanced styles for item search results */
+        .item-search-results {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background-color: white;
+            z-index: 50;
+            width: 100%;
+        }
+
+        .item-search-results li {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .item-search-results li:hover {
+            background-color: #f3f4f6;
+        }
+
+        .item-search-results li:last-child {
+            border-bottom: none;
+        }
+
+        .item-search-results .item-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #1f2937;
+            margin-bottom: 0.125rem;
+        }
+
+        .item-search-results .item-brand,
+        .item-search-results .item-type,
+        .item-search-results .item-size {
+            font-size: 0.75rem;
+            color: #6b7280;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .item-search-results .item-stock {
+            display: inline-block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .no-results {
+            padding: 1rem;
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+        }
     </style>
 </head>
 
 <body class="bg-gray-400 min-h-screen">
     <!-- Fixed Navbar -->
-    <nav class="fixed top-0 left-0 right-0 bg-amber-900 text-white shadow-lg z-10">
+    <nav class="fixed top-0 left-0 right-0 bg-sky-500 text-white shadow-lg z-10">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="text-xl font-bold navbar-brand animate__animated animate__fadeIn transform transition mr-5 hover:-translate-x-2 duration-300 cursor-pointer">
                     <span id="postCount" class=" absolute ml-6 flex h-3 w-3 right-0">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-600 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-200 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-gray-50"></span>
                     </span>
                     <a href="#" onclick="showEditpasswordModal()" class="capitalize underline font-bold font-serif px-3">
                         {{ collect(explode(' ', preg_replace('/[^a-zA-Z\s]/', '', auth()->user()->name)))->first() }}
@@ -1626,8 +1683,6 @@
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Qty</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Item</th>
-                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Desc</th>
-                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left hidden md:table-cell font-medium">Expire</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Price</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Disc</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Net</th>
@@ -1648,9 +1703,6 @@
                                                 <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
                                                 <input type="hidden" class="item_id" name="item_id" />
                                             </div>
-                                        </td>
-                                        <td class="p-1">
-                                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
                                         </td>
                                         <td class="p-1">
                                             <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00" class="unit_price w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="text" readonly />
@@ -1771,7 +1823,6 @@
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Qty</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Item</th>
-                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Desc</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Price</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Disc</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Net</th>
@@ -1874,8 +1925,6 @@
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Qty</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Item</th>
-                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Desc</th>
-                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Expire</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Price</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Disc</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Net</th>
@@ -1896,12 +1945,6 @@
                                                 <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
                                                 <input type="hidden" class="item_id" name="item_id" />
                                             </div>
-                                        </td>
-                                        <td class="p-1">
-                                            <textarea placeholder="Description" rows="1" class="description w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-                                        </td>
-                                        <td class="p-1">
-                                            <input type="date" name="expire_date" class="px-1 sm:px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
                                         </td>
                                         <td class="p-1">
                                             <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00" class="unit_price w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
@@ -2022,8 +2065,6 @@
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Qty</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Item</th>
-                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Desc</th>
-                                        <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Expire</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Price</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Disc</th>
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Net</th>
@@ -4944,7 +4985,7 @@
 
         $(document).ready(function() {
 
-            // Item search for all modals
+            // Item search for all modals with improved search capabilities
             $(document).on('keyup', '#sale_item_name, .edit_item_name, #purchase_item_name', function() {
                 var inputElement = $(this);
                 var query = $.trim(inputElement.val());
@@ -4966,7 +5007,7 @@
                 }
             });
 
-            // Unified item selection handling for both regular and edit modals
+            // Enhanced unified item selection handling for both regular and edit modals
             $(document).on('click', '.items_lists', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -4975,9 +5016,23 @@
                     const $listItem = $(this);
                     const $row = $listItem.closest('tr');
 
-                    // Get only the item name from the item-name span
+                    // Get item details from the selected list item
                     const itemName = $listItem.find('.item-name').text().trim();
                     const itemId = $listItem.val() || $listItem.data('id');
+                    const brandName = $listItem.data('brand') || '';
+                    const typeName = $listItem.data('type') || '';
+                    const sizeName = $listItem.data('size') || '';
+
+                    // Create a formatted display name including brand, type and size if available
+                    const formattedDisplayName = [itemName];
+
+                    // Only add these details if they exist and are not already part of the item name
+                    if (brandName && !itemName.includes(brandName)) formattedDisplayName.push(brandName);
+                    if (typeName && !itemName.includes(typeName)) formattedDisplayName.push(typeName);
+                    if (sizeName && !itemName.includes(sizeName)) formattedDisplayName.push(sizeName);
+
+                    // Create the full formatted name that will be displayed in the input
+                    const fullFormattedName = formattedDisplayName.join(' - ').trim();
 
                     if (!$row.length || !itemId) {
                         console.warn('Required elements not found for item selection');
@@ -4989,11 +5044,11 @@
                     const inEditSalesModal = $row.closest('#editSalesModal').length > 0;
                     const inRegularModal = !inEditPurchaseModal && !inEditSalesModal;
 
-                    // Set the item name in the appropriate input field
+                    // Set the enhanced formatted item name in the appropriate input field
                     if (inRegularModal) {
-                        $row.find('input[name="item_name"]').val(itemName);
+                        $row.find('input[name="item_name"]').val(fullFormattedName);
                     } else {
-                        $row.find('.edit_item_name').val(itemName);
+                        $row.find('.edit_item_name').val(fullFormattedName);
                     }
 
                     // Hide the dropdown
@@ -5025,7 +5080,29 @@
                                 const purchasePrice = parseFloat(data.latest_purchase_price) || 0;
 
                                 // Common updates for all modals
-                                $row.find('textarea.description, textarea').val(data.description || '');
+                                const description = data.description || '';
+                                const formattedDescription = description;
+
+                                // If the item is a mattress, add mattress details to the description
+                                if (data.is_mattress) {
+                                    const details = [];
+                                    if (data.brand) details.push(`Brand: ${data.brand}`);
+                                    if (data.mattress_type) details.push(`Type: ${data.mattress_type}`);
+                                    if (data.mattress_size) details.push(`Size: ${data.mattress_size}`);
+
+                                    // Only add these details if the description doesn't already contain them
+                                    if (details.length > 0 && !description.includes(details.join(', '))) {
+                                        const additionalInfo = details.join(', ');
+                                        $row.find('textarea.description, textarea').val(
+                                            description ? `${description}\n${additionalInfo}` : additionalInfo
+                                        );
+                                    } else {
+                                        $row.find('textarea.description, textarea').val(description);
+                                    }
+                                } else {
+                                    $row.find('textarea.description, textarea').val(description);
+                                }
+
                                 $row.find('.av_quantity').val(data.current_stock || '0');
 
                                 // Set item ID in the hidden field
@@ -6365,15 +6442,37 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                ${Sales.sale_items.map(item => `
-                                    <tr class="border">
-                                        <td class="p-1">${item.item.name}</td>
-                                        <td class="p-1 text-right">${item.quantity}</td>
-                                        <td class="p-1 text-right">Tsh ${parseFloat(item.sale_price).toFixed(2)}</td>
-                                        <td class="p-1 text-right">Tsh ${parseFloat(item.discount).toFixed(2)}</td>
-                                        <td class="p-1 text-right">Tsh ${((item.quantity * item.sale_price) - item.discount).toFixed(2)}</td>
-                                    </tr>
-                                `).join('')}
+                                ${Sales.sale_items.map(item => {
+                                    // Get item display name based on availability of mattress attributes
+                                    let displayName = '';
+                                    
+                                    // Check if item has brand, type and size attributes
+                                    const hasBrand = item.item && item.item.brand;
+                                    const hasType = item.item && item.item.mattressType;
+                                    const hasSize = item.item && item.item.mattressSize;
+                                    
+                                    // If any mattress attributes exist, use them instead of item name
+                                    if (hasBrand || hasType || hasSize) {
+                                        const parts = [];
+                                        if (hasBrand) parts.push(item.item.brand.name);
+                                        if (hasType) parts.push(item.item.mattressType.name);
+                                        if (hasSize) parts.push(item.item.mattressSize.size_code);
+                                        displayName = parts.join(' - ');
+                                    } else {
+                                        // Fallback to item name if no mattress attributes
+                                        displayName = item.item ? item.item.name : 'Unknown Item';
+                                    }
+                                    
+                                    return `
+                                        <tr class="border">
+                                            <td class="p-1">${displayName}</td>
+                                            <td class="p-1 text-right">${item.quantity}</td>
+                                            <td class="p-1 text-right">Tsh ${parseFloat(item.sale_price).toFixed(2)}</td>
+                                            <td class="p-1 text-right">Tsh ${parseFloat(item.discount).toFixed(2)}</td>
+                                            <td class="p-1 text-right">Tsh ${((item.quantity * item.sale_price) - item.discount).toFixed(2)}</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
                             </tbody>
                             <tfoot class="bg-gray-50">
                                 <tr>
@@ -6474,23 +6573,23 @@
                 efdModal.id = 'efd_receipt';
                 efdModal.className = 'fixed inset-0 z-20 flex items-center justify-center hidden';
                 efdModal.innerHTML = `
-            <div class="bg-white p-3 w-80 rounded shadow border-black border">
-                <div class="flex justify-between border-b-2 border-gray-400 pb-2">
-                    <h3 class="text-lg font-semibold">EFD Receipt</h3>
-                    <button onclick="closeEFDReceipt()" class="text-gray-500 hover:text-gray-700">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div id="efd_content" class="p-2 text-sm text-center">
-                    <div class="animate-spin h-10 w-10 border-b-2 border-blue-800 mx-auto"></div>
-                </div>
-                <button onclick="printEFDReceipt()" class="w-full mt-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    Print
-                </button>
-            </div>
-        `;
+                    <div class="bg-white p-3 w-80 rounded shadow border-black border">
+                        <div class="flex justify-between border-b-2 border-gray-400 pb-2">
+                            <h3 class="text-lg font-semibold">EFD Receipt</h3>
+                            <button onclick="closeEFDReceipt()" class="text-gray-500 hover:text-gray-700">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="efd_content" class="p-2 text-sm text-center">
+                            <div class="animate-spin h-10 w-10 border-b-2 border-blue-800 mx-auto"></div>
+                        </div>
+                        <button onclick="printEFDReceipt()" class="w-full mt-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Print
+                        </button>
+                    </div>
+                `;
                 document.body.appendChild(efdModal);
             }
             efdModal.classList.remove('hidden');
@@ -6518,13 +6617,46 @@
                             <tr><th class="text-left">Item</th><th class="text-right">Qty</th><th class="text-right">Amt</th></tr>
                         </thead>
                         <tbody>
-                            ${sale.sale_items.map(item => `
-                                <tr>
-                                    <td>${item.item.name.substring(0, 14)}</td>
-                                    <td class="text-right">${item.quantity}</td>
-                                    <td class="text-right">${((item.quantity * item.sale_price) - item.discount).toFixed(2)}</td>
-                                </tr>
-                            `).join('')}
+                            ${sale.sale_items.map(item => {
+                                // Get display name based on mattress attributes
+                                let displayName = '';
+                                
+                                // First check if item exists
+                                if (!item.item) {
+                                    displayName = 'Unknown Item';
+                                } else {
+                                    // Check if item has brand, type and size
+                                    const hasBrand = item.item.brand;
+                                    const hasType = item.item.mattressType;
+                                    const hasSize = item.item.mattressSize;
+                                    
+                                    // If any mattress attributes exist, use them instead of item name
+                                    if (hasBrand || hasType || hasSize) {
+                                        const parts = [];
+                                        if (hasBrand) parts.push(item.item.brand.name);
+                                        if (hasType) parts.push(item.item.mattressType.name);
+                                        if (hasSize) parts.push(item.item.mattressSize.size_code);
+                                        displayName = parts.join(' - ');
+                                    } else {
+                                        // Fallback to item name if no mattress attributes
+                                        displayName = item.item.name || 'Unnamed Item';
+                                    }
+                                }
+                                
+                                // Ensure name fits in the limited space on EFD receipt
+                                const maxLength = 14; // Max chars to show
+                                const truncatedName = displayName.length > maxLength 
+                                    ? displayName.substring(0, maxLength - 2) + '..'
+                                    : displayName;
+                                
+                                return `
+                                    <tr>
+                                        <td>${truncatedName}</td>
+                                        <td class="text-right">${item.quantity}</td>
+                                        <td class="text-right">${((item.quantity * item.sale_price) - item.discount).toFixed(2)}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
                         </tbody>
                     </table>
                     <div class="border-t-2 border-gray-400 border-dashed mt-2 pt-1 text-right">
@@ -6594,52 +6726,52 @@
             const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
             iframeDoc.open();
             iframeDoc.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>EFD Receipt</title>
-            <style>
-                html, body {
-                    height: 100%;
-                    margin: 0;
-                    padding: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-                .receipt-container {
-                    width: 80mm;
-                    font-family: monospace;
-                    padding: 10px;
-                    border: 1px dashed #ccc;
-                    background-color: white;
-                }
-                @media print {
-                    @page {
-                        size: 80mm auto;
-                        margin: 0;
-                    }
-                    html, body {
-                        height: 100%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-                    .receipt-container {
-                        border: none;
-                        width: 100%;
-                        max-width: 80mm;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="receipt-container">
-                ${printContent}
-            </div>
-        </body>
-        </html>
-    `);
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>EFD Receipt</title>
+                    <style>
+                        html, body {
+                            height: 100%;
+                            margin: 0;
+                            padding: 0;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        .receipt-container {
+                            width: 80mm;
+                            font-family: monospace;
+                            padding: 10px;
+                            border: 1px dashed #ccc;
+                            background-color: white;
+                        }
+                        @media print {
+                            @page {
+                                size: 80mm auto;
+                                margin: 0;
+                            }
+                            html, body {
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+                            .receipt-container {
+                                border: none;
+                                width: 100%;
+                                max-width: 80mm;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="receipt-container">
+                        ${printContent}
+                    </div>
+                </body>
+                </html>
+            `);
             iframeDoc.close();
 
             // Wait for iframe to fully load before printing
@@ -6782,9 +6914,36 @@
                                         <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
                                             <td class="py-1 px-1 border-b border-gray-200 text-xs">${index + 1}</td>
                                             <td class="py-1 px-1 border-b border-gray-200 text-xs">
-                                                <div class="font-medium">${item.item ? item.item.name : 'Unknown Item'}</div>
-                                                <div class="text-xs text-gray-500">SKU: ${item.item ? item.item.sku : 'N/A'}</div>
-                                                ${item.item && item.item.description ? `<div class="text-xs text-gray-500">${item.item.description}</div>` : ''}
+                                                ${(() => {
+                                                    // Check if item exists
+                                                    if (!item.item) return '<div class="font-medium">Unknown Item</div>';
+                                                    
+                                                    // Get display name based on mattress attributes
+                                                    let displayName = '';
+                                                    
+                                                    // Check if item has brand, type and size
+                                                    const hasBrand = item.item.brand;
+                                                    const hasType = item.item.mattressType;
+                                                    const hasSize = item.item.mattressSize;
+                                                    
+                                                    // If any mattress attributes exist, use them instead of item name
+                                                    if (hasBrand || hasType || hasSize) {
+                                                        const parts = [];
+                                                        if (hasBrand) parts.push(item.item.brand.name);
+                                                        if (hasType) parts.push(item.item.mattressType.name);
+                                                        if (hasSize) parts.push(item.item.mattressSize.size_code);
+                                                        displayName = parts.join(' - ');
+                                                    } else {
+                                                        // Fallback to item name if no mattress attributes
+                                                        displayName = item.item.name || 'Unnamed Item';
+                                                    }
+                                                    
+                                                    return `
+                                                        <div class="font-medium">${displayName}</div>
+                                                        <div class="text-xs text-gray-500">SKU: ${item.item.sku || 'N/A'}</div>
+                                                        ${item.item.description ? `<div class="text-xs text-gray-500">${item.item.description}</div>` : ''}
+                                                    `;
+                                                })()}
                                             </td>
                                             <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">${item.quantity}</td>
                                             <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.purchase_price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
@@ -12090,22 +12249,12 @@
                 $error.appendTo($element.closest("div"));
             },
             rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 30
-                },
                 sale_price: {
                     number: true,
                     min: 0
                 },
             },
             messages: {
-                name: {
-                    required: "Name is required",
-                    minlength: "Must be at least 3 characters.",
-                    maxlength: "Must not be greater than 30 characters"
-                },
                 sale_price: {
                     number: "Please enter a valid price",
                     min: "Price cannot be negative"
@@ -12167,22 +12316,12 @@
                 $error.appendTo($element.closest("div"));
             },
             rules: {
-                name: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 30
-                },
                 sale_price: {
                     number: true,
                     min: 0
                 },
             },
             messages: {
-                name: {
-                    required: "Name is required",
-                    minlength: "Must be at least 3 characters.",
-                    maxlength: "Must not be greater than 30 characters"
-                },
                 sale_price: {
                     number: "Please enter a valid price",
                     min: "Price cannot be negative"
@@ -12541,95 +12680,87 @@
             getRowTemplate() {
                 if (this.modalType === 'sales') {
                     return `
-<tr class="border-b border-gray-300">
-    <td class="p-1">
-        <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
-    </td>
-    <td class="p-1 tbl-id">
-        <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-14 px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
-    </td>
-    <td class="p-1">
-        <div class="relative">
-            <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-            <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-            <input type="hidden" class="item_id" name="item_id" />
-        </div>
-    </td>
-    <td class="p-1">
-        <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-    </td>
-    <td class="p-1">
-        <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="text" readonly />
-    </td>
-    <td class="p-1">
-        <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-    </td>
-    <td id="ntl" class="ntl text-center p-1"><span class="">TSh</span>0.00</td>
-    <td class="p-1">
-        <div class="flex justify-center gap-2">
-            <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-            </button>
-            <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-            </button>
-        </div>
-    </td>
-</tr>
-`;
+                        <tr class="border-b border-gray-300">
+                            <td class="p-1">
+                                <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
+                            </td>
+                            <td class="p-1 tbl-id">
+                                <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-14 px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+                            </td>
+                            <td class="p-1">
+                                <div class="relative">
+                                    <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                    <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                    <input type="hidden" class="item_id" name="item_id" />
+                                </div>
+                            </td>
+
+                            <td class="p-1">
+                                <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="text" readonly />
+                            </td>
+                            <td class="p-1">
+                                <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                            </td>
+                            <td id="ntl" class="ntl text-center p-1"><span class="">TSh</span>0.00</td>
+                            <td class="p-1">
+                                <div class="flex justify-center gap-2">
+                                    <button type="button" onclick="tableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="tableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        `;
                 } else { // purchase
                     return `
-<tr class="border-b border-gray-300">
-    <td class="p-1">
-        <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
-    </td>
-    <td class="p-1 tbl-id">
-        <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
-    </td>
-    <td class="p-1">
-        <div class="relative">
-            <input placeholder="Item" id="purchase_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-            <input type="hidden" class="item_id" name="item_id" />
-        </div>
-    </td>
-    <td class="p-1">
-        <textarea placeholder="Description" rows="1" class="description w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-    </td>
-    <td class="p-1">
-        <input type="date" name="expire_date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 border rounded w-full">
-    </td>
-    <td class="p-1">
-        <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
-    </td>
-    <td class="p-1">
-        <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
-    </td>
-    <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
-    <td class="p-1">
-        <div class="flex justify-center gap-2">
-            <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-            </button>
-            <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-            </button>
-        </div>
-    </td>
-</tr>
-`;
+                        <tr class="border-b border-gray-300">
+                            <td class="p-1">
+                                <input disabled placeholder="0" class="av_quantity placeholder:text-gray-500 bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text" />
+                            </td>
+                            <td class="p-1 tbl-id">
+                                <input onkeyup="netPriceFn(this)" placeholder="Qty" name="quantity" class="quantity border w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
+                            </td>
+                            <td class="p-1">
+                                <div class="relative">
+                                    <input placeholder="Item" id="purchase_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
+                                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                    <input type="hidden" class="item_id" name="item_id" />
+                                </div>
+                            </td>
+                            <td class="p-1">
+                                <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+                            </td>
+                            <td class="p-1">
+                                <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
+                            </td>
+                            <td class="ntl text-center p-1"><span>TSh</span>0.00</td>
+                            <td class="p-1">
+                                <div class="flex justify-center gap-2">
+                                    <button type="button" onclick="purchaseTableManager.addRow(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="purchaseTableManager.delRow(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        `;
                 }
             }
 
@@ -12637,95 +12768,86 @@
             getEditRowTemplate() {
                 if (this.modalType === 'sales') {
                     return `
-<tr class="border-b border-gray-300">
-    <td class="p-1">
-        <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-    </td>
-    <td class="p-1">
-        <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-    </td>
-    <td class="p-1">
-        <div class="relative">
-            <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-            <input type="hidden" name="item_ids[]" value="">
-        </div>
-    </td>
-    <td class="p-1">
-        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-    </td>
-    <td class="p-1">
-        <input value="" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="number" step="0.01" readonly required>
-    </td>
-    <td class="p-1">
-        <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-    </td>
-    <td class="edit_net_price text-center p-1">TSh 0.00</td>
-    <td class="p-1">
-        <div class="flex justify-center gap-2">
-            <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-            </button>
-            <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-            </button>
-        </div>
-    </td>
-</tr>
-`;
+                        <tr class="border-b border-gray-300">
+                            <td class="p-1">
+                                <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+                            </td>
+                            <td class="p-1">
+                                <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+                            </td>
+                            <td class="p-1">
+                                <div class="relative">
+                                    <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                    <input type="hidden" name="item_ids[]" value="">
+                                </div>
+                            </td>
+                            <td class="p-1">
+                                <input value="" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="number" step="0.01" readonly required>
+                            </td>
+                            <td class="p-1">
+                                <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+                            </td>
+                            <td class="edit_net_price text-center p-1">TSh 0.00</td>
+                            <td class="p-1">
+                                <div class="flex justify-center gap-2">
+                                    <button type="button" onclick="tableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="tableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        `;
                 } else { // purchase
                     return `
-<tr class="border-b border-gray-300">
-    <td class="p-1">
-        <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
-    </td>
-    <td class="p-1">
-        <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
-    </td>
-    <td class="p-1">
-        <div class="relative">
-            <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
-            <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
-            <input type="hidden" name="item_ids[]" value="">
-        </div>
-    </td>
-    <td class="p-1">
-        <textarea row="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border"></textarea>
-    </td>
-    <td class="p-1">
-        <input type="date" value="" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
-    </td>
-    <td class="p-1">
-        <input value="" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
-    </td>
-    <td class="p-1">
-        <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
-    </td>
-    <td class="edit_net_price text-center p-1">TSh 0.00</td>
-    <td class="p-1">
-        <div class="flex justify-center gap-2">
-            <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg>
-            </button>
-            <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-            </button>
-        </div>
-    </td>
-</tr>
-`;
+                        <tr class="border-b border-gray-300">
+                            <td class="p-1">
+                                <input disabled value="0" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
+                            </td>
+                            <td class="p-1">
+                                <input value="" name="quantities[]" class="edit_quantity w-full px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" min="1" required>
+                            </td>
+                            <td class="p-1">
+                                <div class="relative">
+                                    <input value="" name="edit_item_name[]" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+                                    <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                    <input type="hidden" name="item_ids[]" value="">
+                                </div>
+                            </td>
+                            <td class="p-1">
+                                <input value="" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
+                            </td>
+                            <td class="p-1">
+                                <input value="0" name="discounts[]" class="edit_discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01">
+                            </td>
+                            <td class="edit_net_price text-center p-1">TSh 0.00</td>
+                            <td class="p-1">
+                                <div class="flex justify-center gap-2">
+                                    <button type="button" onclick="purchaseTableManager.addRow_edit(this)" class="text-blue-600 hover:text-blue-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="purchaseTableManager.delRow_edit(this)" class="text-red-600 hover:text-red-800 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        `;
                 }
             }
 
@@ -12764,13 +12886,40 @@
                 $(debtSelector).text(`${debt.toFixed(2)} Tzs`);
             }
 
-            // Populate edit item row with item data
-            populateEditItemRow(item) {
-                // Calculate current stock if item exists
-                const currentStock = item?.item?.current_stock ?? 0;
+  // This method is inside the TableRowManager class
+// Update this method to handle item name formatting with brand, type and size
 
-                if (this.modalType === 'purchase') {
-                    return `
+// Populate edit item row with item data
+populateEditItemRow(item) {
+    // Calculate current stock if item exists
+    const currentStock = item?.item?.current_stock ?? 0;
+    
+    // Format item name with brand, type and size if available
+    let formattedItemName = '';
+    
+    if (item?.item) {
+        // Check if item has brand, type and size attributes
+        const hasBrand = item.item.brand;
+        const hasType = item.item.mattressType;
+        const hasSize = item.item.mattressSize;
+        
+        // If any mattress attributes exist, use them instead of item name
+        if (hasBrand || hasType || hasSize) {
+            const parts = [];
+            if (hasBrand) parts.push(item.item.brand.name);
+            if (hasType) parts.push(item.item.mattressType.name);
+            if (hasSize) parts.push(item.item.mattressSize.size_code);
+            formattedItemName = parts.join(' - ');
+        } else {
+            // Fallback to item name if no mattress attributes
+            formattedItemName = item.item.name || 'Unnamed Item';
+        }
+    } else {
+        formattedItemName = 'Unknown Item';
+    }
+
+    if (this.modalType === 'purchase') {
+        return `
 <tr class="border-b border-gray-300">
     <td class="p-1">
         <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
@@ -12780,16 +12929,10 @@
     </td>
     <td class="p-1">
         <div class="relative">
-            <input value="${item?.item?.name || ''}" name="edit_item_name[]" id="edit_purchase_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+            <input value="${formattedItemName}" name="edit_item_name[]" id="edit_purchase_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
             <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
             <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
         </div>
-    </td>
-    <td class="p-1">
-        <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
-    </td>
-    <td class="p-1">
-        <input type="date" value="${item?.expire_date || ''}" name="expire_dates[]" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border w-full">
     </td>
     <td class="p-1">
         <input value="${item?.purchase_price || ''}" name="purchase_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" step="0.01" required>
@@ -12816,8 +12959,8 @@
     </td>
 </tr>
 `;
-                } else { // sales
-                    return `
+    } else { // sales
+        return `
 <tr class="border-b border-gray-300">
     <td class="p-1">
         <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
@@ -12827,13 +12970,10 @@
     </td>
     <td class="p-1">
         <div class="relative">
-            <input value="${item?.item?.name || ''}" name="edit_item_name[]" id="edit_sale_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
+            <input value="${formattedItemName}" name="edit_item_name[]" id="edit_sale_item_name" class="edit_item_name w-full min-w-[100px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text">
             <div class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
             <input type="hidden" name="item_ids[]" value="${item?.item_id || ''}">
         </div>
-    </td>
-    <td class="p-1">
-        <textarea rows="1" class="w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border">${item?.item?.description || ''}</textarea>
     </td>
     <td class="p-1">
         <input value="${item?.sale_price || ''}" name="Sales_prices[]" class="edit_unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="number" step="0.01" readonly required>
@@ -12860,9 +13000,8 @@
     </td>
 </tr>
 `;
-                }
-            }
-
+    }
+}
 
             // Helper function to calculate net price for a row
             calculateNetPrice(quantity, price, discount) {

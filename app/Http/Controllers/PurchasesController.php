@@ -343,7 +343,9 @@ class PurchasesController extends Controller
                 }])
                     ->withCount(['saleItems as total_sold' => function ($q) {
                         $q->select(DB::raw('COALESCE(SUM(quantity), 0)'));
-                    }]);
+                    }])
+                    // Add these relationships for mattress information
+                    ->with('brand', 'mattressType', 'mattressSize');
             }, 'supplier'])
                 ->findOrFail($id);
 
@@ -362,7 +364,8 @@ class PurchasesController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to fetch purchase details'
+                'message' => 'Failed to fetch purchase details',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
