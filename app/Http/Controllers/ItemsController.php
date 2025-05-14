@@ -379,9 +379,9 @@ class ItemsController extends Controller
             $displayName = $item->name;
             if ($item->is_mattress && ($item->brand || $item->mattressType || $item->mattressSize)) {
                 $brandName = $item->brand ? $item->brand->name : '';
-                $typeName = $item->mattressType ? $item->mattressType->name : '';
+                $typeName = $item->mattressType ? $item->mattressType->code : '';
                 $sizeCode = $item->mattressSize ? $item->mattressSize->size_code : '';
-                $displayName = trim("{$brandName} {$typeName} {$sizeCode}");
+                $displayName = trim("{$brandName}");
             }
 
             return [
@@ -772,23 +772,19 @@ class ItemsController extends Controller
                     // Store details in data attributes for use when item is selected
                     $output .= '
                 <li value="' . $item->id . '" 
-                    class="items_lists p-2 border-b hover:bg-gray-100 cursor-pointer flex justify-between items-center" 
+                    class="items_lists p-2 border-b hover:bg-gray-100 cursor-pointer flex justify-between items-center w-fit" 
                     data-id="' . $item->id . '" 
-                    data-stock="' . $currentStock . '"
                     data-brand="' . $brandDisplay . '"
                     data-type="' . $typeDisplay . '"
                     data-size="' . $sizeDisplay . '">
                     <div class="flex-1">
                         <div class="font-medium item-name">' . $item->name . '</div>
                         <div class="text-xs text-gray-600">
-                            ' . ($brandDisplay ? '<span class="item-brand mr-2">' . $brandDisplay . '</span>' : '') . '
-                            ' . ($typeDisplay ? '<span class="item-type mr-2">' . $typeDisplay . '</span>' : '') . '
+                            ' . ($brandDisplay ? '<span class="item-brand">' . $brandDisplay . '</span>' : '') . '
+                            ' . ($typeDisplay ? '<span class="item-type">' . $typeDisplay . '</span>' : '') . '
                             ' . ($sizeDisplay ? '<span class="item-size">' . $sizeDisplay . '</span>' : '') . '
                         </div>
                     </div>
-                    <span class="' . $stockColorClass . ' text-sm font-semibold item-stock whitespace-nowrap">
-                        Stock: ' . $currentStock . '
-                    </span>
                 </li>';
                 }
             } else {

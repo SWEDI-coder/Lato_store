@@ -14,15 +14,18 @@ class MattressTypeSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            ['name' => 'Standard', 'code' => 'STD', 'description' => 'Cover mattress type'],
-            ['name' => 'Tape Edge', 'code' => 'TX', 'description' => 'Tape Edge mattress type'],
-            ['name' => 'Qualified', 'code' => 'PQ', 'description' => 'Qualified mattress type'],
-            ['name' => 'Plain', 'code' => 'PL', 'description' => 'Plain mattress type'],
-            ['name' => 'Orthopedic', 'code' => 'Spring', 'description' => 'Orthopedic mattress type'],
+            ['id' => 1, 'name' => 'Standard', 'code' => 'STD', 'description' => 'Cover mattress type'],
+            ['id' => 2, 'name' => 'Tape Edge', 'code' => 'TX', 'description' => 'Tape Edge mattress type'],
+            ['id' => 3, 'name' => 'Qualified', 'code' => 'PQ', 'description' => 'Qualified mattress type'],
+            ['id' => 4, 'name' => 'Plain', 'code' => 'PL', 'description' => 'Plain mattress type'],
+            ['id' => 5, 'name' => 'Orthopedic', 'code' => 'Spring', 'description' => 'Orthopedic mattress type'],
         ];
 
         foreach ($types as $type) {
-            MattressType::create($type);
+            MattressType::updateOrCreate(
+                ['id' => $type['id']],
+                $type
+            );
         }
     }
 }

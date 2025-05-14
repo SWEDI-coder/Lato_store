@@ -314,23 +314,26 @@
             border-color: #4299e1;
         }
 
-        /* Updated dropdown styles specifically for items in tables */
+        /* Updated dropdown styles for items in tables */
         .itemslist {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            z-index: 1050;
-            /* Higher z-index to appear above table content */
+            position: fixed;
+            /* Change from absolute to fixed */
+            z-index: 1100;
+            /* Increase z-index to ensure it appears above everything */
             width: auto;
             min-width: 250px;
-            /* Ensure minimum width */
             max-height: 200px;
             overflow-y: auto;
             background-color: white;
             border: 1px solid #e2e8f0;
             border-radius: 0.375rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            margin-top: 2px;
+            /* Remove margin-top property */
+        }
+
+        /* Add these new styles for better dropdown positioning */
+        .item-dropdown-wrapper {
+            position: relative;
         }
 
 
@@ -386,6 +389,19 @@
             box-sizing: border-box;
             padding: 1rem;
             /* add some spacing inside */
+        }
+
+        .itemTable_container {
+            overflow-y: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 auto;
+            max-width: 100%;
+            width: 100%;
+            max-height: 350px;
+            box-sizing: border-box;
+            padding: 0.5rem;
+            border-radius: inherit;
         }
 
         #print_Invoice,
@@ -476,6 +492,110 @@
             color: #6b7280;
             font-style: italic;
         }
+
+        /* Improved Modal Size for Mobile */
+        @media (max-width: 640px) {
+
+            #add_sales_modal .relative,
+            #add_purchase_modal .relative,
+            #editSalesModal .relative,
+            #editPurchaseModal .relative {
+                max-width: 98%;
+                width: 98%;
+                margin: 0 auto;
+            }
+
+            /* Make modals cover more screen on mobile */
+            #add_sales_modal .max-w-xs,
+            #add_purchase_modal .max-w-xs,
+            #editSalesModal .max-w-xs,
+            #editPurchaseModal .max-w-xs {
+                max-width: 95vw !important;
+            }
+        }
+
+        /* Dynamic Item Input Field */
+        .item_name,
+        #sale_item_name,
+        #purchase_item_name,
+        .edit_item_name,
+        #edit_sale_item_name,
+        #edit_purchase_item_name {
+            min-width: 200px;
+            width: auto;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            padding-right: 10px !important;
+        }
+
+        /* Item input when has content */
+        .item_name:not(:placeholder-shown),
+        #sale_item_name:not(:placeholder-shown),
+        #purchase_item_name:not(:placeholder-shown),
+        .edit_item_name:not(:placeholder-shown) {
+            background-color: #f0f9ff;
+            font-weight: 500;
+        }
+
+        /* Adjust table cell to accommodate the expanded input */
+        #record_sales_table td:nth-child(3),
+        #purchase_record_table td:nth-child(3),
+        #sales_edit_table td:nth-child(3),
+        #purchase_edit_table td:nth-child(3) {
+            transition: min-width 0.3s ease;
+            min-width: 200px;
+        }
+
+        /* Enhanced Modal Size */
+        #add_sales_modal .max-w-xs,
+        #add_purchase_modal .max-w-xs,
+        #editSalesModal .max-w-xs,
+        #editPurchaseModal .max-w-xs {
+            max-width: 90vw;
+        }
+
+        /* Hover/focus state for better readability */
+        .item_name:hover,
+        .item_name:focus,
+        #sale_item_name:hover,
+        #sale_item_name:focus,
+        #purchase_item_name:hover,
+        #purchase_item_name:focus,
+        .edit_item_name:hover,
+        .edit_item_name:focus {
+            overflow: visible;
+            white-space: normal;
+            height: auto;
+            z-index: 10;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            border-color: #4299e1;
+        }
+
+        /* Mobile Menu Animation - Replace or update your existing CSS */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        #mobile-menu.open {
+            max-height: 300px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Highlighted item in dropdown */
+        .items_lists.highlighted {
+            background-color: #edf2f7;
+            outline: none;
+        }
     </style>
 </head>
 
@@ -483,16 +603,19 @@
     <!-- Fixed Navbar -->
     <nav class="fixed top-0 left-0 right-0 bg-sky-500 text-white shadow-lg z-10">
         <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="text-xl font-bold navbar-brand animate__animated animate__fadeIn transform transition mr-5 hover:-translate-x-2 duration-300 cursor-pointer">
-                    <span id="postCount" class=" absolute ml-6 flex h-3 w-3 right-0">
+            <div class="flex justify-between items-center py-2 sm:py-4">
+                <!-- Logo/Username section -->
+                <div class="text-xl font-bold navbar-brand animate__animated animate__fadeIn transform transition hover:-translate-x-2 duration-300 cursor-pointer">
+                    <span id="postCount" class="absolute ml-6 flex h-3 w-3 right-0">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-200 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-gray-50"></span>
                     </span>
-                    <a href="#" onclick="showEditpasswordModal()" class="capitalize underline font-bold font-serif px-3">
+                    <a href="#" onclick="showEditpasswordModal()" class="capitalize underline font-bold font-serif px-3 text-sm sm:text-xl">
                         {{ collect(explode(' ', preg_replace('/[^a-zA-Z\s]/', '', auth()->user()->name)))->first() }}
                     </a>
                 </div>
+
+                <!-- Desktop navigation -->
                 <div class="hidden md:flex space-x-4 animate__animated animate__fadeIn">
                     <a href="#" class="hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe2 mt-1.5 scale-125" viewBox="0 0 16 16">
@@ -512,6 +635,8 @@
                         </button>
                     </form>
                 </div>
+
+                <!-- Mobile menu button -->
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="focus:outline-none transition-transform duration-300">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -520,24 +645,34 @@
                     </button>
                 </div>
             </div>
-            <div id="mobile-menu" class="md:hidden">
-                <a href="#" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe2 mt-1.5 scale-125 ml-1" viewBox="0 0 16 16">
-                        <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855q-.215.403-.395.872c.705.157 1.472.257 2.282.287zM4.249 3.539q.214-.577.481-1.078a7 7 0 0 1 .597-.933A7 7 0 0 0 3.051 3.05q.544.277 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9 9 0 0 1-1.565-.667A6.96 6.96 0 0 0 1.018 7.5zm1.4-2.741a12.3 12.3 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332M8.5 5.09V7.5h2.99a12.3 12.3 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.6 13.6 0 0 1 7.5 10.91V8.5zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741zm-3.282 3.696q.18.469.395.872c.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a7 7 0 0 1-.598-.933 9 9 0 0 1-.481-1.079 8.4 8.4 0 0 0-1.198.49 7 7 0 0 0 2.276 1.522zm-1.383-2.964A13.4 13.4 0 0 1 3.508 8.5h-2.49a6.96 6.96 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667m6.728 2.964a7 7 0 0 0 2.275-1.521 8.4 8.4 0 0 0-1.197-.49 9 9 0 0 1-.481 1.078 7 7 0 0 1-.597.933M8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855q.216-.403.395-.872A12.6 12.6 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.96 6.96 0 0 0 14.982 8.5h-2.49a13.4 13.4 0 0 1-.437 3.008M14.982 7.5a6.96 6.96 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008zM11.27 2.461q.266.502.482 1.078a8.4 8.4 0 0 0 1.196-.49 7 7 0 0 0-2.275-1.52c.218.283.418.597.597.932m-.488 1.343a8 8 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z" />
-                    </svg>
-                </a>
-                <a href="{{ route('welcome') }}" class="block py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise mt-1.5 scale-125 ml-1" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
-                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
-                    </svg>
-                </a>
-                <form action="{{ route('logout') }}" method="POST" class="mb-1">
-                    @csrf
-                    <button type="submit" class="lg:inline-block lg:ml-auto lg:mr-3 py-1 px-6 bg-gray-100 hover:bg-gray-200 text-xs text-gray-900 hover:text-red-600 font-bold rounded-xl transition duration-200">
-                        Logout
-                    </button>
-                </form>
+
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="md:hidden bg-sky-600 rounded-b-lg shadow-lg mt-2 absolute left-0 right-0 px-4">
+                <div class="flex flex-col space-y-2 py-2">
+                    <a href="#" class="flex items-center py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe2 scale-125 mr-2" viewBox="0 0 16 16">
+                            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855q-.215.403-.395.872c.705.157 1.472.257 2.282.287zM4.249 3.539q.214-.577.481-1.078a7 7 0 0 1 .597-.933A7 7 0 0 0 3.051 3.05q.544.277 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9 9 0 0 1-1.565-.667A6.96 6.96 0 0 0 1.018 7.5zm1.4-2.741a12.3 12.3 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332M8.5 5.09V7.5h2.99a12.3 12.3 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.6 13.6 0 0 1 7.5 10.91V8.5zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741zm-3.282 3.696q.18.469.395.872c.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a7 7 0 0 1-.598-.933 9 9 0 0 1-.481-1.079 8.4 8.4 0 0 0-1.198.49 7 7 0 0 0 2.276 1.522zm-1.383-2.964A13.4 13.4 0 0 1 3.508 8.5h-2.49a6.96 6.96 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667m6.728 2.964a7 7 0 0 0 2.275-1.521 8.4 8.4 0 0 0-1.197-.49 9 9 0 0 1-.481 1.078 7 7 0 0 1-.597.933M8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855q.216-.403.395-.872A12.6 12.6 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.96 6.96 0 0 0 14.982 8.5h-2.49a13.4 13.4 0 0 1-.437 3.008M14.982 7.5a6.96 6.96 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008zM11.27 2.461q.266.502.482 1.078a8.4 8.4 0 0 0 1.196-.49 7 7 0 0 0-2.275-1.52c.218.283.418.597.597.932m-.488 1.343a8 8 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z" />
+                        </svg>
+                        <span>Globe</span>
+                    </a>
+                    <a href="{{ route('welcome') }}" class="flex items-center py-2 hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise scale-125 mr-2" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+                        </svg>
+                        <span>Refresh</span>
+                    </a>
+                    <form action="{{ route('logout') }}" method="POST" class="py-2">
+                        @csrf
+                        <button type="submit" class="w-full text-left flex items-center py-2 text-sm text-white hover:text-indigo-200 transition-all duration-300 transform hover:translate-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right scale-125 mr-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </nav>
@@ -547,29 +682,30 @@
         <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Latto store</h1>
 
         <!-- Tab Navigation -->
-        <div class="flex flex-wrap border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-2 animate__animated animate__fadeIn">
-
-            <button class="tab-button active px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="sales">
-                Sales
-            </button>
-            <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="purchases">
-                Purchases
-            </button>
-            <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="transaction">
-                Transactions
-            </button>
-            <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="customers">
-                Parties
-            </button>
-            <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="inventory">
-                Inventory
-            </button>
-            <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="reports">
-                Reports
-            </button>
-            <button class="tab-button px-4 py-2 text-sm font-medium rounded-t-lg mr-2 focus:outline-none" data-tab="employees">
-                Employees
-            </button>
+        <div class="flex border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-2 animate__animated animate__fadeIn">
+            <div class="flex flex-nowrap min-w-full sm:min-w-0">
+                <button class="tab-button active px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="sales">
+                    Sales
+                </button>
+                <button class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="purchases">
+                    Purchases
+                </button>
+                <button class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="transaction">
+                    Transactions
+                </button>
+                <button class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="customers">
+                    Parties
+                </button>
+                <button class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="inventory">
+                    Inventory
+                </button>
+                <button class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="reports">
+                    Reports
+                </button>
+                <button class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="employees">
+                    Employees
+                </button>
+            </div>
         </div>
 
         <!-- Tab Content -->
@@ -855,7 +991,7 @@
 
                     <div class="flex items-center gap-3">
                         <!-- Inventory Stats Cards -->
-                        <div class="grid grid-cols-4 gap-3 mr-4">
+                        <div class="hidden md:grid grid-cols-4 gap-3 mr-4">
                             <div class="bg-white p-2 rounded-md shadow-lg text-center">
                                 <div class="text-xs text-gray-500">Total</div>
                                 <div id="total_inventory" class="text-lg font-bold">0</div>
@@ -970,20 +1106,20 @@
 
                         <!-- Quantity Range Filter -->
                         <div class="w-full">
-                            <div class="flex items-center space-x-1">
+                            <div class="flex flex-col xs:flex-row sm:items-center space-y-2 xs:space-y-0 xs:space-x-1">
                                 <input
                                     type="number"
                                     id="min_quantity"
                                     placeholder="Min Qty"
                                     min="0"
-                                    class="flex-1 px-3 h-10 border-2 border-gray-300 rounded-lg">
-                                <span class="text-gray-500">to</span>
+                                    class="w-full xs:flex-1 px-3 h-10 border-2 border-gray-300 rounded-lg">
+                                <span class="hidden xs:inline text-gray-500">to</span>
                                 <input
                                     type="number"
                                     id="max_quantity"
                                     placeholder="Max Qty"
                                     min="0"
-                                    class="flex-1 px-3 h-10 border-2 border-gray-300 rounded-lg">
+                                    class="w-full xs:flex-1 px-3 h-10 border-2 border-gray-300 rounded-lg">
                             </div>
                         </div>
 
@@ -1013,9 +1149,8 @@
                                         <th class="no-sort no_print text-center bg-green-500 py-3 px-2"><input type="checkbox" id="select_all_items" /></th>
                                         <th class="py-3 px-6 text-left">s/n</th>
                                         <th class="py-3 px-6 text-left">Product</th>
-                                        <th class="py-3 px-6 text-left">Brand</th>
-                                        <th class="py-3 px-6 text-left">Type</th>
-                                        <th class="py-3 px-6 text-left">Size</th>
+                                        <th class="py-3 px-6 text-left">size</th>
+                                        <th class="py-3 px-6 text-left">type</th>
                                         <th class="py-3 px-6 text-left">Stock</th>
                                         <th class="py-3 px-6 text-left">Price</th>
                                         <th class="py-3 px-6 text-left">Status</th>
@@ -1037,7 +1172,7 @@
             <div id="reports" class="tab-content">
                 <div class="flex justify-end mb-1">
 
-                    <div class="flex items-center gap-3">
+                    <div class="hidden md:flex items-center gap-3">
                         <!-- reports Stats Cards -->
                         <div class="grid grid-cols-4 gap-3 mr-4">
                             <div class="bg-white p-2 rounded-md shadow-lg text-center">
@@ -1057,8 +1192,6 @@
                                 <div id="total_expenses" class="text-xs font-bold text-red-600">0</div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
 
@@ -1504,20 +1637,19 @@
 
                     <div class="flex items-center gap-3">
                         <!-- employees Stats Cards -->
-                        <div class="grid grid-cols-4 gap-3 mr-4">
+                        <div class="hidden md:grid grid-cols-4 gap-3 mr-4">
                             <div class="bg-white p-2 rounded-md shadow-lg text-center">
-                                <div class="text-xs text-gray-500">Total</div>
+                                <div class="text-xs text-gray-500">Tl</div>
                                 <div id="total_employees" class="text-lg font-bold">0</div>
                             </div>
                             <div class="bg-green-100 p-2 rounded-md shadow-lg text-center">
-                                <div class="text-xs text-gray-500">Male</div>
+                                <div class="text-xs text-gray-500">M</div>
                                 <div id="male_count_employees" class="text-lg font-bold text-green-600">0</div>
                             </div>
                             <div class="bg-yellow-100 p-2 rounded-md shadow-lg text-center">
-                                <div class="text-xs text-gray-500">Female</div>
+                                <div class="text-xs text-gray-500">F</div>
                                 <div id="female_count_employees" class="text-lg font-bold text-yellow-600">0</div>
                             </div>
-
                         </div>
 
                         <!-- Action Buttons -->
@@ -1641,7 +1773,6 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3">
                         <div class="w-full">
                             <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
-                                <label for="Description" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Description:</label>
                                 <textarea id="add_sale_description" name="Description" rows="2" placeholder="Enter description" class="w-full flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                         </div>
@@ -1653,7 +1784,6 @@
                         <!-- Date Input -->
                         <div>
                             <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
-                                <label for="date" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Date:</label>
                                 <input type="date" id="add_sale_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
@@ -1661,7 +1791,6 @@
                         <!-- Customer Search -->
                         <div>
                             <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
-                                <label for="search_Customer" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Customer:</label>
                                 <div class="relative w-full">
                                     <svg class="fill-current text-gray-500 w-3 h-3 sm:w-4 sm:h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
@@ -1676,8 +1805,8 @@
 
                     <!-- Table Container -->
                     <div class="mt-3 sm:mt-4 border border-gray-300 rounded-lg overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table id="record_sales_table" class="min-w-full text-xs sm:text-sm">
+                        <div class="itemTable_container">
+                            <table id="record_sales_table" class="min-w-full text-xs sm:text-sm table-fixed">
                                 <thead>
                                     <tr class="bg-green-200">
                                         <th class="py-1 sm:py-2 px-1 sm:px-2 text-left font-medium">Stock</th>
@@ -1698,9 +1827,9 @@
                                             <input onkeyup="netPriceFn(this)" id="qtn" placeholder="Qty" name="quantity" class="quantity border w-12 sm:w-14 px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="number" />
                                         </td>
                                         <td class="p-1">
-                                            <div class="relative">
+                                            <div class="item-dropdown-wrapper">
                                                 <input placeholder="Item" id="sale_item_name" name="item_name" data-type="item_name" class="item_name border w-full min-w-[60px] sm:min-w-[100px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded" type="text" />
-                                                <div id="itemslist" class="itemslist absolute z-40 bg-white shadow-lg rounded-md max-h-40 overflow-y-auto w-full"></div>
+                                                <div id="itemslist" class="itemslist"></div>
                                                 <input type="hidden" class="item_id" name="item_id" />
                                             </div>
                                         </td>
@@ -1781,7 +1910,6 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-3">
                         <div class="w-full">
                             <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
-                                <label for="sales_edit_description" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Description:</label>
                                 <textarea id="sales_edit_description" name="description" rows="2" placeholder="Enter description" class="w-full flex-grow py-1 px-2 bg-gray-100 text-xs sm:text-sm rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                             </div>
                         </div>
@@ -1793,7 +1921,6 @@
                         <!-- Date Input -->
                         <div>
                             <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
-                                <label for="sales_edit_date" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Date:</label>
                                 <input type="date" id="sales_edit_date" name="date" class="px-2 py-1 text-xs sm:text-sm bg-gray-100 rounded border border-gray-300 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
@@ -1801,7 +1928,6 @@
                         <!-- Customer Search -->
                         <div>
                             <div class="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
-                                <label for="sales_edit_Customer" class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Customer:</label>
                                 <div class="relative w-full">
                                     <svg class="fill-current text-gray-500 w-3 h-3 sm:w-4 sm:h-4 absolute top-1/2 left-2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
@@ -1816,7 +1942,7 @@
 
                     <!-- Table Container -->
                     <div class="mt-3 sm:mt-4 border border-gray-300 rounded-lg overflow-hidden">
-                        <div class="overflow-x-auto">
+                        <div class="itemTable_container">
                             <table id="sales_edit_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
@@ -1918,7 +2044,7 @@
 
                     <!-- Table Container -->
                     <div class="mt-3 sm:mt-4 border border-gray-300 rounded-lg overflow-hidden">
-                        <div class="overflow-x-auto">
+                        <div class="itemTable_container">
                             <table id="purchase_record_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
@@ -2058,7 +2184,7 @@
 
                     <!-- Table Container -->
                     <div class="mt-3 sm:mt-4 border border-gray-300 rounded-lg overflow-hidden">
-                        <div class="overflow-x-auto">
+                        <div class="itemTable_container">
                             <table id="purchase_edit_table" class="min-w-full text-xs sm:text-sm">
                                 <thead>
                                     <tr class="bg-green-200">
@@ -3564,7 +3690,7 @@
 
     <!-- Stock Modal -->
     <div id="stock_Modal" class="fixed inset-0 z-20 hidden overflow-auto items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+        <div class="bg-white border border-black rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex flex-col">
             <!-- Modal Header -->
             <div class="flex justify-between items-center border-b p-4 bg-gray-100 rounded-t-lg">
                 <h3 class="text-xl font-semibold flex items-center">
@@ -3711,9 +3837,8 @@
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S/N</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Current Stock</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Latest Price</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Oldest Price</th>
@@ -4452,9 +4577,9 @@
 
                             // Get brand, type, and size info
                             const brandName = item.brand ? item.brand.name : '-';
-                            const typeName = item.mattress_type ? item.mattress_type.name : '-';
+                            const typeName = item.mattress_type ? item.mattress_type.code : '-';
                             const sizeCode = item.mattress_size ? item.mattress_size.size_code : '-';
-
+                            console.log(item.display_name);
                             inventoryHtml += `
                         <tr class="bg-white border-b border-blue-200 hover:bg-gray-50 ${item.is_mattress ? 'bg-blue-50' : ''}">
                             <td class="text-center no_print"><input type="checkbox" value="${item.id}" class="item_checkbox" /></td>
@@ -4463,9 +4588,9 @@
                                 ${item.display_name || item.name}
                                 ${item.is_mattress ? '<span class="text-xs text-blue-600 ml-2">(Mattress)</span>' : ''}
                             </td>
-                            <td class="py-2 px-6 text-left whitespace-nowrap">${brandName}</td>
-                            <td class="py-2 px-6 text-left whitespace-nowrap">${typeName}</td>
+                    
                             <td class="py-2 px-6 text-left whitespace-nowrap">${sizeCode}</td>
+                            <td class="py-2 px-6 text-left whitespace-nowrap">${typeName}</td>
                             <td class="py-2 px-6 text-left whitespace-nowrap">${item.current_stock || 0}</td>
                             <td class="py-2 px-6 text-left whitespace-nowrap">${formattedPrice}</td>
                             <td class="py-2 px-6 text-left whitespace-nowrap">
@@ -4984,8 +5109,14 @@
 
 
         $(document).ready(function() {
+            // Close dropdowns when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.item-dropdown-wrapper').length) {
+                    $('.itemslist').fadeOut();
+                }
+            });
 
-            // Item search for all modals with improved search capabilities
+            // Item search for all modals with improved search capabilities and dropdown positioning
             $(document).on('keyup', '#sale_item_name, .edit_item_name, #purchase_item_name', function() {
                 var inputElement = $(this);
                 var query = $.trim(inputElement.val());
@@ -4997,15 +5128,134 @@
                         query: query
                     }, function(data) {
                         if (data.trim() !== '') {
-                            inputElement.siblings('.itemslist').fadeIn().html(data);
+                            // Position the dropdown correctly
+                            const inputRect = inputElement[0].getBoundingClientRect();
+                            const dropdownHeight = Math.min(200, $(data).height()); // Estimate dropdown height
+
+                            // Calculate the best position for the dropdown
+                            let topPosition = inputRect.bottom + window.scrollY;
+
+                            // Check if dropdown would go off the bottom of the viewport
+                            if (topPosition + dropdownHeight > window.innerHeight + window.scrollY) {
+                                // Position above the input if it would go off the bottom
+                                topPosition = inputRect.top + window.scrollY - dropdownHeight;
+                            }
+
+                            // Set the dropdown position using CSS
+                            searchContainer.css({
+                                'top': topPosition + 'px',
+                                'left': inputRect.left + 'px',
+                                'width': Math.max(250, inputRect.width) + 'px'
+                            });
+
+                            // Show the dropdown with the search results
+                            searchContainer.fadeIn().html(data);
                         } else {
-                            inputElement.siblings('.itemslist').fadeOut();
+                            searchContainer.fadeOut();
                         }
                     });
                 } else {
-                    inputElement.siblings('.itemslist').fadeOut();
+                    searchContainer.fadeOut();
                 }
             });
+
+            // Handle keyboard navigation in the dropdown
+            $(document).on('keydown', '#sale_item_name, .edit_item_name, #purchase_item_name', function(e) {
+                const $dropdown = $(this).siblings('.itemslist');
+
+                if ($dropdown.is(':visible')) {
+                    // ESC key closes dropdown
+                    if (e.keyCode === 27) {
+                        $dropdown.fadeOut();
+                        return;
+                    }
+
+                    // Down arrow - highlight first item if none selected
+                    if (e.keyCode === 40) {
+                        const $items = $dropdown.find('.items_lists');
+                        const $highlighted = $dropdown.find('.items_lists.highlighted');
+
+                        if ($highlighted.length === 0) {
+                            $items.first().addClass('highlighted').focus();
+                        } else {
+                            const $next = $highlighted.next('.items_lists');
+                            if ($next.length) {
+                                $highlighted.removeClass('highlighted');
+                                $next.addClass('highlighted').focus();
+                            }
+                        }
+                        e.preventDefault();
+                    }
+
+                    // Up arrow - navigate up
+                    if (e.keyCode === 38) {
+                        const $highlighted = $dropdown.find('.items_lists.highlighted');
+                        const $prev = $highlighted.prev('.items_lists');
+
+                        if ($prev.length) {
+                            $highlighted.removeClass('highlighted');
+                            $prev.addClass('highlighted').focus();
+                        }
+                        e.preventDefault();
+                    }
+
+                    // Enter selects item
+                    if (e.keyCode === 13) {
+                        const $highlighted = $dropdown.find('.items_lists.highlighted');
+                        if ($highlighted.length) {
+                            $highlighted.click();
+                            e.preventDefault();
+                        }
+                    }
+                }
+            });
+
+            // Function to measure and adjust input width based on content
+            function autoResizeItemInput($input) {
+                // Create a temporary span to measure text width
+                const $measurer = $('<span>')
+                    .css({
+                        'position': 'absolute',
+                        'visibility': 'hidden',
+                        'white-space': 'nowrap',
+                        'font-family': $input.css('font-family'),
+                        'font-size': $input.css('font-size'),
+                        'font-weight': $input.css('font-weight'),
+                        'padding': $input.css('padding'),
+                        'border': $input.css('border'),
+                        'letter-spacing': $input.css('letter-spacing')
+                    })
+                    .text($input.val())
+                    .appendTo('body');
+
+                // Calculate width with padding
+                const textWidth = $measurer.width() + 30; // Add padding
+
+                // Calculate proper width bounds
+                const tableWidth = $input.closest('table').width();
+                const cellWidth = $input.closest('td').width();
+                const minWidth = 200;
+                const maxWidth = Math.min(tableWidth * 0.5, 500); // Cap at reasonable width
+
+                // Set width within bounds
+                const newWidth = Math.max(minWidth, Math.min(textWidth, maxWidth));
+
+                // Apply new width with smooth transition
+                $input.css({
+                    'width': newWidth + 'px',
+                    'transition': 'width 0.3s ease',
+                    'background-color': '#f0f9ff'
+                });
+
+                // Remove measurement element
+                $measurer.remove();
+
+                // Adjust table cell width to accommodate the input
+                $input.closest('td').css({
+                    'min-width': (newWidth + 20) + 'px',
+                    'transition': 'min-width 0.3s ease'
+                });
+            }
 
             // Enhanced unified item selection handling for both regular and edit modals
             $(document).on('click', '.items_lists', function(e) {
@@ -5044,12 +5294,22 @@
                     const inEditSalesModal = $row.closest('#editSalesModal').length > 0;
                     const inRegularModal = !inEditPurchaseModal && !inEditSalesModal;
 
+                    // Reference to the input field we'll be updating
+                    let $inputToResize;
+
                     // Set the enhanced formatted item name in the appropriate input field
                     if (inRegularModal) {
-                        $row.find('input[name="item_name"]').val(fullFormattedName);
+                        $inputToResize = $row.find('input[name="item_name"]');
+                        $inputToResize.val(fullFormattedName);
                     } else {
-                        $row.find('.edit_item_name').val(fullFormattedName);
+                        $inputToResize = $row.find('.edit_item_name');
+                        $inputToResize.val(fullFormattedName);
                     }
+
+                    // Auto-resize the input field to fit the content
+                    setTimeout(function() {
+                        autoResizeItemInput($inputToResize);
+                    }, 50);
 
                     // Hide the dropdown
                     $listItem.closest('.itemslist').fadeOut();
@@ -5145,6 +5405,12 @@
                                         setTimeout(totalFn, 10);
                                     }
                                 }
+
+                                // Resize the input one more time after data is loaded, just to be sure
+                                setTimeout(function() {
+                                    autoResizeItemInput($inputToResize);
+                                }, 100);
+
                             } catch (innerError) {
                                 console.error('Error processing item data:', innerError);
                                 // Fallback: just call totalFn to ensure calculation happens
@@ -5158,6 +5424,46 @@
                 } catch (error) {
                     console.error('Error in item click handler:', error);
                 }
+            });
+
+            // Re-measure inputs when a modal opens or screen resizes
+            $(document).ready(function() {
+                // When a modal is shown, resize any inputs that already have content
+                $('#add_sales_modal, #add_purchase_modal, #editSalesModal, #editPurchaseModal').on('shown.bs.modal', function() {
+                    const $modal = $(this);
+
+                    setTimeout(function() {
+                        $modal.find('.item_name, .edit_item_name').each(function() {
+                            if ($(this).val().trim() !== '') {
+                                autoResizeItemInput($(this));
+                            }
+                        });
+                    }, 300);
+                });
+
+                // Also resize on window resize, with throttling
+                let resizeTimer;
+                $(window).on('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(function() {
+                        $('.item_name, .edit_item_name').each(function() {
+                            if ($(this).val().trim() !== '') {
+                                autoResizeItemInput($(this));
+                            }
+                        });
+                    }, 250);
+                });
+
+                // When adding new rows, check existing inputs
+                $(document).on('click', '[onclick*="addRow"]', function() {
+                    setTimeout(function() {
+                        $('.item_name, .edit_item_name').each(function() {
+                            if ($(this).val().trim() !== '') {
+                                autoResizeItemInput($(this));
+                            }
+                        });
+                    }, 100);
+                });
             });
 
             // Customer selection handler
@@ -6463,15 +6769,13 @@
                                         displayName = item.item ? item.item.name : 'Unknown Item';
                                     }
                                     
-                                    return `
-                                        <tr class="border">
-                                            <td class="p-1">${displayName}</td>
-                                            <td class="p-1 text-right">${item.quantity}</td>
-                                            <td class="p-1 text-right">Tsh ${parseFloat(item.sale_price).toFixed(2)}</td>
-                                            <td class="p-1 text-right">Tsh ${parseFloat(item.discount).toFixed(2)}</td>
-                                            <td class="p-1 text-right">Tsh ${((item.quantity * item.sale_price) - item.discount).toFixed(2)}</td>
-                                        </tr>
-                                    `;
+                                        return '<tr class="border">' +
+                                            '<td class="p-1">' + displayName + '</td>' +
+                                            '<td class="p-1 text-right">' + item.quantity + '</td>' +
+                                            '<td class="p-1 text-right">Tsh ' + parseFloat(item.sale_price).toFixed(2) + '</td>' +
+                                            '<td class="p-1 text-right">Tsh ' + parseFloat(item.discount).toFixed(2) + '</td>' +
+                                            '<td class="p-1 text-right">Tsh ' + ((item.quantity * item.sale_price) - item.discount).toFixed(2) + '</td>' +
+                                        '</tr>';
                                 }).join('')}
                             </tbody>
                             <tfoot class="bg-gray-50">
@@ -6649,13 +6953,11 @@
                                     ? displayName.substring(0, maxLength - 2) + '..'
                                     : displayName;
                                 
-                                return `
-                                    <tr>
-                                        <td>${truncatedName}</td>
-                                        <td class="text-right">${item.quantity}</td>
-                                        <td class="text-right">${((item.quantity * item.sale_price) - item.discount).toFixed(2)}</td>
-                                    </tr>
-                                `;
+                            return '<tr>' +
+                                '<td>' + truncatedName + '</td>' +
+                                '<td class="text-right">' + item.quantity + '</td>' +
+                                '<td class="text-right">' + ((item.quantity * item.sale_price) - item.discount).toFixed(2) + '</td>' +
+                            '</tr>';
                             }).join('')}
                         </tbody>
                     </table>
@@ -6817,24 +7119,24 @@
             fetch(`/getPurchase/${purchaseId}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.status === 'success') {
-                        const purchase = data.data;
+                        if (data.status === 'success') {
+                            const purchase = data.data;
 
-                        // Check if supplier exists, use empty object if null to avoid errors
-                        const supplier = purchase.supplier || {};
+                            // Check if supplier exists, use empty object if null to avoid errors
+                            const supplier = purchase.supplier || {};
 
-                        // Format date
-                        const purchaseDate = new Date(purchase.purchase_date).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
+                            // Format date
+                            const purchaseDate = new Date(purchase.purchase_date).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
 
-                        // Calculate subtotal (before discount)
-                        const subtotal = parseFloat(purchase.total_amount) + parseFloat(purchase.total_discount);
+                            // Calculate subtotal (before discount)
+                            const subtotal = parseFloat(purchase.total_amount) + parseFloat(purchase.total_discount);
 
-                        // Create invoice HTML with improved layout
-                        const invoiceHTML = `
+                            // Create invoice HTML with improved layout
+                            const invoiceHTML = `
                 <div class="p-4 bg-white">
                     <!-- Header Section -->
                     <div class="border-b border-gray-300 pb-3 mb-3">
@@ -6943,15 +7245,35 @@
                                                         <div class="text-xs text-gray-500">SKU: ${item.item.sku || 'N/A'}</div>
                                                         ${item.item.description ? `<div class="text-xs text-gray-500">${item.item.description}</div>` : ''}
                                                     `;
-                                                })()}
-                                            </td>
-                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">${item.quantity}</td>
-                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.purchase_price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.discount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">${item.expire_date ? new Date(item.expire_date).toLocaleDateString() : '-'}</td>
-                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right font-medium">Tsh ${((item.quantity * item.purchase_price) - item.discount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                        </tr>
-                                    `).join('')}
+                        })()
+                } <
+                /td> <
+            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right" > $ {
+                item.quantity
+            } < /td> <
+            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right" > Tsh $ {
+                parseFloat(item.purchase_price).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
+            } < /td> <
+            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right" > Tsh $ {
+                parseFloat(item.discount).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
+            } < /td> <
+            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right" > $ {
+                item.expire_date ? new Date(item.expire_date).toLocaleDateString() : '-'
+            } < /td> <
+            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right font-medium" > Tsh $ {
+                ((item.quantity * item.purchase_price) - item.discount).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
+            } < /td> < /
+            tr >
+                `).join('')}
                                 </tbody>
                             </table>
                         </div>
@@ -7004,14 +7326,14 @@
                 </div>
                 `;
 
-                        // Update the print_Purchase_Invoice div with the invoice content
-                        document.getElementById('print_Purchase_Invoice').innerHTML = invoiceHTML;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('print_Purchase_Invoice').innerHTML = '<div class="text-red-500">Error loading invoice data</div>';
-                });
+            // Update the print_Purchase_Invoice div with the invoice content
+            document.getElementById('print_Purchase_Invoice').innerHTML = invoiceHTML;
+        }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('print_Purchase_Invoice').innerHTML = '<div class="text-red-500">Error loading invoice data</div>';
+        });
         }
 
 
@@ -10302,7 +10624,7 @@
                     const brandName = item.brand ? item.brand.name : '';
                     const typeName = item.mattress_type ? item.mattress_type.name : '';
                     const sizeCode = item.mattress_size ? item.mattress_size.size_code : '';
-                    displayName = `${brandName} ${typeName} ${sizeCode}`.trim();
+                    displayName = `${brandName}`.trim();
                 }
 
                 // Determine status class for color-coding
@@ -10331,9 +10653,8 @@
                             ${displayName}
                             ${item.is_mattress ? '<span class="text-xs text-blue-600 ml-2">(Mattress)</span>' : ''}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.brand ? item.brand.name : '-'}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.mattress_type ? item.mattress_type.name : '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.mattress_size ? item.mattress_size.size_code : '-'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.mattress_type ? item.mattress_type.code : '-'}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${item.current_stock}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${formatCurrency(item.latest_price)}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${formatCurrency(item.oldest_price)}</td>
@@ -10394,145 +10715,153 @@
             let tableHtml = '';
             const rows = stockTableBody.getElementsByTagName('tr');
 
-            if (rows.length === 0 || (rows.length === 1 && rows[0].cells.length === 1)) {
+            if (rows.length === 0 || (rows.length === 1 && rows[0].cells.length === 1 && rows[0].cells[0].colSpan > 1)) {
                 tableHtml = `<tr><td colspan="9" style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">No stock data available</td></tr>`;
             } else {
+                // Loop through all visible rows
+                let rowIndex = 0;
                 for (let i = 0; i < rows.length; i++) {
-                    const cells = rows[i].cells;
-                    // Skip rows that are just messages (like "No data found")
-                    if (cells.length < 11) continue;
+                    const row = rows[i];
+                    const cells = row.cells;
 
-                    // Get cell values
-                    const sn = cells[0].textContent;
-                    const sku = cells[1].textContent;
-                    const product = cells[2].textContent.replace(/\(Mattress\)/g, '').trim();
-                    const brand = cells[3].textContent;
-                    const type = cells[4].textContent;
-                    const size = cells[5].textContent;
-                    const stock = cells[6].textContent;
-                    const latestPrice = cells[7].textContent;
-                    const oldestPrice = cells[8].textContent;
+                    // Skip rows that are just messages (like "No data found")
+                    if (cells.length === 1 && cells[0].colSpan > 1) continue;
+
+                    // Get cell values - make sure to handle potentially undefined elements safely
+                    rowIndex++;
+
+                    // Explicitly check each cell and provide default values
+                    const sn = rowIndex.toString();
+                    const sku = cells[1] ? cells[1].textContent : '';
+                    const product = cells[2] ? cells[2].textContent.replace(/\(Mattress\)/g, '').trim() : '';
+                    const size = cells[3] ? cells[3].textContent : '';
+                    const type = cells[4] ? cells[4].textContent : '';
+                    const stock = cells[5] ? cells[5].textContent : '';
+                    const latestPrice = cells[6] ? cells[6].textContent : '';
+                    const oldestPrice = cells[7] ? cells[7].textContent : '';
                     const price = priceCalculation === 'latest' ? latestPrice : oldestPrice;
-                    const value = cells[9].textContent;
-                    const status = cells[10].querySelector('span').textContent.trim();
+                    const value = cells[8] ? cells[8].textContent : '';
+
+                    // For status, we need to be careful with the DOM structure
+                    let status = '';
+                    if (cells[9] && cells[9].querySelector('span')) {
+                        status = cells[9].querySelector('span').textContent.trim();
+                    }
 
                     tableHtml += `
-                        <tr>
-                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sn}</td>
-                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sku}</td>
-                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${product}</td>
-                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${brand}</td>
-                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${type}</td>
-                            <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${size}</td>
-                            <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${stock}</td>
-                            <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${price}</td>
-                            <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${value}</td>
-                            <td style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">${status}</td>
-                        </tr>
-                    `;
+                <tr>
+                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sn}</td>
+                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${sku}</td>
+                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${product}</td>
+                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${size}</td>
+                    <td style="border: 1px solid #000; padding: 3px; font-size: 10px;">${type}</td>
+                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${stock}</td>
+                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${price}</td>
+                    <td style="border: 1px solid #000; padding: 3px; text-align: right; font-size: 10px;">${value}</td>
+                    <td style="border: 1px solid #000; padding: 3px; text-align: center; font-size: 10px;">${status}</td>
+                </tr>
+            `;
                 }
             }
 
             // Create print content with inline styles
             const printContent = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Stock Report</title>
-                    <style>
-                        @page { 
-                            margin: 0.5cm; 
-                            size: landscape;
-                        }
-                        body { 
-                            font-family: Arial, sans-serif; 
-                            margin: 0; 
-                            padding: 10px;
-                            font-size: 11px;
-                        }
-                        table { 
-                            width: 100%; 
-                            border-collapse: collapse; 
-                            margin-bottom: 10px; 
-                        }
-                        th { 
-                            border: 1px solid #000; 
-                            padding: 3px; 
-                            background-color: #f2f2f2; 
-                            text-align: left;
-                            font-size: 10px;
-                            font-weight: bold;
-                        }
-                        td { 
-                            border: 1px solid #000; 
-                            padding: 3px; 
-                            font-size: 10px;
-                        }
-                        .print-header { 
-                            margin-bottom: 10px; 
-                            text-align: center;
-                        }
-                        .print-summary { 
-                            margin-top: 10px; 
-                            font-weight: bold;
-                            font-size: 10px;
-                        }
-                        h1 { 
-                            text-align: center; 
-                            margin: 5px 0;
-                            font-size: 14px;
-                        }
-                        .flex-space-between {
-                            display: flex;
-                            justify-content: space-between;
-                            margin-bottom: 5px;
-                            font-size: 10px;
-                        }
-                        .report-info {
-                            font-size: 10px;
-                            color: #444;
-                            text-align: center;
-                            margin-bottom: 5px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="print-header">
-                        <h1>STOCK REPORT</h1>
-                        <div class="report-info">Generated on: ${formattedDate} ${formattedTime}</div>
-                    </div>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>S/N</th>
-                                <th>SKU</th>
-                                <th>PRODUCT</th>
-                                <th>BRAND</th>
-                                <th>TYPE</th>
-                                <th>SIZE</th>
-                                <th style="text-align: right;">QTY</th>
-                                <th style="text-align: right;">PRICE (TZS)</th>
-                                <th style="text-align: right;">VALUE (TZS)</th>
-                                <th style="text-align: center;">STATUS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tableHtml}
-                        </tbody>
-                    </table>
-                    
-                    <div class="print-summary">
-                        <div class="flex-space-between">
-                            <div>Total Items: ${totalItems}</div>
-                            <div>Total Stock: ${totalStock}</div>
-                            <div>Total Value: ${stockValue}</div>
-                            <div>Avg. Price: ${avgPrice}</div>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `;
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Stock Report</title>
+            <style>
+                @page { 
+                    margin: 0.5cm; 
+                }
+                body { 
+                    font-family: Arial, sans-serif; 
+                    margin: 0; 
+                    padding: 10px;
+                    font-size: 11px;
+                }
+                table { 
+                    width: 100%; 
+                    border-collapse: collapse; 
+                    margin-bottom: 10px; 
+                }
+                th { 
+                    border: 1px solid #000; 
+                    padding: 3px; 
+                    background-color: #f2f2f2; 
+                    text-align: left;
+                    font-size: 10px;
+                    font-weight: bold;
+                }
+                td { 
+                    border: 1px solid #000; 
+                    padding: 3px; 
+                    font-size: 10px;
+                }
+                .print-header { 
+                    margin-bottom: 10px; 
+                    text-align: center;
+                }
+                .print-summary { 
+                    margin-top: 10px; 
+                    font-weight: bold;
+                    font-size: 10px;
+                }
+                h1 { 
+                    text-align: center; 
+                    margin: 5px 0;
+                    font-size: 14px;
+                }
+                .flex-space-between {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+                    font-size: 10px;
+                }
+                .report-info {
+                    font-size: 10px;
+                    color: #444;
+                    text-align: center;
+                    margin-bottom: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="print-header">
+                <h1>STOCK REPORT</h1>
+                <div class="report-info">Generated on: ${formattedDate} ${formattedTime}</div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>SKU</th>
+                        <th>PRODUCT</th>
+                        <th>SIZE</th>
+                        <th>TYPE</th>
+                        <th style="text-align: right;">QTY</th>
+                        <th style="text-align: right;">PRICE (TZS)</th>
+                        <th style="text-align: right;">VALUE (TZS)</th>
+                        <th style="text-align: center;">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableHtml}
+                </tbody>
+            </table>
+            
+            <div class="print-summary">
+                <div class="flex-space-between">
+                    <div>Total Items: ${totalItems}</div>
+                    <div>Total Stock: ${totalStock}</div>
+                    <div>Total Value: ${stockValue}</div>
+                    <div>Avg. Price: ${avgPrice}</div>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
 
             // Write to the iframe
             const frameDoc = printFrame.contentDocument || printFrame.contentWindow.document;
@@ -10551,7 +10880,6 @@
                 }
             }, 500);
         }
-
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
             // When stock button is clicked
@@ -12609,27 +12937,32 @@
 
             // Delete row for the main modals (regular sales or purchases)
             delRow(button) {
-                const tbody_record_sales_table = $('#record_sales_table tbody');
-                const tbody_purchase_record_table = $('#purchase_record_table tbody');
-                const rowCount_record_sales_table = tbody_record_sales_table.children('tr').length;
-                const rowCount_purchase_record_table = tbody_purchase_record_table.children('tr').length;
+                // Find which table we're actually working with based on the closest table to the button
+                const $row = $(button).closest('tr');
+                const $table = $row.closest('table');
+                const tableId = $table.attr('id');
 
-                // Prevent deleting the last row
-                if (rowCount_record_sales_table > 1) {
-                    $(button).closest('tr').remove();
-                    totalFn();
+                // Determine which tbody to check based on the table ID
+                let $tbody;
+                if (tableId === 'record_sales_table') {
+                    $tbody = $('#record_sales_table tbody');
+                } else if (tableId === 'purchase_record_table') {
+                    $tbody = $('#purchase_record_table tbody');
                 } else {
-                    // Show error message
-                    showFeedbackModal('error', 'Error', 'Cannot delete the last row');
+                    console.error('Unknown table ID:', tableId);
+                    return;
                 }
 
-                // Prevent deleting the last row
-                if (rowCount_purchase_record_table > 1) {
-                    $(button).closest('tr').remove();
-                    totalFn();
-                } else {
-                    // Show error message
+                // Get the row count for the appropriate table
+                const rowCount = $tbody.children('tr').length;
+
+                // Prevent deleting if this is the last row
+                if (rowCount <= 1) {
                     showFeedbackModal('error', 'Error', 'Cannot delete the last row');
+                } else {
+                    // Safe to delete this row
+                    $row.remove();
+                    totalFn(); // Update totals
                 }
             }
 
@@ -12886,40 +13219,40 @@
                 $(debtSelector).text(`${debt.toFixed(2)} Tzs`);
             }
 
-  // This method is inside the TableRowManager class
-// Update this method to handle item name formatting with brand, type and size
+            // This method is inside the TableRowManager class
+            // Update this method to handle item name formatting with brand, type and size
 
-// Populate edit item row with item data
-populateEditItemRow(item) {
-    // Calculate current stock if item exists
-    const currentStock = item?.item?.current_stock ?? 0;
-    
-    // Format item name with brand, type and size if available
-    let formattedItemName = '';
-    
-    if (item?.item) {
-        // Check if item has brand, type and size attributes
-        const hasBrand = item.item.brand;
-        const hasType = item.item.mattressType;
-        const hasSize = item.item.mattressSize;
-        
-        // If any mattress attributes exist, use them instead of item name
-        if (hasBrand || hasType || hasSize) {
-            const parts = [];
-            if (hasBrand) parts.push(item.item.brand.name);
-            if (hasType) parts.push(item.item.mattressType.name);
-            if (hasSize) parts.push(item.item.mattressSize.size_code);
-            formattedItemName = parts.join(' - ');
-        } else {
-            // Fallback to item name if no mattress attributes
-            formattedItemName = item.item.name || 'Unnamed Item';
-        }
-    } else {
-        formattedItemName = 'Unknown Item';
-    }
+            // Populate edit item row with item data
+            populateEditItemRow(item) {
+                // Calculate current stock if item exists
+                const currentStock = item?.item?.current_stock ?? 0;
 
-    if (this.modalType === 'purchase') {
-        return `
+                // Format item name with brand, type and size if available
+                let formattedItemName = '';
+
+                if (item?.item) {
+                    // Check if item has brand, type and size attributes
+                    const hasBrand = item.item.brand;
+                    const hasType = item.item.mattressType;
+                    const hasSize = item.item.mattressSize;
+
+                    // If any mattress attributes exist, use them instead of item name
+                    if (hasBrand || hasType || hasSize) {
+                        const parts = [];
+                        if (hasBrand) parts.push(item.item.brand.name);
+                        if (hasType) parts.push(item.item.mattressType.name);
+                        if (hasSize) parts.push(item.item.mattressSize.size_code);
+                        formattedItemName = parts.join(' - ');
+                    } else {
+                        // Fallback to item name if no mattress attributes
+                        formattedItemName = item.item.name || 'Unnamed Item';
+                    }
+                } else {
+                    formattedItemName = 'Unknown Item';
+                }
+
+                if (this.modalType === 'purchase') {
+                    return `
 <tr class="border-b border-gray-300">
     <td class="p-1">
         <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
@@ -12959,8 +13292,8 @@ populateEditItemRow(item) {
     </td>
 </tr>
 `;
-    } else { // sales
-        return `
+                } else { // sales
+                    return `
 <tr class="border-b border-gray-300">
     <td class="p-1">
         <input disabled value="${currentStock}" class="av_quantity bg-green-300 text-blue-800 py-1 w-10 text-center rounded-full" type="text">
@@ -13000,8 +13333,8 @@ populateEditItemRow(item) {
     </td>
 </tr>
 `;
-    }
-}
+                }
+            }
 
             // Helper function to calculate net price for a row
             calculateNetPrice(quantity, price, discount) {
