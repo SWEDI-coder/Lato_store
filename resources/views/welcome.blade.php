@@ -2230,10 +2230,10 @@
     </div>
 
     <!-- Add Item Modal -->
-    <div id="add_item_modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+    <div id="add_item_modal" class="fixed inset-0 z-20 hidden overflow-auto items-center justify-center p-4">
         <div class="w-full max-w-3xl transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
             <!-- Modal Header with Close Button -->
-            <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+            <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
                 <h2 class="font-bold text-lg">Add New Item</h2>
                 <button onclick="hide_add_item_modal()" class="text-gray-500 cursor-pointer hover:text-gray-800 focus:outline-none">
                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
@@ -2243,11 +2243,11 @@
             </div>
 
             <!-- Modal Body -->
-            <div class="px-4 py-4">
+            <div class="px-4 py-2">
                 <form action="" method="POST" id="add_item_form">
                     @csrf
                     <!-- Product Type Toggle -->
-                    <div class="mb-2">
+                    <div class="mb-1">
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="is_mattress" id="is_mattress" class="sr-only peer">
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
@@ -2256,11 +2256,11 @@
                     </div>
 
                     <!-- Basic Information Section -->
-                    <div class="bg-gray-100 px-4 py-3 mb-2 rounded shadow-inner">
-                        <h3 class="font-bold text-gray-700 mb-2">Basic Information</h3>
+                    <div class="bg-gray-100 px-4 py-1 mb-1 rounded shadow-inner">
+                        <h3 class="font-bold text-gray-700 mb-1">Basic Information</h3>
 
                         <!-- Item Name -->
-                        <div class="mb-2">
+                        <div class="mb-1">
                             <input type="text" name="name" placeholder="Item name" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                             <div id="Errorname" class="text-red-600 text-sm mt-1"></div>
                         </div>
@@ -2281,41 +2281,28 @@
                     </div>
 
                     <!-- Mattress-specific details, conditionally displayed -->
-                    <div id="mattress_details" class="hidden bg-gray-100 px-4 py-3 mb-1 rounded shadow-inner">
+                    <div id="mattress_details" class="hidden bg-gray-100 px-4 py-1 mb-1 rounded shadow-inner">
                         <h3 class="font-bold text-gray-700 mb-1">Mattress Details</h3>
 
                         <!-- Brand, Type, Size -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-1">
                             <div>
-                                <label for="brand_id" class="block text-sm font-medium text-gray-800 mb-1">Brand:</label>
                                 <select id="brand_id" name="brand_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                     <option value="">Select Brand</option>
                                     <!-- Brands will be loaded here via JS -->
                                 </select>
                             </div>
                             <div>
-                                <label for="mattress_type_id" class="block text-sm font-medium text-gray-800 mb-1">Type:</label>
                                 <select id="mattress_type_id" name="mattress_type_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                     <option value="">Select Type</option>
                                     <!-- Types will be loaded here via JS -->
                                 </select>
                             </div>
                             <div>
-                                <label for="mattress_size_id" class="block text-sm font-medium text-gray-800 mb-1">Size:</label>
                                 <select id="mattress_size_id" name="mattress_size_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                     <option value="">Select Size</option>
                                     <!-- Sizes will be loaded here via JS -->
                                 </select>
-                            </div>
-                        </div>
-
-                        <!-- Additional Details -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <input type="text" id="color" name="color" placeholder="Product color" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                            </div>
-                            <div>
-                                <input type="text" id="warranty_period" name="warranty_period" placeholder="Warranty period" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                             </div>
                         </div>
                     </div>
@@ -2335,10 +2322,10 @@
     </div>
 
     <!-- Edit Item Modal -->
-    <div id="edit_item_modal" class="fixed inset-0 z-20 hidden items-center justify-center p-4">
+    <div id="edit_item_modal" class="fixed inset-0 z-20 hidden overflow-auto items-center justify-center p-4">
         <div class="w-full max-w-3xl transform transition duration-300 hover:-translate-y-2 border-2 border-green-600 bg-gray-50 shadow-2xl rounded-lg overflow-hidden">
             <!-- Modal Header with Close Button -->
-            <div class="flex justify-between items-center px-4 py-3 bg-gray-100 border-b">
+            <div class="flex justify-between items-center px-4 py-2 bg-gray-100 border-b">
                 <h2 class="font-bold text-lg">Edit Item</h2>
                 <button onclick="hide_EDIT_itemDialog()" class="p-2 rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors">
                     <svg class="fill-current text-gray-900 hover:text-white w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -2348,13 +2335,13 @@
             </div>
 
             <!-- Modal Body -->
-            <div class="px-4 py-4">
+            <div class="px-4 py-2">
                 <form action="" method="POST" id="edit_item_form">
                     @csrf
                     <input type="hidden" id="edit_item_id">
 
                     <!-- Product Type Toggle -->
-                    <div class="mb-4">
+                    <div class="mb-1">
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="is_mattress" id="Edit_is_mattress" class="sr-only peer">
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
@@ -2363,31 +2350,21 @@
                     </div>
 
                     <!-- Basic Information Section -->
-                    <div class="bg-gray-100 px-4 py-3 mb-2 rounded shadow-inner">
+                    <div class="bg-gray-100 px-4 py-1 mb-1 rounded shadow-inner">
                         <h3 class="font-bold text-gray-700 mb-2">Basic Information</h3>
 
-                        <!-- Item Name and SKU -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-                            <div>
-                                <input type="text" id="Edit_item_name" name="name" placeholder="Item name" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                                <div id="Erroritem_name" class="text-red-600 text-sm mt-1"></div>
-                            </div>
+                        <!-- Item Name -->
+                        <div>
+                            <input type="text" id="Edit_item_name" name="name" placeholder="Item name" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                            <div id="Erroritem_name" class="text-red-600 text-sm mt-1"></div>
+                        </div>
+
+                        <!-- Prices -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-1">
                             <div>
                                 <input type="number" step="0.01" id="Edit_sale_price" name="sale_price" placeholder="Sale price" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                 <div id="Errorsale_price" class="text-red-600 text-sm mt-1"></div>
                             </div>
-                        </div>
-
-                        <!-- Prices -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-                            <div>
-                                <select id="Edit_status" name="status" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                                    <option value="">Select Status</option>
-                                    <option value="Inactive">Inactive</option>
-                                    <option value="Damage">Damage</option>
-                                </select>
-                            </div>
-
                             <!-- Description -->
                             <div>
                                 <textarea name="description" id="Edit_item_description" rows="2" class="w-full px-3 py-1 bg-gray-100 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500" placeholder="Item description!"></textarea>
@@ -2396,49 +2373,34 @@
                     </div>
 
                     <!-- Mattress-specific details, conditionally displayed -->
-                    <div id="edit_mattress_details" class="hidden bg-gray-100 px-4 py-3 mb-2 rounded shadow-inner">
-                        <h3 class="font-bold text-gray-700 mb-2">Mattress Details</h3>
+                    <div id="edit_mattress_details" class="hidden bg-gray-100 px-4 py-1 mb-1 rounded shadow-inner">
+                        <h3 class="font-bold text-gray-700 mb-1">Mattress Details</h3>
 
                         <!-- Brand, Type, Size -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-1">
                             <div>
-                                <label for="Edit_brand_id" class="block text-sm font-medium text-gray-800 mb-1">Brand:</label>
                                 <select id="Edit_brand_id" name="brand_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                     <option value="">Select Brand</option>
                                     <!-- Brands will be loaded here via JS -->
                                 </select>
                             </div>
                             <div>
-                                <label for="Edit_mattress_type_id" class="block text-sm font-medium text-gray-800 mb-1">Type:</label>
                                 <select id="Edit_mattress_type_id" name="mattress_type_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                     <option value="">Select Type</option>
                                     <!-- Types will be loaded here via JS -->
                                 </select>
                             </div>
                             <div>
-                                <label for="Edit_mattress_size_id" class="block text-sm font-medium text-gray-800 mb-1">Size:</label>
                                 <select id="Edit_mattress_size_id" name="mattress_size_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                     <option value="">Select Size</option>
                                     <!-- Sizes will be loaded here via JS -->
                                 </select>
                             </div>
                         </div>
-
-                        <!-- Additional Details -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="Edit_color" class="block text-sm font-medium text-gray-800 mb-1">Color:</label>
-                                <input type="text" id="Edit_color" name="color" placeholder="Product color" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                            </div>
-                            <div>
-                                <label for="Edit_warranty_period" class="block text-sm font-medium text-gray-800 mb-1">Warranty:</label>
-                                <input type="text" id="Edit_warranty_period" name="warranty_period" placeholder="Warranty period" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="flex justify-end space-x-2 mt-2">
+                    <div class="flex justify-end space-x-2 mt-1">
                         <button type="button" onclick="hide_EDIT_itemDialog()" class="px-4 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors">
                             Cancel
                         </button>
@@ -12723,8 +12685,6 @@
                         $('#Edit_brand_id').val(item.brand_id);
                         $('#Edit_mattress_type_id').val(item.mattress_type_id);
                         $('#Edit_mattress_size_id').val(item.mattress_size_id);
-                        $('#Edit_color').val(item.color);
-                        $('#Edit_warranty_period').val(item.warranty_period);
                     } else {
                         $('#edit_mattress_details').addClass('hidden');
                     }

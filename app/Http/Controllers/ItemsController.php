@@ -16,6 +16,7 @@ use Carbon\Carbon;
 
 class ItemsController extends Controller
 {
+
     public function store_item(Request $request)
     {
         $request->validate([
@@ -31,12 +32,51 @@ class ItemsController extends Controller
         ]);
 
         try {
+            // Check for duplicates before creating the item
+            $isMattress = filter_var($request->is_mattress, FILTER_VALIDATE_BOOLEAN);
+
+            // For mattress items, check brand, type, and size combination
+            if ($isMattress) {
+                $existingMattress = Item::where('is_mattress', true)
+                    ->where('brand_id', $request->brand_id)
+                    ->where('mattress_type_id', $request->mattress_type_id)
+                    ->where('mattress_size_id', $request->mattress_size_id)
+                    ->first();
+
+                if ($existingMattress) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'A mattress with this brand, type, and size already exists!',
+                        'conflicts' => [
+                            'name' => $existingMattress->name,
+                            'id' => $existingMattress->id
+                        ]
+                    ], 422);
+                }
+            } else {
+                // For non-mattress items, check name
+                $existingItem = Item::where('is_mattress', false)
+                    ->where('name', $request->name)
+                    ->first();
+
+                if ($existingItem) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'A non-mattress item with this name already exists!',
+                        'conflicts' => [
+                            'name' => $existingItem->name,
+                            'id' => $existingItem->id
+                        ]
+                    ], 422);
+                }
+            }
+
             $item = new Item([
                 'name' => $request->name,
                 'description' => $request->description,
                 'sale_price' => $request->sale_price,
                 'status' => 'Inactive',
-                'is_mattress' => filter_var($request->is_mattress, FILTER_VALIDATE_BOOLEAN), // Convert to boolean
+                'is_mattress' => $isMattress,
                 'brand_id' => $request->brand_id,
                 'mattress_type_id' => $request->mattress_type_id,
                 'mattress_size_id' => $request->mattress_size_id,
@@ -84,6 +124,50 @@ class ItemsController extends Controller
                 $validated['is_mattress'] = filter_var($validated['is_mattress'], FILTER_VALIDATE_BOOLEAN);
             }
 
+            // Check for duplicates when updating
+            $isMattress = isset($validated['is_mattress']) ? $validated['is_mattress'] : $item->is_mattress;
+            $brandId = isset($validated['brand_id']) ? $validated['brand_id'] : $item->brand_id;
+            $typeId = isset($validated['mattress_type_id']) ? $validated['mattress_type_id'] : $item->mattress_type_id;
+            $sizeId = isset($validated['mattress_size_id']) ? $validated['mattress_size_id'] : $item->mattress_size_id;
+            $name = isset($validated['name']) ? $validated['name'] : $item->name;
+
+            if ($isMattress) {
+                $existingMattress = Item::where('is_mattress', true)
+                    ->where('brand_id', $brandId)
+                    ->where('mattress_type_id', $typeId)
+                    ->where('mattress_size_id', $sizeId)
+                    ->where('id', '!=', $id) // Exclude current item
+                    ->first();
+
+                if ($existingMattress) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'A mattress with this brand, type, and size already exists!',
+                        'conflicts' => [
+                            'name' => $existingMattress->name,
+                            'id' => $existingMattress->id
+                        ]
+                    ], 422);
+                }
+            } else {
+                // For non-mattress items, check name
+                $existingItem = Item::where('is_mattress', false)
+                    ->where('name', $name)
+                    ->where('id', '!=', $id) // Exclude current item
+                    ->first();
+
+                if ($existingItem) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'A non-mattress item with this name already exists!',
+                        'conflicts' => [
+                            'name' => $existingItem->name,
+                            'id' => $existingItem->id
+                        ]
+                    ], 422);
+                }
+            }
+
             $item->update($validated);
 
             return response()->json([
@@ -99,7 +183,6 @@ class ItemsController extends Controller
             ], 500);
         }
     }
-
 
     public function edit_item_details($id)
     {
