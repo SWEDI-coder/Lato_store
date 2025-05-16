@@ -391,7 +391,8 @@
             /* add some spacing inside */
         }
 
-        .itemTable_container {
+        .itemTable_container,
+        .overflow_in_table {
             overflow-y: auto;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -614,6 +615,7 @@
                         {{ collect(explode(' ', preg_replace('/[^a-zA-Z\s]/', '', auth()->user()->name)))->first() }}
                     </a>
                 </div>
+                <h1 class="text-2xl font-bold animate__animated animate__fadeInDown">Latto store</h1>
 
                 <!-- Desktop navigation -->
                 <div class="hidden md:flex space-x-4 animate__animated animate__fadeIn">
@@ -679,10 +681,9 @@
 
     <!-- Main Content with Tabs -->
     <main class="container mx-auto px-4 pt-24 pb-8">
-        <h1 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Latto store</h1>
 
         <!-- Tab Navigation -->
-        <div class="flex border-b border-gray-200 mb-6 overflow-x-auto whitespace-nowrap pb-2 animate__animated animate__fadeIn">
+        <div class="flex border-b-4 border-gray-200 mb-3 overflow-x-auto whitespace-nowrap pb-2 animate__animated animate__fadeIn">
             <div class="flex flex-nowrap min-w-full sm:min-w-0">
                 <button class="tab-button active px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="sales">
                     Sales
@@ -991,22 +992,24 @@
 
                     <div class="flex items-center gap-3">
                         <!-- Inventory Stats Cards -->
-                        <div class="hidden md:grid grid-cols-4 gap-3 mr-4">
-                            <div class="bg-white p-2 rounded-md shadow-lg text-center">
-                                <div class="text-xs text-gray-500">Total</div>
-                                <div id="total_inventory" class="text-lg font-bold">0</div>
-                            </div>
-                            <div class="bg-green-100 p-2 rounded-md shadow-lg text-center">
-                                <div class="text-xs text-gray-500">Available</div>
-                                <div id="Available_count" class="text-lg font-bold text-green-600">0</div>
-                            </div>
-                            <div class="bg-yellow-100 p-2 rounded-md shadow-lg text-center">
-                                <div class="text-xs text-gray-500">Low Stock</div>
-                                <div id="Not_Available_count" class="text-lg font-bold text-yellow-600">0</div>
-                            </div>
-                            <div class="bg-red-100 p-2 rounded-md shadow-lg text-center">
-                                <div class="text-xs text-gray-500">Sold Out</div>
-                                <div id="Sold_Out_count" class="text-lg font-bold text-red-600">0</div>
+                        <div class="inventory-stats-cards" style="display: none;">
+                            <div class="grid grid-cols-4 gap-3 mr-4">
+                                <div class="bg-white p-2 rounded-md shadow-lg text-center">
+                                    <div class="text-xs text-gray-500">Total</div>
+                                    <div id="total_inventory" class="text-lg font-bold">0</div>
+                                </div>
+                                <div class="bg-green-100 p-2 rounded-md shadow-lg text-center">
+                                    <div class="text-xs text-gray-500">Available</div>
+                                    <div id="Available_count" class="text-lg font-bold text-green-600">0</div>
+                                </div>
+                                <div class="bg-yellow-100 p-2 rounded-md shadow-lg text-center">
+                                    <div class="text-xs text-gray-500">Low Stock</div>
+                                    <div id="Not_Available_count" class="text-lg font-bold text-yellow-600">0</div>
+                                </div>
+                                <div class="bg-red-100 p-2 rounded-md shadow-lg text-center">
+                                    <div class="text-xs text-gray-500">Sold Out</div>
+                                    <div id="Sold_Out_count" class="text-lg font-bold text-red-600">0</div>
+                                </div>
                             </div>
                         </div>
 
@@ -1142,7 +1145,7 @@
                     </div>
 
                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div class="overflow-x-auto">
+                        <div class=" overflow_in_table">
                             <table id="inventory" class="min-w-full bg-white">
                                 <thead>
                                     <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
@@ -3874,6 +3877,26 @@
                 modalTitle.classList.remove('text-green-500', 'text-red-500');
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to check screen size and show/hide the inventory stats
+            function checkScreenSize() {
+                var inventoryStats = document.querySelector('.inventory-stats-cards');
+                if (inventoryStats) {
+                    if (window.innerWidth >= 768) { // 768px is the 'md' breakpoint in Tailwind
+                        inventoryStats.style.display = 'block';
+                    } else {
+                        inventoryStats.style.display = 'none';
+                    }
+                }
+            }
+
+            // Run on page load
+            checkScreenSize();
+
+            // Run on window resize
+            window.addEventListener('resize', checkScreenSize);
+        });
 
         // Add this to your main JavaScript file
         $(document).ready(function() {
