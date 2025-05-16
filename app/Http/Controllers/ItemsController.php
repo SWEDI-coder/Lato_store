@@ -849,7 +849,7 @@ class ItemsController extends Controller
 
                     // Format item info for display
                     $brandDisplay = $item->brand ? $item->brand->name : '';
-                    $typeDisplay = $item->mattressType ? $item->mattressType->name : '';
+                    $typeDisplay = $item->mattressType ? $item->mattressType->code : '';
                     $sizeDisplay = $item->mattressSize ? $item->mattressSize->size_code : '';
 
                     // Store details in data attributes for use when item is selected
@@ -864,8 +864,8 @@ class ItemsController extends Controller
                         <div class="font-medium item-name">' . $item->name . '</div>
                         <div class="text-xs text-gray-600">
                             ' . ($brandDisplay ? '<span class="item-brand">' . $brandDisplay . '</span>' : '') . '
-                            ' . ($typeDisplay ? '<span class="item-type">' . $typeDisplay . '</span>' : '') . '
                             ' . ($sizeDisplay ? '<span class="item-size">' . $sizeDisplay . '</span>' : '') . '
+                            ' . ($typeDisplay ? '<span class="item-type">' . $typeDisplay . '</span>' : '') . '
                         </div>
                     </div>
                 </li>';

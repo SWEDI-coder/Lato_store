@@ -1837,7 +1837,7 @@
                                             </div>
                                         </td>
                                         <td class="p-1">
-                                            <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00" class="unit_price w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="text" readonly />
+                                            <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00" class="unit_price w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="number" readonly />
                                         </td>
                                         <td class="p-1">
                                             <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00" class="discount w-full min-w-[50px] sm:min-w-[70px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
@@ -2076,7 +2076,7 @@
                                             </div>
                                         </td>
                                         <td class="p-1">
-                                            <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00" class="unit_price w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+                                            <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00" class="unit_price w-full min-w-[60px] sm:min-w-[80px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                                         </td>
                                         <td class="p-1">
                                             <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00" class="discount w-full min-w-[50px] sm:min-w-[70px] px-1 sm:px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
@@ -2264,7 +2264,7 @@
 
                         <!-- Item Name -->
                         <div class="mb-1">
-                            <input type="text" name="name" placeholder="Item name" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                            <input type="text" name="name" placeholder="Item name" class="is_not_matress w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                             <div id="Errorname" class="text-red-600 text-sm mt-1"></div>
                         </div>
 
@@ -2294,18 +2294,21 @@
                                     <option value="">Select Brand</option>
                                     <!-- Brands will be loaded here via JS -->
                                 </select>
+                                <div id="Errorbrand_id" class="text-red-600 text-sm mt-1"></div>
                             </div>
                             <div>
                                 <select id="mattress_type_id" name="mattress_type_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                     <option value="">Select Type</option>
                                     <!-- Types will be loaded here via JS -->
                                 </select>
+                                <div id="Errormattress_type_id" class="text-red-600 text-sm mt-1"></div>
                             </div>
                             <div>
                                 <select id="mattress_size_id" name="mattress_size_id" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                                     <option value="">Select Size</option>
                                     <!-- Sizes will be loaded here via JS -->
                                 </select>
+                                <div id="Errormattress_size_id" class="text-red-600 text-sm mt-1"></div>
                             </div>
                         </div>
                     </div>
@@ -2344,7 +2347,7 @@
                     <input type="hidden" id="edit_item_id">
 
                     <!-- Product Type Toggle -->
-                    <div class="mb-1">
+                    <div class="mb-1" id="hide_toggle_button">
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="is_mattress" id="Edit_is_mattress" class="sr-only peer">
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
@@ -2358,7 +2361,7 @@
 
                         <!-- Item Name -->
                         <div>
-                            <input type="text" id="Edit_item_name" name="name" placeholder="Item name" class="w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
+                            <input type="text" id="Edit_item_name" name="name" placeholder="Item name" class="is_not_matress w-full px-3 py-1 border-2 border-gray-400 text-gray-700 bg-gray-200 rounded focus:outline-none focus:border-green-500">
                             <div id="Erroritem_name" class="text-red-600 text-sm mt-1"></div>
                         </div>
 
@@ -4564,7 +4567,6 @@
                             const brandName = item.brand ? item.brand.name : '-';
                             const typeName = item.mattress_type ? item.mattress_type.code : '-';
                             const sizeCode = item.mattress_size ? item.mattress_size.size_code : '-';
-                            console.log(item.display_name);
                             inventoryHtml += `
                         <tr class="bg-white border-b border-blue-200 hover:bg-gray-50 ${item.is_mattress ? 'bg-blue-50' : ''}">
                             <td class="text-center no_print"><input type="checkbox" value="${item.id}" class="item_checkbox" /></td>
@@ -5263,8 +5265,9 @@
 
                     // Only add these details if they exist and are not already part of the item name
                     if (brandName && !itemName.includes(brandName)) formattedDisplayName.push(brandName);
-                    if (typeName && !itemName.includes(typeName)) formattedDisplayName.push(typeName);
                     if (sizeName && !itemName.includes(sizeName)) formattedDisplayName.push(sizeName);
+                    if (typeName && !itemName.includes(typeName)) formattedDisplayName.push(typeName);
+
 
                     // Create the full formatted name that will be displayed in the input
                     const fullFormattedName = formattedDisplayName.join(' - ').trim();
@@ -6676,184 +6679,290 @@
             });
         });
 
-        function show_SalesPREVIEW() {
-            const SalesId = event.target.closest('button').dataset.id;
+                // Define the reusable function at the top of your script
+        function getItemDisplayName(item) {
+            // Check if item exists first
+            if (!item) return 'Unknown Item';
+            
+            // Check if item has valid brand, type and size
+            const hasBrand = item.brand && item.brand.name;
+            const hasType = item.mattress_type && item.mattress_type.code;
+            const hasSize = item.mattress_size && item.mattress_size.size_code;
+            
+            // If item has any of these mattress attributes
+            if (hasBrand || hasType || hasSize) {
+                const parts = [];
+                if (hasBrand) parts.push(item.brand.name);
+                if (hasSize) parts.push(item.mattress_size.size_code);
+                if (hasType) parts.push(item.mattress_type.code);
+                return parts.join(' - ');
+            } else {
+                // If no mattress attributes, show item name
+                return item.name || 'Unknown Item';
+            }
+        }
 
-            // Show the modal
-            document.getElementById('Sales_Modal').classList.remove('hidden');
-            document.getElementById('print_Invoice').innerHTML = '<div class="flex justify-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div></div>';
+function show_SalesPREVIEW() {
+    const SalesId = event.target.closest('button').dataset.id;
 
-            fetch(`/getSales/${SalesId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        const Sales = data.data;
+    // Show the modal
+    document.getElementById('Sales_Modal').classList.remove('hidden');
+    document.getElementById('print_Invoice').innerHTML = '<div class="flex justify-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div></div>';
 
-                        // Create optimized invoice HTML
-                        const invoiceHTML = `
-                        <div class="text-center mb-2">
-                            <h1 class="text-lg font-bold">SALES INVOICE</h1>
-                            <p class="text-sm">Your Company Name, 123 Business St, City</p>
-                            <p class="text-xs">Phone: +123-456-7890 | Email: info@yourcompany.com</p>
-                        </div>
+    fetch(`/getSales/${SalesId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const Sales = data.data;
 
-                        <div class="grid grid-cols-2 text-xs mb-2 border-b pb-2">
+                // Format date
+                const saleDate = new Date(Sales.sale_date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Calculate subtotal (before discount)
+                const subtotal = parseFloat(Sales.total_amount) + parseFloat(Sales.total_discount);
+
+                // Create invoice HTML with improved layout matching purchase invoice
+                const invoiceHTML = `
+                <div class="p-4 bg-white">
+                    <!-- Header Section -->
+                    <div class="border-b border-gray-300 pb-3 mb-3">
+                        <div class="flex justify-between items-start">
                             <div>
-                                <p class="font-semibold">Bill To:</p>
-                                <p class="font-bold">${Sales.customer?.name || 'General Customer'}</p>
-                                <p>${Sales.customer?.company_name || ''}</p>
-                                <p>${Sales.customer?.address || ''}</p>
-                                <p>${Sales.customer?.contact_person ? `Attn: ${Sales.customer?.contact_person}` : ''}</p>
-                                <p>Phone: ${Sales.customer?.phone_number || ''}</p>
-                                <p>Email: ${Sales.customer?.email || ''}</p>
+                                <h1 class="text-lg font-bold text-gray-800">SALES INVOICE</h1>
+                                <p class="text-xs text-gray-600 mt-1">Reference: ${Sales.reference_no}</p>
                             </div>
                             <div class="text-right">
-                                <p><span class="font-semibold">Invoice No:</span> ${Sales.reference_no}</p>
-                                <p><span class="font-semibold">Date:</span> ${new Date(Sales.sale_date).toLocaleDateString()}</p>
-                                <p><span class="font-semibold">Status:</span> 
-                                    <span class="px-1 py-0.5 rounded text-xs ${
-                                        Sales.dept > 0 
-                                            ? 'bg-yellow-100 text-yellow-800' 
-                                            : (Sales.paid > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')
-                                    }">
-                                        ${Sales.dept > 0 ? 'Partial Payment' : (Sales.paid > 0 ? 'Paid' : 'Unpaid')}
-                                    </span>
-                                </p>
+                                <div class="text-base font-semibold text-gray-800">LATTO STORE</div>
+                                <p class="text-xs text-gray-600">Pwani, Kibaha, Mailimoja</p>
+                                <p class="text-xs text-gray-600">Phone: +255 653 126 747</p>
+                                <p class="text-xs text-gray-600">Email: info@latto.co.tz</p>
+                                <p class="text-xs text-gray-600">TIN: xxx-xxx-xxx</p>
                             </div>
                         </div>
-
-                        <table class="w-full text-xs border-collapse border border-gray-300">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="border p-1 text-left">Item</th>
-                                    <th class="border p-1 text-right">Qty</th>
-                                    <th class="border p-1 text-right">Unit Price</th>
-                                    <th class="border p-1 text-right">Discount</th>
-                                    <th class="border p-1 text-right">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${Sales.sale_items.map(item => {
-                                    // Get item display name based on availability of mattress attributes
-                                    let displayName = '';
-                                    
-                                    // Check if item has brand, type and size attributes
-                                    const hasBrand = item.item && item.item.brand;
-                                    const hasType = item.item && item.item.mattressType;
-                                    const hasSize = item.item && item.item.mattressSize;
-                                    
-                                    // If any mattress attributes exist, use them instead of item name
-                                    if (hasBrand || hasType || hasSize) {
-                                        const parts = [];
-                                        if (hasBrand) parts.push(item.item.brand.name);
-                                        if (hasType) parts.push(item.item.mattressType.name);
-                                        if (hasSize) parts.push(item.item.mattressSize.size_code);
-                                        displayName = parts.join(' - ');
-                                    } else {
-                                        // Fallback to item name if no mattress attributes
-                                        displayName = item.item ? item.item.name : 'Unknown Item';
-                                    }
-                                    
-                                        return '<tr class="border">' +
-                                            '<td class="p-1">' + displayName + '</td>' +
-                                            '<td class="p-1 text-right">' + item.quantity + '</td>' +
-                                            '<td class="p-1 text-right">Tsh ' + parseFloat(item.sale_price).toFixed(2) + '</td>' +
-                                            '<td class="p-1 text-right">Tsh ' + parseFloat(item.discount).toFixed(2) + '</td>' +
-                                            '<td class="p-1 text-right">Tsh ' + ((item.quantity * item.sale_price) - item.discount).toFixed(2) + '</td>' +
-                                        '</tr>';
-                                }).join('')}
-                            </tbody>
-                            <tfoot class="bg-gray-50">
-                                <tr>
-                                    <td colspan="4" class="p-1 text-right font-semibold">Total Discount:</td>
-                                    <td class="p-1 text-right">Tsh ${parseFloat(Sales.total_discount).toFixed(2)}</td>
-                                </tr>
-                                <tr class="font-bold">
-                                    <td colspan="4" class="p-1 text-right">Total Amount:</td>
-                                    <td class="p-1 text-right">Tsh ${parseFloat(Sales.total_amount).toFixed(2)}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-
-                        <div class="grid grid-cols-2 text-xs mt-2">
-                            <div class="border p-2">
-                                <h3 class="font-semibold mb-1">Payment Info</h3>
-                                <p>Status: ${Sales.dept > 0 ? 'Partial Payment' : (Sales.paid > 0 ? 'Paid' : 'Unpaid')}</p>
-                                <p>Paid: Tsh ${parseFloat(Sales.paid).toFixed(2)}</p>
-                                <p>Due: Tsh ${parseFloat(Sales.dept).toFixed(2)}</p>
-                            </div>
-                            <div class="border p-2">
-                                <h3 class="font-semibold mb-1">Terms & Conditions</h3>
-                                <p>1. Payment due within 30 days.</p>
-                                <p>2. Goods remain property of seller until paid.</p>
-                                <p>3. Include invoice number with payment.</p>
+                    </div>
+                    
+                    <!-- Info Section -->
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <!-- Customer Information -->
+                        <div class="bg-gray-50 p-2 rounded">
+                            <h2 class="font-semibold text-xs text-gray-700 border-b border-gray-300 pb-1 mb-1">CUSTOMER INFORMATION</h2>
+                            <div class="text-xs text-gray-700">
+                                ${Sales.customer ? `<p class="font-medium">${Sales.customer.name}</p>` : '<p class="italic text-gray-500">General Customer</p>'}
+                                ${Sales.customer && Sales.customer.company_name ? `<p>${Sales.customer.company_name}</p>` : ''}
+                                ${Sales.customer && Sales.customer.address ? `<p>${Sales.customer.address}</p>` : ''}
+                                ${Sales.customer && Sales.customer.contact_person ? `<p>Contact: ${Sales.customer.contact_person}</p>` : ''}
+                                ${Sales.customer && Sales.customer.phone_number ? `<p>Phone: ${Sales.customer.phone_number}</p>` : ''}
+                                ${Sales.customer && Sales.customer.email ? `<p>Email: ${Sales.customer.email}</p>` : ''}
                             </div>
                         </div>
-
-                        <div class="mt-2 text-center text-xs text-gray-500">
-                            <p>Thank you for your business!</p>
+                        
+                        <!-- Sales Details -->
+                        <div class="bg-gray-50 p-2 rounded">
+                            <h2 class="font-semibold text-xs text-gray-700 border-b border-gray-300 pb-1 mb-1">SALE DETAILS</h2>
+                            <div class="grid grid-cols-2 gap-1 text-xs text-gray-700">
+                                <div class="font-medium">Date:</div>
+                                <div>${saleDate}</div>
+                                
+                                <div class="font-medium">Payment Status:</div>
+                                <div><span class="px-1 py-0.5 rounded text-xs ${
+                                    Sales.dept > 0 ? 'bg-yellow-100 text-yellow-800' : 
+                                    (Sales.paid > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')
+                                }">${Sales.dept > 0 ? 'Partial Payment' : (Sales.paid > 0 ? 'Paid' : 'Unpaid')}</span></div>
+                                
+                                <div class="font-medium">Invoice No:</div>
+                                <div>${Sales.reference_no}</div>
+                            </div>
                         </div>
-
-                        <div class="mt-2 flex justify-center hidegenerateEFDReceipt">
-                            <button onclick="generateEFDReceipt('${Sales.id}')" class="px-3 py-1 bg-blue-600 text-white rounded text-xs">
-                                Generate EFD Receipt
-                            </button>
+                    </div>
+                    
+                    <!-- Items Table -->
+                    <div class="mb-3">
+                        <h2 class="font-semibold text-xs text-gray-700 mb-1">SOLD ITEMS</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-200">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="py-1 px-1 border-b text-left text-xs font-medium text-gray-600 uppercase tracking-wider">#</th>
+                                        <th class="py-1 px-1 border-b text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Item Description</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Qty</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Unit Price</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Discount</th>
+                                        <th class="py-1 px-1 border-b text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${Sales.sale_items.map((item, index) => `
+                                        <tr class="${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs">${index + 1}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs">
+                                                ${(() => {
+                                                    // Use the getItemDisplayName function
+                                                    const displayName = getItemDisplayName(item.item);
+                                                    
+                                                    return `
+                                                        <div class="font-medium">${displayName}</div>
+                                                        ${item.item && item.item.description ? `<div class="text-xs text-gray-500">${item.item.description}</div>` : ''}
+                                                    `;
+                                                })()}
+                                            </td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">${item.quantity}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.sale_price).toLocaleString('en-US', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.discount).toLocaleString('en-US', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })}</td>
+                                            <td class="py-1 px-1 border-b border-gray-200 text-xs text-right font-medium">Tsh ${((item.quantity * item.sale_price) - item.discount).toLocaleString('en-US', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })}</td>
+                                        </tr>`).join('')}
+                                </tbody>
+                            </table>
                         </div>
-                    `;
+                    </div>
+                    
+                    <!-- Summary Section -->
+                    <div class="flex justify-end mb-3">
+                        <div class="w-1/2 bg-gray-50 rounded p-2">
+                            <div class="flex justify-between border-b border-gray-200 py-1">
+                                <div class="text-xs text-gray-600">Subtotal:</div>
+                                <div class="text-xs font-medium">Tsh ${subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-200 py-1">
+                                <div class="text-xs text-gray-600">Discount:</div>
+                                <div class="text-xs font-medium">Tsh ${parseFloat(Sales.total_discount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-200 py-1">
+                                <div class="text-xs text-gray-600">Total Amount:</div>
+                                <div class="text-xs font-medium">Tsh ${parseFloat(Sales.total_amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="flex justify-between border-b border-gray-200 py-1">
+                                <div class="text-xs text-gray-600">Paid Amount:</div>
+                                <div class="text-xs font-medium">Tsh ${parseFloat(Sales.paid).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <div class="text-xs font-semibold">Outstanding Balance:</div>
+                                <div class="text-xs font-bold ${parseFloat(Sales.dept) > 0 ? 'text-red-600' : 'text-green-600'}">
+                                    Tsh ${parseFloat(Sales.dept).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer Section -->
+                    <div class="border-t border-gray-300 pt-2 mt-2 text-center text-gray-600 text-xs">
+                        <p>This is a computer generated invoice and does not require a signature.</p>
+                        <p>For any queries regarding this invoice, please contact our accounts department.</p>
+                        <p class="mt-1 text-xs">Sale ID: ${Sales.id} | Generated on: ${new Date().toLocaleString()}</p>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="mt-3 flex justify-between no_print">
+                        <button onclick="generateEFDReceipt('${Sales.id}')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs">
+                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                            Generate EFD Receipt
+                        </button>
+                        <button onclick="printInvoice()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-xs">
+                            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                            </svg>
+                            Print Invoice
+                        </button>
+                    </div>
+                </div>
+                `;
 
-                        // Update the print_Invoice div with the invoice content
-                        document.getElementById('print_Invoice').innerHTML = invoiceHTML;
+                // Update the print_Invoice div with the invoice content
+                document.getElementById('print_Invoice').innerHTML = invoiceHTML;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('print_Invoice').innerHTML = '<div class="text-red-500 text-xs">Error loading invoice data</div>';
+        });
+}
+
+
+function printInvoice() {
+    const printContent = document.getElementById('print_Invoice').innerHTML;
+
+    // Create a hidden iframe for printing
+    const printIframe = document.createElement('iframe');
+    printIframe.style.position = 'absolute';
+    printIframe.style.width = '0';
+    printIframe.style.height = '0';
+    printIframe.style.left = '-9999px';
+    document.body.appendChild(printIframe);
+
+    // Write the content to the iframe with styles matching preview exactly
+    const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
+    iframeDoc.open();
+    iframeDoc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Sales Invoice</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Include Tailwind CSS - same as in the main document -->
+            <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+            <style>
+                @page {
+                    margin: 10mm;
+                }
+                
+                /* Remove shadows for printing */
+                @media print {
+                    .shadow, .shadow-md, .shadow-lg, .shadow-xl {
+                        box-shadow: none !important;
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('print_Invoice').innerHTML = '<div class="text-red-500 text-xs">Error loading invoice data</div>';
-                });
-        }
 
-        function printInvoice() {
-            const printContent = document.getElementById('print_Invoice').innerHTML;
-
-            const printDocument = `
-            <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Sales Invoice</title>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <style>
-                        body { font-family: Arial, sans-serif; font-size: 12px; }
-                        table { width: 100%; border-collapse: collapse; }
-                        th, td { border: 1px solid #ddd; padding: 4px; }
-                        th { background: #f8f8f8; }
-                        .text-right { text-align: right; }
-                        .text-center { text-align: center; }
-                        @media print {
-                        .hidegenerateEFDReceipt {
-                            display: none !important;
-                        }
+                    .no_print {
+                        display: none !important;
                     }
-                    </style>
-                </head>
-                <body>
-                    ${printContent.replace(/<button[^>]*>.*?<\/button>/g, '')}
-                </body>
-            </html>`;
+                    
+                    body {
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                    }
+                }
+            </style>
+        </head>
+        <body class="bg-white">
+            ${printContent}
+        </body>
+        </html>
+     `);
+    iframeDoc.close();
 
-            const printFrame = document.createElement('iframe');
-            printFrame.style.position = 'absolute';
-            printFrame.style.width = '0px';
-            printFrame.style.height = '0px';
-            document.body.appendChild(printFrame);
+    // Wait for iframe to fully load before printing
+    printIframe.onload = function() {
+        try {
+            // Focus the iframe for better printing experience
+            printIframe.contentWindow.focus();
 
-            const doc = printFrame.contentWindow.document;
-            doc.open();
-            doc.write(printDocument);
-            doc.close();
+            // Print the iframe
+            printIframe.contentWindow.print();
 
-            printFrame.contentWindow.print();
-            document.body.removeChild(printFrame);
+            // Remove the iframe after printing (use setTimeout to ensure print dialog has time to appear)
+            setTimeout(function() {
+                document.body.removeChild(printIframe);
+            }, 1000);
+        } catch (e) {
+            console.error('Printing failed:', e);
+            document.body.removeChild(printIframe);
         }
+    };
+}
 
         function generateEFDReceipt(saleID) {
             let efdModal = document.getElementById('efd_receipt');
@@ -6893,8 +7002,8 @@
                     const discountDetails = calculateDiscountPercentage(sale);
                     const efdContent = `
                 <div class="font-mono text-xs">
-                    <div class="text-center font-bold">YOUR COMPANY NAME</div>
-                    <div class="text-center">123 Business St, City</div>
+                    <div class="text-center font-bold">LATTO STORE</div>
+                    <div class="text-center">Pwani, Kibaha, Mailimoja</div>
                     <div class="text-center">TIN: 123-456-789 | VRN: V12345678</div>
                     <div class="text-center border-t-2 border-gray-400 border-dashed mt-2 pt-1">
                         <div>Receipt No: ${sale.receipt_number}</div>
@@ -6907,31 +7016,8 @@
                         </thead>
                         <tbody>
                             ${sale.sale_items.map(item => {
-                                // Get display name based on mattress attributes
-                                let displayName = '';
-                                
-                                // First check if item exists
-                                if (!item.item) {
-                                    displayName = 'Unknown Item';
-                                } else {
-                                    // Check if item has brand, type and size
-                                    const hasBrand = item.item.brand;
-                                    const hasType = item.item.mattressType;
-                                    const hasSize = item.item.mattressSize;
-                                    
-                                    // If any mattress attributes exist, use them instead of item name
-                                    if (hasBrand || hasType || hasSize) {
-                                        const parts = [];
-                                        if (hasBrand) parts.push(item.item.brand.name);
-                                        if (hasType) parts.push(item.item.mattressType.name);
-                                        if (hasSize) parts.push(item.item.mattressSize.size_code);
-                                        displayName = parts.join(' - ');
-                                    } else {
-                                        // Fallback to item name if no mattress attributes
-                                        displayName = item.item.name || 'Unnamed Item';
-                                    }
-                                }
-                                
+
+                                  const displayName = getItemDisplayName(item.item);
                                 // Ensure name fits in the limited space on EFD receipt
                                 const maxLength = 14; // Max chars to show
                                 const truncatedName = displayName.length > maxLength 
@@ -6997,89 +7083,173 @@
             };
         }
 
-        // Function to print the EFD receipt
-        function printEFDReceipt() {
-            const printContent = document.getElementById('efd_content').innerHTML;
+function printEFDReceipt() {
+    const printContent = document.getElementById('efd_content').innerHTML;
 
-            // Create a hidden iframe
-            const printIframe = document.createElement('iframe');
-            printIframe.style.position = 'absolute';
-            printIframe.style.width = '0';
-            printIframe.style.height = '0';
-            printIframe.style.left = '-9999px';
-            document.body.appendChild(printIframe);
+    // Create a hidden iframe for printing
+    const printIframe = document.createElement('iframe');
+    printIframe.style.position = 'absolute';
+    printIframe.style.width = '0';
+    printIframe.style.height = '0';
+    printIframe.style.left = '-9999px';
+    document.body.appendChild(printIframe);
 
-            // Write the content to the iframe
-            const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>EFD Receipt</title>
-                    <style>
-                        html, body {
-                            height: 100%;
-                            margin: 0;
-                            padding: 0;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                        }
-                        .receipt-container {
-                            width: 80mm;
-                            font-family: monospace;
-                            padding: 10px;
-                            border: 1px dashed #ccc;
-                            background-color: white;
-                        }
-                        @media print {
-                            @page {
-                                size: 80mm auto;
-                                margin: 0;
-                            }
-                            html, body {
-                                height: 100%;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                            }
-                            .receipt-container {
-                                border: none;
-                                width: 100%;
-                                max-width: 80mm;
-                            }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="receipt-container">
-                        ${printContent}
-                    </div>
-                </body>
-                </html>
-            `);
-            iframeDoc.close();
-
-            // Wait for iframe to fully load before printing
-            printIframe.onload = function() {
-                try {
-                    // Focus the iframe for better printing experience
-                    printIframe.contentWindow.focus();
-
-                    // Print the iframe
-                    printIframe.contentWindow.print();
-
-                    // Remove the iframe after printing (use setTimeout to ensure print dialog has time to appear)
-                    setTimeout(function() {
-                        document.body.removeChild(printIframe);
-                    }, 1000);
-                } catch (e) {
-                    console.error('Printing failed:', e);
-                    document.body.removeChild(printIframe);
+    // Write the content to the iframe without including script tags
+    const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
+    iframeDoc.open();
+    iframeDoc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>EFD Receipt</title>
+            <style>
+                /* Reset and base styles */
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
                 }
-            };
+                
+                html, body {
+                    width: 100%;
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    font-family: monospace;
+                    font-size: 12px;
+                    line-height: 1.2;
+                }
+                
+                /* Perfect centering container */
+                .page-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 100vh;
+                    width: 100%;
+                }
+                
+                /* Receipt container */
+                .receipt-container {
+                    width: 80mm;
+                    padding: 8mm 5mm;
+                    border: 1px dashed #000;
+                    border-radius: 4px;
+                    background-color: white;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                }
+                
+                /* Text alignment */
+                .text-center { text-align: center; }
+                .text-right { text-align: right; }
+                .text-left { text-align: left; }
+                
+                /* Fonts */
+                .font-bold { font-weight: bold; }
+                .font-mono { font-family: monospace; }
+                .text-xs { font-size: 10px; }
+                
+                /* Borders */
+                .border-t-2, .border-b-2 {
+                    border-style: dashed;
+                    border-color: #777;
+                    border-width: 1px 0;
+                    padding-top: 2px;
+                    padding-bottom: 2px;
+                    margin: 3px 0;
+                }
+                
+                /* Tables */
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th {
+                    text-align: left;
+                    border-bottom: 1px dashed #777;
+                }
+                td, th {
+                    padding: 2px 4px;
+                }
+                
+                /* Spacing */
+                .mt-1 { margin-top: 4px; }
+                .mt-2 { margin-top: 8px; }
+                .pt-1 { padding-top: 4px; }
+                
+                /* Print settings */
+                @page {
+                    size: auto;
+                    margin: 0;
+                }
+                
+                @media print {
+                    html, body {
+                        width: 100%;
+                        height: 100%;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    
+                    .page-container {
+                        page-break-inside: avoid;
+                        height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    
+                    .receipt-container {
+                        /* Keep the border visible in print */
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        box-shadow: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="page-container">
+                <div class="receipt-container">
+                    ${printContent}
+                </div>
+            </div>
+        </body>
+        </html>
+    `);
+    iframeDoc.close();
+
+    // Wait for iframe to fully load before printing
+    printIframe.onload = function() {
+        try {
+            // Ensure barcode is rendered properly without script
+            const originalBarcode = document.getElementById('barcode');
+            if (originalBarcode) {
+                const iframeBarcodeContainer = iframeDoc.getElementById('barcode');
+                if (iframeBarcodeContainer) {
+                    // Copy the rendered SVG directly
+                    iframeBarcodeContainer.innerHTML = originalBarcode.innerHTML;
+                }
+            }
+            
+            // Focus the iframe for better printing experience
+            printIframe.contentWindow.focus();
+
+            // Print the iframe with a slight delay to ensure content is fully rendered
+            setTimeout(function() {
+                printIframe.contentWindow.print();
+                
+                // Remove the iframe after printing
+                setTimeout(function() {
+                    document.body.removeChild(printIframe);
+                }, 1000);
+            }, 300);
+        } catch (e) {
+            console.error('Printing failed:', e);
+            document.body.removeChild(printIframe);
         }
+    };
+}
 
         // Function to reattach event handlers after printing
         function attachEventHandlers() {
@@ -7131,10 +7301,10 @@
                                 <p class="text-xs text-gray-600 mt-1">Reference: ${purchase.reference_no}</p>
                             </div>
                             <div class="text-right">
-                                <div class="text-base font-semibold text-gray-800">YOUR COMPANY NAME</div>
-                                <p class="text-xs text-gray-600">123 Business Street, City</p>
-                                <p class="text-xs text-gray-600">Phone: +255 123 456 789</p>
-                                <p class="text-xs text-gray-600">Email: info@yourcompany.com</p>
+                                <div class="text-base font-semibold text-gray-800">LATTO STORE</div>
+                                <p class="text-xs text-gray-600">Pwani, Kibaha, Mailimoja</p>
+                                <p class="text-xs text-gray-600">Phone: +255 653 126 747</p>
+                                <p class="text-xs text-gray-600">Email: info@latto.co.tz</p>
                                 <p class="text-xs text-gray-600">TIN: xxx-xxx-xxx</p>
                             </div>
                         </div>
@@ -7202,63 +7372,28 @@
                                             <td class="py-1 px-1 border-b border-gray-200 text-xs">${index + 1}</td>
                                             <td class="py-1 px-1 border-b border-gray-200 text-xs">
                                                 ${(() => {
-                                                    // Check if item exists
-                                                    if (!item.item) return '<div class="font-medium">Unknown Item</div>';
-                                                    
-                                                    // Get display name based on mattress attributes
-                                                    let displayName = '';
-                                                    
-                                                    // Check if item has brand, type and size
-                                                    const hasBrand = item.item.brand;
-                                                    const hasType = item.item.mattressType;
-                                                    const hasSize = item.item.mattressSize;
-                                                    
-                                                    // If any mattress attributes exist, use them instead of item name
-                                                    if (hasBrand || hasType || hasSize) {
-                                                        const parts = [];
-                                                        if (hasBrand) parts.push(item.item.brand.name);
-                                                        if (hasType) parts.push(item.item.mattressType.name);
-                                                        if (hasSize) parts.push(item.item.mattressSize.size_code);
-                                                        displayName = parts.join(' - ');
-                                                    } else {
-                                                        // Fallback to item name if no mattress attributes
-                                                        displayName = item.item.name || 'Unnamed Item';
-                                                    }
-                                                    
+                                                      const displayName = getItemDisplayName(item.item);
                                                     return `
                                                         <div class="font-medium">${displayName}</div>
-                                                        <div class="text-xs text-gray-500">SKU: ${item.item.sku || 'N/A'}</div>
                                                         ${item.item.description ? `<div class="text-xs text-gray-500">${item.item.description}</div>` : ''}
                                                     `;
                         })()
-                } <
-                /td> <
-            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right" > $ {
-                item.quantity
-            } < /td> <
-            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right" > Tsh $ {
-                parseFloat(item.purchase_price).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })
-            } < /td> <
-            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right" > Tsh $ {
-                parseFloat(item.discount).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })
-            } < /td> <
-            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right" > $ {
-                item.expire_date ? new Date(item.expire_date).toLocaleDateString() : '-'
-            } < /td> <
-            td class = "py-1 px-1 border-b border-gray-200 text-xs text-right font-medium" > Tsh $ {
-                ((item.quantity * item.purchase_price) - item.discount).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })
-            } < /td> < /
-            tr >
-                `).join('')}
+                                                }</td>
+                                <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">${item.quantity}</td>
+                                <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.purchase_price).toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}</td>
+                                <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">Tsh ${parseFloat(item.discount).toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}</td>
+                                <td class="py-1 px-1 border-b border-gray-200 text-xs text-right">${item.expire_date ? new Date(item.expire_date).toLocaleDateString() : '-'}</td>
+                                <td class="py-1 px-1 border-b border-gray-200 text-xs text-right font-medium">Tsh ${((item.quantity * item.purchase_price) - item.discount).toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}</td>
+                                </tr>`).join('')}
                                 </tbody>
                             </table>
                         </div>
@@ -12405,25 +12540,51 @@
         function toggleMattressDetails() {
             const checkbox = document.getElementById('is_mattress');
             const mattressDetails = document.getElementById('mattress_details');
+            const notMattressInputs = document.querySelectorAll('.is_not_matress');
 
             if (checkbox.checked) {
                 mattressDetails.classList.remove('hidden');
+                $('.is_not_matress').addClass('hidden');
+                // Disable non-mattress inputs and add cursor-not-allowed class
+                notMattressInputs.forEach(input => {
+                    input.disabled = true;
+                    input.classList.add('cursor-not-allowed');
+                });
             } else {
+                $('.is_not_matress').removeClass('hidden');
                 mattressDetails.classList.add('hidden');
+                // Enable non-mattress inputs and remove cursor-not-allowed class
+                notMattressInputs.forEach(input => {
+                    input.disabled = false;
+                    input.classList.remove('cursor-not-allowed');
+                });
             }
         }
+
 
         // Toggle edit mattress details section based on checkbox
         function toggleEditMattressDetails() {
             const checkbox = document.getElementById('Edit_is_mattress');
             const mattressDetails = document.getElementById('edit_mattress_details');
+            const notMattressInputs = document.querySelectorAll('.is_not_matress');
 
             if (checkbox.checked) {
                 mattressDetails.classList.remove('hidden');
+                // Disable non-mattress inputs and add cursor-not-allowed class
+                notMattressInputs.forEach(input => {
+                    input.disabled = true;
+                    input.classList.add('cursor-not-allowed');
+                });
             } else {
                 mattressDetails.classList.add('hidden');
+                // Enable non-mattress inputs and remove cursor-not-allowed class
+                notMattressInputs.forEach(input => {
+                    input.disabled = false;
+                    input.classList.remove('cursor-not-allowed');
+                });
             }
         }
+
 
         // Add event listeners
         document.addEventListener('DOMContentLoaded', function() {
@@ -12431,11 +12592,15 @@
             const mattressCheckbox = document.getElementById('is_mattress');
             if (mattressCheckbox) {
                 mattressCheckbox.addEventListener('change', toggleMattressDetails);
+                // Initialize on page load
+                toggleMattressDetails();
             }
 
             const editMattressCheckbox = document.getElementById('Edit_is_mattress');
             if (editMattressCheckbox) {
                 editMattressCheckbox.addEventListener('change', toggleEditMattressDetails);
+                // Initialize on page load
+                toggleEditMattressDetails();
             }
 
             // Load reference data on page load
@@ -12444,11 +12609,14 @@
             loadMattressSizes();
         });
 
+
         function show_add_item_modal() {
             let dialog = document.getElementById('add_item_modal');
             document.body.classList.add('overflow-hidden'); // Prevent scrolling when modal is open
             dialog.classList.remove('hidden');
             dialog.classList.add('flex');
+
+            toggleMattressDetails();
 
             // Add animation
             const modalContent = dialog.querySelector('div');
@@ -12575,6 +12743,7 @@
             },
             submitHandler: function(form) {
                 const formData = $(form).serializeArray();
+                const isMattress = $('#is_mattress').is(':checked');
 
                 // Handle the is_mattress checkbox - add it if not already in formData
                 let isMattressInForm = formData.some(field => field.name === 'is_mattress');
@@ -12590,6 +12759,56 @@
                             field.value = '1';
                         }
                     });
+                }
+
+                // Validation based on mattress status
+                let isValid = true;
+                let errorMessage = '';
+
+                if (isMattress) {
+                    // Validation for mattress items
+                    const brandId = $('#brand_id').val();
+                    const mattressTypeId = $('#mattress_type_id').val();
+                    const mattressSizeId = $('#mattress_size_id').val();
+
+                    if (!brandId) {
+                        isValid = false;
+                        errorMessage = 'Please select a Brand for the mattress.';
+                        $('#brand_id').addClass('border-red-500');
+                    } else {
+                        $('#brand_id').removeClass('border-red-500');
+                    }
+
+                    if (!mattressTypeId) {
+                        isValid = false;
+                        errorMessage = errorMessage || 'Please select a Mattress Type.';
+                        $('#mattress_type_id').addClass('border-red-500');
+                    } else {
+                        $('#mattress_type_id').removeClass('border-red-500');
+                    }
+
+                    if (!mattressSizeId) {
+                        isValid = false;
+                        errorMessage = errorMessage || 'Please select a Mattress Size.';
+                        $('#mattress_size_id').addClass('border-red-500');
+                    } else {
+                        $('#mattress_size_id').removeClass('border-red-500');
+                    }
+                } else {
+                    // Validation for non-mattress items
+                    const itemName = $('input[name="name"]').val();
+                    if (!itemName) {
+                        isValid = false;
+                        errorMessage = 'Please enter an Item Name.';
+                        $('input[name="name"]').addClass('border-red-500');
+                    } else {
+                        $('input[name="name"]').removeClass('border-red-500');
+                    }
+                }
+
+                if (!isValid) {
+                    showFeedbackModal('error', 'Validation Error!', errorMessage);
+                    return false;
                 }
 
                 $.ajax({
@@ -12643,6 +12862,7 @@
             submitHandler: function(form) {
                 const itemId = $('#edit_item_id').val();
                 const formData = $(form).serializeArray();
+                const isMattress = $('#Edit_is_mattress').is(':checked');
 
                 // Handle the is_mattress checkbox - add it if not already in formData
                 let isMattressInForm = formData.some(field => field.name === 'is_mattress');
@@ -12658,6 +12878,56 @@
                             field.value = '1';
                         }
                     });
+                }
+
+                // Validation based on mattress status
+                let isValid = true;
+                let errorMessage = '';
+
+                if (isMattress) {
+                    // Validation for mattress items
+                    const brandId = $('#Edit_brand_id').val();
+                    const mattressTypeId = $('#Edit_mattress_type_id').val();
+                    const mattressSizeId = $('#Edit_mattress_size_id').val();
+
+                    if (!brandId) {
+                        isValid = false;
+                        errorMessage = 'Please select a Brand for the mattress.';
+                        $('#Edit_brand_id').addClass('border-red-500');
+                    } else {
+                        $('#Edit_brand_id').removeClass('border-red-500');
+                    }
+
+                    if (!mattressTypeId) {
+                        isValid = false;
+                        errorMessage = errorMessage || 'Please select a Mattress Type.';
+                        $('#Edit_mattress_type_id').addClass('border-red-500');
+                    } else {
+                        $('#Edit_mattress_type_id').removeClass('border-red-500');
+                    }
+
+                    if (!mattressSizeId) {
+                        isValid = false;
+                        errorMessage = errorMessage || 'Please select a Mattress Size.';
+                        $('#Edit_mattress_size_id').addClass('border-red-500');
+                    } else {
+                        $('#Edit_mattress_size_id').removeClass('border-red-500');
+                    }
+                } else {
+                    // Validation for non-mattress items
+                    const itemName = $('#Edit_item_name').val();
+                    if (!itemName) {
+                        isValid = false;
+                        errorMessage = 'Please enter an Item Name.';
+                        $('#Edit_item_name').addClass('border-red-500');
+                    } else {
+                        $('#Edit_item_name').removeClass('border-red-500');
+                    }
+                }
+
+                if (!isValid) {
+                    showFeedbackModal('error', 'Validation Error!', errorMessage);
+                    return false;
                 }
 
                 $.ajax({
@@ -12694,8 +12964,6 @@
                 success: function(response) {
                     var item = response.data;
                     $('#Edit_item_name').val(item.name);
-                    $('#Edit_sku').val(item.sku);
-                    $('#Edit_status').val(item.status ? item.status : 'Select status');
                     $('#Edit_item_description').val(item.description);
                     $('#Edit_sale_price').val(item.sale_price ? item.sale_price : '0.00');
 
@@ -12703,13 +12971,20 @@
                     // Set mattress-specific fields
                     $('#Edit_is_mattress').prop('checked', item.is_mattress);
 
+                    toggleEditMattressDetails();
+
                     if (item.is_mattress) {
                         $('#edit_mattress_details').removeClass('hidden');
+                        $('#hide_toggle_button').removeClass('hidden');
+                        $('.is_not_matress').addClass('hidden');
+
                         $('#Edit_brand_id').val(item.brand_id);
                         $('#Edit_mattress_type_id').val(item.mattress_type_id);
                         $('#Edit_mattress_size_id').val(item.mattress_size_id);
                     } else {
                         $('#edit_mattress_details').addClass('hidden');
+                        $('#hide_toggle_button').addClass('hidden');
+
                     }
 
                     $('#edit_item_id').val(item.id);
@@ -12756,6 +13031,7 @@
                 document.body.classList.remove('overflow-hidden');
                 modalContent.classList.remove('animate-fadeOut', 'animate-fadeIn');
             }, 300);
+            $('.is_not_matress').removeClass('hidden');
             $("#edit_item_form")[0].reset();
         }
 
@@ -13012,7 +13288,7 @@
                             </td>
 
                             <td class="p-1">
-                                <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="text" readonly />
+                                <input onkeyup="netPriceFn(this)" name="Sales_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border cursor-not-allowed" type="number" readonly />
                             </td>
                             <td class="p-1">
                                 <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
@@ -13053,7 +13329,7 @@
                                 </div>
                             </td>
                             <td class="p-1">
-                                <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="text" />
+                                <input onkeyup="netPriceFn(this)" name="purchase_price" placeholder="0.00 TZS" class="unit_price w-full min-w-[80px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
                             </td>
                             <td class="p-1">
                                 <input onkeyup="netPriceFn(this)" name="discount" placeholder="0.00 TZS" class="discount w-full min-w-[70px] px-2 py-1 bg-gray-100 text-xs sm:text-sm rounded border" type="number" />
