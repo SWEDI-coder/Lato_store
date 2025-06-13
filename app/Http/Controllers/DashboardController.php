@@ -66,7 +66,11 @@ class DashboardController extends Controller
     {
         return [
             'total_products' => Item::count(),
-            'total_employees' => User::where('is_active', true)->whereNotNull('role')->count(), // Fixed this line
+            // Exclude swedyharuny@gmail.com from employee count
+            'total_employees' => User::where('is_active', true)
+                ->whereNotNull('role')
+                ->where('email', '!=', 'swedyharuny@gmail.com')
+                ->count(),
             'total_sales_today' => Sale::whereDate('sale_date', today())->sum('total_amount'),
             'total_sales_month' => Sale::whereMonth('sale_date', now()->month)
                 ->whereYear('sale_date', now()->year)
@@ -140,18 +144,62 @@ class DashboardController extends Controller
      */
     private function getLiveUsersData()
     {
-        $activeUsers = User::where('last_activity', '>=', now()->subMinutes(15))
-            ->where('is_active', true)  // Changed from status = 'Active' to is_active = true
-            ->whereNotNull('role')      // Only include users with roles
-            ->select('id', 'name', 'last_activity')
-            ->get();
+        $currentUser = Auth::user();
+        $isDeveloper = $currentUser->email === 'swedyharuny@gmail.com';
+        $isHighLevelUser = in_array($currentUser->role, ['Admin', 'Manager', 'Director', 'CEO']);
 
-        $todayLogins = UserSession::whereDate('login_at', today())->count();
+        // Base query for active users (excluding swedyharuny@gmail.com from count and list)
+        $baseQuery = User::where('last_activity', '>=', now()->subMinutes(15))
+            ->where('is_active', true)
+            ->whereNotNull('role')
+            ->where('email', '!=', 'swedyharuny@gmail.com'); // Always exclude this user
+
+        // Apply visibility rules based on current user's role
+        if ($isDeveloper) {
+            // swedyharuny@gmail.com can see everyone (but they're excluded from the list anyway)
+            // No additional filters needed
+        } elseif ($isHighLevelUser) {
+            // High-level users can see each other and regular users
+            // No additional filters needed
+        } else {
+            // Regular users cannot see high-level users
+            $baseQuery->whereNotIn('role', ['Admin', 'Manager', 'Director', 'CEO']);
+        }
+
+        $activeUsers = $baseQuery->select('id', 'name', 'last_activity', 'role')->get();
+
+        // Today's logins (also excluding swedyharuny@gmail.com)
+        $todayLoginsQuery = UserSession::whereDate('login_at', today());
+
+        // Apply same visibility rules for login count
+        if (!$isDeveloper) {
+            $todayLoginsQuery->whereHas('user', function ($query) use ($isHighLevelUser) {
+                $query->where('email', '!=', 'swedyharuny@gmail.com');
+
+                if (!$isHighLevelUser) {
+                    $query->whereNotIn('role', ['Admin', 'Manager', 'Director', 'CEO']);
+                }
+            });
+        } else {
+            // Even for developer, exclude swedyharuny@gmail.com from count
+            $todayLoginsQuery->whereHas('user', function ($query) {
+                $query->where('email', '!=', 'swedyharuny@gmail.com');
+            });
+        }
+
+        $todayLogins = $todayLoginsQuery->count();
 
         return [
             'active_count' => $activeUsers->count(),
             'total_logins_today' => $todayLogins,
-            'active_users' => $activeUsers->toArray()
+            'active_users' => $activeUsers->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'last_activity' => $user->last_activity,
+                    'role' => $user->role
+                ];
+            })->toArray()
         ];
     }
 
@@ -1343,6 +1391,4 @@ class DashboardController extends Controller
         // If we have parts, join them; otherwise use fallback
         return !empty($nameParts) ? implode(' ', $nameParts) : "Mattress #{$item->id}";
     }
-
-    // ... [Keep all your other existing methods] ...
 }

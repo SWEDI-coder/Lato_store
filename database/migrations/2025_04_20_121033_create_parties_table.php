@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('company_name')->nullable();
             $table->string('contact_person')->nullable();
-            $table->enum('type', ['Supplier', 'Customer']);
+            $table->string('type');
             $table->enum('gender', ['Male', 'Female'])->nullable();
-            $table->enum('status', ['Paid', 'Partial paid', 'Unpaid'])->nullable();
+            $table->string('status')->nullable();
             $table->string('address')->nullable();
             $table->string('vat_number')->nullable();
             $table->string('tin_number')->nullable();

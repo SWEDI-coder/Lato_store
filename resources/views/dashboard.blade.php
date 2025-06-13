@@ -68,7 +68,7 @@
                     <div>
                         <p class="text-sm font-medium text-gray-600">Today's Sales</p>
                         <div class="flex items-center space-x-2">
-                            @if (in_array(Auth::user()->role, ['Admin', 'Manager']) || Auth::user()->email == 'swedyharuny@gmail.com')
+                            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                             <p class="text-3xl font-bold text-purple-600" id="todaySales">
                                 <span id="hiddenSales">TSH ********</span>
                                 <span id="realSales" style="display: none;">TSH {{ number_format($stats['total_sales_today'] ?? 0) }}</span>
@@ -94,7 +94,7 @@
                     <div class="flex-1">
                         <p class="text-sm font-medium text-gray-600">Monthly Revenue</p>
                         <div class="flex items-center space-x-2">
-                            @if (in_array(Auth::user()->role, ['Admin', 'Manager']) || Auth::user()->email == 'swedyharuny@gmail.com')
+                            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                             <p class="text-3xl font-bold text-orange-600" id="monthlyRevenue">
                                 <span id="hiddenRevenue">TSH ********</span>
                                 <span id="realRevenue" style="display: none;">TSH {{ number_format($stats['total_sales_month'] ?? 0) }}</span>
@@ -156,7 +156,7 @@
                         <canvas id="salesChart"></canvas>
                     </div>
                 </div>
-
+                @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                 <!-- Financial Metrics -->
                 <div id="financial_metrics_container" class="bg-white rounded-xl shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">Financial Overview</h3>
@@ -248,6 +248,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- Inventory Health -->
                 <div id="inventory_health_container" class="bg-white rounded-xl shadow-lg p-6">
@@ -390,7 +391,7 @@
                         </div>
                     </div>
                 </div>
-
+                @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                 <!-- Recent Activities -->
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Activities</h2>
@@ -415,9 +416,10 @@
                         @endif
                     </div>
                 </div>
+                @endif
             </div>
         </div>
-
+        @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
         <!-- Additional Analytics Sections -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Customer Insights -->
@@ -548,6 +550,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 
     <!-- Dashboard Data Script -->
@@ -1003,13 +1006,20 @@
         let monthlyCashFlowChart = null;
 
         function renderMonthlyProfitChart(data) {
+            // Check if the element exists before proceeding
+            const chartElement = document.getElementById('monthly_profit_chart');
+            if (!chartElement) {
+                console.log('Monthly profit chart element not found - user may not have permission to view this chart');
+                return;
+            }
+
             // Destroy existing chart if it exists
             if (monthlyProfitChart) {
                 monthlyProfitChart.destroy();
                 monthlyProfitChart = null;
             }
 
-            const ctx = document.getElementById('monthly_profit_chart').getContext('2d');
+            const ctx = chartElement.getContext('2d');
             monthlyProfitChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -1046,13 +1056,20 @@
         }
 
         function renderMonthlySalesChart(data) {
+            // Check if the element exists before proceeding
+            const chartElement = document.getElementById('monthly_sales_chart');
+            if (!chartElement) {
+                console.log('Monthly sales chart element not found - user may not have permission to view this chart');
+                return;
+            }
+
             // Destroy existing chart if it exists
             if (monthlySalesChart) {
                 monthlySalesChart.destroy();
                 monthlySalesChart = null;
             }
 
-            const ctx = document.getElementById('monthly_sales_chart').getContext('2d');
+            const ctx = chartElement.getContext('2d');
             monthlySalesChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -1085,13 +1102,20 @@
         }
 
         function renderSalesByDayChart(data) {
+            // Check if the element exists before proceeding
+            const chartElement = document.getElementById('sales_by_day_chart');
+            if (!chartElement) {
+                console.log('Sales by day chart element not found - user may not have permission to view this chart');
+                return;
+            }
+
             // Destroy existing chart if it exists
             if (salesByDayChart) {
                 salesByDayChart.destroy();
                 salesByDayChart = null;
             }
 
-            const ctx = document.getElementById('sales_by_day_chart').getContext('2d');
+            const ctx = chartElement.getContext('2d');
             salesByDayChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -1123,13 +1147,20 @@
         }
 
         function renderMonthlyCashFlowChart(data) {
+            // Check if the element exists before proceeding
+            const chartElement = document.getElementById('monthly_cash_flow_chart');
+            if (!chartElement) {
+                console.log('Monthly cash flow chart element not found - user may not have permission to view this chart');
+                return;
+            }
+
             // Destroy existing chart if it exists
             if (monthlyCashFlowChart) {
                 monthlyCashFlowChart.destroy();
                 monthlyCashFlowChart = null;
             }
 
-            const ctx = document.getElementById('monthly_cash_flow_chart').getContext('2d');
+            const ctx = chartElement.getContext('2d');
             monthlyCashFlowChart = new Chart(ctx, {
                 type: 'bar',
                 data: {

@@ -688,9 +688,11 @@
                 <button class="tab-button active px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="sales">
                     Sales
                 </button>
+                @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                 <button class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="purchases">
                     Purchases
                 </button>
+                @endif
                 <button class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-t-lg mr-1 sm:mr-2 focus:outline-none flex-shrink-0" data-tab="transaction">
                     Transactions
                 </button>
@@ -720,7 +722,7 @@
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Sale</span>
                         </div>
-
+                        @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                         <div class="relative group">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
@@ -729,7 +731,7 @@
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
                         </div>
-
+                        @endif
                     </div>
                 </div>
                 <!-- Filters -->
@@ -774,7 +776,7 @@
                     <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-800"></div>
                 </div>
             </div>
-
+            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
             <div id="purchases" class="tab-content">
                 <div class=" flex justify-between">
                     <h2 class="text-xl font-semibold mb-1">Purchases Management</h2>
@@ -841,7 +843,7 @@
                     <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-800"></div>
                 </div>
             </div>
-
+            @endif
             <div id="transaction" class="tab-content">
                 <div class=" flex justify-between">
                     <h2 class="text-xl font-semibold mb-1">Transaction Management</h2>
@@ -853,7 +855,7 @@
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Record</span>
                         </div>
-
+                        @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                         <div class="relative group">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
@@ -862,7 +864,7 @@
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
                         </div>
-
+                        @endif
                     </div>
                 </div>
                 <!-- Filters -->
@@ -894,7 +896,9 @@
                                 <th class="py-3 px-6 text-left whitespace-nowrap">method</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">type</th>
                                 <th class="py-3 px-6 text-left whitespace-nowrap">amount</th>
+                                @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                                 <th class="py-3 px-6 text-left whitespace-nowrap no_print">tools</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm">
@@ -918,6 +922,7 @@
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
                         </div>
+                        @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                         <div class="relative group">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-printer scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
@@ -926,7 +931,7 @@
                             </svg>
                             <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Print</span>
                         </div>
-
+                        @endif
                     </div>
                 </div>
                 <div class="p-1 border-b-2 border-gray-400 mb-2">
@@ -1009,7 +1014,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                         <!-- Action Buttons -->
                         <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-lg">
                             <div class="relative group">
@@ -1027,6 +1032,7 @@
                                 <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Stock</span>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
 
@@ -1146,7 +1152,9 @@
                             <table id="inventory" class="min-w-full bg-white">
                                 <thead>
                                     <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                        @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                                         <th class="no-sort no_print text-center bg-green-500 py-3 px-2"><input type="checkbox" id="select_all_items" /></th>
+                                        @endif
                                         <th class="py-3 px-6 text-left">s/n</th>
                                         <th class="py-3 px-6 text-left">Product</th>
                                         <th class="py-3 px-6 text-left">size</th>
@@ -1154,7 +1162,9 @@
                                         <th class="py-3 px-6 text-left">Stock</th>
                                         <th class="py-3 px-6 text-left">Price</th>
                                         <th class="py-3 px-6 text-left">Status</th>
+                                        @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                                         <th class="py-3 px-6 text-left no_print">Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-600 text-sm">
@@ -1192,6 +1202,7 @@
 
                         <!-- Action Buttons -->
                         <div class="flex gap-5 bg-gray-300 p-2 rounded-md shadow-lg">
+                            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                             <div class="relative group">
                                 <svg onclick="show_add_employee_Dialog()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill scale-125 hover:text-blue-600 cursor-pointer" viewBox="0 0 16 16">
                                     <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
@@ -1199,6 +1210,7 @@
                                 </svg>
                                 <span class="absolute left-1/2 transform -translate-x-1/2 -bottom-8 text-xs bg-gray-700 text-white px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">Add</span>
                             </div>
+                            @endif
 
                             <div class="relative group">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -2345,10 +2357,12 @@
                                     <input type="radio" name="payment_type" value="Payment" class="payment_type_radio h-3 w-3 text-blue-600" checked />
                                     <span class="ml-1 text-xs">Payment</span>
                                 </label>
+                                @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                                 <label class="inline-flex items-center">
                                     <input type="radio" name="payment_type" value="Receipt" class="payment_type_radio h-3 w-3 text-blue-600" />
                                     <span class="ml-1 text-xs">Receipt</span>
                                 </label>
+                                @endif
                                 <input type="hidden" name="type" id="payment_type" value="Payment">
                             </div>
 
@@ -2398,13 +2412,14 @@
                                     </select>
                                 </div>
                             </div>
-
+                            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                             <div class="flex justify-end">
                                 <input type="number" id="dept_paid" name="dept_paid" placeholder="0.00 Tzs"
                                     class="px-2 py-1 w-24 border-2 border-blue-400 text-xs text-gray-800 bg-blue-100 rounded cursor-not-allowed" readonly>
                             </div>
+                            @endif
                         </div>
-
+                        @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                         <!-- Add Transaction Modal - Part Payment Fieldset -->
                         <fieldset class="border border-gray-500 rounded-lg px-2 py-2 mb-3">
                             <legend class="text-xs font-semibold px-1 flex items-center gap-1">
@@ -2506,6 +2521,7 @@
                             </div>
 
                         </fieldset>
+                        @endif
 
                         <!-- Form Submit Button -->
                         <div class="flex justify-end">
@@ -3029,7 +3045,7 @@
                         </div>
                         <p class="mt-1 text-xs text-gray-500">Optional - User will be prompted to add this upon login if missing</p>
                     </div>
-
+                    @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                     <!-- Role Field -->
                     <div class="mb-2">
                         <label for="edit_role" class="block text-sm font-medium text-gray-700">Role</label>
@@ -3040,6 +3056,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endif
 
                     <!-- Gender Field -->
                     <div class="mb-2">
@@ -3377,7 +3394,6 @@
     <iframe id="printFrame" style="display: none; height: 0; width: 0;"></iframe>
 
     <script>
-        
         function showFeedbackModal(type, title, message) {
             const modal = document.getElementById('feedbackModal');
             const modalIcon = document.getElementById('modalIcon');
@@ -3723,6 +3739,7 @@
                     <td class="py-1 px-6 text-left whitespace-nowrap">${transaction.method || ' - '}</td>
                     <td class="py-1 px-6 text-left whitespace-nowrap ${typeClass}">${transaction?.type || ' '}</td>
                     <td class="py-1 px-6 text-left whitespace-nowrap ${amountClass}">${payment_amount}/= Tzs</td>
+                    @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                     <td class="px-6 py-1 text-left whitespace-nowrap no_print">
                         <div class="flex space-x-2">            
                             <div class="relative group">
@@ -3737,9 +3754,7 @@
                                     Edit
                                 </span>
                             </div>
-
                             <span class="font-bold">|</span>
-
                             <!-- Delete Button -->
                             <div class="relative group">
                                 <button value="${transaction.id}" data-id="${transaction.id}" onclick="show_delete_transaction_Dialog(${transaction.id})" class="show_delete_transaction_Dialog hover:text-red-500 text-red-800">
@@ -3755,6 +3770,7 @@
                             </div>
                         </div>
                     </td>
+                    @endif
                 </tr>
             `;
                         });
@@ -3863,6 +3879,7 @@
                                                     Edit
                                                 </span>
                                             </div>
+                                            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                                             <span class="font-bold">|</span>
                                             <div class="relative group">
                                                 <button value="${item.id}" data-id="${item.id}" onclick="show_deletePartyModal(${item.id})" class="hover:text-red-500 text-red-800">
@@ -3875,6 +3892,7 @@
                                                     Delete
                                                 </span>
                                             </div>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -4091,7 +4109,9 @@
                             const sizeCode = item.mattress_size ? item.mattress_size.size_code : '-';
                             inventoryHtml += `
                         <tr class="bg-white border-b border-blue-200 hover:bg-gray-50 ${item.is_mattress ? 'bg-blue-50' : ''}">
+                            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                             <td class="text-center no_print"><input type="checkbox" value="${item.id}" class="item_checkbox" /></td>
+                            @endif
                             <td class="py-2 px-6 text-left whitespace-nowrap">${key + 1}</td>
                             <td class="py-2 px-6 text-left whitespace-nowrap">
                                 ${item.display_name || item.name}
@@ -4107,6 +4127,7 @@
                                     ${item.status || 'N/A'}
                                 </span>
                             </td>
+                            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                             <td class="px-6 py-2 text-left whitespace-nowrap no_print">
                                 <div class="flex space-x-1 justify-center">
                                     <div class="relative group">
@@ -4134,6 +4155,7 @@
                                     </div>
                                 </div>
                             </td>
+                            @endif
                         </tr>
                     `;
                         });
@@ -4279,6 +4301,7 @@
                                         Edit
                                     </span>
                                 </div>
+                                @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
                                 ${canDelete ? `
                                 <span class="font-bold">|</span>
                                 <div class="relative group">
@@ -4293,6 +4316,7 @@
                                     </span>
                                 </div>
                                 ` : ''}
+                                @endif
                             </div>
                         </td>
                     </tr>`;
@@ -4418,6 +4442,7 @@
                                                     Edit
                                                 </span>
                                             </div>
+                                            @if (in_array(Auth::user()->role, ['Admin', 'Manager', 'Director', 'CEO']) || Auth::user()->email == 'swedyharuny@gmail.com')
 
                                             <span class="font-bold">|</span>
 
@@ -4434,6 +4459,7 @@
                                                     Delete
                                                 </span>
                                             </div>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -6196,16 +6222,16 @@
             });
         });
 
-                // Define the reusable function at the top of your script
+        // Define the reusable function at the top of your script
         function getItemDisplayName(item) {
             // Check if item exists first
             if (!item) return 'Unknown Item';
-            
+
             // Check if item has valid brand, type and size
             const hasBrand = item.brand && item.brand.name;
             const hasType = item.mattress_type && item.mattress_type.code;
             const hasSize = item.mattress_size && item.mattress_size.size_code;
-            
+
             // If item has any of these mattress attributes
             if (hasBrand || hasType || hasSize) {
                 const parts = [];
@@ -6219,31 +6245,31 @@
             }
         }
 
-function show_SalesPREVIEW() {
-    const SalesId = event.target.closest('button').dataset.id;
+        function show_SalesPREVIEW() {
+            const SalesId = event.target.closest('button').dataset.id;
 
-    // Show the modal
-    document.getElementById('Sales_Modal').classList.remove('hidden');
-    document.getElementById('print_Invoice').innerHTML = '<div class="flex justify-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div></div>';
+            // Show the modal
+            document.getElementById('Sales_Modal').classList.remove('hidden');
+            document.getElementById('print_Invoice').innerHTML = '<div class="flex justify-center"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div></div>';
 
-    fetch(`/getSales/${SalesId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                const Sales = data.data;
+            fetch(`/getSales/${SalesId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const Sales = data.data;
 
-                // Format date
-                const saleDate = new Date(Sales.sale_date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
+                        // Format date
+                        const saleDate = new Date(Sales.sale_date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
 
-                // Calculate subtotal (before discount)
-                const subtotal = parseFloat(Sales.total_amount) + parseFloat(Sales.total_discount);
+                        // Calculate subtotal (before discount)
+                        const subtotal = parseFloat(Sales.total_amount) + parseFloat(Sales.total_discount);
 
-                // Create invoice HTML with improved layout matching purchase invoice
-                const invoiceHTML = `
+                        // Create invoice HTML with improved layout matching purchase invoice
+                        const invoiceHTML = `
                 <div class="p-4 bg-white">
                     <!-- Header Section -->
                     <div class="border-b border-gray-300 pb-3 mb-3">
@@ -6398,32 +6424,32 @@ function show_SalesPREVIEW() {
                 </div>
                 `;
 
-                // Update the print_Invoice div with the invoice content
-                document.getElementById('print_Invoice').innerHTML = invoiceHTML;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('print_Invoice').innerHTML = '<div class="text-red-500 text-xs">Error loading invoice data</div>';
-        });
-}
+                        // Update the print_Invoice div with the invoice content
+                        document.getElementById('print_Invoice').innerHTML = invoiceHTML;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('print_Invoice').innerHTML = '<div class="text-red-500 text-xs">Error loading invoice data</div>';
+                });
+        }
 
 
-function printInvoice() {
-    const printContent = document.getElementById('print_Invoice').innerHTML;
+        function printInvoice() {
+            const printContent = document.getElementById('print_Invoice').innerHTML;
 
-    // Create a hidden iframe for printing
-    const printIframe = document.createElement('iframe');
-    printIframe.style.position = 'absolute';
-    printIframe.style.width = '0';
-    printIframe.style.height = '0';
-    printIframe.style.left = '-9999px';
-    document.body.appendChild(printIframe);
+            // Create a hidden iframe for printing
+            const printIframe = document.createElement('iframe');
+            printIframe.style.position = 'absolute';
+            printIframe.style.width = '0';
+            printIframe.style.height = '0';
+            printIframe.style.left = '-9999px';
+            document.body.appendChild(printIframe);
 
-    // Write the content to the iframe with styles matching preview exactly
-    const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
-    iframeDoc.open();
-    iframeDoc.write(`
+            // Write the content to the iframe with styles matching preview exactly
+            const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(`
         <!DOCTYPE html>
         <html>
         <head>
@@ -6459,27 +6485,27 @@ function printInvoice() {
         </body>
         </html>
      `);
-    iframeDoc.close();
+            iframeDoc.close();
 
-    // Wait for iframe to fully load before printing
-    printIframe.onload = function() {
-        try {
-            // Focus the iframe for better printing experience
-            printIframe.contentWindow.focus();
+            // Wait for iframe to fully load before printing
+            printIframe.onload = function() {
+                try {
+                    // Focus the iframe for better printing experience
+                    printIframe.contentWindow.focus();
 
-            // Print the iframe
-            printIframe.contentWindow.print();
+                    // Print the iframe
+                    printIframe.contentWindow.print();
 
-            // Remove the iframe after printing (use setTimeout to ensure print dialog has time to appear)
-            setTimeout(function() {
-                document.body.removeChild(printIframe);
-            }, 1000);
-        } catch (e) {
-            console.error('Printing failed:', e);
-            document.body.removeChild(printIframe);
+                    // Remove the iframe after printing (use setTimeout to ensure print dialog has time to appear)
+                    setTimeout(function() {
+                        document.body.removeChild(printIframe);
+                    }, 1000);
+                } catch (e) {
+                    console.error('Printing failed:', e);
+                    document.body.removeChild(printIframe);
+                }
+            };
         }
-    };
-}
 
         function generateEFDReceipt(saleID) {
             let efdModal = document.getElementById('efd_receipt');
@@ -6600,21 +6626,21 @@ function printInvoice() {
             };
         }
 
-function printEFDReceipt() {
-    const printContent = document.getElementById('efd_content').innerHTML;
+        function printEFDReceipt() {
+            const printContent = document.getElementById('efd_content').innerHTML;
 
-    // Create a hidden iframe for printing
-    const printIframe = document.createElement('iframe');
-    printIframe.style.position = 'absolute';
-    printIframe.style.width = '0';
-    printIframe.style.height = '0';
-    printIframe.style.left = '-9999px';
-    document.body.appendChild(printIframe);
+            // Create a hidden iframe for printing
+            const printIframe = document.createElement('iframe');
+            printIframe.style.position = 'absolute';
+            printIframe.style.width = '0';
+            printIframe.style.height = '0';
+            printIframe.style.left = '-9999px';
+            document.body.appendChild(printIframe);
 
-    // Write the content to the iframe without including script tags
-    const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
-    iframeDoc.open();
-    iframeDoc.write(`
+            // Write the content to the iframe without including script tags
+            const iframeDoc = printIframe.contentDocument || printIframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(`
         <!DOCTYPE html>
         <html>
         <head>
@@ -6734,39 +6760,39 @@ function printEFDReceipt() {
         </body>
         </html>
     `);
-    iframeDoc.close();
+            iframeDoc.close();
 
-    // Wait for iframe to fully load before printing
-    printIframe.onload = function() {
-        try {
-            // Ensure barcode is rendered properly without script
-            const originalBarcode = document.getElementById('barcode');
-            if (originalBarcode) {
-                const iframeBarcodeContainer = iframeDoc.getElementById('barcode');
-                if (iframeBarcodeContainer) {
-                    // Copy the rendered SVG directly
-                    iframeBarcodeContainer.innerHTML = originalBarcode.innerHTML;
-                }
-            }
-            
-            // Focus the iframe for better printing experience
-            printIframe.contentWindow.focus();
+            // Wait for iframe to fully load before printing
+            printIframe.onload = function() {
+                try {
+                    // Ensure barcode is rendered properly without script
+                    const originalBarcode = document.getElementById('barcode');
+                    if (originalBarcode) {
+                        const iframeBarcodeContainer = iframeDoc.getElementById('barcode');
+                        if (iframeBarcodeContainer) {
+                            // Copy the rendered SVG directly
+                            iframeBarcodeContainer.innerHTML = originalBarcode.innerHTML;
+                        }
+                    }
 
-            // Print the iframe with a slight delay to ensure content is fully rendered
-            setTimeout(function() {
-                printIframe.contentWindow.print();
-                
-                // Remove the iframe after printing
-                setTimeout(function() {
+                    // Focus the iframe for better printing experience
+                    printIframe.contentWindow.focus();
+
+                    // Print the iframe with a slight delay to ensure content is fully rendered
+                    setTimeout(function() {
+                        printIframe.contentWindow.print();
+
+                        // Remove the iframe after printing
+                        setTimeout(function() {
+                            document.body.removeChild(printIframe);
+                        }, 1000);
+                    }, 300);
+                } catch (e) {
+                    console.error('Printing failed:', e);
                     document.body.removeChild(printIframe);
-                }, 1000);
-            }, 300);
-        } catch (e) {
-            console.error('Printing failed:', e);
-            document.body.removeChild(printIframe);
+                }
+            };
         }
-    };
-}
 
         // Function to reattach event handlers after printing
         function attachEventHandlers() {
@@ -6791,24 +6817,24 @@ function printEFDReceipt() {
             fetch(`/getPurchase/${purchaseId}`)
                 .then(response => response.json())
                 .then(data => {
-                        if (data.status === 'success') {
-                            const purchase = data.data;
+                    if (data.status === 'success') {
+                        const purchase = data.data;
 
-                            // Check if supplier exists, use empty object if null to avoid errors
-                            const supplier = purchase.supplier || {};
+                        // Check if supplier exists, use empty object if null to avoid errors
+                        const supplier = purchase.supplier || {};
 
-                            // Format date
-                            const purchaseDate = new Date(purchase.purchase_date).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            });
+                        // Format date
+                        const purchaseDate = new Date(purchase.purchase_date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
 
-                            // Calculate subtotal (before discount)
-                            const subtotal = parseFloat(purchase.total_amount) + parseFloat(purchase.total_discount);
+                        // Calculate subtotal (before discount)
+                        const subtotal = parseFloat(purchase.total_amount) + parseFloat(purchase.total_discount);
 
-                            // Create invoice HTML with improved layout
-                            const invoiceHTML = `
+                        // Create invoice HTML with improved layout
+                        const invoiceHTML = `
                 <div class="p-4 bg-white">
                     <!-- Header Section -->
                     <div class="border-b border-gray-300 pb-3 mb-3">
@@ -6963,14 +6989,14 @@ function printEFDReceipt() {
                 </div>
                 `;
 
-            // Update the print_Purchase_Invoice div with the invoice content
-            document.getElementById('print_Purchase_Invoice').innerHTML = invoiceHTML;
-        }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('print_Purchase_Invoice').innerHTML = '<div class="text-red-500">Error loading invoice data</div>';
-        });
+                        // Update the print_Purchase_Invoice div with the invoice content
+                        document.getElementById('print_Purchase_Invoice').innerHTML = invoiceHTML;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('print_Purchase_Invoice').innerHTML = '<div class="text-red-500">Error loading invoice data</div>';
+                });
         }
 
 
@@ -8410,7 +8436,7 @@ function printEFDReceipt() {
             'to_Date',
         ];
 
- 
+
 
 
 
@@ -8462,8 +8488,11 @@ function printEFDReceipt() {
                     }
                     document.getElementById('edit_phone').value = phoneNumber;
 
-                    // Set role
-                    document.getElementById('edit_role').value = employee.role || '';
+                    // Set role - ONLY if the element exists (user has permission)
+                    const roleElement = document.getElementById('edit_role');
+                    if (roleElement) {
+                        roleElement.value = employee.role || '';
+                    }
 
                     // Set gender
                     if (employee.gender === 'Male') {

@@ -199,7 +199,6 @@ class RegisterController extends Controller
                 'phone' => $fullPhone,
                 'password' => Hash::make($request->password),
                 'status' => 'Not Verified',
-                'role' => 'Cashier',
                 'hire_date' => now(),
                 'is_active' => true,  // Add this line
                 'last_activity' => now()  // Add this line
@@ -439,15 +438,26 @@ class RegisterController extends Controller
         // Find the employee
         $employee = User::findOrFail($id);
 
-        // Validate the request data with conditional phone/email validation
-        $validator = Validator::make($request->all(), [
+        // Check if current user has permission to edit roles
+        $currentUser = Auth::user();
+        $canEditRole = in_array($currentUser->role, ['Admin', 'Manager', 'Director', 'CEO']) || $currentUser->email == 'swedyharuny@gmail.com';
+
+        // Build validation rules dynamically
+        $validationRules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'phone' => 'required|string|regex:/^[0-9]{9}$/|unique:users,phone,' . $id,
-            'role' => 'nullable|string',
             'gender' => 'nullable|in:Male,Female',
             'address' => 'nullable|string|max:255',
-        ], [
+        ];
+
+        // Only add role validation if user has permission and role is provided
+        if ($canEditRole && $request->has('role')) {
+            $validationRules['role'] = 'nullable|string';
+        }
+
+        // Validate the request data
+        $validator = Validator::make($request->all(), $validationRules, [
             'phone.regex' => 'The phone number must be 9 digits without country code.',
         ]);
 
@@ -471,15 +481,20 @@ class RegisterController extends Controller
                 $phoneChanged = true;
             }
 
-            // Create an update array instead of modifying the model directly
+            // Create an update array with basic fields
             $updateData = [
                 'name' => $request->name,
                 'email' => $request->email ?: null,
                 'phone' => $fullPhone,
-                'role' => $request->role,
                 'gender' => $request->gender,
                 'address' => $request->address,
             ];
+
+            // Only update role if user has permission AND role is provided in request
+            if ($canEditRole && $request->has('role')) {
+                $updateData['role'] = $request->role;
+            }
+            // If user doesn't have permission, preserve the existing role by not including it in updateData
 
             // If phone number changed or was added/removed, update verification status
             if ($phoneChanged) {
