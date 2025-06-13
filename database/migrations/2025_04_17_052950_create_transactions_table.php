@@ -18,13 +18,15 @@ return new class extends Migration
             $table->foreignId('sale_id')->nullable();
             $table->foreignId('purchase_id')->nullable();
             $table->foreignId('part_id')->nullable();
-            $table->enum('type', ['Payment', 'Receipt'])->nullable();
+            $table->string('type')->nullable();
             $table->string('method')->nullable();
             $table->decimal('payment_amount', 25, 2)->nullable();
             $table->string('journal_memo')->nullable();
             $table->date('transaction_date')->nullable();
             $table->decimal('dept_paid', 25, 2)->nullable();
             $table->decimal('dept_remain', 25, 2)->nullable();
+
+            $table->foreignId('user_id'); // who made the purchase
             $table->timestamps();
         });
     }

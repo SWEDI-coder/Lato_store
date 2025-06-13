@@ -22,7 +22,8 @@ class Sale extends Model
         'z_number',
         'receipt_number',
         'barcode_text',
-        'status'
+        'status',
+        'user_id'
     ];
 
     protected $casts = [
@@ -56,5 +57,10 @@ class Sale extends Model
     public function customer()
     {
         return $this->belongsTo(Part::class, 'part_id')->where('type', 'Customer');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

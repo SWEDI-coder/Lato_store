@@ -14,7 +14,7 @@ class BrandSeeder extends Seeder
     public function run(): void
     {
         $brands = [
-            ['id' => 1, 'name' => 'QUALITY FOAM LTD', 'description' => 'QFL-DODOMA'],
+            ['id' => 1, 'name' => 'QFL-DODOMA', 'description' => 'QFL-DODOMA'],
             ['id' => 2, 'name' => 'COMFY GOLD', 'description' => 'KEKO MODERN FURNITER LTD'],
             ['id' => 3, 'name' => 'COMFY', 'description' => 'KEKO MODERN FURNITURE & HARDWARE'],
             ['id' => 4, 'name' => 'KILI FOAM', 'description' => 'KEKO MODERN FURNITURE & HARDWARE'],

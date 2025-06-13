@@ -20,12 +20,15 @@ return new class extends Migration
             $table->decimal('total_discount', 25, 2)->nullable();
             $table->decimal('dept', 25, 2)->nullable();
             $table->decimal('paid', 25, 2)->nullable();
-            $table->enum('status', ['Paid', 'Partial paid', 'Unpaid', 'Draft', 'Cancelled', 'Pending'])->default('Unpaid');
+            $table->string('status')->default('Unpaid');
 
             $table->string('efd_number')->nullable();
             $table->string('z_number')->nullable();
             $table->string('receipt_number')->nullable();
             $table->string('barcode_text')->nullable();
+
+            $table->foreignId('user_id'); // cashier
+
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@ class Transaction extends Model
         'reference_no',
         'person_name',
         'part_id',
+        'user_id',
         'sale_id',
         'purchase_id',
         'type',
@@ -38,5 +39,10 @@ class Transaction extends Model
     public function sale()
     {
         return $this->belongsTo(Sale::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

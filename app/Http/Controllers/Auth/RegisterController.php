@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\UserActivity;
+use App\Models\UserSession;
 
 class RegisterController extends Controller
 {
@@ -197,6 +199,10 @@ class RegisterController extends Controller
                 'phone' => $fullPhone,
                 'password' => Hash::make($request->password),
                 'status' => 'Not Verified',
+                'role' => 'Cashier',
+                'hire_date' => now(),
+                'is_active' => true,  // Add this line
+                'last_activity' => now()  // Add this line
             ]);
 
             // Store the phone number in session for verification
@@ -212,6 +218,18 @@ class RegisterController extends Controller
             if ($isSpecialUser) {
                 // Auto-login the user using Auth facade
                 Auth::login($user);
+
+                // Create user session record
+                UserSession::create([
+                    'user_id' => $user->id,
+                    'session_id' => session()->getId(),
+                    'login_at' => now(),
+                    'last_activity' => now(),
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent()
+                ]);
+
+                UserActivity::log('register', 'User registered');
                 return redirect()->route('welcome')->with('success', 'Registration successful! Welcome to your account.');
             } else {
                 // For regular users, redirect to login page with appropriate message
@@ -471,6 +489,7 @@ class RegisterController extends Controller
 
             // Update the employee using the update method
             $updated = User::where('id', $id)->update($updateData);
+            UserActivity::log('user', "Updated employee: {$employee->name}");
 
             if ($updated) {
                 // Get the updated user
@@ -535,8 +554,11 @@ class RegisterController extends Controller
                 'address' => $request->address,
                 // Only set status to Not Verified if we have a phone number
                 'status' => $fullPhone ? 'Not Verified' : null,
+                'is_active' => true,  // Add this line
+                'last_activity' => now()  // Add this lin
             ]);
 
+            UserActivity::log('user', "Created employee: {$employee->name} ({$employee->role})");
             return response()->json([
                 'status' => 'success',
                 'message' => 'Employee added successfully! Default password is 12345678',
@@ -603,8 +625,10 @@ class RegisterController extends Controller
                     ], 403);
                 }
             }
+            $employeeName = $employee->name;
 
             $employee->delete();
+            UserActivity::log('user', "Deleted employee: {$employeeName}");
 
             return response()->json([
                 'status' => 'success',

@@ -20,7 +20,9 @@ return new class extends Migration
             $table->decimal('total_discount', 25, 2)->nullable(); // Increased to handle trillion-level values
             $table->decimal('dept', 25, 2)->nullable();       // Increased to handle trillion-level values
             $table->decimal('paid', 25, 2)->nullable();       // Increased to handle trillion-level values
-            $table->enum('status', ['Paid', 'Partial paid', 'Unpaid', 'Draft', 'Cancelled', 'Pending'])->default('Unpaid');
+            $table->string('status')->default('Unpaid');
+
+            $table->foreignId('user_id'); // who made the purchase
             $table->timestamps();
         });
     }

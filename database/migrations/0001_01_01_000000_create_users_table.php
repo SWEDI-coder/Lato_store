@@ -18,11 +18,15 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->unique()->nullable();
             $table->timestamp('phone_verified_at')->nullable();
-            $table->enum('status', ['Verified', 'Not Verified'])->nullable();
+            $table->string('status')->nullable();
             $table->enum('gender', ['Male', 'Female'])->nullable();
             $table->string('password');
             $table->string('role')->nullable();
             $table->string('address')->nullable();
+            $table->date('hire_date')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->decimal('salary', 20, 2)->nullable();
+            $table->timestamp('last_activity')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

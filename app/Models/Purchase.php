@@ -17,7 +17,8 @@ class Purchase extends Model
         'total_discount',
         'dept',
         'paid',
-        'status'
+        'status',
+        'user_id',
     ];
 
     protected $casts = [
@@ -47,5 +48,10 @@ class Purchase extends Model
     public function supplier()
     {
         return $this->belongsTo(Part::class, 'part_id')->where('type', 'Supplier');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

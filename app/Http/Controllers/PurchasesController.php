@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use App\Models\Transaction;
 use App\Models\PurchaseItem;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class PurchasesController extends Controller
 {
@@ -73,7 +76,8 @@ class PurchasesController extends Controller
                 'total_discount' => 0, // Will be updated later
                 'paid' => $purchasesData['paid'],
                 'dept' => $purchasesData['dept'],
-                'status' => 'Unpaid' // Default status, will be updated later
+                'status' => 'Unpaid', // Default status, will be updated later
+                'user_id' => Auth::id(),
             ]);
 
             $purchase->save();
@@ -131,7 +135,9 @@ class PurchasesController extends Controller
                         'dept_paid' => (float)$purchasesData['paid'],
                         'dept_remain' => $deptAmount,
                         'transaction_date' => $purchasesData['purchase_date'],
-                        'journal_memo' => $description
+                        'journal_memo' => $description,
+                        'user_id' => Auth::id()
+
                     ]);
                     $transaction->save();
                 } catch (\Exception $e) {
@@ -149,6 +155,9 @@ class PurchasesController extends Controller
             }
 
             DB::commit();
+
+            UserActivity::log('purchase', "Purchase {$purchase->status}: {$purchase->reference_no} - Total: TSH " . number_format($finalAmount, 2));
+
 
             return response()->json([
                 'status' => 'success',
@@ -168,6 +177,7 @@ class PurchasesController extends Controller
             ], 500);
         }
     }
+
     public function update_purchase(Request $request, $purchase_id)
     {
         try {
@@ -278,12 +288,17 @@ class PurchasesController extends Controller
                         'method' => 'Cash',
                         'payment_amount' => $purchasesData['paid'],
                         'transaction_date' => $purchasesData['purchase_date'],
-                        'journal_memo' => $purchasesData['description'] ?? 'Purchase Payment'
+                        'journal_memo' => $purchasesData['description'] ?? 'Purchase Payment',
+                        'user_id' => Auth::id()
+
                     ]);
                 }
             }
 
             DB::commit();
+
+            UserActivity::log('purchase', "Updated purchase: {$purchase->reference_no} - Status: {$purchase->status}");
+
 
             return response()->json([
                 'status' => 'success',
@@ -399,9 +414,12 @@ class PurchasesController extends Controller
 
             PurchaseItem::where('purchase_id', $id)->delete();
 
+            $purchase_reference_no = $purchase->reference_no;
             $purchase->delete();
 
             DB::commit();
+
+            UserActivity::log('purchase', "Deleted purchase: {$purchase_reference_no} (stock reversed)");
 
             return response()->json([
                 'status' => 'success',

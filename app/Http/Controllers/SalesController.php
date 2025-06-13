@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Sale;
 use App\Models\SaleItem;
+use App\Models\UserActivity;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class SalesController extends Controller
 {
@@ -78,6 +80,7 @@ class SalesController extends Controller
                 'reference_no' => $reference_no,
                 'sale_date' => $SaleData['Sales_date'],
                 'part_id' => $SaleData['part_id'], // Can be null
+                'user_id' => Auth::id(),
                 'total_amount' => 0, // Will be updated later
                 'total_discount' => 0, // Will be updated later
                 'paid' => $SaleData['paid'],
@@ -142,12 +145,15 @@ class SalesController extends Controller
                     'dept_remain' => $deptAmount,
                     'transaction_date' => $SaleData['Sales_date'],
                     'journal_memo' => $description,
-                    'person_name' => null // Get customer name if needed
+                    'person_name' => null, // Get customer name if needed
+                    'user_id' => Auth::id()
+
                 ]);
                 $transaction->save();
             }
 
             DB::commit();
+            UserActivity::log('sale', "Created sale: {$sale->receipt_number} - Total: TSH " . number_format($finalAmount, 2));
 
             return response()->json([
                 'status' => 'success',
@@ -274,12 +280,14 @@ class SalesController extends Controller
                         'method' => 'Cash',
                         'payment_amount' => $SaleData['paid'],
                         'transaction_date' => $SaleData['sale_date'],
-                        'journal_memo' => $SaleData['description'] ?? 'Sale Payment'
+                        'journal_memo' => $SaleData['description'] ?? 'Sale Payment',
+                        'user_id' => Auth::id()
                     ]);
                 }
             }
 
             DB::commit();
+            UserActivity::log('sale', "Updated sale: {$sale->receipt_number} - Total: TSH " . number_format($finalAmount, 2));
 
             return response()->json([
                 'status' => 'success',
@@ -386,9 +394,12 @@ class SalesController extends Controller
 
             SaleItem::where('sale_id', $id)->delete();
 
+            $sale_receipt_number = $sale->receipt_number;
             $sale->delete();
 
             DB::commit();
+            UserActivity::log('sale', "Deleted sale: {$sale_receipt_number}");
+
 
             return response()->json([
                 'status' => 'success',
